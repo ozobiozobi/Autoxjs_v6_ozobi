@@ -1,0 +1,681 @@
+package org.autojs.autoxjs.ui.floating
+
+import android.annotation.SuppressLint
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.media.MediaPlayer
+import android.media.Ringtone
+import android.media.RingtoneManager
+import android.net.Uri
+import android.os.Handler
+import android.os.Looper
+import android.os.Vibrator
+import android.text.TextUtils
+import android.util.Log
+import android.view.ContextThemeWrapper
+import android.view.View
+import android.widget.Toast
+import butterknife.ButterKnife
+import butterknife.OnClick
+import butterknife.Optional
+import com.afollestad.materialdialogs.MaterialDialog
+import com.makeramen.roundedimageview.RoundedImageView
+import com.stardust.app.DialogUtils
+import com.stardust.autojs.core.ozobi.capture.ScreenCapture
+import com.stardust.autojs.core.record.Recorder
+import com.stardust.enhancedfloaty.FloatyService
+import com.stardust.enhancedfloaty.FloatyWindow
+import com.stardust.util.ClipboardUtil
+import com.stardust.view.accessibility.AccessibilityService.Companion.instance
+import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
+import com.stardust.view.accessibility.NodeInfo
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
+import org.autojs.autoxjs.autojs.AutoJs
+import org.autojs.autoxjs.autojs.record.GlobalActionRecorder
+import org.autojs.autoxjs.model.explorer.ExplorerDirPage
+import org.autojs.autoxjs.model.explorer.Explorers
+import org.autojs.autoxjs.model.script.Scripts.run
+import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder
+import org.autojs.autoxjs.tool.AccessibilityServiceTool
+import org.autojs.autoxjs.tool.RootTool
+import org.autojs.autoxjs.ui.common.NotAskAgainDialog
+import org.autojs.autoxjs.ui.common.OperationDialogBuilder
+import org.autojs.autoxjs.ui.explorer.ExplorerViewKt
+import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutBoundsFloatyWindow
+import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow
+import org.autojs.autoxjs.ui.main.MainActivity
+import org.greenrobot.eventbus.EventBus
+import org.jdeferred.Deferred
+import org.jdeferred.impl.DeferredObject
+
+
+/**
+ * Created by Stardust on 2017/10/18.
+ */
+@SuppressLint("NonConstantResourceId")
+class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, CaptureAvailableListener {
+    class StateChangeEvent(val currentState: Int, val previousState: Int)
+
+    private var mWindow: CircularMenuWindow? = null
+    private var mState = 0
+    private var mActionViewIcon: RoundedImageView? = null
+    private val mContext: Context = ContextThemeWrapper(context, R.style.AppTheme)
+    private val mRecorder: GlobalActionRecorder
+    private var mSettingsDialog: MaterialDialog? = null
+    private var mLayoutInspectDialog: MaterialDialog? = null
+    // Added by ibozo - 2024/11/02 >
+    private var mLastLayoutInspectDialog: MaterialDialog? = null
+    private var mCaptureDelayDialog: MaterialDialog? = null
+    private val mVibrator:Vibrator = mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private var mLastRefreshCount = 0
+    private var mLastCostTime:Long = 0L
+    private var mLastCapture:NodeInfo? = null
+    private val mLayoutInspector = AutoJs.getInstance().layoutInspector
+    private var mIsmCaptureDelayDialogDisappeared = true
+    private var isStartCaptureCountDown = false
+    private var isStartCapture = false
+    private var screenCapture:ScreenCapture = ScreenCapture(mContext)
+    // <
+    private var mRunningPackage: String? = null
+    private var mRunningActivity: String? = null
+    private var mCaptureDeferred: Deferred<NodeInfo?, Void, Void>? = null
+
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun setupListeners() {
+        mWindow?.setOnActionViewClickListener {
+            if (mState == STATE_RECORDING) {
+                stopRecord()
+            } else if (mWindow?.isExpanded == true) {
+                mWindow?.collapse()
+            } else {
+                mCaptureDeferred = DeferredObject()
+                //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
+                // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+                GlobalScope.launch {
+                    if(isStartCapture){
+                        screenCapture.stopScreenCapturer()
+                        isStartCapture = false
+                    }else{
+                        if(!ScreenCapture.avaliable || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+                            screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+                            Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+                        }
+                    }
+                }// <
+                mWindow?.expand()
+            }
+        }
+    }
+
+    private fun initFloaty() {
+        mWindow = CircularMenuWindow(mContext, object : CircularMenuFloaty {
+            override fun inflateActionView(
+                service: FloatyService,
+                window: CircularMenuWindow
+            ): View {
+                val actionView = View.inflate(service, R.layout.circular_action_view, null)
+                mActionViewIcon = actionView.findViewById(R.id.icon)
+                return actionView
+            }
+
+            override fun inflateMenuItems(
+                service: FloatyService,
+                window: CircularMenuWindow
+            ): CircularActionMenu {
+                val menu = View.inflate(
+                    ContextThemeWrapper(service, R.style.AppTheme),
+                    R.layout.circular_action_menu,
+                    null
+                ) as CircularActionMenu
+                ButterKnife.bind(this@CircularMenu, menu)
+                return menu
+            }
+        })
+        mWindow?.setKeepToSideHiddenWidthRadio(0.25f)
+        FloatyService.addWindow(mWindow)
+    }
+
+    @Optional
+    @OnClick(R.id.script_list)
+    fun showScriptList() {
+        mWindow?.collapse()
+        val explorerView = ExplorerViewKt(mContext)
+        explorerView.setExplorer(
+            Explorers.workspace(),
+            ExplorerDirPage.createRoot(Pref.getScriptDirPath())
+        )
+        explorerView.setDirectorySpanSize(2)
+        val dialog = ThemeColorMaterialDialogBuilder(mContext)
+            .title(R.string.text_run_script)
+            .customView(explorerView, false)
+            .positiveText(R.string.text_cancel)
+            .build()
+        explorerView.setOnItemOperatedListener {
+            dialog.dismiss()
+        }
+        explorerView.setOnItemClickListener { _, item ->
+            item?.let { run(item.toScriptFile()) }
+        }
+        DialogUtils.showDialog(dialog)
+    }
+
+    @Optional
+    @OnClick(R.id.record)
+    fun startRecord() {
+        mWindow?.collapse()
+        if (!RootTool.isRootAvailable()) {
+            DialogUtils.showDialog(NotAskAgainDialog.Builder(mContext, "CircularMenu.root")
+                .title(R.string.text_device_not_rooted)
+                .content(R.string.prompt_device_not_rooted)
+                .neutralText(R.string.text_device_rooted)
+                .positiveText(R.string.ok)
+                .onNeutral { _, _ -> mRecorder.start() }
+                .build())
+        } else {
+            mRecorder.start()
+        }
+    }
+
+    private fun setState(state: Int) {
+        val previousState = mState
+        mState = state
+        mActionViewIcon?.setImageResource(if (mState == STATE_RECORDING) R.drawable.ic_ali_record else IC_ACTION_VIEW)
+        //  mActionViewIcon.setBackgroundColor(mState == STATE_RECORDING ? mContext.getResources().getColor(R.color.color_red) :
+        //        Color.WHITE);
+        mActionViewIcon?.setBackgroundResource(if (mState == STATE_RECORDING) R.drawable.circle_red else R.drawable.circle_white)
+        val padding =
+            mContext.resources.getDimension(if (mState == STATE_RECORDING) R.dimen.padding_circular_menu_recording else R.dimen.padding_circular_menu_normal)
+                .toInt()
+        mActionViewIcon?.setPadding(padding, padding, padding, padding)
+        EventBus.getDefault().post(StateChangeEvent(mState, previousState))
+    }
+
+    private fun stopRecord() {
+        mRecorder.stop()
+    }
+    // Added by ibozo - 2024/11/02 >
+    private fun playNotificationSound(context: Context) {
+        val notificationUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
+        val ringtone: Ringtone? = RingtoneManager.getRingtone(context, notificationUri)
+        ringtone?.let {
+            it.play()
+            val handler = Handler()
+            handler.postDelayed({
+                if (it.isPlaying) {
+                    it.stop()
+                }
+            }, 2000)
+        }
+    }
+    private fun playDoneCapturingSound(context: Context) {
+        try{
+            val mediaPlayer = MediaPlayer.create(context, R.raw.ibozo_done_capturing_ringtone)
+            mediaPlayer.start()
+            mediaPlayer.setOnCompletionListener { mp ->
+                mp.release()
+            }
+        }catch(e:Exception){
+            Log.d("autoxjsv6",e.toString())
+            playNotificationSound(context)
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.layout_inspect)
+    fun showCaptureOption(){
+        if(isStartCapture){
+            Thread {
+                Looper.prepare()
+                mVibrator.vibrate(50)
+                Looper.loop()
+            }.start()
+            GlobalScope.launch {
+                delay(100)
+                Thread {
+                    Looper.prepare()
+                    mVibrator.vibrate(30)
+                    Looper.loop()
+                }.start()
+                withContext(Dispatchers.Main){
+                    Toast.makeText(mContext,"正在刷新",Toast.LENGTH_SHORT).show()
+                }
+            }
+            return
+        }
+        mCaptureDelayDialog = OperationDialogBuilder(mContext)
+            .item(
+                R.id.capture_delay_0s,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.capture_delay_0s
+            )
+            .item(
+                R.id.capture_delay_2s,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.capture_delay_2s
+            )
+            .item(
+                R.id.capture_delay_4s,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.capture_delay_4s
+            )
+            .item(
+                R.id.capture_delay_8s,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.capture_delay_8s
+            )
+            .item(
+                R.id.capture_use_last_record,
+                R.drawable.ic_ali_log,
+                R.string.text_show_last_record
+            )
+            .bindItemClick(this)
+            .title(R.string.capture_delay_title)
+            .dismissListener {
+                mIsmCaptureDelayDialogDisappeared = true
+                return@dismissListener
+            }
+            .build()
+        mIsmCaptureDelayDialogDisappeared = false
+        DialogUtils.showDialog(mCaptureDelayDialog)
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.capture_delay_0s)
+    fun startRightNow(){
+        if(!isStartCaptureCountDown) {
+            startCaptureCountDown()
+            GlobalScope.launch {
+                delay(200L)
+                inspectLayout()
+            }
+        }else{
+            GlobalScope.launch {
+                withContext(Dispatchers.Main){
+                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.capture_delay_2s)
+    fun delayTwoSeconds(){
+        if(!isStartCaptureCountDown){
+            startCaptureCountDown()
+            GlobalScope.launch {
+                delay(2000L)
+                inspectLayout()
+            }
+        }else{
+            GlobalScope.launch {
+                withContext(Dispatchers.Main){
+                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.capture_delay_4s)
+    fun delayFourSeconds(){
+        if(!isStartCaptureCountDown) {
+            startCaptureCountDown()
+            GlobalScope.launch {
+                delay(4000L)
+                inspectLayout()
+            }
+        }else{
+            GlobalScope.launch {
+                withContext(Dispatchers.Main){
+                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.capture_delay_8s)
+    fun delayEightSeconds(){
+        if(!isStartCaptureCountDown) {
+            startCaptureCountDown()
+            GlobalScope.launch {
+                delay(8000L)
+                inspectLayout()
+            }
+        }else{
+            GlobalScope.launch {
+                withContext(Dispatchers.Main){
+                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
+                }
+            }
+        }
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    @Optional
+    @OnClick(R.id.capture_use_last_record)
+    fun showLastRecord(){
+        mLastCapture = mLayoutInspector.capture
+        GlobalScope.launch {
+            withContext(Dispatchers.Main){
+                showLastInspectorDialog()
+            }
+        }
+    }
+    private fun startCaptureCountDown(){
+        isStartCaptureCountDown = true
+        mCaptureDelayDialog?.dismiss()
+        mCaptureDelayDialog = null
+        mWindow?.collapse()
+    }
+    private fun showLastInspectorDialog(){
+        mWindow?.collapse()
+        mLastLayoutInspectDialog = OperationDialogBuilder(mContext)
+            .item(
+                R.id.last_layout_bounds,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.text_inspect_layout_bounds
+            )
+            .item(
+                R.id.last_layout_hierarchy,
+                R.drawable.ic_layout_hierarchy,
+                R.string.text_inspect_layout_hierarchy
+            )
+            .bindItemClick(this)
+            .title(R.string.text_last_inspect_layout)
+            .build()
+        DialogUtils.showDialog(mLastLayoutInspectDialog)
+    }
+    private fun showInspectorDialog(refreshCount:Int, costTime:Long){
+        mWindow?.collapse()
+        mLayoutInspectDialog = OperationDialogBuilder(mContext)
+            .item(
+                R.id.layout_bounds,
+                R.drawable.ic_circular_menu_bounds,
+                R.string.text_inspect_layout_bounds
+            )
+            .item(
+                R.id.layout_hierarchy,
+                R.drawable.ic_layout_hierarchy,
+                R.string.text_inspect_layout_hierarchy
+            )
+            .item(
+                R.id.capture_info,
+                R.drawable.ic_ali_log,
+                "刷新数量: $refreshCount\n总耗时: $costTime ms"
+            )
+            .bindItemClick(this)
+            .title(R.string.text_inspect_layout)
+            .build()
+        DialogUtils.showDialog(mLayoutInspectDialog)
+    }
+
+    // <
+    // Modified by ibozo - 2024/11/02 >
+    //    @OnClick(R.id.layout_inspect)
+    //    @Optional
+    @OptIn(DelicateCoroutinesApi::class)
+    private suspend fun inspectLayout() {
+        isStartCapture = true
+        isStartCaptureCountDown = false
+        while (!mIsmCaptureDelayDialogDisappeared){
+            delay(100L)
+            mCaptureDelayDialog?.dismiss()
+            mCaptureDelayDialog = null
+        }
+        Thread {
+            Looper.prepare()
+            mVibrator.vibrate(90)
+            Looper.loop()
+        }.start()
+        GlobalScope.launch {
+            // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+            try{
+                screenCapture.captureScreen(true)
+                Log.d("ozobiLog","截图成功")
+            }catch (e:Exception){
+                Log.d("ozobiLog", "e: $e")
+                ScreenCapture.cleanCurImg()
+                ScreenCapture.cleanCurImgBitmap()
+                ScreenCapture.avaliable = false
+            }
+            // <
+        }
+        val start = System.currentTimeMillis()
+        mLastRefreshCount = mLayoutInspector.captureCurrentWindow()
+        if(mLastRefreshCount == -1){
+            AccessibilityServiceTool.goToAccessibilitySetting()
+            return
+        }
+        var waitCount = 0
+        while(true){
+            delay(100L)
+            waitCount++
+            if((mLayoutInspector.getIsDoneCapture() && ScreenCapture.isDoneVerity) || waitCount > 30){
+                isStartCapture = false
+                break
+            }
+        }
+        val end = System.currentTimeMillis()
+        playDoneCapturingSound(mContext)
+        mLastCostTime = end - start
+        withContext(Dispatchers.Main){
+            showInspectorDialog(mLastRefreshCount, mLastCostTime)
+        }
+        Thread {
+            Looper.prepare()
+            mVibrator.vibrate(50)
+            Looper.loop()
+        }.start()
+        mLastCapture = mLayoutInspector.capture
+        delay(300L)
+        return
+    }
+    @Optional
+    @OnClick(R.id.last_layout_bounds)
+    fun showLastLayoutBounds(){
+        inspectLastLayout { rootNode -> rootNode?.let { LayoutBoundsFloatyWindow(it) } }
+    }
+    @Optional
+    @OnClick(R.id.last_layout_hierarchy)
+    fun showLastLayoutHierarchy(){
+        inspectLastLayout { rootNode -> rootNode?.let { LayoutHierarchyFloatyWindow(it) } }
+    }
+    private fun inspectLastLayout(windowCreator: (NodeInfo?) -> FloatyWindow?) {
+        mCaptureDelayDialog?.dismiss()
+        mLastLayoutInspectDialog?.dismiss()
+        windowCreator.invoke(mLastCapture)?.let { FloatyService.addWindow(it) }
+    }
+    // <
+
+    @Optional
+    @OnClick(R.id.layout_bounds)
+    fun showLayoutBounds() {
+        inspectLayout { rootNode -> rootNode?.let { LayoutBoundsFloatyWindow(it) } }
+    }
+    @Optional
+    @OnClick(R.id.layout_hierarchy)
+    fun showLayoutHierarchy() {
+        inspectLayout { mRootNode -> mRootNode?.let { LayoutHierarchyFloatyWindow(it) } }
+    }
+
+    private fun inspectLayout(windowCreator: (NodeInfo?) -> FloatyWindow?) {
+        mLayoutInspectDialog?.dismiss()
+        mLayoutInspectDialog = null
+        if (instance == null) {
+            Toast.makeText(
+                mContext,
+                R.string.text_no_accessibility_permission_to_capture,
+                Toast.LENGTH_SHORT
+            ).show()
+            AccessibilityServiceTool.goToAccessibilitySetting()
+            return
+        }
+        // Added by ibozo - 2024/11/04 >
+        windowCreator.invoke(mLayoutInspector.capture)?.let { FloatyService.addWindow(it) }
+        // <
+        // Annotated by ibozo - 2024/11/04 >
+//        val progress = DialogUtils.showDialog(
+//            ThemeColorMaterialDialogBuilder(mContext)
+//                .content(R.string.text_layout_inspector_is_dumping)
+//                .canceledOnTouchOutside(false)
+//                .progress(true, 0)
+//                .build()
+//        )
+//        mCaptureDeferred?.promise()
+//            ?.then({ capture ->
+//                mActionViewIcon?.post {
+//                    if (!progress.isCancelled) {
+//                        progress.dismiss()
+//                        windowCreator.invoke(capture)?.let { FloatyService.addWindow(it) }
+//                    }
+//                }
+//            }) { mActionViewIcon?.post { progress.dismiss() } }
+        // <
+    }
+
+    @Optional
+    @OnClick(R.id.stop_all_scripts)
+    fun stopAllScripts() {
+        mWindow?.collapse()
+        AutoJs.getInstance().scriptEngineService.stopAllAndToast()
+    }
+
+    override fun onCaptureAvailable(capture: NodeInfo?) {
+        if (mCaptureDeferred != null && mCaptureDeferred!!.isPending) mCaptureDeferred!!.resolve(
+            capture
+        )
+    }
+
+    @Optional
+    @OnClick(R.id.settings)
+    fun settings() {
+        mWindow?.collapse()
+        mRunningPackage = AutoJs.getInstance().infoProvider.getLatestPackageByUsageStatsIfGranted()
+        mRunningActivity = AutoJs.getInstance().infoProvider.latestActivity
+        mSettingsDialog = OperationDialogBuilder(mContext)
+            .item(
+                R.id.accessibility_service,
+                R.drawable.ic_settings,
+                R.string.text_accessibility_settings
+            )
+            .item(
+                R.id.package_name, R.drawable.ic_android_fill,
+                mContext.getString(R.string.text_current_package) + mRunningPackage
+            )
+            .item(
+                R.id.class_name, R.drawable.ic_window,
+                mContext.getString(R.string.text_current_activity) + mRunningActivity
+            )
+            .item(
+                R.id.open_launcher,
+                R.drawable.ic_home_light,
+                R.string.text_open_main_activity
+            )
+            .item(
+                R.id.pointer_location,
+                R.drawable.ic_coordinate,
+                R.string.text_pointer_location
+            )
+            .item(R.id.exit, R.drawable.ic_close, R.string.text_exit_floating_window)
+            .bindItemClick(this)
+            .title(R.string.text_more)
+            .build()
+        DialogUtils.showDialog(mSettingsDialog)
+    }
+
+    @Optional
+    @OnClick(R.id.accessibility_service)
+    fun enableAccessibilityService() {
+        dismissSettingsDialog()
+        AccessibilityServiceTool.enableAccessibilityService()
+    }
+
+    private fun dismissSettingsDialog() {
+        mSettingsDialog?.dismiss()
+        mSettingsDialog = null
+    }
+
+    @Optional
+    @OnClick(R.id.package_name)
+    fun copyPackageName() {
+        dismissSettingsDialog()
+        if (TextUtils.isEmpty(mRunningPackage)) return
+        ClipboardUtil.setClip(mContext, mRunningPackage)
+        Toast.makeText(mContext, R.string.text_already_copy_to_clip, Toast.LENGTH_SHORT).show()
+    }
+
+    @Optional
+    @OnClick(R.id.class_name)
+    fun copyActivityName() {
+        dismissSettingsDialog()
+        if (TextUtils.isEmpty(mRunningActivity)) return
+        ClipboardUtil.setClip(mContext, mRunningActivity)
+        Toast.makeText(mContext, R.string.text_already_copy_to_clip, Toast.LENGTH_SHORT).show()
+    }
+
+    @Optional
+    @OnClick(R.id.open_launcher)
+    fun openLauncher() {
+        dismissSettingsDialog()
+        val intent = Intent(mContext, MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        mContext.startActivity(intent)
+    }
+
+    @Optional
+    @OnClick(R.id.pointer_location)
+    fun togglePointerLocation() {
+        dismissSettingsDialog()
+        RootTool.togglePointerLocation()
+    }
+
+    @Optional
+    @OnClick(R.id.exit)
+    fun close() {
+        dismissSettingsDialog()
+        try {
+            mWindow?.close()
+        } catch (e: IllegalArgumentException) {
+            e.printStackTrace()
+        } finally {
+            EventBus.getDefault().post(StateChangeEvent(STATE_CLOSED, mState))
+            mState = STATE_CLOSED
+        }
+        mRecorder.removeOnStateChangedListener(this)
+        AutoJs.getInstance().layoutInspector.removeCaptureAvailableListener(this)
+    }
+
+    override fun onStart() {
+        setState(STATE_RECORDING)
+    }
+
+    override fun onStop() {
+        setState(STATE_NORMAL)
+    }
+
+    override fun onPause() {}
+    override fun onResume() {}
+
+    companion object {
+        const val STATE_CLOSED = -1
+        const val STATE_NORMAL = 0
+        const val STATE_RECORDING = 1
+        private const val IC_ACTION_VIEW = R.drawable.ic_android_eat_js
+    }
+
+    init {
+        initFloaty()
+        setupListeners()
+        mRecorder = GlobalActionRecorder.getSingleton(context)
+        mRecorder.addOnStateChangedListener(this)
+        AutoJs.getInstance().layoutInspector.addCaptureAvailableListener(this)
+    }
+}
