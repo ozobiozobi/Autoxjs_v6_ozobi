@@ -6,7 +6,7 @@
 #### QQ交流群: 1014521824
 #### github: <https://github.com/ozobiozobi/Autoxjs_v6_ozobi>
 
-
+### 使用 android studio 构建项目时，注意修改 /gradle.properties，设置了代理
 	 
 # >>> 6584 -> 6585 
 
