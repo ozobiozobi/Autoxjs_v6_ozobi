@@ -6,7 +6,8 @@
 #### QQ交流群: 1014521824
 #### github: <https://github.com/ozobiozobi/Autoxjs_v6_ozobi>
 
-         
+
+	 
 # >>> 6584 -> 6585 
 
 ### 添加: 跟踪堆栈行号打印
@@ -29,6 +30,8 @@
 ### 修改(658): 将布局层次分析页面的彩色线条数量改为与 depth 相等
 
 ### 优化(6582): 布局分析不显示异常截图(宽高异常/全黑截图)
+
+
 
 # >>> 6583 -> 6584
 
@@ -80,6 +83,8 @@
 	调用: runtime.termux("adb shell input keyevent 3") 返回桌面
 	这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtime.sendTermuxIntent(intent)  
 
+
+
 # >>> 6582 -> 6583
 
 ### 添加: 远程AdbShell
@@ -98,6 +103,8 @@
 ### 增强(658): 使用相对路径显示本地图片
 	<img src=./pic.png />
 	./ 等于 file://当前引擎的工作目录/  
+
+
 
 # >>> 658 -> 6582
 
