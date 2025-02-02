@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.media.projection.MediaProjectionManager
 import com.stardust.app.OnActivityResultDelegate
+import com.stardust.autojs.runtime.api.Images
 import kotlinx.coroutines.CompletableDeferred
 import kotlin.coroutines.cancellation.CancellationException
 
@@ -53,6 +54,7 @@ interface ScreenCaptureRequester {
         }
 
         fun recycle() {
+            Images.availale = false
             mMediator.removeDelegate(this)
         }
 

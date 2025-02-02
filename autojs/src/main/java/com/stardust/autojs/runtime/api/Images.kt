@@ -14,6 +14,7 @@ import com.stardust.autojs.annotation.ScriptVariable
 import com.stardust.autojs.core.image.ColorFinder
 import com.stardust.autojs.core.image.ImageWrapper
 import com.stardust.autojs.core.image.TemplateMatching
+import com.stardust.autojs.core.image.capture.ScreenCaptureManager
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester
 import com.stardust.autojs.core.opencv.Mat
 import com.stardust.autojs.core.opencv.OpenCVHelper
@@ -43,7 +44,16 @@ class Images(
     private val mScreenCaptureRequester: ScreenCaptureRequester
 ) {
     private val mScreenMetrics: ScreenMetrics = mScriptRuntime.screenMetrics
+    // Added by ozobi - 2025/02/02 >
+    companion object{
+        var ozobiScreenCaptureRequester:ScreenCaptureRequester = ScreenCaptureManager()
+        var availale = false
+    }
 
+    init {
+        ozobiScreenCaptureRequester = mScreenCaptureRequester
+    }
+    // <
     @Volatile
     private var mOpenCvInitialized = false
 
@@ -55,10 +65,15 @@ class Images(
             mScreenCaptureRequester.requestScreenCapture(
                 mContext, orientation
             )
+            // Added by ozobi - 2025/02/02 >
+            ozobiScreenCaptureRequester = mScreenCaptureRequester
+            availale = true
+            // <
             captureScreen()
         }.isSuccess
     }
     fun stopScreenCapturer(){
+        availale = false// Added by ozobi - 2025/02/02 >
         mScreenCaptureRequester.recycle()
     }
 

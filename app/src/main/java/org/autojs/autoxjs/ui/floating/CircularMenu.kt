@@ -24,6 +24,7 @@ import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture
 import com.stardust.autojs.core.record.Recorder
+import com.stardust.autojs.runtime.api.Images
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.util.ClipboardUtil
@@ -104,7 +105,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                         screenCapture.stopScreenCapturer()
                         isStartCapture = false
                     }else{
-                        if(!ScreenCapture.avaliable || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+                        if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
                             screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
                             Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
                         }
@@ -444,7 +445,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 Log.d("ozobiLog", "e: $e")
                 ScreenCapture.cleanCurImg()
                 ScreenCapture.cleanCurImgBitmap()
-                ScreenCapture.avaliable = false
+                Images.availale = false
             }
             // <
         }
