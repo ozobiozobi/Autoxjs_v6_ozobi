@@ -8,26 +8,26 @@ module.exports = function (runtime, global) {
         lines.shift();
         lines.pop();
         lines.reverse();
-        let callInfo = "时间: " + global.dateFormat(Date.now(),"yyyy-MM-dd HH:mm:ss.SSS");
+        let callInfo = "<time>: " + global.dateFormat(Date.now(),"yyyy-MM-dd HH:mm:ss.SSS");
         for (let index = 0; index < lines.length; index++) {
             let info = lines[index].replace("\tat ", "");
             let lineNum = info.slice(info.lastIndexOf(":") + 1, info.length);
-            let msg = `\n${"\t".repeat(index)} <行号>: ${lineNum}`;
+            let msg = `\n\t<line>: ${lineNum}`;
             callInfo += msg;
         }
-        callInfo += `\n<打印信息>: ${_msg}\n`;
+        callInfo += `\n<msg>: ${_msg}\n`;
         if (_logToFilePath) {
             try {
                 _logToFilePath = runtime.files.path(_logToFilePath);
                 runtime.files.createWithDirs(_logToFilePath);
                 if (files.isFile(_logToFilePath)) {
                     runtime.files.append(_logToFilePath, callInfo + "\n");
-                    log("输出到文件: " + _logToFilePath);
+                    log("log to file: " + _logToFilePath);
                 } else {
-                    log("+++创建文件失败: " + _logToFilePath);
+                    log("+++ failed to create file: " + _logToFilePath);
                 }
             } catch (e) {
-                log("尝试输出到文件失败:" + _logToFilePath);
+                log("try to log to file failed:" + _logToFilePath);
                 log(e);
             }
         }
