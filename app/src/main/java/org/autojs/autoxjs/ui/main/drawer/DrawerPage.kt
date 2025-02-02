@@ -1275,6 +1275,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(6582): 布局分析影响脚本截图服务\n\n"+
             "添加: 跟踪堆栈行号打印\n"+
             "traceLog(\"嘿嘿\"[,path(输出到文件)])\n"+
             "(让 bug 无处可藏>_>)\n\n"+
