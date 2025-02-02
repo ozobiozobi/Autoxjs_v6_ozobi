@@ -6,9 +6,14 @@
 #### QQ交流群: 1014521824
 #### github: <https://github.com/ozobiozobi/Autoxjs_v6_ozobi>
 
+### 使用 android studio 构建项目时，注意修改 /gradle.properties，设置了代理
 
-	 
+---
+---
+  
 # >>> 6584 -> 6585 
+
+### 修复(6582): 布局分析影响脚本截图服务
 
 ### 添加: 跟踪堆栈行号打印
 	traceLog("嘿嘿"[,path(输出到文件)])
@@ -31,7 +36,8 @@
 
 ### 优化(6582): 布局分析不显示异常截图(宽高异常/全黑截图)
 
-
+---
+---
 
 # >>> 6583 -> 6584
 
@@ -83,7 +89,8 @@
 	调用: runtime.termux("adb shell input keyevent 3") 返回桌面
 	这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtime.sendTermuxIntent(intent)  
 
-
+---
+---
 
 # >>> 6582 -> 6583
 
@@ -104,7 +111,8 @@
 	<img src=./pic.png />
 	./ 等于 file://当前引擎的工作目录/  
 
-
+---
+---
 
 # >>> 658 -> 6582
 
