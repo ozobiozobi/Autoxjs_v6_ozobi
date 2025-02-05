@@ -7,10 +7,8 @@
 #### github: <https://github.com/ozobiozobi/Autoxjs_v6_ozobi>
 
 ---
----
-  
 # >>> 6584 -> 6585 
-
+---
 ### 修复(6582): 布局分析影响脚本截图服务
 
 ### 添加: 跟踪堆栈行号打印
@@ -35,10 +33,8 @@
 ### 优化(6582): 布局分析不显示异常截图(宽高异常/全黑截图)
 
 ---
----
-
 # >>> 6583 -> 6584
-
+---
 ### 修复(658): 某些设备 RootAutomator 不生效
 
 ### 修复(6583): 找不到方法 runtime.adbConnect(string, number)
@@ -88,10 +84,8 @@
 	这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtime.sendTermuxIntent(intent)  
 
 ---
----
-
 # >>> 6582 -> 6583
-
+---
 ### 添加: 远程AdbShell
 	(好像不支持远程配对, 手机需要开放端口)
 	使用 let adbShell = runtime.adbConnect(host,port) 连接设备
@@ -110,10 +104,8 @@
 	./ 等于 file://当前引擎的工作目录/  
 
 ---
----
-
 # >>> 658 -> 6582
-
+---
 ### 优化?(658):  vscode 插件运行项目
 	vscode打开项目新建一个 project.json 文件,里面有{}就可以, 再将主脚本文件命名为 main.js 即可
 
