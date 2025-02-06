@@ -48,6 +48,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -83,7 +84,6 @@ import com.stardust.notification.NotificationListenerService
 import com.stardust.toast
 import com.stardust.util.ClipboardUtil
 import com.stardust.util.IntentUtil
-import com.stardust.util.IntentUtilKt.launchQQ
 import com.stardust.view.accessibility.AccessibilityService
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
@@ -94,7 +94,6 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import org.androidannotations.annotations.Click
 import org.autojs.autoxjs.Pref
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
@@ -178,6 +177,9 @@ fun DrawerPage() {
 
             Text(text = stringResource(id = R.string.text_script_record))
             FloatingWindowSwitch()
+            // Added by ozobi - 2025/02/06 > 布局分析截图开关
+            layoutInsScreenshotSwitch()
+            // <
             VolumeDownControlSwitch()
             AutoBackupSwitch()
 
@@ -713,9 +715,7 @@ private fun AlwaysTryToConnect(){
             Text(
                 text = stringResource(
                     id = R.string.text_always_try_to_connect
-                ),
-                modifier = Modifier
-                    .background(Color(0x33df73ff))
+                )
             )
         },
         checked = enable,
@@ -1245,6 +1245,36 @@ fun SwitchTimedTaskScheduler() {
         TimedTaskSchedulerDialog(onDismissRequest = { isShowDialog = false })
     }
 }
+
+// Added by ozobi - 2025/02/06 > 添加布局分析截图开关
+@Composable
+private fun layoutInsScreenshotSwitch() {
+    val context = LocalContext.current
+    var isCaptureScreenshot by remember {
+        val default = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(context.getString(R.string.ozobi_key_isCapture_Screenshot), false)
+        mutableStateOf(default)
+    }
+    SwitchItem(
+        icon = {
+            MyIcon(
+                Icons.Default.Star,
+                contentDescription = null
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.ozobi_text_isCapture_Screenshot)) },
+        checked = isCaptureScreenshot,
+        onCheckedChange = {
+            PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(context.getString(R.string.ozobi_key_isCapture_Screenshot), it)
+                .apply()
+            isCaptureScreenshot = it
+        }
+    )
+}
+// <
+
 // Added by ozobi - 2024/11/06 > 添加关于魔改信息
 @Composable
 fun showModificationDetailsButton() {

@@ -23,7 +23,6 @@ import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME;
 import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseHelper;
 import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseManager;
-import com.stardust.autojs.core.ozobi.inputevent.SendEventCommand;
 import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
 import com.stardust.autojs.core.ozobi.shizuku.OzobiShizuku;
 import com.stardust.autojs.core.permission.Permissions;
@@ -192,8 +191,8 @@ public class ScriptRuntime {
     @ScriptVariable
     public AdbIME adbIMEShellCommand;
 
-    @ScriptVariable
-    public SendEventCommand sendeventCommand;
+//    @ScriptVariable
+//    public SendEventCommand sendeventCommand;
     // <
     @ScriptVariable
     public final AccessibilityBridge accessibilityBridge;
@@ -266,7 +265,7 @@ public class ScriptRuntime {
         dbHelper = new AddInfoDatabaseHelper(context);
         dbManager = new AddInfoDatabaseManager(dbHelper);
         adbIMEShellCommand = new AdbIME();
-        sendeventCommand = new SendEventCommand(getApplicationContext());
+//        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
         floaty = new Floaty(uiHandler, ui, this);
         files = new Files(this);

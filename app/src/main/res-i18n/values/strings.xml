@@ -25,6 +25,8 @@
     <string name="ozobi_mender_name" translatable="false">ozobi</string>
     <string name="ozobi_text_mender_email" translatable="false">ozobi@proton.me</string>
     <string name="ozobi_text_email_already_copy_to_clip" translatable="false">邮箱已复制到粘贴板</string>
+    <string name="ozobi_text_isCapture_Screenshot" translatable="false">布局分析截图_ozobi</string>
+    <string name="ozobi_key_isCapture_Screenshot" translatable="false">布局分析截图开关</string>
 <!--    //-->
     <string name="email" translatable="false">chengshulun@live.com</string>
     <string name="default_main_file_name" translatable="false">main.js</string>
@@ -424,7 +426,7 @@
     <string name="text_device_manager" >设备管理员</string>
     <string name="key_keep_trying" >连上为止开关</string>
     <string name="key_cur_check_connection_status" >当前检测连接状态</string>
-    <string name="text_always_try_to_connect" >连上为止</string>
+    <string name="text_always_try_to_connect" >连上为止_ozobi</string>
     <string name="capture_delay_title">等多久呢(下拉状态栏打断刷新</string>
     <string name="capture_delay_0s">; )我很急</string>
     <string name="capture_delay_2s">:D就一会 (2s)</string>

@@ -16,6 +16,7 @@ import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.View
 import android.widget.Toast
+import androidx.preference.PreferenceManager
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Optional
@@ -84,6 +85,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private var isStartCaptureCountDown = false
     private var isStartCapture = false
     private var screenCapture:ScreenCapture = ScreenCapture(mContext)
+    private var isCaptureScreenshot = false
     // <
     private var mRunningPackage: String? = null
     private var mRunningActivity: String? = null
@@ -100,17 +102,22 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mCaptureDeferred = DeferredObject()
                 //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
                 // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-                GlobalScope.launch {
-                    if(isStartCapture){
-                        screenCapture.stopScreenCapturer()
-                        isStartCapture = false
-                    }else{
-                        if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
-                            screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
-                            Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+                isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
+                    .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
+                if(isCaptureScreenshot){
+                    GlobalScope.launch {
+                        if(isStartCapture){
+                            screenCapture.stopScreenCapturer()
+                            isStartCapture = false
+                        }else{
+                            if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+                                screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+                                Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+                            }
                         }
                     }
-                }// <
+                }
+                // <
                 mWindow?.expand()
             }
         }
@@ -436,18 +443,23 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             mVibrator.vibrate(90)
             Looper.loop()
         }.start()
-        GlobalScope.launch {
-            // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-            try{
-                screenCapture.captureScreen(true)
-                Log.d("ozobiLog","截图成功")
-            }catch (e:Exception){
-                Log.d("ozobiLog", "e: $e")
-                ScreenCapture.cleanCurImg()
-                ScreenCapture.cleanCurImgBitmap()
-                Images.availale = false
+        if(isCaptureScreenshot){
+            GlobalScope.launch {
+                // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+                try{
+                    screenCapture.captureScreen(true)
+                    Log.d("ozobiLog","截图成功")
+                }catch (e:Exception){
+                    Log.d("ozobiLog", "e: $e")
+                    ScreenCapture.cleanCurImg()
+                    ScreenCapture.cleanCurImgBitmap()
+                    Images.availale = false
+                }
+                // <
             }
-            // <
+        }else{
+            ScreenCapture.cleanCurImg()
+            ScreenCapture.cleanCurImgBitmap()
         }
         val start = System.currentTimeMillis()
         mLastRefreshCount = mLayoutInspector.captureCurrentWindow()
@@ -457,12 +469,12 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         }
         var waitCount = 0
         while(true){
-            delay(100L)
-            waitCount++
-            if((mLayoutInspector.getIsDoneCapture() && ScreenCapture.isDoneVerity) || waitCount > 30){
+            if(!isCaptureScreenshot || (mLayoutInspector.getIsDoneCapture() && ScreenCapture.isDoneVerity) || waitCount > 30){
                 isStartCapture = false
                 break
             }
+            delay(100L)
+            waitCount++
         }
         val end = System.currentTimeMillis()
         playDoneCapturingSound(mContext)
