@@ -16,23 +16,23 @@ fun initVersions(file: File) {
 
 data class Versions(
     @SerializedName("appVersionCode")
-    val appVersionCode: Int = 6582,
+    val appVersionCode: Int = 6586,
     @SerializedName("appVersionName")
-    val appVersionName: String = "6.5.8.2",
+    val appVersionName: String = "6.5.8.6",
     @SerializedName("buildTool")
-    val buildTool: String = "34.0.0",
+    val buildTool: String = "35.0.0",
     @SerializedName("compile")
-    val compile: Int = 34,
+    val compile: Int = 35,
     @SerializedName("devVersionCode")
-    val devVersionCode: Int = 6582,
+    val devVersionCode: Int = 6586,
     @SerializedName("devVersionName")
-    val devVersionName: String = "6.5.8.2",
+    val devVersionName: String = "6.5.8.6",
     @SerializedName("IDE")
-    val ide: String = "Android Studio Hedgehog | 2023.1.1",
+    val ide: String = "Android Studio Koala Feature Drop | 2024.1.2",
     @SerializedName("JDK")
     val jdk: String = "17",
     @SerializedName("mini")
     val mini: Int = 21,
     @SerializedName("target")
-    val target: Int = 26
+    val target: Int = 28
 )

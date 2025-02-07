@@ -76,6 +76,7 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import com.stardust.util.ViewUtil;
 import com.stardust.util.ozobi;
 
 /**
@@ -332,7 +333,11 @@ public class ScriptRuntime {
         return intent;
     }
     // <
-
+    // Added by ozobi - 2025/02/06 > 获取状态栏高度
+    public static int getStatusBarHeight(){
+        return ViewUtil.getStatusBarHeight(getApplicationContext());
+    }
+    // <
     public TopLevelScope getTopLevelScope() {
         return mTopLevelScope;
     }

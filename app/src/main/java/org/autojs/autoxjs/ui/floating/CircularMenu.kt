@@ -431,7 +431,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     //    @Optional
     @OptIn(DelicateCoroutinesApi::class)
     private suspend fun inspectLayout() {
-        isStartCapture = true
         isStartCaptureCountDown = false
         while (!mIsmCaptureDelayDialogDisappeared){
             delay(100L)
@@ -462,9 +461,11 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             ScreenCapture.cleanCurImgBitmap()
         }
         val start = System.currentTimeMillis()
+        isStartCapture = true
         mLastRefreshCount = mLayoutInspector.captureCurrentWindow()
         if(mLastRefreshCount == -1){
             AccessibilityServiceTool.goToAccessibilitySetting()
+            isStartCapture = false
             return
         }
         var waitCount = 0
@@ -529,6 +530,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 Toast.LENGTH_SHORT
             ).show()
             AccessibilityServiceTool.goToAccessibilitySetting()
+            isStartCapture = false// Added by ozobi - 2025/02/07
             return
         }
         // Added by ibozo - 2024/11/04 >

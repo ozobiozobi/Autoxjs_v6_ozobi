@@ -44,7 +44,11 @@ module.exports = function (runtime, global) {
         return formattedDate;
     }
     // <
-
+    // Added by ozobi - 2025/02/06 > 获取状态栏高度
+    global.getStatusBarHeight = function(){
+        return runtime.getStatusBarHeight();
+    }
+    // <
     global.toast = function (text) {
         runtime.toast(text);
     }

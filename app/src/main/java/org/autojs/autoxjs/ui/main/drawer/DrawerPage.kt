@@ -1300,12 +1300,27 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 6585->6586 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "升级: SDK35、gradle-8.7、AGP-8.6.0\n\n"+
+            "添加: 获取状态栏高度(px)\n"+
+            "let h = getStatusBarHeight()\n\n"+
+            "添加: 布局分析截图开关\n\n"+
+            "添加: 获取当前存在的本地存储 名称[路径] 数组\n"+
+            "let arr = storages.getExisting([returnPath])"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 6584->6585 ===>"
         )
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复(6582): 布局分析影响脚本截图服务\n\n"+
+//            "修复(6582): 布局分析影响脚本截图服务\n\n"+
             "添加: 跟踪堆栈行号打印\n"+
             "traceLog(\"嘿嘿\"[,path(输出到文件)])\n"+
             "(让 bug 无处可藏>_>)\n\n"+
@@ -1321,7 +1336,7 @@ fun detailsDialog(context: Context){
             "一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+
             "修改:将布局层次分析页面的彩色线条数量改为与 depth 相等\n\n"+
             "优化: 布局分析不显示异常截图(宽高异常/全黑截图)"
-//            "添加:生成 sendevent 命令(touch)\n"+
+//            "添加:生成 sendevent 命令(touch)\n"+ // 好像没什么用 -_-
 //            "注: SELinux 需要是宽松模式或关闭状态\n"+
 //            "let sec = runtime.sendeventCommand\n"+
 //            "let commandList = sec.touchDown(x,y[,id])\n"+
