@@ -9,6 +9,8 @@
 ---
 # >>> 6585 -> 6586
 ---
+### 升级: SDK35、gradle-8.7、AGP-8.6.0
+
 ### 添加: 获取状态栏高度(px)
             let h = getStatusBarHeight() 
 

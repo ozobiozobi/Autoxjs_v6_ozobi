@@ -33,8 +33,8 @@ object DefaultSign {
         zos.putNextEntry(ZipEntry(prefix))
         zos.closeEntry()
         val `arr$` = dir.listFiles()
-        val `len$` = `arr$`.size
-        for (`i$` in 0 until `len$`) {
+        val `len$` = `arr$`?.size
+        for (`i$` in 0 until `len$`!!) {
             val f = `arr$`[`i$`]
             if (f.isFile) {
                 doFile(prefix + f.name, f, zos, dos, m)
@@ -159,7 +159,7 @@ object DefaultSign {
         val out = SignatureOutputStream(zos, signature)
         out.write("Signature-Version: 1.0\r\n".toByteArray(charset("UTF-8")))
         out.write(
-            """Created-By: tiny-sign-${DefaultSign::class.java.getPackage().implementationVersion}
+            """Created-By: tiny-sign-${DefaultSign::class.java.getPackage()?.implementationVersion}
 """.toByteArray(charset("UTF-8"))
         )
         out.write("SHA1-Digest-Manifest: ".toByteArray(charset("UTF-8")))

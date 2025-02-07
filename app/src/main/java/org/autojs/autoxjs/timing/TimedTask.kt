@@ -152,8 +152,8 @@ class TimedTask : BaseModel {
         private const val FLAG_EVERYDAY = 0x7F
         private const val REQUEST_CODE = 2000
         @JvmStatic
-        fun getDayOfWeekTimeFlag(dayOfWeek: Int): Long {
-            var dayOfWeek = dayOfWeek
+        fun getDayOfWeekTimeFlag(_dayOfWeek: Int): Long {
+            var dayOfWeek = _dayOfWeek
             dayOfWeek = (dayOfWeek - 1) % 7 + 1
             when (dayOfWeek) {
                 DateTimeConstants.SUNDAY -> return FLAG_SUNDAY.toLong()

@@ -90,8 +90,8 @@ object AlarmManagerProvider : TimedTaskScheduler() {
         cancel(context, task)
     }
 
-    private fun setExactCompat(alarmManager: AlarmManager, op: PendingIntent, millis: Long) {
-        var millis = millis
+    private fun setExactCompat(alarmManager: AlarmManager, op: PendingIntent, _millis: Long) {
+        var millis = _millis
         var type = AlarmManager.RTC_WAKEUP
         val gapMillis = millis - System.currentTimeMillis()
         if (gapMillis <= MIN_INTERVAL_GAP) {

@@ -22,9 +22,11 @@ import java.util.ArrayList
 object ApkSigner {
     @Throws(Exception::class)
     fun sign(keystorePath: String?, keyPassword: String, oldApk: File, newApk: File) {
-        val keystoreFile = File(keystorePath)
-        if (!keystoreFile.exists()) {
-            throw FileNotFoundException("keystore不存在")
+        val keystoreFile = keystorePath?.let { File(it) }
+        if (keystoreFile != null) {
+            if (!keystoreFile.exists()) {
+                throw FileNotFoundException("keystore不存在")
+            }
         }
         try {
             val password = keyPassword.toCharArray()
@@ -77,7 +79,7 @@ object ApkSigner {
                 dir.mkdirs()
             }
             val files = dir.listFiles()
-            for (file in files) {
+            for (file in files!!) {
                 if (file.isFile) {
                     val keyStore = KeyStoreFileManager.loadKeyStore(file.path, null)
                     val alias = keyStore.aliases().nextElement()
@@ -87,7 +89,7 @@ object ApkSigner {
                     item.alias = alias
                     val password = Pref.getKeyStorePassWord(file.name)
                     item.password = password
-                    item.isVerified = !password.isEmpty()
+                    item.isVerified = password.isNotEmpty()
                     list.add(item)
                 }
             }
@@ -112,7 +114,7 @@ object ApkSigner {
             item.alias = alias
             val password = Pref.getKeyStorePassWord(file.name)
             item.password = password
-            item.isVerified = !password.isEmpty()
+            item.isVerified = password.isNotEmpty()
             return item
         } catch (e: Exception) {
             e.printStackTrace()
@@ -123,9 +125,11 @@ object ApkSigner {
     @JvmStatic
     fun checkKeyStore(keystorePath: String?, keyPassword: String): Boolean {
         return try {
-            val keystoreFile = File(keystorePath)
-            if (!keystoreFile.exists()) {
-                return false
+            val keystoreFile = keystorePath?.let { File(it) }
+            if (keystoreFile != null) {
+                if (!keystoreFile.exists()) {
+                    return false
+                }
             }
             val password = keyPassword.toCharArray()
             val keyStore = KeyStoreFileManager.loadKeyStore(keystorePath, null)

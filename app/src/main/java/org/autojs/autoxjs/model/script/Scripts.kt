@@ -109,7 +109,7 @@ object Scripts {
         return try {
             AutoJs.getInstance().scriptEngineService.execute(
                 file.toSource(),
-                ExecutionConfig(workingDirectory = file.parent)
+                file.parent?.let { ExecutionConfig(workingDirectory = it) }
             )
         } catch (e: Exception) {
             e.printStackTrace()
@@ -137,7 +137,7 @@ object Scripts {
     fun runWithBroadcastSender(file: File): ScriptExecution {
         return AutoJs.getInstance().scriptEngineService.execute(
             ScriptFile(file).toSource(), BROADCAST_SENDER_SCRIPT_EXECUTION_LISTENER,
-            ExecutionConfig(workingDirectory = file.parent)
+            file.parent?.let { ExecutionConfig(workingDirectory = it) }
         )
     }
 
@@ -151,10 +151,12 @@ object Scripts {
         val source = scriptFile.toSource()
         val directoryPath = scriptFile.parent
         return AutoJs.getInstance().scriptEngineService.execute(
-            source, ExecutionConfig(
-                workingDirectory = directoryPath,
-                delay = delay, loopTimes = loopTimes, interval = interval
-            )
+            source, directoryPath?.let {
+                ExecutionConfig(
+                    workingDirectory = it,
+                    delay = delay, loopTimes = loopTimes, interval = interval
+                )
+            }
         )
     }
 

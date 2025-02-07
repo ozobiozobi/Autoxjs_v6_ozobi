@@ -1332,10 +1332,10 @@ fun detailsDialog(context: Context){
             "设置代理: http.get(url, {proxyHost:\"192.168.1.10\", proxyPort:7890})\n"+
             "身份认证: {userName:\"ozobi\", password:"+context.resources.getString(R.string.qq_communication_group)+"}\n\n"+
             "添加: 设置 http 尝试次数、单次尝试超时时间(options)\n"+
-            "比如: http.get(url, {maxTry:3, timeout: 5000})\n"+
+            "例如: http.get(url, {maxTry:3, timeout: 5000})\n"+
             "一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+
-            "修改:将布局层次分析页面的彩色线条数量改为与 depth 相等\n\n"+
-            "优化: 布局分析不显示异常截图(宽高异常/全黑截图)"
+            "修改:将布局层次分析页面的彩色线条数量改为与 depth 相等"
+//            "优化: 布局分析不显示异常截图(宽高异常/全黑截图)"
 //            "添加:生成 sendevent 命令(touch)\n"+ // 好像没什么用 -_-
 //            "注: SELinux 需要是宽松模式或关闭状态\n"+
 //            "let sec = runtime.sendeventCommand\n"+
@@ -1408,7 +1408,7 @@ fun detailsDialog(context: Context){
             "adbShell.close() 断开连接\n"+
             "adbShell.connection.getHost() 获取当前连接主机名\n"+
             "adbShell.connection.getPost() 获取当前连接端口\n\n"+
-            "将悬浮窗位置改为以屏幕左上角为原点(终于可以指哪打哪了\n"+
+            "修改: 将悬浮窗位置改为以屏幕左上角为原点(终于可以指哪打哪了\n"+
             ">_<)\n\n"+
 //            "修复(6582): 脚本请求截图权限后再进行布局分析时打不开悬浮窗\n\n"+
             "增强: 使用相对路径显示本地图片\n"+
