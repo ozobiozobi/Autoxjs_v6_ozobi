@@ -12,10 +12,10 @@
 ### 升级: SDK35、gradle-8.7、AGP-8.6.0
 
 ### 添加: 获取状态栏高度(px)
-            let h = getStatusBarHeight() 
+    let h = getStatusBarHeight() 
 
 ### 添加: 获取当前存在的本地存储 名称[路径] 数组
-            "let arr = storages.getExisting([returnPath])"
+    let arr = storages.getExisting([returnPath])
 
 ### 添加: 布局分析截图开关
 
@@ -100,7 +100,7 @@
 # >>> 6582 -> 6583
 ---
 ### 添加: 远程AdbShell
-	(好像不支持远程配对, 手机需要开放端口)
+	(好像不支持远程配对, 手机需要设置 adb 监听端口)
 	使用 let adbShell = runtime.adbConnect(host,port) 连接设备
 	使用 adbShell.exec("ls /") 执行命令
 	adbShell.close() 断开连接

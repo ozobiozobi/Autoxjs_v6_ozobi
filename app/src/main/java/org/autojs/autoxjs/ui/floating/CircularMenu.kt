@@ -231,7 +231,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mp.release()
             }
         }catch(e:Exception){
-            Log.d("autoxjsv6",e.toString())
+            Log.d("ozobiLog",e.toString())
             playNotificationSound(context)
         }
     }
