@@ -50,6 +50,10 @@ object DevPlugin {
         }
     }
 
+    // Added by ozobi - 2025/02/11 > 启动app第一次连接不显示失败弹窗
+    var isFirstTime = false
+    // <
+
     private val gson get() = Gson()
     const val SERVER_PORT = 9317
     private const val CLIENT_VERSION = 2
@@ -110,19 +114,29 @@ object DevPlugin {
             when (it.state) {
                 State.CONNECTING -> {
                     Log.d(TAG, "ConnectComputerSwitch: CONNECTING")
-                    GlobalAppContext.toast(R.string.text_connecting)
+                    if(!isFirstTime){// Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                        GlobalAppContext.toast(R.string.text_connecting)
+                    }
                 }
                 State.RECONNECTING -> {
                     Log.d(TAG, "ConnectComputerSwitch: RECONNECTING")
-                    GlobalAppContext.toast(R.string.text_reconnecting)
+                    if(!isFirstTime){// Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                        GlobalAppContext.toast(R.string.text_reconnecting)
+                    }
                 }
                 State.CONNECTION_FAILED -> {
                     Log.d(TAG, "ConnectComputerSwitch: CONNECTION_FAILED")
-                    GlobalAppContext.toast(
-                        false,// Modefied by ozobi - 2025/01/11 > 改为短时间的toast
-                        R.string.text_connect_failed,
-                        it.e?.localizedMessage ?: ""
-                    )
+                    // Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                    if(isFirstTime){
+                        isFirstTime = false
+                    }else{
+                        GlobalAppContext.toast(
+                            false,// Modefied by ozobi - 2025/01/11 > 改为短时间的toast
+                            R.string.text_connect_failed,
+                            it.e?.localizedMessage ?: ""
+                        )
+                    }
+                    // <
                     it.e?.printStackTrace()
                 }
                 State.HANDSHAKE_TIMEOUT -> {

@@ -774,6 +774,7 @@ fun checkConnectState(context: Context){
 // Modified by ozobi - 2024/10/26
 @Composable
 fun startUpCheck(){
+    DevPlugin.isFirstTime = true
     Log.d(ozobiLogTag,"启动时检查连接")
     val context = LocalContext.current
     val host by remember {
@@ -1305,6 +1306,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "优化: 启动 app 自动连接不显示 toast\n\n"+
             "升级: SDK35、gradle-8.7、AGP-8.6.0\n\n"+
             "添加: 获取状态栏高度(px)\n"+
             "let h = getStatusBarHeight()\n\n"+
