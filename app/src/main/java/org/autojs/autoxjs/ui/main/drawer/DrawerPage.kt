@@ -707,7 +707,7 @@ private fun AlwaysTryToConnect(){
     SwitchItem(
         icon = {
             MyIcon(
-                painterResource(id = R.drawable.ozobi_never_give_up),
+                painterResource(id = R.drawable.ic_cutover),
                 null
             )
         },
@@ -1259,8 +1259,9 @@ private fun layoutInsScreenshotSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                Icons.Default.Star,
-                contentDescription = null
+                painterResource(id = R.drawable.ic_photo_camera_black_48dp),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
             )
         },
         text = { Text(text = stringResource(id = R.string.ozobi_text_isCapture_Screenshot)) },
@@ -1359,7 +1360,7 @@ fun detailsDialog(context: Context){
             "一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+
             "修改:将布局层次分析页面的彩色线条数量改为与 depth 相等"
 //            "优化: 布局分析不显示异常截图(宽高异常/全黑截图)"
-//            "添加:生成 sendevent 命令(touch)\n"+ // 好像没什么用 -_-
+//            "添加: 生成 sendevent 命令(touch)\n"+ // 好像没什么用 -_-
 //            "注: SELinux 需要是宽松模式或关闭状态\n"+
 //            "let sec = runtime.sendeventCommand\n"+
 //            "let commandList = sec.touchDown(x,y[,id])\n"+
@@ -1426,8 +1427,9 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-        "添加:远程AdbShell(好像不支持远程配对, 手机需要开放端口), 使用 let adbShell = runtime.adbConnect(host,port)连接设备\n"+
-            "使用 adbShell.exec(\"ls /\") 执行命令\n"+
+        "添加: 远程AdbShell(好像不支持远程配对, 手机需要设置 adb 监听端口)\n"+
+            "let adbShell = runtime.adbConnect(host,port)连接设备\n"+
+            "adbShell.exec(\"ls /\") 执行命令\n"+
             "adbShell.close() 断开连接\n"+
             "adbShell.connection.getHost() 获取当前连接主机名\n"+
             "adbShell.connection.getPost() 获取当前连接端口\n\n"+

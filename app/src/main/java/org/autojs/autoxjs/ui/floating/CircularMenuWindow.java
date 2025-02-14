@@ -19,6 +19,8 @@ import org.autojs.autoxjs.ui.floating.gesture.BounceDragGesture;
 
 import java.util.Date;
 
+import kotlin.reflect.jvm.internal.impl.descriptors.annotations.Annotated;
+
 public class CircularMenuWindow extends FloatyWindow {
 
     private static final String KEY_POSITION_X = CircularMenuWindow.class.getName() + ".position.x";
@@ -117,33 +119,31 @@ public class CircularMenuWindow extends FloatyWindow {
         return layoutParams;
     }
     private void setListeners() {
-        // Annotated by ozobi - 2025/02/14 > 使用抬起触发展开和折叠
-//        setOnActionViewClickListener(v -> {
-//            if (isExpanded()) {
-//                collapse();
-//            } else {
-//                expand();
-//            }
-//        });
+        setOnActionViewClickListener(v -> {
+            if (isExpanded()) {
+                collapse();
+            } else {
+                expand();
+            }
+            Log.d("ozobiLog","CircularMenuWindow: initClickListener");
+        });
+        // Added by ozobi - 2025/02/14 > 使用抬起触发展开和折叠
         setOnActionViewTouchListener((v,e)->{
-            if(e.getAction() == MotionEvent.ACTION_MOVE){
-                Log.d("ozobiLog","CircularMenuWindow: move: " );
-            }else if(e.getAction() == MotionEvent.ACTION_UP){
-                Log.d("ozobiLog","CircularMenuWindow: touchUp: ");
-                v.performClick();
+             if(e.getAction() == MotionEvent.ACTION_UP){
+                 Log.d("ozobiLog","CircularMenuWindow: touchUp: ");
                 if (isExpanded()) {
                     collapse();
                 } else {
                     expand();
                 }
-            }else if(e.getAction() == MotionEvent.ACTION_DOWN){
-                Log.d("ozobiLog","CircularMenuWindow: touchDown: ");
+                v.performClick();
             }
             return true;
         });
-//        if (mActionViewOnClickListener != null) {
-//            mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
-//        }
+        // <
+        if (mActionViewOnClickListener != null) {
+            mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
+        }
         // Added by ozobi - 2025/02/14 > 添加 touchListener
         if(mActionViewOnClickListener != null){
             mDragGesture.setOnDraggedViewTouchListener(mActionViewOnTouchListener);
