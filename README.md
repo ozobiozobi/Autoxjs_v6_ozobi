@@ -6,6 +6,25 @@
 #### QQ交流群: 1014521824
 
 ---
+# >>> 6586 -> 6587
+---
+### 优化: 减少 app 悬浮窗点击响应时长
+
+### 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
+
+### 添加: viewUtils
+    let v = viewUtils.findParentById(view,id)
+    let sp = viewUtils.pxToSp(px)
+    let px = viewUtils.dpToPx(dp)
+    let dp = viewUtils.pxToDp(px)
+    let px = viewUtils.spToPx(sp)
+
+### 添加: 获取[raw]悬浮窗 contentView
+    let fw = floaty.window(<frame id=\"content\"></frame>)
+    let contentView = fw.getContentView()
+    contentView === fw.content
+
+---
 # >>> 6585 -> 6586
 ---
 ### 优化: 启动 app 自动连接不显示 toast

@@ -1306,6 +1306,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "优化: 减少 app 悬浮窗点击响应时长\n\n"+
             "将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局\n\n"+
             "添加: viewUtils\n"+
             "let v = viewUtils.findParentById(view,id)\n"+
