@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Looper;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -77,6 +80,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import com.stardust.util.ViewUtil;
+import com.stardust.util.ViewUtils;
 import com.stardust.util.ozobi;
 
 /**
@@ -192,6 +196,8 @@ public class ScriptRuntime {
     @ScriptVariable
     public AdbIME adbIMEShellCommand;
 
+    @ScriptVariable
+    public ViewUtils viewUtils;// Added by ozobi - 2025/02/14 > 添加: viewUtils
 //    @ScriptVariable
 //    public SendEventCommand sendeventCommand;
     // <
@@ -266,6 +272,7 @@ public class ScriptRuntime {
         dbHelper = new AddInfoDatabaseHelper(context);
         dbManager = new AddInfoDatabaseManager(dbHelper);
         adbIMEShellCommand = new AdbIME();
+        viewUtils = new ViewUtils();// Added by ozobi - 2025/02/14 > 添加: viewUtils
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
         floaty = new Floaty(uiHandler, ui, this);

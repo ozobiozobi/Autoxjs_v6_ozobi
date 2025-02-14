@@ -1301,6 +1301,26 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 6586->6587 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局\n\n"+
+            "添加: viewUtils\n"+
+            "let v = viewUtils.findParentById(view,id)\n"+
+            "let sp = viewUtils.pxToSp(px)\n"+
+            "let px = viewUtils.dpToPx(dp)\n"+
+            "let dp = viewUtils.pxToDp(px)\n"+
+            "let px = viewUtils.spToPx(sp)\n\n"+
+            "添加: 获取[raw]悬浮窗 contentView\n"+
+            "let fw = floaty.window(<frame id=\"content\"></frame>)\n"+
+            "let contentView = fw.getContentView()\n"+
+            "contentView === fw.content"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 6585->6586 ===>"
         )
         .item(

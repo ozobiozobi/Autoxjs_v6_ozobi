@@ -158,6 +158,12 @@ public class Floaty {
             );
         }
 
+        // Added by ozobi - 2025/02/12 > 添加: 获取 contentView
+        public View getContentView(){
+            return mWindow.getContentView();
+        }
+        // <
+
         public void setTouchable(boolean touchable) {
             runWithWindow(() -> mWindow.setTouchable(touchable));
         }
@@ -256,6 +262,11 @@ public class Floaty {
             );
         }
 
+        // Added by ozobi - 2025/02/12 > 添加: 获取 contentView
+        public View getContentView(){
+            return mView;
+        }
+        // <
 
         private void runWithWindow(Runnable r) {
             if (mWindow == null) return;

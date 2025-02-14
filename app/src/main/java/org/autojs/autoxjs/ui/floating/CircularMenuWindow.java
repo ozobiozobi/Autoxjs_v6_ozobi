@@ -3,7 +3,9 @@ package org.autojs.autoxjs.ui.floating;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.OrientationEventListener;
 import android.view.View;
 import android.view.WindowManager;
@@ -14,6 +16,8 @@ import com.stardust.enhancedfloaty.WindowBridge;
 import com.stardust.util.ScreenMetrics;
 
 import org.autojs.autoxjs.ui.floating.gesture.BounceDragGesture;
+
+import java.util.Date;
 
 public class CircularMenuWindow extends FloatyWindow {
 
@@ -29,6 +33,9 @@ public class CircularMenuWindow extends FloatyWindow {
     protected WindowManager.LayoutParams mActionViewWindowLayoutParams;
     protected WindowManager.LayoutParams mMenuWindowLayoutParams;
     protected View.OnClickListener mActionViewOnClickListener;
+    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    protected View.OnTouchListener mActionViewOnTouchListener;
+    // <
     protected float mKeepToSideHiddenWidthRadio;
     protected float mActiveAlpha = 1.0F;
     protected float mInactiveAlpha = 0.4F;
@@ -109,20 +116,39 @@ public class CircularMenuWindow extends FloatyWindow {
         layoutParams.gravity = Gravity.LEFT | Gravity.TOP;
         return layoutParams;
     }
-
     private void setListeners() {
-        setOnActionViewClickListener(v -> {
-            if (isExpanded()) {
-                collapse();
-            } else {
-                expand();
+        // Annotated by ozobi - 2025/02/14 > 使用抬起触发展开和折叠
+//        setOnActionViewClickListener(v -> {
+//            if (isExpanded()) {
+//                collapse();
+//            } else {
+//                expand();
+//            }
+//        });
+        setOnActionViewTouchListener((v,e)->{
+            if(e.getAction() == MotionEvent.ACTION_MOVE){
+                Log.d("ozobiLog","CircularMenuWindow: move: " );
+            }else if(e.getAction() == MotionEvent.ACTION_UP){
+                Log.d("ozobiLog","CircularMenuWindow: touchUp: ");
+                v.performClick();
+                if (isExpanded()) {
+                    collapse();
+                } else {
+                    expand();
+                }
+            }else if(e.getAction() == MotionEvent.ACTION_DOWN){
+                Log.d("ozobiLog","CircularMenuWindow: touchDown: ");
             }
-
+            return true;
         });
-        if (mActionViewOnClickListener != null) {
-            mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
+//        if (mActionViewOnClickListener != null) {
+//            mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
+//        }
+        // Added by ozobi - 2025/02/14 > 添加 touchListener
+        if(mActionViewOnClickListener != null){
+            mDragGesture.setOnDraggedViewTouchListener(mActionViewOnTouchListener);
         }
-
+        // <
         mCircularActionMenu.addOnStateChangeListener(new CircularActionMenu.OnStateChangeListenerAdapter() {
             public void onCollapsed(CircularActionMenu menu) {
                 mCircularActionView.setAlpha(mInactiveAlpha);
@@ -141,7 +167,15 @@ public class CircularMenuWindow extends FloatyWindow {
             mDragGesture.setOnDraggedViewClickListener(listener);
         }
     }
-
+    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    public void setOnActionViewTouchListener(View.OnTouchListener listener){
+        if (mDragGesture == null) {
+            mActionViewOnTouchListener = listener;
+        } else {
+            mDragGesture.setOnDraggedViewTouchListener(listener);
+        }
+    }
+    // <
     public void expand() {
         mDragGesture.setEnabled(false);
         setMenuPositionAtActionView();
@@ -150,7 +184,6 @@ public class CircularMenuWindow extends FloatyWindow {
         } else {
             mCircularActionMenu.expand(5);
         }
-
     }
 
     public void setActiveAlpha(float activeAlpha) {

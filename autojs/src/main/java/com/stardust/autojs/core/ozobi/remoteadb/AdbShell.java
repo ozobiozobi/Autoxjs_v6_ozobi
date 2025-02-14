@@ -49,7 +49,7 @@ public class AdbShell implements DeviceConnectionListener  {
                     break;
                 }
             }
-            Log.d("ozobiLog","AdbShell: execCommand: 结束");
+//            Log.d("ozobiLog","AdbShell: execCommand: 结束");
             return shellResult;
         }
         return "connection is null";
@@ -71,7 +71,7 @@ public class AdbShell implements DeviceConnectionListener  {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-            Log.d(logTag,"AdbShell: onServiceConnected");
+//            Log.d(logTag,"AdbShell: onServiceConnected");
         }
 
         @Override

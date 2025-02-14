@@ -415,7 +415,7 @@
         <activity
             android:name="org.autojs.autoxjs.ui.main.MainActivity"
             android:exported="true"
-            android:launchMode="singleTask" />
+            android:launchMode="singleTask"/>
         <activity
             android:name="org.autojs.autoxjs.external.shortcut.ShortcutActivity"
             android:exported="true"

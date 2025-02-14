@@ -14,6 +14,7 @@ import android.os.Vibrator
 import android.text.TextUtils
 import android.util.Log
 import android.view.ContextThemeWrapper
+import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
 import androidx.preference.PreferenceManager
@@ -57,6 +58,7 @@ import org.autojs.autoxjs.ui.main.MainActivity
 import org.greenrobot.eventbus.EventBus
 import org.jdeferred.Deferred
 import org.jdeferred.impl.DeferredObject
+import java.util.Date
 
 
 /**
@@ -93,34 +95,67 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
 
     @OptIn(DelicateCoroutinesApi::class)
     private fun setupListeners() {
-        mWindow?.setOnActionViewClickListener {
-            if (mState == STATE_RECORDING) {
-                stopRecord()
-            } else if (mWindow?.isExpanded == true) {
-                mWindow?.collapse()
-            } else {
-                mCaptureDeferred = DeferredObject()
-                //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
-                // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-                isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
-                    .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
-                if(isCaptureScreenshot){
-                    GlobalScope.launch {
-                        if(isStartCapture){
-                            screenCapture.stopScreenCapturer()
-                            isStartCapture = false
-                        }else{
-                            if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
-                                screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
-                                Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+        mWindow?.setOnActionViewTouchListener { v, event ->
+             if(event.action == MotionEvent.ACTION_UP){
+                v.performClick()
+                if (mState == STATE_RECORDING) {
+                    stopRecord()
+                } else if (mWindow?.isExpanded == true) {
+                    mWindow?.collapse()
+                } else {
+                    mWindow?.expand()
+                    //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
+                    // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+                    isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
+                        .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
+                    if(isCaptureScreenshot){
+                        GlobalScope.launch {
+                            if(isStartCapture){
+                                screenCapture.stopScreenCapturer()
+                                isStartCapture = false
+                            }else{
+                                if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+                                    screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+                                    Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+                                }
                             }
                         }
                     }
+                    // <
+                    mCaptureDeferred = DeferredObject()
                 }
-                // <
-                mWindow?.expand()
             }
+            return@setOnActionViewTouchListener true
         }
+//        mWindow?.setOnActionViewClickListener {
+//            Log.d("ozobiLog","CircularMenu: clicked: "+ Date().time)
+//            if (mState == STATE_RECORDING) {
+//                stopRecord()
+//            } else if (mWindow?.isExpanded == true) {
+//                mWindow?.collapse()
+//            } else {
+//                mWindow?.expand()
+//                //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
+//                // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+//                isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
+//                    .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
+//                if(isCaptureScreenshot){
+//                    GlobalScope.launch {
+//                        if(isStartCapture){
+//                            screenCapture.stopScreenCapturer()
+//                            isStartCapture = false
+//                        }else{
+//                            if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+//                                screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+//                                Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+//                            }
+//                        }
+//                    }
+//                }
+//                // <
+//                mCaptureDeferred = DeferredObject()
+//            }
+//        }
     }
 
     private fun initFloaty() {

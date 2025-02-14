@@ -45,9 +45,36 @@ module.exports = function (runtime, global) {
     }
     // <
     // Added by ozobi - 2025/02/06 > 获取状态栏高度
-    global.getStatusBarHeight = function(){
-        return runtime.getStatusBarHeight();
-    }
+    global.getStatusBarHeight = runtime.getStatusBarHeight;
+    // <
+    // Added by ozobi - 2025/02/14 > 添加: viewUtils
+    global.viewUtils = {
+        findParentById:function(view,id){
+            return runtime.viewUtils.findParentById(view, id)
+        },
+        pxToSp:function(_px) {
+            let px = _px * 1.0;
+            return runtime.viewUtils.pxToSp(context, px);
+        },
+        dpToPx:function(_dp) {
+            let dp = Math.floor(_dp);
+            return runtime.viewUtils.dpToPx(context, dp);
+        },
+        pxToDp:function(_px) {
+            let px = Math.floor(_px);
+            return runtime.viewUtils.pxToDp(context, px);
+        },
+        spToPx:function(_sp) {
+            let sp = _sp * 1.0;
+            return runtime.viewUtils.spToPx(context, sp);
+        }
+    };
+    // <
+    // Added by ozobi - 2025/02/14 > 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
+    global.adbConnect = runtime.adbConnect;
+    global.termux = runtime.termux;
+    global.adbIMEShellCommand = runtime.adbIMEShellCommand;
+    global.sendTermuxIntent = runtime.sendTermuxIntent;
     // <
     global.toast = function (text) {
         runtime.toast(text);

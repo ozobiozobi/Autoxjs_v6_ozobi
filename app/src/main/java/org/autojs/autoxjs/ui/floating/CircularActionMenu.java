@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.animation.Animation;
@@ -19,6 +20,7 @@ import android.widget.FrameLayout;
 
 import org.autojs.autoxjs.R;
 
+import java.util.Date;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -74,11 +76,10 @@ public class CircularActionMenu extends FrameLayout {
     private boolean mCollapsing = false;
     private float mRadius = 200;
     private float mAngle = (float) Math.toRadians(90);
-    private long mDuration = 200;
+    private long mDuration = 100;// Modified by ozobi - 2025/02/14 > 更改动画时长
     private int mExpandedHeight = -1;
     private int mExpandedWidth = -1;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();
-
 
     public CircularActionMenu(@NonNull Context context) {
         super(context);

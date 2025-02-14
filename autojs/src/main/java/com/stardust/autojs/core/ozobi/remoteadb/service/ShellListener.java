@@ -147,12 +147,12 @@ public class ShellListener implements DeviceConnectionListener {
                 AdbShell.isDone = true;
                 command = null;
                 shellResult = "";
-                Log.d("ozobiLog","result: "+AdbShell.shellResult);
+//                Log.d("ozobiLog","result: "+AdbShell.shellResult);
             }else{
                 shellResult += dataStr;
             }
         }
-        Log.d("ozobiLog","ShellListener: receivedData: data: "+dataStr);
+//        Log.d("ozobiLog","ShellListener: receivedData: data: "+dataStr);
 //        if (console != null) {
 //            /* Hack to remove the bell from the end of the prompt */
 //            if (data[offset+length-1] == 0x07) {

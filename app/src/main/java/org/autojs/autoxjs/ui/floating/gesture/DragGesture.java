@@ -26,6 +26,10 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     private float mInitialTouchX;
     private float mInitialTouchY;
     private View.OnClickListener mOnClickListener;
+    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    private View.OnTouchListener mOnTouchListener;
+    public boolean isStuckToSide = false;
+    // <
     private boolean mAutoKeepToEdge;
     private float mPressedAlpha = 1.0f;
     private float mUnpressedAlpha = 0.4f;
@@ -63,7 +67,8 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     protected boolean onTheEdge() {
         int dX1 = Math.abs(mWindowBridge.getX());
         int dX2 = Math.abs(mWindowBridge.getX() - mWindowBridge.getScreenWidth());
-        return Math.min(dX1, dX2) < 5;
+        isStuckToSide = Math.min(dX1, dX2) < 5;// Added by ozobi - 2025/02/14 > 添加 touchListener
+        return isStuckToSide;
     }
 
     public float getPressedAlpha() {
@@ -139,4 +144,16 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     public void setOnDraggedViewClickListener(View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
+    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    @Override
+    public boolean onSingleTapUp(@NonNull MotionEvent e){
+        if (mOnTouchListener != null)
+            mOnTouchListener.onTouch(mView,e);
+        return super.onSingleTapUp(e);
+    }
+
+    public void setOnDraggedViewTouchListener(View.OnTouchListener onTouchListener){
+        mOnTouchListener = onTouchListener;
+    }
+    // <
 }
