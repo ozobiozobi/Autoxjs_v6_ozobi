@@ -14,6 +14,8 @@ import com.stardust.util.sortedArrayOf
 import com.stardust.view.accessibility.NodeInfo
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import org.autojs.autoxjs.R
+import org.autojs.autoxjs.devplugin.DevPlugin
+import pxb.android.axml.R.attr.text
 import java.lang.reflect.Field
 
 /**
@@ -103,13 +105,14 @@ class NodeInfoView : RecyclerView {
                 if (pos < 1 || pos >= mData.size)
                     return@setOnClickListener
                 // Modified by ozobi - 2025/01/17 > 复制 nodeInfo 属性格式问题 >
+                var text = mData[pos][0] + "(\"" + mData[pos][1] + "\")"
                 if(mData[pos][0] == "bounds"){
-                    ClipboardUtil.setClip(context, mData[pos][0] + mData[pos][1])
+                    text = mData[pos][0] + mData[pos][1]
                 }else if(mData[pos][1] == "true" || mData[pos][1] == "false" || mData[pos][1].toIntOrNull() != null){
-                    ClipboardUtil.setClip(context, mData[pos][0] + "(" + mData[pos][1] + ")")
-                }else{
-                    ClipboardUtil.setClip(context, mData[pos][0] + "(\"" + mData[pos][1] + "\")")
-                }// <
+                    text = mData[pos][0] + "(" + mData[pos][1] + ")"
+                }
+                ClipboardUtil.setClip(context, text)
+                // <
                 Snackbar.make(this@NodeInfoView, R.string.text_already_copy_to_clip, Snackbar.LENGTH_SHORT).show()
             }
         }

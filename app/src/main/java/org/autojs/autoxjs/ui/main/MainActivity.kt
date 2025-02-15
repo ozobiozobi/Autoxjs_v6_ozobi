@@ -1,11 +1,12 @@
 package org.autojs.autoxjs.ui.main
 
 import android.Manifest
-import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.os.Looper
+import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
@@ -38,7 +39,7 @@ import org.autojs.autoxjs.Pref
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.external.foreground.ForegroundService
-import org.autojs.autoxjs.network.CaptureServiceConnection
+import org.autojs.autoxjs.network.MessengerServiceConnection
 import org.autojs.autoxjs.timing.TimedTaskScheduler
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity_
@@ -88,9 +89,10 @@ class MainActivity : FragmentActivity() {
         }
 
         // Added by ozobi - 2025/01/12 > 绑定自定义 Messenger 服务
-        val serviceConnection = CaptureServiceConnection()
+        val serviceConnection =
+            MessengerServiceConnection(Looper.getMainLooper())
         val intent = Intent("com.stardust.autojs.messengerAction")
-        intent.setPackage("org.autojs.autoxjs.ozobi.v6")
+        intent.setPackage(this.packageName)
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
         Log.d("ozobiLog","MainActivity: 绑定自定义 Messenger 服务")
         // >

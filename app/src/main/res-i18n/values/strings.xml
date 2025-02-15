@@ -18,7 +18,7 @@
 <!--    // Added by ozobi - 2024/11/05-->
     <string name="ok">OK</string>
     <string name="qq_communication_group">1014521824</string>
-    <string name="ozobi_modification_content" translatable="false">### 魔改内容 ###</string>
+    <string name="ozobi_modification_content" translatable="false">魔改内容</string>
     <string name="ozobi_that_all" translatable="false">就这么多了</string>
     <string name="ozobi_title_modification_details" translatable="false">魔改细节</string>
     <string name="ozobi_text_about_mender" translatable="false">~~~~~~~~ 关于魔改 ~~~~~~~~</string>

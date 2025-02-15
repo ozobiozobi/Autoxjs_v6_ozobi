@@ -104,15 +104,15 @@
             android:exported="true" />
         <!--        //-->
 <!--        添加自定义 Messenger 服务声明: ozobi - 2025/01/12 -->
-        <service
-            android:name=".ServiceMessenger"
-            android:enabled="true"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="com.stardust.autojs.messengerAction" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
-        </service>
+<!--        <service-->
+<!--            android:name=".ServiceMessenger"-->
+<!--            android:enabled="true"-->
+<!--            android:exported="true">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.stardust.autojs.messengerAction" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 <!--        //-->
 <!--        添加ADB键盘:ozobi - 2025/01/18     -->
         <service android:name=".core.ozobi.adbkeyboard.AdbIME"

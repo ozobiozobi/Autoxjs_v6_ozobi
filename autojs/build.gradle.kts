@@ -39,9 +39,6 @@ android {
 }
 
 dependencies {
-    // Added by ozobi - 2025/02/06 > 添加 Java-WebSocket 依赖
-//    implementation("org.java-websocket:Java-WebSocket:1.6.0")
-    // <
     implementation(libs.api)
     implementation(libs.provider)
 

@@ -115,8 +115,10 @@ import org.joda.time.Instant
 
 private const val TAG = "DrawerPage"
 private const val URL_DEV_PLUGIN = "https://github.com/aiselp/Auto.js-VSCode-Extension"
-private const val PROJECT_ADDRESS = "https://github.com/aiselp/AutoX"
-private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
+//private const val PROJECT_ADDRESS = "https://github.com/aiselp/AutoX"
+private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi"// Modified by ozobi - 2025/02/15
+//private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
+private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"// Modified by ozobi - 2025/02/15
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
 // Added by ozobi - 2024/10/25
 private var alwaysTryToConnectState = false
@@ -125,6 +127,7 @@ private lateinit var devicePolicyManager: DevicePolicyManager
 private lateinit var componentName: ComponentName
 private val ozobiLogTag = "ozobiLog"
 private val ozobiShizuku = OzobiShizuku()
+private val ozobiSubfix = "_ozobi"
 //
 @Composable
 fun DrawerPage() {
@@ -177,23 +180,22 @@ fun DrawerPage() {
 
             Text(text = stringResource(id = R.string.text_script_record))
             FloatingWindowSwitch()
-            // Added by ozobi - 2025/02/06 > 布局分析截图开关
-            layoutInsScreenshotSwitch()
-            // <
             VolumeDownControlSwitch()
-            AutoBackupSwitch()
+//            AutoBackupSwitch()// Annotated by ozobi - 2025/02/15
 
             Text(text = stringResource(id = R.string.text_others))
             ConnectComputerSwitch()
             AlwaysTryToConnect()
             USBDebugSwitch()
-
+            // Added by ozobi - 2025/02/06 > 布局分析截图开关
+            layoutInsScreenshotSwitch()
+            // <
             showModificationDetailsButton()
-            SwitchTimedTaskScheduler()
             ProjectAddress(context)
             DownloadLink(context)
-            Feedback(context)
-            CheckForUpdate()
+//            Feedback(context)// Annotated by ozobi - 2025/02/15
+//            CheckForUpdate()// Annotated by ozobi - 2025/02/15
+            SwitchTimedTaskScheduler()
             AppDetailsSettings(context)
         }
         Spacer(
@@ -239,7 +241,7 @@ private fun DownloadLink(context: Context) {
             DOWNLOAD_ADDRESS
         )
     }) {
-        Text(text = stringResource(R.string.text_app_download_link))
+        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)// Modified by ozobi - 2025/02/15
     }
 }
 
@@ -251,7 +253,7 @@ private fun ProjectAddress(context: Context) {
             PROJECT_ADDRESS
         )
     }) {
-        Text(text = stringResource(R.string.text_project_link))
+        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)// Modified by ozobi - 2025/02/15
     }
 }
 
@@ -1288,7 +1290,7 @@ fun showModificationDetailsButton() {
             detailsDialog(context)
         }
     }) {
-        Text(text = stringResource(id = R.string.ozobi_modification_content))
+        Text(text = stringResource(id = R.string.ozobi_modification_content)+ozobiSubfix)
     }
 }
 
@@ -1307,7 +1309,12 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "优化: 减少 app 悬浮窗点击响应时长\n\n"+
+            "添加: 通过 setClip 复制的文本会发送到 vscode 的输出\n"+
+            "例如: 布局分析复制控件属性/生成代码后点击复制\n"+
+            "\t脚本使用 setClip\n"+
+            "(长按手动复制不会触发)\n\n"+
+            "优化(658): 减少 app 悬浮窗点击响应时长(确实很急\n\n"+
+            "更改: app 抽屉页面\n\n"+
             "将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局\n\n"+
             "添加: viewUtils\n"+
             "let v = viewUtils.findParentById(view,id)\n"+

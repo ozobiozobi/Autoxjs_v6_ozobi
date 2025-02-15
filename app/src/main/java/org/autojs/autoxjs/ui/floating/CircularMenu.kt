@@ -102,9 +102,9 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                  if (mState == STATE_RECORDING) {
                      stopRecord()
                  } else if (mWindow?.isExpanded == true) {
-                mWindow?.collapse()
+                    mWindow?.collapse()
                  } else {
-                mWindow?.expand()
+                    mWindow?.expand()
                      //AutoJs.getInstance().layoutInspector.captureCurrentWindow() //ozobi: Moved down
                      // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
                      isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)

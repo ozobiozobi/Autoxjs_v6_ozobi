@@ -8,7 +8,13 @@
 ---
 # >>> 6586 -> 6587
 ---
-### 优化: 减少 app 悬浮窗点击响应时长
+### 添加: 通过 setClip 复制的文本会发送到 vscode 的输出
+    例如: 布局分析复制控件属性/生成代码后点击复制
+    脚本使用 setClip
+    (长按手动复制不会触发)
+### 优化(658): 减少 app 悬浮窗点击响应时长(确实很急
+
+### 更改: app 抽屉页面
 
 ### 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
 
