@@ -425,25 +425,42 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     }
     private fun showInspectorDialog(refreshCount:Int, costTime:Long){
         mWindow?.collapse()
-        mLayoutInspectDialog = OperationDialogBuilder(mContext)
-            .item(
-                R.id.layout_bounds,
-                R.drawable.ic_circular_menu_bounds,
-                R.string.text_inspect_layout_bounds
-            )
-            .item(
-                R.id.layout_hierarchy,
-                R.drawable.ic_layout_hierarchy,
-                R.string.text_inspect_layout_hierarchy
-            )
-            .item(
-                R.id.capture_info,
-                R.drawable.ic_ali_log,
-                "刷新数量: $refreshCount\n总耗时: $costTime ms"
-            )
-            .bindItemClick(this)
-            .title(R.string.text_inspect_layout)
-            .build()
+        if(isRefresh){
+            mLayoutInspectDialog = OperationDialogBuilder(mContext)
+                .item(
+                    R.id.layout_bounds,
+                    R.drawable.ic_circular_menu_bounds,
+                    R.string.text_inspect_layout_bounds
+                )
+                .item(
+                    R.id.layout_hierarchy,
+                    R.drawable.ic_layout_hierarchy,
+                    R.string.text_inspect_layout_hierarchy
+                )
+                .item(
+                    R.id.capture_info,
+                    R.drawable.ic_ali_log,
+                    "刷新数量: $refreshCount\n总耗时: $costTime ms"
+                )
+                .bindItemClick(this)
+                .title(R.string.text_inspect_layout)
+                .build()
+        }else{
+            mLayoutInspectDialog = OperationDialogBuilder(mContext)
+                .item(
+                    R.id.layout_bounds,
+                    R.drawable.ic_circular_menu_bounds,
+                    R.string.text_inspect_layout_bounds
+                )
+                .item(
+                    R.id.layout_hierarchy,
+                    R.drawable.ic_layout_hierarchy,
+                    R.string.text_inspect_layout_hierarchy
+                )
+                .bindItemClick(this)
+                .title(R.string.text_inspect_layout)
+                .build()
+        }
         DialogUtils.showDialog(mLayoutInspectDialog)
     }
 
