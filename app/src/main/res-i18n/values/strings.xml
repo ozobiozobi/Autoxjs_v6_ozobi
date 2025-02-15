@@ -26,7 +26,9 @@
     <string name="ozobi_text_mender_email" translatable="false">ozobi@proton.me</string>
     <string name="ozobi_text_email_already_copy_to_clip" translatable="false">邮箱已复制到粘贴板</string>
     <string name="ozobi_text_isCapture_Screenshot" translatable="false">布局分析截图_ozobi</string>
+    <string name="ozobi_text_isCapture_refresh" translatable="false">布局分析刷新_ozobi</string>
     <string name="ozobi_key_isCapture_Screenshot" translatable="false">布局分析截图开关</string>
+    <string name="ozobi_key_isCapture_refresh" translatable="false">布局分析刷新开关</string>
 <!--    //-->
     <string name="email" translatable="false">chengshulun@live.com</string>
     <string name="default_main_file_name" translatable="false">main.js</string>

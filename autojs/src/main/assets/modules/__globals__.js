@@ -76,6 +76,11 @@ module.exports = function (runtime, global) {
     global.adbIMEShellCommand = runtime.adbIMEShellCommand;
     global.sendTermuxIntent = runtime.sendTermuxIntent;
     // <
+    // Added by ozobi - 2025/02/16 > 添加: 获取当前屏幕方向
+    global.getCurOrientation = function(){
+         return context.getResources().getConfiguration().orientation
+    }
+    // <
     global.toast = function (text) {
         runtime.toast(text);
     }

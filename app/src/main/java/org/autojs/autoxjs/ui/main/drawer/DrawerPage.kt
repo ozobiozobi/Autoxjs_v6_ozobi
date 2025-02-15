@@ -190,6 +190,9 @@ fun DrawerPage() {
             // Added by ozobi - 2025/02/06 > 布局分析截图开关
             layoutInsScreenshotSwitch()
             // <
+            // Added by ozobi - 2025/02/06 > 布局分析刷新开关
+            layoutInsRefreshSwitch()
+            // <
             showModificationDetailsButton()
             ProjectAddress(context)
             DownloadLink(context)
@@ -1278,7 +1281,35 @@ private fun layoutInsScreenshotSwitch() {
     )
 }
 // <
-
+// Added by ozobi - 2025/02/06 > 添加布局分析刷新开关
+@Composable
+private fun layoutInsRefreshSwitch() {
+    val context = LocalContext.current
+    var isCaptureScreenshot by remember {
+        val default = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(context.getString(R.string.ozobi_key_isCapture_refresh), false)
+        mutableStateOf(default)
+    }
+    SwitchItem(
+        icon = {
+            MyIcon(
+                painterResource(id = R.drawable.ic_refresh_black_48dp),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.ozobi_text_isCapture_refresh)) },
+        checked = isCaptureScreenshot,
+        onCheckedChange = {
+            PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(context.getString(R.string.ozobi_key_isCapture_refresh), it)
+                .apply()
+            isCaptureScreenshot = it
+        }
+    )
+}
+// <
 // Added by ozobi - 2024/11/06 > 添加关于魔改信息
 @Composable
 fun showModificationDetailsButton() {
@@ -1309,11 +1340,16 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 获取当前屏幕方向\n"+
+            "let ori = getCurOrientation()\n"+
+            "竖屏: 1  横屏:2\n\n"+
+            "添加: 布局分析刷新开关\n" +
+            "有些情况刷新会出问题(比如某音极速版啥的)，可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析\n\n"+
             "添加: 通过 setClip 复制的文本会发送到 vscode 的输出\n"+
             "例如: 布局分析复制控件属性/生成代码后点击复制\n"+
             "\t脚本使用 setClip\n"+
             "(长按手动复制不会触发)\n\n"+
-            "优化(658): 减少 app 悬浮窗点击响应时长(确实很急\n\n"+
+            "优化(658): 减少 app 悬浮窗点击响应时长(慢不了一点\n\n"+
             "更改: app 抽屉页面\n\n"+
             "将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局\n\n"+
             "添加: viewUtils\n"+

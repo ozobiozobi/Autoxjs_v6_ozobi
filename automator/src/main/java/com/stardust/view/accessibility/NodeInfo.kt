@@ -158,21 +158,21 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
 
         internal fun capture(resourcesCache: HashMap<String, Resources>, context: Context, uiObject: UiObject, parent: NodeInfo?): NodeInfo {
             // Annotated by ozobi - 2024/10/31 >
-//            val pkg = uiObject.packageName()
-//            var resources: Resources? = null
-//            if (pkg != null) {
-//                resources = resourcesCache[pkg]
-//                if (resources == null) {
-//                    try {
-//                        resources = context.packageManager.getResourcesForApplication(pkg)
-//                        resourcesCache[pkg] = resources
-//                    } catch (e: PackageManager.NameNotFoundException) {
-//                        e.printStackTrace()
-//                    }
-//                }
-//            }
+            val pkg = uiObject.packageName()
+            var resources: Resources? = null
+            if (pkg != null) {
+                resources = resourcesCache[pkg]
+                if (resources == null) {
+                    try {
+                        resources = context.packageManager.getResourcesForApplication(pkg)
+                        resourcesCache[pkg] = resources
+                    } catch (e: PackageManager.NameNotFoundException) {
+                        e.printStackTrace()
+                    }
+                }
+            }
             // <
-            val nodeInfo = NodeInfo(null, uiObject, parent)
+            val nodeInfo = NodeInfo(resources, uiObject, parent)
             val childCount = uiObject.childCount
             for (i in 0 until childCount) {
                 val child = uiObject.child(i)

@@ -2,12 +2,14 @@ package com.stardust.view.accessibility
 
 import android.content.Context
 import android.graphics.Rect
+import android.preference.PreferenceManager
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import com.stardust.automator.R
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -23,6 +25,7 @@ class LayoutInspector(private val mContext: Context) {
     private val mExecutor = Executors.newSingleThreadExecutor()
     private val mCaptureAvailableListeners = CopyOnWriteArrayList<CaptureAvailableListener>()
     // Added by ozobi - 2024/11/04 >
+    private var isRefresh = true
     private var isDoneCapture = false
     private var width = 0
     private var height = 0
@@ -65,6 +68,9 @@ class LayoutInspector(private val mContext: Context) {
         }
         return true
     }
+    fun setRefresh(boolean: Boolean){
+        isRefresh = boolean
+    }
     // <
 
     fun captureCurrentWindow(): Int {
@@ -88,7 +94,10 @@ class LayoutInspector(private val mContext: Context) {
             getScreenDimensions()
         }
         isDoneCapture = false
-        val nodeCount: Int = refreshChildList(root)
+        var nodeCount = 0
+        if(isRefresh){
+            nodeCount = refreshChildList(root)
+        }
         /**/
         mExecutor.execute {
             isDumping = true
@@ -122,8 +131,8 @@ class LayoutInspector(private val mContext: Context) {
         if (root == null)
             return 0
         var n = 0
+        n++
         if(isNodeOnScreen(root)){
-            n++
             root.refresh()
             val childCount = root.childCount
             for (i in 0 until childCount) {

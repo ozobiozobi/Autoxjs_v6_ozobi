@@ -77,6 +77,7 @@ class MainActivity : FragmentActivity() {
 
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
@@ -96,7 +97,6 @@ class MainActivity : FragmentActivity() {
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
         Log.d("ozobiLog","MainActivity: 绑定自定义 Messenger 服务")
         // >
-
         setContent {
             scope = rememberCoroutineScope()
             AutoXJsTheme {
@@ -123,7 +123,6 @@ class MainActivity : FragmentActivity() {
             }
         }
     }
-
     override fun onResume() {
         super.onResume()
         TimedTaskScheduler.ensureCheckTaskWorks(application)
