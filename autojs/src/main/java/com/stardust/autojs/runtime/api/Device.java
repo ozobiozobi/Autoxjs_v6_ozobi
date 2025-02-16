@@ -2,12 +2,14 @@ package com.stardust.autojs.runtime.api;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.res.Resources;
+import android.graphics.Point;
 import android.media.AudioManager;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
@@ -98,9 +100,7 @@ public class Device {
     private PowerManager.WakeLock mWakeLock;
     private int mWakeLockFlag;
 
-    public Device(Context context) {
-        mContext = context;
-    }
+    public Device(Context context) { mContext = context; }
 
     @SuppressLint("HardwareIds")
     @Nullable
@@ -113,6 +113,20 @@ public class Device {
         }
     }
 
+    // Added by ozobi - 2025/02/16 > 添加: 获取屏幕实时宽高
+    public Point getCurScreenSize(){
+        WindowManager wm = getSystemService(Context.WINDOW_SERVICE);
+        Point screenSize = new Point();
+        wm.getDefaultDisplay().getRealSize(screenSize);
+        return screenSize;
+    }
+    public int getCurWidth(){
+        return getCurScreenSize().x;
+    }
+    public int getCurHeight(){
+        return getCurScreenSize().y;
+    }
+    // <
 
     @SuppressLint("HardwareIds")
     public String getAndroidId() {

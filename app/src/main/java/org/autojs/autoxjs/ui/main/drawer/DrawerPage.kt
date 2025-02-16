@@ -1340,9 +1340,15 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 获取屏幕实时宽高\n"+
+            "let curW = device.getCurWidth()\n"+
+            "let curH = device.getCurHeight()\n"+
+            "let size = device.getCurScreenSize()\n"+
+            "size.x == curW\n"+
+            "size.y == curH\n\n"+
             "添加: 获取当前屏幕方向\n"+
             "let ori = getCurOrientation()\n"+
-            "竖屏: 1  横屏:2\n\n"+
+            "竖屏: 1  横屏: 2\n\n"+
             "添加: 布局分析刷新开关\n" +
             "有些情况刷新会出问题(比如某音极速版啥的)，可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析\n\n"+
             "添加: 通过 setClip 复制的文本会发送到 vscode 的输出\n"+

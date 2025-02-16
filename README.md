@@ -8,9 +8,16 @@
 ---
 # >>> 6586 -> 6587
 ---
+### 添加: 获取屏幕实时宽高 
+    let curW = device.getCurWidth() 
+    let curH = device.getCurHeight() 
+    let size = device.getCurScreenSize() 
+    size.x == curW 
+    size.y == curH 
+
 ### 添加: 获取当前屏幕方向
     let ori = getCurOrientation() 
-    竖屏: 1  横屏:2 
+    竖屏: 1  横屏: 2 
 
 ### 添加: 布局分析刷新开关
     有些情况刷新会出问题(比如某音极速版啥的)，可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析
