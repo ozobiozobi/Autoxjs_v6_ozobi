@@ -132,13 +132,13 @@ class LayoutInspector(private val mContext: Context) {
             return 0
         var n = 0
         n++
-        if(isNodeOnScreen(root)){
-            root.refresh()
-            val childCount = root.childCount
-            for (i in 0 until childCount) {
-                n += refreshChildList(root.getChild(i))
-            }
+//        if(isNodeOnScreen(root)){
+        root.refresh()
+        val childCount = root.childCount
+        for (i in 0 until childCount) {
+            n += refreshChildList(root.getChild(i))
         }
+//        }
         return n
     }
     // <
