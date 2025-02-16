@@ -51,7 +51,7 @@
 
 ### 添加: 获取[raw]悬浮窗 contentView
 
-    let fw = floaty.window(<frame id=\"content\"></frame>)
+    let fw = floaty.window(<frame id="content"></frame>)
     let contentView = fw.getContentView()
     contentView === fw.content
 
