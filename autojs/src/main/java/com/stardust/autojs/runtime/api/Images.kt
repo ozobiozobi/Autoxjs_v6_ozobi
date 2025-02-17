@@ -85,7 +85,16 @@ class Images(
             screenCapture.captureImageWrapper()
         }
     }
-
+    // Added by ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    @Synchronized
+    fun captureScreen(isNew:Boolean): ImageWrapper {
+        val screenCapture = mScreenCaptureRequester.screenCapture
+        checkNotNull(screenCapture) { SecurityException("No screen capture permission") }
+        return runBlocking {
+            screenCapture.captureImageWrapper(isNew)
+        }
+    }
+    // <
     fun captureScreen(path: String): Boolean {
         val rpath = mScriptRuntime.files.path(path)
         val image = captureScreen()

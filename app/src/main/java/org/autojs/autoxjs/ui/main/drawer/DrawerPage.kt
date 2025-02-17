@@ -1335,6 +1335,20 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 6587->6588 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "添加: 截图是否返回新的对象\n"+
+            "let img1 = images.captureScreen(true)\n"+
+            "let img2 = images.captureScreen(true)\n"+
+            "即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是同一个对象\n"+
+            "反之如果不加参数 true, img1 === img2"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 6586->6587 ===>"
         )
         .item(

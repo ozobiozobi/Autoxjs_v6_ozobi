@@ -96,7 +96,7 @@ class ScreenCapturer(
         var image = capture()
         val imageWrapper = mCachedImageWrapper.get()
         if (image == null && imageWrapper != null) {
-            Log.i(LOG_TAG, "Using cached image")
+            Log.i("ozobiLog", "Using cached image")
             return@coroutineScope imageWrapper
         }
         //在缓存图像均不可用的情况下等待2秒取得截图，否则抛出错误
@@ -118,7 +118,17 @@ class ScreenCapturer(
         mCachedImageWrapper.set(newImageWrapper)
         return@coroutineScope newImageWrapper ?: throw Exception("Not available yet ImageWrapper")
     }
-
+    // Added by ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    suspend fun captureImageWrapper(isNew:Boolean): ImageWrapper = coroutineScope {
+        val imageWrapper = mCachedImageWrapper.get()
+        if (isNew  && imageWrapper != null) {
+//            Log.i("ozobiLog", "返回新对象")
+            val newImageWrapper = imageWrapper.clone(true)
+            return@coroutineScope newImageWrapper
+        }
+        return@coroutineScope captureImageWrapper()
+    }
+    // <
     fun release() = synchronized(this) {
         available = false
         mVirtualDisplay.release()

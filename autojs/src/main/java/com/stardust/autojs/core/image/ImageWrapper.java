@@ -4,6 +4,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Build;
+import android.util.Log;
 
 import com.stardust.autojs.core.opencv.Mat;
 import com.stardust.autojs.core.opencv.OpenCVHelper;
@@ -165,4 +166,14 @@ public class ImageWrapper {
         }
         return new ImageWrapper(mBitmap.copy(mBitmap.getConfig(), true), mMat.clone());
     }
+    // Added by ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    public ImageWrapper clone(boolean isNew) {
+        if(!isNew || mBitmap == null || mMat == null){
+//            Log.d("ozobiLog","ImageWrapper: clone: !isNew || mBitmap == null || mMat == null");
+            return clone();
+        }
+        ensureNotRecycled();
+        return new ImageWrapper(mBitmap.copy(mBitmap.getConfig(), true), mMat.clone());
+    }
+    // <
 }
