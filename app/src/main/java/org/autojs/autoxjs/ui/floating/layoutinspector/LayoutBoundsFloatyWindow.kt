@@ -135,7 +135,7 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
                 }
             }
             inspector.addCaptureAvailableListener(listener)
-            if (inspector.captureCurrentWindow() < 0) {// Modified by ozobi - 2024/10/31
+            if (inspector.captureCurrentWindow()) {// Modified by ozobi - 2024/10/31
                 inspector.removeCaptureAvailableListener(listener)
             }
         }

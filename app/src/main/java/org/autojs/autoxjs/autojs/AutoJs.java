@@ -109,7 +109,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
         };
         inspector.addCaptureAvailableListener(listener);
         // Modefied by ibozo - 2024/10/31
-        if (inspector.captureCurrentWindow() < 0) {
+        if (inspector.captureCurrentWindow()) {
             inspector.removeCaptureAvailableListener(listener);
         }
     }

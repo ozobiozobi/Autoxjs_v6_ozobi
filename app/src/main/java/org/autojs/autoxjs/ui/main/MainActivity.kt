@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.os.Message
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
@@ -52,6 +51,7 @@ import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.main.components.DocumentPageMenuButton
 import org.autojs.autoxjs.ui.main.components.LogButton
 import org.autojs.autoxjs.ui.main.drawer.DrawerPage
+import org.autojs.autoxjs.ui.main.drawer.isNightMode
 import org.autojs.autoxjs.ui.main.scripts.ScriptListFragment
 import org.autojs.autoxjs.ui.main.task.TaskManagerFragmentKt
 import org.autojs.autoxjs.ui.main.web.EditorAppManager
@@ -123,6 +123,7 @@ class MainActivity : FragmentActivity() {
             }
         }
     }
+
     override fun onResume() {
         super.onResume()
         TimedTaskScheduler.ensureCheckTaskWorks(application)
@@ -493,7 +494,7 @@ private fun NewDirectory(
     }) {
         MyIcon(
             painter = painterResource(id = R.drawable.ic_floating_action_menu_dir),
-            contentDescription = null
+            contentDescription = null, nightMode = isNightMode()
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = R.string.text_directory))
@@ -520,7 +521,7 @@ private fun NewFile(
     }) {
         MyIcon(
             painter = painterResource(id = R.drawable.ic_floating_action_menu_file),
-            contentDescription = null
+            contentDescription = null, nightMode = isNightMode()
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = R.string.text_file))
@@ -547,7 +548,7 @@ private fun ImportFile(
     }) {
         MyIcon(
             painter = painterResource(id = R.drawable.ic_floating_action_menu_open),
-            contentDescription = null
+            contentDescription = null, nightMode = isNightMode()
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = R.string.text_import))
@@ -572,7 +573,7 @@ private fun NewProject(
     }) {
         MyIcon(
             painter = painterResource(id = R.drawable.ic_project2),
-            contentDescription = null
+            contentDescription = null, nightMode = isNightMode()
         )
         Spacer(modifier = Modifier.width(8.dp))
         Text(text = stringResource(id = R.string.text_project))

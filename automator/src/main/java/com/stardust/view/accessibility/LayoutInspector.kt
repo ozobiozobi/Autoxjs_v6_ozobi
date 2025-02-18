@@ -2,14 +2,14 @@ package com.stardust.view.accessibility
 
 import android.content.Context
 import android.graphics.Rect
-import android.preference.PreferenceManager
+import android.os.Looper
+import android.os.Vibrator
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import android.util.DisplayMetrics
 import android.view.WindowManager
-import com.stardust.automator.R
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -25,10 +25,9 @@ class LayoutInspector(private val mContext: Context) {
     private val mExecutor = Executors.newSingleThreadExecutor()
     private val mCaptureAvailableListeners = CopyOnWriteArrayList<CaptureAvailableListener>()
     // Added by ozobi - 2024/11/04 >
-    private var isRefresh = true
-    private var isDoneCapture = false
     private var width = 0
     private var height = 0
+    private val mVibrator: Vibrator = mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
     // <
 
     interface CaptureAvailableListener {
@@ -51,9 +50,6 @@ class LayoutInspector(private val mContext: Context) {
     /**/
 
     // Added by ozobi - 2024/11/04 >
-    fun getIsDoneCapture():Boolean{
-        return isDoneCapture
-    }
     private fun isNodeOnScreen(nodeInfo:AccessibilityNodeInfo):Boolean{
         if(width == 0 || height == 0){
             return true
@@ -71,21 +67,29 @@ class LayoutInspector(private val mContext: Context) {
     fun setRefresh(boolean: Boolean){
         isRefresh = boolean
     }
-    // <
-
-    fun captureCurrentWindow(): Int {
+    fun isAvailable():AccessibilityNodeInfo?{
         val service = AccessibilityService.instance
         if (service == null) {
             Log.d(LOG_TAG, "captureCurrentWindow: service = null")
             capture = null
-            return -1
+            return null
         }
 
         val root = getRootInActiveWindow(service)
         if (root == null) {
             Log.d(LOG_TAG, "captureCurrentWindow: root = null")
             capture = null
-            return -1
+            return null
+        }
+
+        return root
+    }
+    // <
+
+    fun captureCurrentWindow() :Boolean{
+        val root = isAvailable()
+        if(isAvailable() == null){
+            return false
         }
         /*
         * Added by ozobi - 2024/10/06
@@ -93,24 +97,25 @@ class LayoutInspector(private val mContext: Context) {
         if(width == 0 || height == 0){
             getScreenDimensions()
         }
-        isDoneCapture = false
-        var nodeCount = 0
-        if(isRefresh){
-            nodeCount = refreshChildList(root)
-        }
+        NodeInfo.isRefresh = isRefresh
         /**/
         mExecutor.execute {
+            if(isRefresh){
+                refreshChildList(root)
+            }
             isDumping = true
-            capture = NodeInfo.capture(mContext, root)
+            capture = root?.let { NodeInfo.capture(mContext, it) }
             isDumping = false
-            // Added by ozobi - 2024/11/04 >
-            isDoneCapture = true
-            // <
             for (l in mCaptureAvailableListeners) {
                 l.onCaptureAvailable(capture)
             }
+            Thread {
+                Looper.prepare()
+                mVibrator.vibrate(90)
+                Looper.loop()
+            }.start()
         }
-        return nodeCount
+        return true
     }
 
     fun addCaptureAvailableListener(l: CaptureAvailableListener) {
@@ -127,19 +132,17 @@ class LayoutInspector(private val mContext: Context) {
     }
     // Modified by ozobi - 2024/11/04 >
     //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)// ozobi: 使用 Android studio 的建议
-    private fun refreshChildList(root: AccessibilityNodeInfo?): Int {
+    private fun refreshChildList(root: AccessibilityNodeInfo?) {
         if (root == null)
-            return 0
-        var n = 0
-        n++
+            return
 //        if(isNodeOnScreen(root)){
         root.refresh()
         val childCount = root.childCount
         for (i in 0 until childCount) {
-            n += refreshChildList(root.getChild(i))
+            refreshChildList(root.getChild(i))
         }
 //        }
-        return n
+        return
     }
     // <
 
@@ -148,7 +151,9 @@ class LayoutInspector(private val mContext: Context) {
     }
 
     companion object {
-
+        // Added by ozobi - 2025/02/18 >
+        var isRefresh = true
+        // <
         private val LOG_TAG = LayoutInspector::class.java.simpleName
     }
 }

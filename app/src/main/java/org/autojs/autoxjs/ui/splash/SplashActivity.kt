@@ -91,7 +91,14 @@ class SplashActivity : ComponentActivity() {
                     color = Color(0xdd000000),
                     fontSize = 14.sp,
                     modifier = Modifier
-                        .padding(12.dp)
+                        .padding(6.dp)
+                        .align(Alignment.CenterHorizontally)
+                )
+                Text(
+                    text = "Modified by ozobi",
+                    color = Color(0xf69C7CFF),
+                    fontSize = 12.sp,
+                    modifier = Modifier
                         .align(Alignment.CenterHorizontally)
                 )
                 Spacer(

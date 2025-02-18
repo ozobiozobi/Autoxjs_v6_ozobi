@@ -176,6 +176,11 @@ public class CircularMenuWindow extends FloatyWindow {
         }
     }
     // <
+    // Added by ozobi - 2025/02/18
+    public void setAlpha(float alpha){
+        mCircularActionMenu.setAlpha(alpha);
+    }
+    // <
     public void expand() {
         mDragGesture.setEnabled(false);
         setMenuPositionAtActionView();
@@ -201,6 +206,8 @@ public class CircularMenuWindow extends FloatyWindow {
         }
 
     }
+
+
 
     public void collapse() {
         mDragGesture.setEnabled(true);

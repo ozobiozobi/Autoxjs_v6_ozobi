@@ -1,6 +1,6 @@
 # Autoxjs_v6_ozobi
 
-    基于 Autoxjs v6 魔改
+    基于 Autoxjs v658 魔改
 
 #### ======== 随缘更新 ========
 
@@ -11,6 +11,17 @@
 # >>> 6587 -> 6588
 
 ---
+
+### 更改(658): app抽屉页面使用随机彩色图标
+
+### 修复(6587): app布局分析刷新显示不全
+
+    一般用不到刷新, 除非画面发生变动之后捕获结果没有改变
+    (刷新会比等待捕获多花 2-3 倍的时间)
+
+### 添加: app布局分析等待捕获、延迟捕获开关
+
+    布局分析, 随心所欲(~.-
 
 ### 添加: 截图是否返回新的对象
 
@@ -52,7 +63,7 @@
 
 ### 更改: app 抽屉页面
 
-### 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
+### 添加: 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
 
 ### 添加: viewUtils
 

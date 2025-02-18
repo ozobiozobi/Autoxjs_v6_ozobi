@@ -130,7 +130,6 @@ public class CircularActionMenu extends FrameLayout {
     public void setAngle(float angle) {
         mAngle = angle;
     }
-
     public void expand(int direction) {
         setVisibility(VISIBLE);
         mExpanding = true;
