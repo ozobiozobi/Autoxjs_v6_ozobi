@@ -109,11 +109,11 @@ class LayoutInspector(private val mContext: Context) {
             for (l in mCaptureAvailableListeners) {
                 l.onCaptureAvailable(capture)
             }
-            Thread {
-                Looper.prepare()
-                mVibrator.vibrate(90)
-                Looper.loop()
-            }.start()
+//            Thread {
+//                Looper.prepare()
+//                mVibrator.vibrate(90)
+//                Looper.loop()
+//            }.start()
         }
         return true
     }

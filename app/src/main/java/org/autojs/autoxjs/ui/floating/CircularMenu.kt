@@ -57,6 +57,7 @@ import org.autojs.autoxjs.ui.main.MainActivity
 import org.greenrobot.eventbus.EventBus
 import org.jdeferred.Deferred
 import org.jdeferred.impl.DeferredObject
+import pxb.android.axml.Axml.Node
 
 
 /**
@@ -148,7 +149,11 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                              checkIsCaptureDone()
                          }
                      }else{
-                         mWindow?.setAlpha(1f)
+                         if(NodeInfo.isDoneCapture){
+                             mWindow?.setAlpha(1f)
+                         }else{
+                             mWindow?.setAlpha(0.7f)
+                         }
                      }
                      // <
                  }
@@ -547,13 +552,17 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             ScreenCapture.cleanCurImg()
             ScreenCapture.cleanCurImgBitmap()
         }
-        if(isRefresh || isCaptureScreenshot || isDelayCapture){
+        val isFirstCapture = isRefresh || isCaptureScreenshot || isDelayCapture
+        val hasToWait = isFirstCapture || isWaitForCapture
+        if(isFirstCapture){
             captureStartTime = System.currentTimeMillis()
             available = mLayoutInspector.captureCurrentWindow()
             if(!available){
                 goToAccePage()
                 return
             }
+        }
+        if(hasToWait){
             var waitCount = 0
             while(true){
                 if((NodeInfo.isDoneCapture && ScreenCapture.isDoneVerity) || waitCount > 600){
@@ -562,16 +571,21 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 delay(100)
                 waitCount++
             }
-            captureCostTime = System.currentTimeMillis() - captureStartTime
         }
+        Thread {
+            Looper.prepare()
+            mVibrator.vibrate(50)
+            Looper.loop()
+        }.start()
+        playDoneCapturingSound(mContext)
+        captureCostTime = System.currentTimeMillis() - captureStartTime
         isStartCapture = false
+        mLastCapture = mLayoutInspector.capture
+        isCapturing = false
+        mWindow?.setAlpha(1f)
         withContext(Dispatchers.Main){
             showInspectorDialog()
         }
-        mLastCapture = mLayoutInspector.capture
-        playDoneCapturingSound(mContext)
-        isCapturing = false
-        mWindow?.setAlpha(1f)
         return
     }
     private fun goToAccePage(){
