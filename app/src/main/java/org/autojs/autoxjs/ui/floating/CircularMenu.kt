@@ -149,7 +149,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                              checkIsCaptureDone()
                          }
                      }else{
-                         if(NodeInfo.isDoneCapture){
+                         if(NodeInfo.isDoneCapture || (isDelayCapture && !isStartCapture)){
                              mWindow?.setAlpha(1f)
                          }else{
                              mWindow?.setAlpha(0.7f)
@@ -572,13 +572,15 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 waitCount++
             }
         }
+        if(isFirstCapture){
+            captureCostTime = System.currentTimeMillis() - captureStartTime
+        }
         Thread {
             Looper.prepare()
             mVibrator.vibrate(50)
             Looper.loop()
         }.start()
         playDoneCapturingSound(mContext)
-        captureCostTime = System.currentTimeMillis() - captureStartTime
         isStartCapture = false
         mLastCapture = mLayoutInspector.capture
         isCapturing = false

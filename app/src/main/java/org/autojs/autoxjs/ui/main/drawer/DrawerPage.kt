@@ -230,7 +230,7 @@ private fun SwitchClassifyTittle(text:String){
     if(isNightMode()){
         color = Color.White
     }
-    Text(text= text, style = TextStyle(color= color, fontStyle = FontStyle.Italic), fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp,15.dp,0.dp,0.dp), fontSize = 18.sp)
+    Text(text= text, style = TextStyle(color= color, fontStyle = FontStyle.Italic), fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp,15.dp,0.dp,0.dp), fontSize = 16.sp)
 }
 @Composable
 fun isNightMode():Boolean{
