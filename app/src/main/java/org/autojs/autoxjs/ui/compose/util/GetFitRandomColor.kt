@@ -8,16 +8,15 @@ fun getFitRandomColor(nightMode: Boolean):Int{
     while(hue > 30 && hue < 210){
         hue = (Math.random() * 360).toFloat()
     }
-    val bright = 0.8f
-    val saturation = (Math.random()*0.2 + 0.8).toFloat()
-    var alpha = 230
+    var bright = 0.8f
+    var saturation = (Math.random()*0.2 + 0.8).toFloat()
+    val alpha = 230
     if(nightMode){
-        alpha = 180
-//        while(!(hue > 30 && hue < 210)){
-//            hue = (Math.random() * 360).toFloat()
-//        }
-//        bright = 1f
-//        saturation = (Math.random()*0.4 + 0.2).toFloat()
+        while(!(hue > 30 && hue < 210)){
+            hue = (Math.random() * 360).toFloat()
+        }
+        bright = 1f
+        saturation = (Math.random()*0.4 + 0.2).toFloat()
     }
     val fArr = FloatArray(3)
     fArr[0] = hue
