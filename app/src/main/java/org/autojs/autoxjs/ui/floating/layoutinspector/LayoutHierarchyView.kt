@@ -162,7 +162,12 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
     }
     fun expand(){
-        expandChild(mClickedNodeInfo)
+        mInitiallyExpandedNodes.clear()
+        expandChild(mClickedNodeInfo) 
+        val parents = Stack<NodeInfo?>()
+        mClickedNodeInfo?.let { searchNodeParents(it, mRootNode, parents) }
+//        mClickedNodeInfo = parents.peek()
+        mInitiallyExpandedNodes.addAll(parents)
         mAdapter?.reloadData()
     }
     override fun onDraw(canvas: Canvas) {
@@ -183,7 +188,6 @@ open class LayoutHierarchyView : MultiLevelListView {
     }
 
     fun setSelectedNode(selectedNode: NodeInfo) {
-        Log.d("ozobiLog","LayoutHierarchyView: setSelectedNode: nodeInfo: $selectedNode")
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
         searchNodeParents(selectedNode, mRootNode, parents)

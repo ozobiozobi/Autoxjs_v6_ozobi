@@ -1431,6 +1431,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "优化: 布局层次分析页面\n\n"+
             "修复(6587): 布局分析相关 bug\n\n"+
             "更改(658): app抽屉页面使用随机彩色图标\n\n"+
             "修复(6587): app布局分析刷新显示不全\n"+
