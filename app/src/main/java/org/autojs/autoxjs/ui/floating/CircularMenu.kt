@@ -336,7 +336,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mIsmCaptureDelayDialogDisappeared = true
                 return@dismissListener
             }
-            .backgroundColor(0x222222)
             .build()
         mIsmCaptureDelayDialogDisappeared = false
         DialogUtils.showDialog(mCaptureDelayDialog)
