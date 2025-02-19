@@ -72,6 +72,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.preference.PreferenceManager
 import coil.compose.rememberAsyncImagePainter
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -726,7 +727,6 @@ fun chooseSign(
     val keyStoreList = ApkSigner.loadKeyStore()
     //默认选中位置
     val selectedIndex = currentKeyStore?.let { getSelectIndex(it, keyStoreList) } ?: 0
-
     DialogUtils.showDialog(
         ThemeColorMaterialDialogBuilder(context)
             .title(R.string.text_sign_choose)

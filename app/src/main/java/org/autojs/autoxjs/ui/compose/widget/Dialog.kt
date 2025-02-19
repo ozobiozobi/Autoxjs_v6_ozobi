@@ -8,11 +8,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import androidx.preference.PreferenceManager
+import com.afollestad.materialdialogs.Theme
+import com.google.accompanist.appcompattheme.AppCompatTheme
 import org.autojs.autoxjs.R
+import pxb.android.axml.R.attr.text
 
 @Composable
 fun AskSaveDialog(
@@ -22,6 +27,15 @@ fun AskSaveDialog(
     onDismissClick: () -> Unit
 ) {
     if (isShowDialog) {
+        // Added by ozobi - 2025/02/19
+        val context = LocalContext.current
+        val bg = if(PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)){
+            Theme.DARK.ordinal
+        }else{
+            Theme.LIGHT.ordinal
+        }
+        // <
         AlertDialog(
             onDismissRequest = onDismissRequest,
             title = { Text(text = stringResource(id = R.string.text_alert)) },
@@ -41,7 +55,8 @@ fun AskSaveDialog(
                         Text(text = stringResource(id = R.string.text_cancel))
                     }
                 }
-            }
+            },
+            backgroundColor = Color(bg)
         )
     }
 }

@@ -7,6 +7,7 @@ import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
@@ -16,11 +17,13 @@ import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import butterknife.ButterKnife
 import butterknife.OnClick
 import butterknife.Optional
 import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.Theme
 import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture
@@ -333,6 +336,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mIsmCaptureDelayDialogDisappeared = true
                 return@dismissListener
             }
+            .backgroundColor(0x222222)
             .build()
         mIsmCaptureDelayDialogDisappeared = false
         DialogUtils.showDialog(mCaptureDelayDialog)
@@ -444,6 +448,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             .build()
         DialogUtils.showDialog(mLastLayoutInspectDialog)
     }
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun showInspectorDialog(){
         mLayoutInspectDialog = OperationDialogBuilder(mContext)
             .item(

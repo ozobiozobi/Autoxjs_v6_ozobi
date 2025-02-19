@@ -15,10 +15,10 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,7 +50,6 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -110,12 +109,10 @@ import org.autojs.autoxjs.tool.WifiTool
 import org.autojs.autoxjs.ui.build.MyTextField
 import org.autojs.autoxjs.ui.common.OperationDialogBuilder
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
-import org.autojs.autoxjs.ui.compose.util.getFitRandomColor
 import org.autojs.autoxjs.ui.compose.widget.MyAlertDialog1
 import org.autojs.autoxjs.ui.compose.widget.MyIcon
 import org.autojs.autoxjs.ui.compose.widget.MySwitch
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
-import org.autojs.autoxjs.ui.main.MainActivity
 import org.autojs.autoxjs.ui.settings.SettingsActivity
 import org.joda.time.DateTimeZone
 import org.joda.time.Instant
@@ -202,6 +199,7 @@ fun DrawerPage() {
             layoutInsScreenshotSwitch()
             layoutInsRefreshSwitch()
             // <
+//            nightModeSwitch()
             showModificationDetailsButton()
             ProjectAddress(context)
             DownloadLink(context)
@@ -234,20 +232,18 @@ private fun SwitchClassifyTittle(text:String){
 }
 @Composable
 fun isNightMode():Boolean{
-    return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+//    val context = LocalContext.current
+//    return PreferenceManager.getDefaultSharedPreferences(context)
+//        .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)
+    return isSystemInDarkTheme()
+//    return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
-
 fun isNightModeNormal(context: Context?):Boolean{
-    if (context != null) {
-        return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+    if(context == null){
+        return false
     }
-    return false
+    return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
-//fun switchTheme(nightMode:Boolean){
-//    if(nightMode){
-//        MainActivity.
-//    }
-//}
 
 @Composable
 private fun AppDetailsSettings(context: Context) {
@@ -1401,6 +1397,34 @@ private fun layoutInsDelayCaptureSwitch() {
     )
 }
 // <
+// Added by ozobi - 2025/02/06 > 添加夜间模式开关
+@Composable
+private fun nightModeSwitch() {
+    val context = LocalContext.current
+    var isCaptureScreenshot by remember {
+        val default = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)
+        mutableStateOf(default)
+    }
+    SwitchItem(
+        icon = {
+            MyIcon(
+                painterResource(id = R.drawable.ic_night_mode),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),nightMode=isNightMode()
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.ozobi_text_isNightMode)) },
+        checked = isCaptureScreenshot,
+        onCheckedChange = {
+            PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(context.getString(R.string.ozobi_key_isNightMode), it)
+                .apply()
+            isCaptureScreenshot = it
+        }
+    )
+}
 // Added by ozobi - 2024/11/06 > 添加关于魔改信息
 @Composable
 fun showModificationDetailsButton() {
@@ -1431,6 +1455,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "优化: 夜间模式\n\n"+
             "优化: 布局层次分析页面\n\n"+
             "修复(6587): 布局分析相关 bug\n\n"+
             "更改(658): app抽屉页面使用随机彩色图标\n\n"+

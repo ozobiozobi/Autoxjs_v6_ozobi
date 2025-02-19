@@ -1,10 +1,14 @@
 package org.autojs.autoxjs.ui.settings;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.accompanist.appcompattheme.AppCompatTheme;
 import com.stardust.util.ClipboardUtil;
 import com.stardust.util.IntentUtil;
 import com.stardust.util.IntentUtilKt;
@@ -19,6 +23,8 @@ import org.autojs.autoxjs.tool.IntentTool;
 import org.autojs.autoxjs.ui.BaseActivity;
 import org.autojs.autoxjs.BuildConfig;
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.ui.compose.theme.ThemeKt;
+import org.autojs.autoxjs.ui.edit.theme.Theme;
 
 /**
  * Created by Stardust on 2017/2/2.

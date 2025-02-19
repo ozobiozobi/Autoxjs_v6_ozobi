@@ -11,14 +11,15 @@
         android:layout_width="17dp"
         android:layout_height="8.5dp"
         android:layout_gravity="center_horizontal"
-        android:background="@drawable/little_triangle"/>
+        android:background="@drawable/little_triangle"
+        app:tint="#ee363636"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/list"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@drawable/bubble"
-        android:backgroundTint="#ee222222"
+        android:backgroundTint="#ee363636"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </LinearLayout>

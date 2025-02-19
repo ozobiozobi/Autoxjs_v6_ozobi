@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.preference.PreferenceManager
 import com.stardust.autojs.core.console.ConsoleView
 import com.stardust.autojs.core.console.GlobalConsole
 import org.autojs.autoxjs.autojs.AutoJs
@@ -38,7 +39,7 @@ class LogActivityKt : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AutoXJsTheme {
+            AutoXJsTheme{
                 Surface(color = MaterialTheme.colors.surface) {
                     SetSystemUI()
                     Content()

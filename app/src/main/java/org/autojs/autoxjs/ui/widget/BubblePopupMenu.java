@@ -40,7 +40,6 @@ public class BubblePopupMenu extends PopupWindow {
         if(nightMode){
             menuResource = R.layout.bubble_popup_menu_night;
             itemResource = R.layout.bubble_popup_menu_item_night;
-//            mRecyclerView.setBackgroundColor(0x22000000);
         }
         // <
         View view = View.inflate(context,menuResource , null);

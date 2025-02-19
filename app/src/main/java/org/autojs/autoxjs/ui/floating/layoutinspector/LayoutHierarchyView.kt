@@ -41,9 +41,11 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             false
         }
+    // Added by ozobi - 2025/02/19 >
     companion object{
         var nightMode = false
     }
+    // <
 
     var boundsPaint: Paint? = null
         private set
@@ -83,6 +85,11 @@ open class LayoutHierarchyView : MultiLevelListView {
 
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
+        // Added by ozobi - 2025/02/19 >
+        if(nightMode){
+            setClickedColor(0x11ffffff)
+        }
+        // <
         mAdapter = Adapter()
         setAdapter(mAdapter)
         nestType = NestType.MULTIPLE
@@ -124,6 +131,11 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
         view.setBackgroundColor(mClickedColor)
         mClickedView = view
+        // Added by ozobi - 2025/02/19
+        if(nightMode){
+            view.setBackgroundColor(0xaa999999.toInt())
+        }
+        // <
         invalidate()
     }
 
@@ -163,13 +175,13 @@ open class LayoutHierarchyView : MultiLevelListView {
     }
     fun expand(){
         mInitiallyExpandedNodes.clear()
-        expandChild(mClickedNodeInfo) 
+        expandChild(mClickedNodeInfo)
         val parents = Stack<NodeInfo?>()
         mClickedNodeInfo?.let { searchNodeParents(it, mRootNode, parents) }
-//        mClickedNodeInfo = parents.peek()
         mInitiallyExpandedNodes.addAll(parents)
         mAdapter?.reloadData()
     }
+    // <
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (mBoundsInScreen == null) {
@@ -251,19 +263,32 @@ open class LayoutHierarchyView : MultiLevelListView {
             convertView: View?,
             itemInfo: ItemInfo
         ): View {
+            var itemResource = R.layout.layout_hierarchy_view_item
+            if(nightMode){
+                itemResource = R.layout.layout_hierarchy_view_item_night
+                LevelBeamView.levelInfoTextColor = Color.WHITE
+            }else{
+                LevelBeamView.levelInfoTextColor = Color.BLACK
+            }
             val nodeInfo = `object` as NodeInfo
             val viewHolder: ViewHolder
             val convertView1 = if (convertView != null) {
                 viewHolder = convertView.tag as ViewHolder
+//                convertView.setBackgroundColor(color.toInt())// Added by ozobi - 2025/02/19
                 convertView
             } else {
                 val convertView2 =
-                    LayoutInflater.from(context).inflate(R.layout.layout_hierarchy_view_item, null)
+                    LayoutInflater.from(context).inflate(itemResource, null)
                 viewHolder = ViewHolder(convertView2)
                 convertView2.tag = viewHolder
+//                convertView2.setBackgroundColor(color.toInt())// Added by ozobi - 2025/02/19
                 convertView2
             }
-
+            // Added by ozobi - 2025/02/19
+            if(nightMode){
+                viewHolder.levelBeamView.alpha = 0.9f
+            }
+            // <
             viewHolder.nameView.text = simplifyClassName(nodeInfo.className)
             viewHolder.nodeInfo = nodeInfo
             if (viewHolder.infoView.visibility == VISIBLE) viewHolder.infoView.text =

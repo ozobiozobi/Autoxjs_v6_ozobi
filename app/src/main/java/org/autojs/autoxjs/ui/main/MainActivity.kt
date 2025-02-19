@@ -26,6 +26,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.aiselp.autojs.codeeditor.EditActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -99,7 +100,7 @@ class MainActivity : FragmentActivity() {
         // >
         setContent {
             scope = rememberCoroutineScope()
-            AutoXJsTheme {
+            AutoXJsTheme{
                 Surface(color = MaterialTheme.colors.background) {
                     val permission = rememberExternalStoragePermissionsState {
                         if (it) {

@@ -3,6 +3,7 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
@@ -27,9 +28,11 @@ import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
+import androidx.recyclerview.widget.RecyclerView
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
+import com.flurry.sdk.it
 import com.stardust.app.DialogUtils
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.view.accessibility.NodeInfo
@@ -43,6 +46,9 @@ import org.autojs.autoxjs.ui.floating.FullScreenFloatyWindow
 import org.autojs.autoxjs.ui.floating.MyLifecycleOwner
 import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
 import org.autojs.autoxjs.ui.widget.BubblePopupMenu
+import org.autojs.autoxjs.ui.widget.OnItemClickListener
+import pl.openrnd.multilevellistview.ItemInfo
+import pl.openrnd.multilevellistview.MultiLevelListView
 
 /**
  * Created by Stardust on 2017/3/12.
@@ -179,38 +185,48 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(v: View) {
-        mLayoutHierarchyView!!.setBackgroundColor(COLOR_SHADOW)
+        // Modified by ozobi - 2025/02/19
+        if(nightMode){
+            mLayoutHierarchyView!!.setBackgroundColor(0xcc000000.toInt())
+        }else{
+            mLayoutHierarchyView!!.setBackgroundColor(COLOR_SHADOW.toInt())
+        }
+        // <
         mLayoutHierarchyView!!.setShowClickedNodeBounds(true)
         mLayoutHierarchyView!!.boundsPaint?.strokeWidth = 3f
         mLayoutHierarchyView!!.boundsPaint?.color = -0x2cd0d1
         // Added by ibozo - 2024/11/04 >
-//        mLayoutHierarchyView!!.setOnItemClickListener(object : OnItemClickListener {
-//            override fun onItemClicked(
-//                parent: MultiLevelListView?,
-//                view: View?,
-//                item: Any?,
-//                itemInfo: ItemInfo?
-//            ) {
-//                val nodeInfo = item as NodeInfo
-//                setSelectedNode(nodeInfo)
-//                if (view != null) {
-//                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
-//                }
-//            }
-//
-//            override fun onGroupItemClicked(
-//                parent: MultiLevelListView?,
-//                view: View?,
-//                item: Any?,
-//                itemInfo: ItemInfo?
-//            ) {
-//                val nodeInfo = item as NodeInfo
-//                setSelectedNode(nodeInfo)
-//                if (view != null) {
-//                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
-//                }
-//            }
-//        })
+        mLayoutHierarchyView!!.setOnItemClickListener(object : OnItemClickListener,
+            pl.openrnd.multilevellistview.OnItemClickListener {
+                override fun onItemClicked(
+                    parent: MultiLevelListView?,
+                    view: View?,
+                    item: Any?,
+                    itemInfo: ItemInfo?
+            ) {
+                val nodeInfo = item as NodeInfo
+                setSelectedNode(nodeInfo)
+                if (view != null) {
+                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
+                }
+            }
+
+            override fun onGroupItemClicked(
+                parent: MultiLevelListView?,
+                view: View?,
+                item: Any?,
+                itemInfo: ItemInfo?
+            ) {
+                val nodeInfo = item as NodeInfo
+                setSelectedNode(nodeInfo)
+                if (view != null) {
+                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
+                }
+            }
+            override fun onItemClick(parent: RecyclerView?, item: View?, position: Int) {
+                Log.d("ozobiLog","mLayoutHierarchyView: onItemClick")
+            }
+        })
         // <
         mLayoutHierarchyView!!.setOnItemLongClickListener { view: View, nodeInfo: NodeInfo ->
             mSelectedNode = nodeInfo
@@ -298,6 +314,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     companion object {
         private const val TAG = "FloatingHierarchyView"
-        private const val COLOR_SHADOW = -0x22000001
+        private const val COLOR_SHADOW = 0xccffffff// Modified by ozobi - 2025/02/19
     }
 }
