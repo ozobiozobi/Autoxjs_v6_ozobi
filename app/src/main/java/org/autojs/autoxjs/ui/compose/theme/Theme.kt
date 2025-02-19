@@ -10,7 +10,7 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 
-private val DarkColorPalette = darkColors(
+val DarkColorPalette = darkColors(
     primary = Color(0xFF009688),
     primaryVariant = Teal200,
     secondary = Color(0xFF03a9f4),
@@ -24,7 +24,7 @@ private val DarkColorPalette = darkColors(
     onError = Color.Black
 )
 
-private val LightColorPalette = lightColors(
+val LightColorPalette = lightColors(
     primary = Color(0xFF009688),
     primaryVariant = Teal200,
     secondary = Color(0xFF03a9f4),

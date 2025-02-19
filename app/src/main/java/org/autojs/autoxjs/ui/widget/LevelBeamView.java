@@ -42,6 +42,7 @@ public class LevelBeamView extends View {
     private Boolean mClickable;
     private Boolean mHasDesc;
     private Boolean mHasText;
+    public static int levelInfoTextColor = Color.BLACK;
     // <
 
     public LevelBeamView(Context context) {
@@ -89,7 +90,7 @@ public class LevelBeamView extends View {
         Rect textBounds = new Rect();
 
         mLevelTextPaint.setTextSize(32f);
-        mLevelTextPaint.setColor(Color.BLACK);
+        mLevelTextPaint.setColor(levelInfoTextColor);
         mLevelTextPaint.getTextBounds("<000>",0,"<000>".length(), textBounds);
         mLevelTextPaint.setTextAlign(Paint.Align.LEFT);
         mTextWidth = (float) textBounds.width();

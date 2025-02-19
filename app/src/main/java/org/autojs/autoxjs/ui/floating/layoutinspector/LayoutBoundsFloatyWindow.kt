@@ -12,10 +12,12 @@ import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.view.accessibility.LayoutInspector
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
 import com.stardust.view.accessibility.NodeInfo
+import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyView
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.floating.FullScreenFloatyWindow
+import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
 import org.autojs.autoxjs.ui.widget.BubblePopupMenu
 
 /**
@@ -28,8 +30,15 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
     private var mNodeInfoView: NodeInfoView? = null
     private var mSelectedNode: NodeInfo? = null
     private var mContext: Context? = null
+    private var nightMode = false
     override fun onCreateView(floatyService: FloatyService): View {
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
+        nightMode = isNightModeNormal(mContext)
+        // Added by ozobi - 2025/02/19
+        BubblePopupMenu.nightMode = nightMode
+        NodeInfoView.nightMode = nightMode
+        LayoutHierarchyView.nightMode = nightMode
+        // <
         mLayoutBoundsView = object : LayoutBoundsView(mContext) {
             override fun dispatchKeyEvent(event: KeyEvent): Boolean {
                 if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP) {
@@ -109,13 +118,18 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
         window.setSelectedNode(mSelectedNode)
         FloatyService.addWindow(window)
     }
-
     private fun ensureDialog() {
+        // Added by ozobi - 2025/02/19
+        var theme = Theme.LIGHT
+        if(nightMode){
+            theme = Theme.DARK
+        }
+        // <
         if (mNodeInfoDialog == null) {
             mNodeInfoView = NodeInfoView(mContext!!)
             mNodeInfoDialog = MaterialDialog.Builder(mContext!!)
                 .customView(mNodeInfoView!!, false)
-                .theme(Theme.LIGHT)
+                .theme(theme)
                 .build()
             mNodeInfoDialog?.window?.setType(FloatyWindowManger.getWindowType())
         }

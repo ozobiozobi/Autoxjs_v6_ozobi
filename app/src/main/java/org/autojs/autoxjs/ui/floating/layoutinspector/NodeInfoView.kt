@@ -1,11 +1,13 @@
 package org.autojs.autoxjs.ui.floating.layoutinspector
  
+import android.annotation.SuppressLint
 import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -15,6 +17,8 @@ import com.stardust.view.accessibility.NodeInfo
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.devplugin.DevPlugin
+import org.autojs.autoxjs.ui.main.drawer.isNightMode
+import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
 import pxb.android.axml.R.attr.text
 import java.lang.reflect.Field
 
@@ -38,6 +42,7 @@ class NodeInfoView : RecyclerView {
         init()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setNodeInfo(nodeInfo: NodeInfo) {
         for (i in FIELDS.indices) {
             try {
@@ -51,11 +56,15 @@ class NodeInfoView : RecyclerView {
     }
 
     private fun init() {
+        var color = 0x1e000000
         initData()
         adapter = Adapter()
+        if(nightMode){
+            color = 0x1edddddd
+        }
         layoutManager = LinearLayoutManager(context)
         addItemDecoration(HorizontalDividerItemDecoration.Builder(context)
-                .color(0x1e000000)
+                .color(color)
                 .size(2)
                 .build())
     }
@@ -76,7 +85,15 @@ class NodeInfoView : RecyclerView {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            val layoutRes = if (viewType == VIEW_TYPE_HEADER) R.layout.node_info_view_header else R.layout.node_info_view_item
+            // Added by ozobi - 2025/02/19 > 适配夜间模式
+            var itemResource = R.layout.node_info_view_item
+            var headerResource = R.layout.node_info_view_header
+            if(nightMode){
+                itemResource = R.layout.node_info_view_item_night
+                headerResource = R.layout.node_info_view_header_night
+            }
+            // <
+            val layoutRes = if (viewType == VIEW_TYPE_HEADER) itemResource else headerResource
             return ViewHolder(LayoutInflater.from(parent.context).inflate(layoutRes, parent, false))
         }
 
@@ -119,7 +136,9 @@ class NodeInfoView : RecyclerView {
     }
 
     companion object {
-
+        // Added by ozobi - 2025/02/19
+        var nightMode = false
+        // <
 //        private val FIELD_NAMES = sortedArrayOf( //Modified by ozobi - 2024/11/03 > 将常用节点属性往上排
         private val FIELD_NAMES = arrayOf(
             "packageName",

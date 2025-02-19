@@ -180,7 +180,7 @@ public class LayoutBoundsView extends View {
        }
     }
 
-    static void drawRect(Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
+    public static void drawRect(Canvas canvas, Rect rect, int statusBarHeight, Paint paint) {
         Rect offsetRect = new Rect(rect);
         offsetRect.offset(0, -statusBarHeight);
         canvas.drawRect(offsetRect, paint);

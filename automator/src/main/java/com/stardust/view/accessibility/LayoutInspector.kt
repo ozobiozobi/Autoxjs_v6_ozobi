@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 import android.util.DisplayMetrics
 import android.view.WindowManager
+import kotlinx.coroutines.delay
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -98,11 +99,11 @@ class LayoutInspector(private val mContext: Context) {
             getScreenDimensions()
         }
         NodeInfo.isRefresh = isRefresh
+        if(isRefresh){
+            refreshChildList(root)
+        }
         /**/
         mExecutor.execute {
-            if(isRefresh){
-                refreshChildList(root)
-            }
             isDumping = true
             capture = root?.let { NodeInfo.capture(mContext, it) }
             isDumping = false

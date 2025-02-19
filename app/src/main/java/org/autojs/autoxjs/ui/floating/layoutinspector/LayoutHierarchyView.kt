@@ -1,4 +1,4 @@
-package org.autojs.autoxjs.ui.floating.layoutinspector
+package org.autojs.autojs.ui.floating.layoutinspector
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,9 +19,9 @@ import com.stardust.util.ViewUtil
 import com.stardust.view.accessibility.NodeInfo
 import org.autojs.autoxjs.ui.widget.LevelBeamView
 import org.autojs.autoxjs.R
+import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutBoundsView
 import pl.openrnd.multilevellistview.*
 import java.util.*
-
 /**
  * Created by Stardust on 2017/3/10.
  */
@@ -41,7 +41,9 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             false
         }
-
+    companion object{
+        var nightMode = false
+    }
 
     var boundsPaint: Paint? = null
         private set
@@ -54,7 +56,6 @@ open class LayoutHierarchyView : MultiLevelListView {
     private var mClickedColor = -0x664d4c49
     private var mRootNode: NodeInfo? = null
     private val mInitiallyExpandedNodes: MutableSet<NodeInfo?> = HashSet()
-
 
     constructor(context: Context?) : super(context) {
         init()
@@ -93,7 +94,6 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
         setWillNotDraw(false)
         initPaint()
-        // Annotated by ozobi - 2024/11/04 >
         setOnItemClickListener(object : OnItemClickListener {
             override fun onItemClicked(
                 parent: MultiLevelListView,
@@ -113,7 +113,6 @@ open class LayoutHierarchyView : MultiLevelListView {
                 setClickedItem(view, item as NodeInfo)
             }
         })
-        // <
     }
 
     private fun setClickedItem(view: View, item: NodeInfo) {
@@ -151,7 +150,21 @@ open class LayoutHierarchyView : MultiLevelListView {
     fun setOnItemLongClickListener(onNodeInfoSelectListener: (view: View, nodeInfo: NodeInfo) -> Unit) {
         mOnItemLongClickListener = onNodeInfoSelectListener
     }
-
+    // Added by ozobi - 2024/11/04 >
+    fun expandChild(nodeInfo: NodeInfo?){
+        if(nodeInfo == null){
+            return
+        }
+        val children = nodeInfo.getChildren()
+        for(child in children){
+            mInitiallyExpandedNodes.add(child)
+            expandChild(child)
+        }
+    }
+    fun expand(){
+        expandChild(mClickedNodeInfo)
+        mAdapter?.reloadData()
+    }
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
         if (mBoundsInScreen == null) {
@@ -159,7 +172,6 @@ open class LayoutHierarchyView : MultiLevelListView {
             getLocationOnScreen(mBoundsInScreen)
             mStatusBarHeight = mBoundsInScreen!![1]
         }
-
         if (mShowClickedNodeBounds && mClickedNodeInfo != null) {
             LayoutBoundsView.drawRect(
                 canvas,
@@ -171,6 +183,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     }
 
     fun setSelectedNode(selectedNode: NodeInfo) {
+        Log.d("ozobiLog","LayoutHierarchyView: setSelectedNode: nodeInfo: $selectedNode")
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
         searchNodeParents(selectedNode, mRootNode, parents)
@@ -178,33 +191,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         mInitiallyExpandedNodes.addAll(parents)
         mAdapter!!.reloadData()
     }
-    // Added by ozobi - 2024/11/04 >
-    fun expandAll(){
-        val parents = Stack<NodeInfo?>()
-        getChildHasChildren(mClickedNodeInfo,parents)
-        mInitiallyExpandedNodes.addAll(parents)
-        mAdapter!!.reloadData()
-    }
-    private fun getAllChildNodeStack(rootNode:NodeInfo?, stack:Stack<NodeInfo?>){
-        if(rootNode == null || rootNode.getChildren().isEmpty()){
-            return
-        }
-        stack.push(rootNode)
-        for(child in rootNode.getChildren()){
-            getAllChildNodeStack(child,stack)
-        }
-    }
-    fun getChildHasChildren(parent:NodeInfo?,stack: Stack<NodeInfo?>){
-        if(parent == null || parent.getChildren().isEmpty()){
-            return
-        }else{
-            stack.push(parent)
-            for(child in parent.getChildren()){
-                getChildHasChildren(child,stack)
-            }
-        }
-    }
-    // <
+
     private fun searchNodeParents(
         nodeInfo: NodeInfo,
         rootNode: NodeInfo?,
@@ -284,6 +271,9 @@ open class LayoutHierarchyView : MultiLevelListView {
                 viewHolder.arrowView.visibility = GONE
             }
             viewHolder.levelBeamView.setLevel(itemInfo.level)
+            if (nodeInfo == mClickedNodeInfo) {
+                convertView1?.let { setClickedItem(it, nodeInfo) }
+            }
             // Added by ozobi - 2024/11/02 >
             val clickable = nodeInfo.clickable
             var hasDesc = false
@@ -296,9 +286,6 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             viewHolder.levelBeamView.setNodeInfo(clickable,hasDesc,hasText)
             // <
-            if (nodeInfo == mClickedNodeInfo) {
-                convertView1?.let { setClickedItem(it, nodeInfo) }
-            }
             return convertView1!!
         }
 

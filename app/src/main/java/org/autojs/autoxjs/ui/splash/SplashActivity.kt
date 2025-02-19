@@ -99,6 +99,7 @@ class SplashActivity : ComponentActivity() {
                     color = Color(0xf69C7CFF),
                     fontSize = 12.sp,
                     modifier = Modifier
+                        .padding(0.dp,0.dp,0.dp,10.dp)
                         .align(Alignment.CenterHorizontally)
                 )
                 Spacer(

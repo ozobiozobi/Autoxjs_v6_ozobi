@@ -57,7 +57,6 @@ import org.autojs.autoxjs.ui.main.MainActivity
 import org.greenrobot.eventbus.EventBus
 import org.jdeferred.Deferred
 import org.jdeferred.impl.DeferredObject
-import pxb.android.axml.Axml.Node
 
 
 /**
@@ -123,11 +122,9 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                          .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
                      // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
                      if(isCaptureScreenshot){
-                         if(isStartCapture){
+                         if(!Images.availale){
                              screenCapture.stopScreenCapturer()
-                             isStartCapture = false
-                             NodeInfo.isDoneCapture = true
-                             mWindow?.collapse()
+                             stopCapture()
                          }
                          GlobalScope.launch {
                              if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
@@ -149,7 +146,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                              checkIsCaptureDone()
                          }
                      }else{
-                         if(NodeInfo.isDoneCapture || (isDelayCapture && !isStartCapture)){
+                         if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
                              mWindow?.setAlpha(1f)
                          }else{
                              mWindow?.setAlpha(0.7f)
@@ -268,7 +265,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     }
     private fun playDoneCapturingSound(context: Context) {
         try{
-            val mediaPlayer = MediaPlayer.create(context, R.raw.ibozo_done_capturing_ringtone)
+            val mediaPlayer = MediaPlayer.create(context, R.raw.ozobi_done_capturing_ringtone)
             mediaPlayer.start()
             mediaPlayer.setOnCompletionListener { mp ->
                 mp.release()
@@ -376,68 +373,32 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             mWindow?.setAlpha(1f)
         }
     }
-    @OptIn(DelicateCoroutinesApi::class)
     @Optional
     @OnClick(R.id.capture_delay_0s)
     fun startRightNow(){
-        if(!isStartCaptureCountDown){
-            startCaptureCountDown()
-            GlobalScope.launch {
-                delay(200L)
-                inspectLayout()
-            }
-        }else{
-            GlobalScope.launch {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        delayCapture(200L)
     }
-    @OptIn(DelicateCoroutinesApi::class)
     @Optional
     @OnClick(R.id.capture_delay_2s)
     fun delayTwoSeconds(){
-        if(!isStartCaptureCountDown){
-            startCaptureCountDown()
-            GlobalScope.launch {
-                delay(2000L)
-                inspectLayout()
-            }
-        }else{
-            GlobalScope.launch {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        delayCapture(2000L)
     }
-    @OptIn(DelicateCoroutinesApi::class)
     @Optional
     @OnClick(R.id.capture_delay_4s)
     fun delayFourSeconds(){
-        if(!isStartCaptureCountDown) {
-            startCaptureCountDown()
-            GlobalScope.launch {
-                delay(4000L)
-                inspectLayout()
-            }
-        }else{
-            GlobalScope.launch {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
-                }
-            }
-        }
+        delayCapture(4000L)
     }
-    @OptIn(DelicateCoroutinesApi::class)
     @Optional
     @OnClick(R.id.capture_delay_8s)
     fun delayEightSeconds(){
-        if(!isStartCaptureCountDown) {
+        delayCapture(8000L)
+    }
+    @OptIn(DelicateCoroutinesApi::class)
+    fun delayCapture(delay:Long){
+        if(!isStartCaptureCountDown){
             startCaptureCountDown()
             GlobalScope.launch {
-                delay(8000L)
+                delay(delay)
                 inspectLayout()
             }
         }else{
@@ -533,7 +494,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mCaptureDelayDialog = null
             }
         }
-        if(isCaptureScreenshot){
+        if(isCaptureScreenshot && Images.availale){
             GlobalScope.launch {
                 // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
                 try{
@@ -581,26 +542,29 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             Looper.loop()
         }.start()
         playDoneCapturingSound(mContext)
-        isStartCapture = false
-        mLastCapture = mLayoutInspector.capture
-        isCapturing = false
-        mWindow?.setAlpha(1f)
         withContext(Dispatchers.Main){
             showInspectorDialog()
         }
+        delay(200L)
+        stopCapture()
         return
     }
     private fun goToAccePage(){
+        stopCapture()
         Toast.makeText(
             mContext,
             R.string.text_no_accessibility_permission_to_capture,
             Toast.LENGTH_SHORT
         ).show()
         AccessibilityServiceTool.goToAccessibilitySetting()
+    }
+    private fun stopCapture(){
         NodeInfo.isDoneCapture = true
         isStartCapture = false
         isCapturing = false
         isStartCaptureCountDown = false
+        mWindow?.setAlpha(1f)
+        mWindow?.collapse()
     }
     @Optional
     @OnClick(R.id.last_layout_bounds)

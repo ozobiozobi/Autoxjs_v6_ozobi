@@ -3,7 +3,6 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
@@ -35,19 +34,15 @@ import com.stardust.app.DialogUtils
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.view.accessibility.NodeInfo
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyView
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.floating.FullScreenFloatyWindow
 import org.autojs.autoxjs.ui.floating.MyLifecycleOwner
+import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
 import org.autojs.autoxjs.ui.widget.BubblePopupMenu
-import pl.openrnd.multilevellistview.ItemInfo
-import pl.openrnd.multilevellistview.MultiLevelListView
-import pl.openrnd.multilevellistview.OnItemClickListener
 
 /**
  * Created by Stardust on 2017/3/12.
@@ -59,9 +54,16 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var mNodeInfoView: NodeInfoView? = null
     private var mContext: Context? = null
     private var mSelectedNode: NodeInfo? = null
+    private var nightMode = false
 
     override fun onCreateView(floatyService: FloatyService): View {
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
+        nightMode = isNightModeNormal(mContext)
+        // Added by ozobi - 2025/02/19
+        BubblePopupMenu.nightMode = nightMode
+        NodeInfoView.nightMode = nightMode
+        LayoutHierarchyView.nightMode = nightMode
+        // <
         mLayoutHierarchyView = LayoutHierarchyView(mContext)
 
         val view = ComposeView(mContext!!).apply {
@@ -182,33 +184,33 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         mLayoutHierarchyView!!.boundsPaint?.strokeWidth = 3f
         mLayoutHierarchyView!!.boundsPaint?.color = -0x2cd0d1
         // Added by ibozo - 2024/11/04 >
-        mLayoutHierarchyView!!.setOnItemClickListener(object : OnItemClickListener {
-            override fun onItemClicked(
-                parent: MultiLevelListView?,
-                view: View?,
-                item: Any?,
-                itemInfo: ItemInfo?
-            ) {
-                val nodeInfo = item as NodeInfo
-                setSelectedNode(nodeInfo)
-                if (view != null) {
-                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
-                }
-            }
-
-            override fun onGroupItemClicked(
-                parent: MultiLevelListView?,
-                view: View?,
-                item: Any?,
-                itemInfo: ItemInfo?
-            ) {
-                val nodeInfo = item as NodeInfo
-                setSelectedNode(nodeInfo)
-                if (view != null) {
-                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
-                }
-            }
-        })
+//        mLayoutHierarchyView!!.setOnItemClickListener(object : OnItemClickListener {
+//            override fun onItemClicked(
+//                parent: MultiLevelListView?,
+//                view: View?,
+//                item: Any?,
+//                itemInfo: ItemInfo?
+//            ) {
+//                val nodeInfo = item as NodeInfo
+//                setSelectedNode(nodeInfo)
+//                if (view != null) {
+//                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
+//                }
+//            }
+//
+//            override fun onGroupItemClicked(
+//                parent: MultiLevelListView?,
+//                view: View?,
+//                item: Any?,
+//                itemInfo: ItemInfo?
+//            ) {
+//                val nodeInfo = item as NodeInfo
+//                setSelectedNode(nodeInfo)
+//                if (view != null) {
+//                    mLayoutHierarchyView!!.setSelectedNode(nodeInfo)
+//                }
+//            }
+//        })
         // <
         mLayoutHierarchyView!!.setOnItemLongClickListener { view: View, nodeInfo: NodeInfo ->
             mSelectedNode = nodeInfo
@@ -258,8 +260,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         )
     }
     // Added by ibozo - 2024/11/04 >
-    private fun expandAll(){
-        mLayoutHierarchyView!!.expandAll()
+    private fun expandAll() {
+        mLayoutHierarchyView!!.expand()
     }
     // <
     private fun showLayoutBounds() {
@@ -276,11 +278,15 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     }
 
     private fun ensureNodeInfoDialog() {
+        var theme = Theme.LIGHT
+        if(nightMode){
+            theme = Theme.DARK
+        }
         if (mNodeInfoDialog == null) {
             mNodeInfoView = NodeInfoView(mContext!!)
             mNodeInfoDialog = MaterialDialog.Builder(mContext!!)
                 .customView(mNodeInfoView!!, false)
-                .theme(Theme.LIGHT)
+                .theme(theme)
                 .build()
             mNodeInfoDialog!!.window?.setType(FloatyWindowManger.getWindowType())
         }

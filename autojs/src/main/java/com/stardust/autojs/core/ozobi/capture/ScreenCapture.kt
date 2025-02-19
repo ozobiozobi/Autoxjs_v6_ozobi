@@ -5,8 +5,6 @@ import android.graphics.Bitmap
 import android.util.Log
 import android.widget.Toast
 import com.stardust.autojs.core.image.ImageWrapper
-import com.stardust.autojs.core.image.capture.ScreenCaptureManager
-import com.stardust.autojs.core.image.capture.ScreenCaptureRequester
 import com.stardust.autojs.runtime.api.Images
 import com.stardust.util.ViewUtil
 import kotlinx.coroutines.Dispatchers
@@ -47,6 +45,7 @@ class ScreenCapture( private val mContext: Context) {
                 captureScreen(false)
                 Images.availale = true
             }catch(e:Exception){
+                Images.availale = false
                 Log.d("ozobiLog",e.toString())
             }
         }.isSuccess

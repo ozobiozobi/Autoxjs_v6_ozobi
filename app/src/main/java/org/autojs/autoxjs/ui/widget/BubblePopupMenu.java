@@ -28,13 +28,25 @@ public class BubblePopupMenu extends PopupWindow {
     private RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private View mLittleTriangle;
+    // Added by ozobi - 2025/02/19
+    public static boolean nightMode = false;
+    // <
 
     public BubblePopupMenu(Context context, List<String> options) {
         super(context);
-        View view = View.inflate(context, R.layout.bubble_popup_menu, null);
+        // Added by ozobi - 2025/02/19
+        int menuResource = R.layout.bubble_popup_menu;
+        int itemResource = R.layout.bubble_popup_menu_item;
+        if(nightMode){
+            menuResource = R.layout.bubble_popup_menu_night;
+            itemResource = R.layout.bubble_popup_menu_item_night;
+//            mRecyclerView.setBackgroundColor(0x22000000);
+        }
+        // <
+        View view = View.inflate(context,menuResource , null);
         mLittleTriangle = view.findViewById(R.id.little_triangle);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
-        mRecyclerView.setAdapter(new SimpleRecyclerViewAdapter<>(R.layout.bubble_popup_menu_item, options, MenuItemViewHolder::new));
+        mRecyclerView.setAdapter(new SimpleRecyclerViewAdapter<>(itemResource, options, MenuItemViewHolder::new));
         setContentView(view);
         setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         setOutsideTouchable(true);

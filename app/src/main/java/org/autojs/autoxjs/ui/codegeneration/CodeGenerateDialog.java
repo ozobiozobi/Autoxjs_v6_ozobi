@@ -19,8 +19,12 @@ import com.bignerdranch.expandablerecyclerview.model.Parent;
 import com.stardust.app.DialogUtils;
 import com.stardust.autojs.codegeneration.CodeGenerator;
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.ui.compose.util.GetFitRandomColorKt;
+import org.autojs.autoxjs.ui.util.NightModeKt;
 import org.autojs.autoxjs.ui.widget.CheckBoxCompat;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
+
+import com.stardust.theme.ThemeColor;
 import com.stardust.theme.util.ListBuilder;
 import com.stardust.util.ClipboardUtil;
 import com.stardust.view.accessibility.NodeInfo;
@@ -62,9 +66,17 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     private NodeInfo mRootNode;
     private NodeInfo mTargetNode;
     private Adapter mAdapter;
+    // Added by ozobi - 2025/02/19 >
+    private boolean isNightMode;
+    // <
 
     public CodeGenerateDialog(@NonNull Context context, NodeInfo rootNode, NodeInfo targetNode) {
         super(context);
+        // Added by ozobi - 2025/02/19
+        isNightMode = NightModeKt.isSystemNightMode(context);
+        ThemeColor themeColor = new ThemeColor( GetFitRandomColorKt.getFitRandomColorNormal(isNightMode));
+        setThemeColor(themeColor);
+        // <
         mRootNode = rootNode;
         mTargetNode = targetNode;
         positiveText(R.string.text_generate);
@@ -133,7 +145,13 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     }
 
     private void setupViews() {
-        View view = View.inflate(context, R.layout.dialog_code_generate, null);
+        // Added by ozobi - 2025/02/19 >
+        int resource = R.layout.dialog_code_generate;
+        if(isNightMode){
+            resource = R.layout.dialog_code_generate_night;
+        }
+        // <
+        View view = View.inflate(context,resource , null);
         ButterKnife.bind(this, view);
         customView(view, false);
         mOptionsRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -280,15 +298,27 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         @NonNull
         @Override
         public OptionGroupViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
+            // Added by ozobi - 2025/02/19 >
+            int resource = R.layout.dialog_code_generate_option_group;
+            if(isNightMode){
+                resource = R.layout.dialog_code_generate_option_group_night;
+            }
+            // <
             return new OptionGroupViewHolder(LayoutInflater.from(parentViewGroup.getContext())
-                    .inflate(R.layout.dialog_code_generate_option_group, parentViewGroup, false));
+                    .inflate(resource, parentViewGroup, false));
         }
 
         @NonNull
         @Override
         public OptionViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
+            // Added by ozobi - 2025/02/19 >
+            int resource = R.layout.dialog_code_generate_option;
+            if(isNightMode){
+                resource = R.layout.dialog_code_generate_option_night;
+            }
+            // <
             return new OptionViewHolder(LayoutInflater.from(childViewGroup.getContext())
-                    .inflate(R.layout.dialog_code_generate_option, childViewGroup, false));
+                    .inflate(resource, childViewGroup, false));
         }
 
         @Override

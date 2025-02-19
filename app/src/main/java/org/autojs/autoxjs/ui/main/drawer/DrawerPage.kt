@@ -237,6 +237,12 @@ fun isNightMode():Boolean{
     return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
 
+fun isNightModeNormal(context: Context?):Boolean{
+    if (context != null) {
+        return (context.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+    }
+    return false
+}
 //fun switchTheme(nightMode:Boolean){
 //    if(nightMode){
 //        MainActivity.
@@ -1425,6 +1431,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(6587): 布局分析相关 bug\n\n"+
             "更改(658): app抽屉页面使用随机彩色图标\n\n"+
             "修复(6587): app布局分析刷新显示不全\n"+
                     "一般用不到刷新, 除非画面发生变动之后捕获结果没有改变\n" +
