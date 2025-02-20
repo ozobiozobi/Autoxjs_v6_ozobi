@@ -235,8 +235,8 @@ fun isNightMode():Boolean{
 //    val context = LocalContext.current
 //    return PreferenceManager.getDefaultSharedPreferences(context)
 //        .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)
-    return isSystemInDarkTheme()
-//    return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
+//    return isSystemInDarkTheme()
+    return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
 fun isNightModeNormal(context: Context?):Boolean{
     if(context == null){
@@ -1456,7 +1456,9 @@ fun detailsDialog(context: Context){
             R.id.modification_detail,
             R.drawable.ic_ali_log,
             "优化: 夜间模式\n\n"+
-            "优化: 布局层次分析页面\n\n"+
+            "优化: 布局层次分析页面\n"+
+                    "修复展开后不可收起\n"+
+                    "隐藏按钮可拖动\n\n"+
             "修复(6587): 布局分析相关 bug\n\n"+
             "更改(658): app抽屉页面使用随机彩色图标\n\n"+
             "修复(6587): app布局分析刷新显示不全\n"+

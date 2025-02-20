@@ -15,6 +15,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.Theme
+import com.flurry.sdk.bg
 import com.google.accompanist.appcompattheme.AppCompatTheme
 import org.autojs.autoxjs.R
 import pxb.android.axml.R.attr.text
@@ -28,13 +29,13 @@ fun AskSaveDialog(
 ) {
     if (isShowDialog) {
         // Added by ozobi - 2025/02/19
-        val context = LocalContext.current
-        val bg = if(PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)){
-            Theme.DARK.ordinal
-        }else{
-            Theme.LIGHT.ordinal
-        }
+//        val context = LocalContext.current
+//        val bg = if(PreferenceManager.getDefaultSharedPreferences(context)
+//            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)){
+//            Theme.DARK.ordinal
+//        }else{
+//            Theme.LIGHT.ordinal
+//        }
         // <
         AlertDialog(
             onDismissRequest = onDismissRequest,
@@ -56,7 +57,7 @@ fun AskSaveDialog(
                     }
                 }
             },
-            backgroundColor = Color(bg)
+//            backgroundColor = Color(bg)
         )
     }
 }

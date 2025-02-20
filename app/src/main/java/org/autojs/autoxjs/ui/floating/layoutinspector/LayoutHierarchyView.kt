@@ -208,6 +208,18 @@ open class LayoutHierarchyView : MultiLevelListView {
         mAdapter!!.reloadData()
     }
 
+    // Added by ozobi - 2025/02/20 >
+    fun ozobiSetSelectedNode(selectedNode: NodeInfo){
+        mClickedNodeInfo = selectedNode
+        if(mInitiallyExpandedNodes.contains(mClickedNodeInfo)){
+            mInitiallyExpandedNodes.remove(mClickedNodeInfo)
+        }else{
+            mInitiallyExpandedNodes.add(mClickedNodeInfo)
+        }
+        mAdapter!!.reloadData()
+    }
+    // <
+
     private fun searchNodeParents(
         nodeInfo: NodeInfo,
         rootNode: NodeInfo?,
