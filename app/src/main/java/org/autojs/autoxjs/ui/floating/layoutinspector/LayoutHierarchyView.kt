@@ -15,13 +15,21 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitmap
+import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
 import com.stardust.util.ViewUtil
 import com.stardust.view.accessibility.NodeInfo
-import org.autojs.autoxjs.ui.widget.LevelBeamView
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutBoundsView
-import pl.openrnd.multilevellistview.*
-import java.util.*
+import org.autojs.autoxjs.ui.widget.LevelBeamView
+import pl.openrnd.multilevellistview.ItemInfo
+import pl.openrnd.multilevellistview.MultiLevelListAdapter
+import pl.openrnd.multilevellistview.MultiLevelListView
+import pl.openrnd.multilevellistview.NestType
+import pl.openrnd.multilevellistview.OnItemClickListener
+import java.util.Locale
+import java.util.Stack
+
 /**
  * Created by Stardust on 2017/3/10.
  */
@@ -184,6 +192,14 @@ open class LayoutHierarchyView : MultiLevelListView {
     // <
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+        // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+        if (isCurImgBitmapValid && curImgBitmap != null) {
+            if (width == curImgBitmap!!.height || height == curImgBitmap!!.width) {
+                Log.d("ozobiLog", "异常截图, 不绘制")
+            } else {
+                canvas.drawBitmap(curImgBitmap!!, 0f, -mStatusBarHeight.toFloat(), null)
+            }
+        }
         if (mBoundsInScreen == null) {
             mBoundsInScreen = IntArray(4)
             getLocationOnScreen(mBoundsInScreen)
