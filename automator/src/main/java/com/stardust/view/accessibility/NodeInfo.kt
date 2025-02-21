@@ -5,16 +5,9 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.content.res.Resources
 import android.graphics.Rect
-import android.util.Log
-import androidx.annotation.Keep
 import android.view.accessibility.AccessibilityNodeInfo
-
+import androidx.annotation.Keep
 import com.stardust.automator.UiObject
-import kotlinx.coroutines.delay
-
-import java.util.ArrayList
-import java.util.Date
-import java.util.HashMap
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -111,7 +104,6 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
     fun getChildren(): List<NodeInfo> {
         return children
     }
-
     override fun toString(): String {
         return className + "{" +
                 "childCount=" + children.size +

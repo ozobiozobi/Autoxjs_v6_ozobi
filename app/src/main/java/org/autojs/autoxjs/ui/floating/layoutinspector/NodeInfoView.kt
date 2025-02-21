@@ -7,19 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatDelegate.NightMode
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.stardust.util.ClipboardUtil
-import com.stardust.util.sortedArrayOf
 import com.stardust.view.accessibility.NodeInfo
 import com.yqritc.recyclerviewflexibledivider.HorizontalDividerItemDecoration
 import org.autojs.autoxjs.R
-import org.autojs.autoxjs.devplugin.DevPlugin
-import org.autojs.autoxjs.ui.main.drawer.isNightMode
-import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
-import pxb.android.axml.R.attr.text
 import java.lang.reflect.Field
 
 /**

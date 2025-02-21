@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -42,7 +43,7 @@ public class BubblePopupMenu extends PopupWindow {
             itemResource = R.layout.bubble_popup_menu_item_night;
         }
         // <
-        View view = View.inflate(context,menuResource , null);
+        View view = View.inflate(context, menuResource , null);
         mLittleTriangle = view.findViewById(R.id.little_triangle);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.list);
         mRecyclerView.setAdapter(new SimpleRecyclerViewAdapter<>(itemResource, options, MenuItemViewHolder::new));

@@ -6,11 +6,15 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
 
+import com.stardust.view.accessibility.NodeInfo;
+
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow;
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -43,6 +47,10 @@ public class LevelBeamView extends View {
     private Boolean mHasDesc;
     private Boolean mHasText;
     public static int levelInfoTextColor = Color.BLACK;
+    public static NodeInfo selectedNode;
+    private int selectedColor;
+    private Paint selectedPaint;
+    private NodeInfo curNodeInfo;
     // <
 
     public LevelBeamView(Context context) {
@@ -71,6 +79,19 @@ public class LevelBeamView extends View {
         mHasText = hasText;
         requestLayout();
     }
+    public void setCurNodeInfo(NodeInfo nodeInfo){
+        curNodeInfo = nodeInfo;
+        if(curNodeInfo == selectedNode){
+            if(levelInfoTextColor == Color.BLACK){
+                selectedPaint.setColor(0xff7DFF6B);
+            }else{
+                selectedPaint.setColor(0xff008F5D);
+            }
+        }else{
+            selectedPaint.setColor(0);
+        }
+        requestLayout();
+    }
     // <
     private void init() {
         setWillNotDraw(false);
@@ -88,11 +109,13 @@ public class LevelBeamView extends View {
         // Added by ozobi - 2024/11/02 >
         mLevelTextPaint = new Paint();
         Rect textBounds = new Rect();
-
         mLevelTextPaint.setTextSize(32f);
         mLevelTextPaint.setColor(levelInfoTextColor);
         mLevelTextPaint.getTextBounds("<000>",0,"<000>".length(), textBounds);
         mLevelTextPaint.setTextAlign(Paint.Align.LEFT);
+        selectedPaint = new Paint();
+        selectedPaint.setStyle(Paint.Style.FILL);
+        selectedPaint.setColor(selectedColor);
         mTextWidth = (float) textBounds.width();
         mTextHeight = (float) textBounds.height();
         mClickable = false;
@@ -112,6 +135,7 @@ public class LevelBeamView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         // Added by ozobi - 2024/11/02 >
+        canvas.drawRect(0, 0, mTextWidth, getHeight(), selectedPaint);
         String levelText = mLevel+">";
         canvas.drawText(levelText,16, mTextHeight +6f, mLevelTextPaint);
         String infoText = "";

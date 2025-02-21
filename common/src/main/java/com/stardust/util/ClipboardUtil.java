@@ -5,7 +5,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.os.Messenger;
 import android.util.Log;
 
 import androidx.annotation.NonNull;

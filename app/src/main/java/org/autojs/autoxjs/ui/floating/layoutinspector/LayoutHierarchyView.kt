@@ -1,4 +1,4 @@
-package org.autojs.autojs.ui.floating.layoutinspector
+package org.autojs.autoxjs.ui.floating.layoutinspector
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -19,8 +19,12 @@ import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitm
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
 import com.stardust.util.ViewUtil
 import com.stardust.view.accessibility.NodeInfo
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.autojs.autoxjs.R
-import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutBoundsView
+import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow.Companion.mSelectedNode
 import org.autojs.autoxjs.ui.widget.LevelBeamView
 import pl.openrnd.multilevellistview.ItemInfo
 import pl.openrnd.multilevellistview.MultiLevelListAdapter
@@ -91,12 +95,16 @@ open class LayoutHierarchyView : MultiLevelListView {
         mClickedColor = clickedColor
     }
 
+    @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
         // Added by ozobi - 2025/02/19 >
         if(nightMode){
-            setClickedColor(0x11ffffff)
+            LevelBeamView.levelInfoTextColor = Color.WHITE
+        }else{
+            LevelBeamView.levelInfoTextColor = Color.BLACK
         }
+        LevelBeamView.selectedNode = mSelectedNode
         // <
         mAdapter = Adapter()
         setAdapter(mAdapter)
@@ -137,13 +145,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         } else {
             mClickedView!!.background = mOriginalBackground
         }
-        view.setBackgroundColor(mClickedColor)
         mClickedView = view
-        // Added by ozobi - 2025/02/19
-        if(nightMode){
-            view.setBackgroundColor(0xaa999999.toInt())
-        }
-        // <
         invalidate()
     }
 
@@ -152,7 +154,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         boundsPaint!!.color = Color.DKGRAY
         boundsPaint!!.style = Paint.Style.STROKE
         boundsPaint!!.isAntiAlias = true
-        boundsPaint!!.strokeWidth = 3f
+        boundsPaint!!.strokeWidth = 10f// Modified by ozobi - 2025/02/21
         mStatusBarHeight = ViewUtil.getStatusBarHeight(context)
     }
 
@@ -227,6 +229,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     // Added by ozobi - 2025/02/20 >
     fun ozobiSetSelectedNode(selectedNode: NodeInfo){
         mClickedNodeInfo = selectedNode
+        LevelBeamView.selectedNode = mClickedNodeInfo
         if(mInitiallyExpandedNodes.contains(mClickedNodeInfo)){
             mInitiallyExpandedNodes.remove(mClickedNodeInfo)
         }else{
@@ -292,13 +295,13 @@ open class LayoutHierarchyView : MultiLevelListView {
             itemInfo: ItemInfo
         ): View {
             var itemResource = R.layout.layout_hierarchy_view_item
+            val nodeInfo = `object` as NodeInfo
             if(nightMode){
                 itemResource = R.layout.layout_hierarchy_view_item_night
                 LevelBeamView.levelInfoTextColor = Color.WHITE
             }else{
                 LevelBeamView.levelInfoTextColor = Color.BLACK
             }
-            val nodeInfo = `object` as NodeInfo
             val viewHolder: ViewHolder
             val convertView1 = if (convertView != null) {
                 viewHolder = convertView.tag as ViewHolder
@@ -317,15 +320,44 @@ open class LayoutHierarchyView : MultiLevelListView {
                 viewHolder.levelBeamView.alpha = 0.9f
             }
             // <
-            viewHolder.nameView.text = simplifyClassName(nodeInfo.className)
+            var textInfo = ""
+            nodeInfo.desc?.let{
+                if(it.isNotEmpty()){
+                    textInfo += if(it.indexOf("\n") != -1){
+                        it.substring(0,it.indexOf("\n"))
+                    }else{
+                        it
+                    }
+                }
+            }
+            nodeInfo.text.let {
+                if(it.isNotEmpty()){
+                    if(textInfo.length > 15){
+                        textInfo = textInfo.substring(0,12) + "..."
+                    }
+                    textInfo += if(it.indexOf("\n") != -1){
+                        " <> " + it.substring(0,it.indexOf("\n"))
+                    }else{
+                        " <> $it"
+                    }
+                }
+            }
+            textInfo += "\n"
+            var shotClassName = simplifyClassName(nodeInfo.className)
+            shotClassName?.let{
+                if(it.indexOf(".") != -1){
+                    shotClassName = "(s)" + it.substring(it.lastIndexOf("."))
+                }
+            }
+            viewHolder.nameView.text = shotClassName +"\n"+ textInfo
             viewHolder.nodeInfo = nodeInfo
             if (viewHolder.infoView.visibility == VISIBLE) viewHolder.infoView.text =
                 getItemInfoDsc(itemInfo)
             if (itemInfo.isExpandable && !isAlwaysExpanded) {
                 viewHolder.arrowView.visibility = VISIBLE
-                viewHolder.arrowView.setImageResource(if (itemInfo.isExpanded) R.drawable.arrow_up else R.drawable.arrow_down)
+                viewHolder.arrowView.setImageResource(if (itemInfo.isExpanded) R.drawable.arrow_down else R.drawable.arrow_right)
             } else {
-                viewHolder.arrowView.visibility = GONE
+                viewHolder.arrowView.visibility = INVISIBLE
             }
             viewHolder.levelBeamView.setLevel(itemInfo.level)
             if (nodeInfo == mClickedNodeInfo) {
@@ -342,6 +374,7 @@ open class LayoutHierarchyView : MultiLevelListView {
                 hasText = true
             }
             viewHolder.levelBeamView.setNodeInfo(clickable,hasDesc,hasText)
+            viewHolder.levelBeamView.setCurNodeInfo(nodeInfo)
             // <
             return convertView1!!
         }

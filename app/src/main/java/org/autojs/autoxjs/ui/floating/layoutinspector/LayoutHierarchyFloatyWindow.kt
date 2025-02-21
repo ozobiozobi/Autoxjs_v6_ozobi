@@ -2,7 +2,6 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.graphics.Point
 import android.graphics.Rect
 import android.util.Log
 import android.view.ContextThemeWrapper
@@ -13,14 +12,21 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.interaction.collectIsPressedAsState
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -28,8 +34,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onGloballyPositioned
-import androidx.compose.ui.layout.positionInWindow
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
@@ -44,15 +48,11 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
+import com.google.android.material.snackbar.Snackbar
 import com.stardust.app.DialogUtils
 import com.stardust.enhancedfloaty.FloatyService
+import com.stardust.util.ClipboardUtil
 import com.stardust.view.accessibility.NodeInfo
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.plus
-import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyView
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
@@ -75,9 +75,77 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var mBubblePopMenu: BubblePopupMenu? = null
     private var mNodeInfoView: NodeInfoView? = null
     private var mContext: Context? = null
-    private var mSelectedNode: NodeInfo? = null
+    // Added by ozobi - 2025/02/21 >
     private var nightMode = false
-
+    private var firstNodeList = mutableListOf<NodeInfo>()
+    private var secondNodeList = mutableListOf<NodeInfo>()
+    // <
+    // Added by ozobi - 2025/02/21
+    fun getNodeList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo>){
+        if(nodeInfo == null){
+            return
+        }
+        nodeList.add(nodeInfo)
+        getNodeList(nodeInfo.parent, nodeList)
+    }
+    fun tagNode():String?{
+        if(firstTagNodeInfo == null){
+            firstTagNodeInfo = mSelectedNode
+            return null
+        }
+        secondTagNodeInfo = mSelectedNode
+        val result = genRelationShip(firstTagNodeInfo, secondTagNodeInfo)
+        firstTagNodeInfo = null
+        secondTagNodeInfo = null
+        return result
+    }
+    fun genRelationShip(first:NodeInfo?, second:NodeInfo?):String?{
+        if(first == null || second == null){
+            return null
+        }
+        if(first == second){
+            return null
+        }
+        getNodeList(first, firstNodeList)
+        getNodeList(second, secondNodeList)
+        firstNodeList.reverse()
+        secondNodeList.reverse()
+        var min = firstNodeList.size
+        if(secondNodeList.size < firstNodeList.size){
+            min = secondNodeList.size
+        }
+        var crossIndex = min - 1
+        for(index in 0 until min){
+            if(firstNodeList[index] != secondNodeList[index]){
+                crossIndex = index - 1
+                Log.d("ozobiLog","genRelationShip: 相交点下标: $crossIndex")
+                break
+            }
+        }
+        var parentString = ""
+        for(index in crossIndex until firstNodeList.size){
+            if(index < 0){
+                return null
+            }
+            if(firstNodeList[index] == firstTagNodeInfo){
+                break
+            }
+            parentString += ".parent()"
+        }
+        var childString = ""
+        for(index in crossIndex until secondNodeList.size){
+            if(secondNodeList[index] == secondTagNodeInfo){
+                break
+            }
+            if(index+1 < secondNodeList.size){
+                childString += ".child(" + secondNodeList[index+1].indexInParent + ")"
+            }
+        }
+        val result = parentString + childString
+        Log.d("ozobiLog","关系为: $result")
+        return result
+    }
+    // <
     override fun onCreateView(floatyService: FloatyService): View {
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
         nightMode = isNightModeNormal(mContext)
@@ -115,7 +183,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
         return view
     }
-
     // Modified by ozobi - 2025/02/20 > 添加: 拖动隐藏
     @Composable
     private fun Content() {
@@ -169,10 +236,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                         }
                         .padding(0.dp,0.dp,5.dp,5.dp)
                 ) {
-                    Spacer(modifier = Modifier.weight(1f))
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
+                            .background(color=Color(0xeeBA3636), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 close()
                             }
@@ -181,13 +248,40 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             text = stringResource(R.string.text_exit_floating_window),
                             color=Color.White,
                             modifier = Modifier
-                                .background(color=Color(0xddBA3636), shape = RoundedCornerShape(8.dp))
+                                .padding(7.dp)
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp)
+                            .background(color = Color(0xee315FA8), shape = RoundedCornerShape(8.dp))
+                            .clickable {
+                                val result = tagNode()
+                                var hint = "已经躺好在粘贴板[vscode]了"
+                                if(result == null){
+                                    if(firstTagNodeInfo == null){
+                                        hint = "饶了地球一圈, 还是不愿转身"
+                                    }else{
+                                        hint = "再给我一个目标"
+                                    }
+                                }else{
+                                    ClipboardUtil.setClip(mContext, result)
+                                }
+                                mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_spell_casting),
+                            color = Color.White,
+                            modifier = Modifier
                                 .padding(7.dp)
                         )
                     }
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
+                            .background(color=Color(0xee53BA5C), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 expandAll()
                             }
@@ -196,13 +290,13 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             text = stringResource(R.string.text_expand_all_hierarchy),
                             color=Color.White,
                             modifier = Modifier
-                                .background(color=Color(0xdd53BA5C), shape = RoundedCornerShape(8.dp))
                                 .padding(7.dp)
                         )
                     }
                     Box(
                         modifier = Modifier
                             .padding(horizontal = 6.dp)
+                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 showLayoutBounds()
                             }
@@ -211,14 +305,13 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             text = stringResource(R.string.text_show_layout_bounds_window),
                             color=Color.White,
                             modifier = Modifier
-                                .background(color=Color(0xdd7461BF), shape = RoundedCornerShape(8.dp))
                                 .padding(7.dp)
                         )
                     }
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
-                            .background(color=Color(0xdd5AA6B5), shape = RoundedCornerShape(8.dp))
+                            .background(color=Color(0xee5AA6B5), shape = RoundedCornerShape(8.dp))
                             .padding(horizontal = 6.dp)
                             .clickable {
                                 isShowLayoutHierarchyView = !isShowLayoutHierarchyView
@@ -387,5 +480,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     companion object {
         private const val TAG = "FloatingHierarchyView"
         private const val COLOR_SHADOW = 0xccffffff// Modified by ozobi - 2025/02/19
+        // Added by ozobi - 2025/02/21
+        var firstTagNodeInfo:NodeInfo? = null
+        var secondTagNodeInfo:NodeInfo? = null
+        var mSelectedNode: NodeInfo? = null
+        // <
     }
 }

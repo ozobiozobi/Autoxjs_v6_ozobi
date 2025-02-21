@@ -12,7 +12,6 @@ import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.view.accessibility.LayoutInspector
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
 import com.stardust.view.accessibility.NodeInfo
-import org.autojs.autojs.ui.floating.layoutinspector.LayoutHierarchyView
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger

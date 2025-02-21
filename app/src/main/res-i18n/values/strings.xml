@@ -266,11 +266,12 @@
     <string name="text_jump_to_start">转到文件开始</string>
     <string name="text_jump_to_line_start">转到行首</string>
     <string name="text_jump_to_line_end">转到行尾</string>
-<!--    // Added by ibozo - 2024/11/04-->
+<!--    // Added by ozobi - 2024/11/04-->
     <string name="text_expand_all_hierarchy">展开</string>
+    <string name="text_spell_casting">施法</string>
     <string name="text_show_layout_bounds_window">边界</string>
 <!--    //<-->
-<!--    // Modified by ibozo - 2024/11/04 > 退出悬浮窗 -> 退出-->
+<!--    // Modified by ozobi - 2024/11/04 > 退出悬浮窗 -> 退出-->
     <string name="text_exit_floating_window">退出</string>
     <string name="text_select_save_path">保存到</string>
     <string name="text_cancel_download">取消下载</string>

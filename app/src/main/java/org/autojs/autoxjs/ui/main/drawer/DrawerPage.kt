@@ -1450,6 +1450,20 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 6588->6589 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复(658): 布局层次分析页面显示选中不唯一\n\n"+
+            "添加: 布局层次分析页面\n"+
+                    "施法按钮\n"+
+                    "\t\t数数？为什么不用法术(@-@)\n"+
+                    "显示描述和文本"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 6587->6588 ===>"
         )
         .item(
