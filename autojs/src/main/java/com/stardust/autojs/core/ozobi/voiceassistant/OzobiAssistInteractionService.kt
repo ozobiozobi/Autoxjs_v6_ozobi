@@ -7,7 +7,7 @@ import android.service.voice.VoiceInteractionService
 import android.util.Log
 
 
-// Created by ozobi - 2025/01/03
+// Created by Ozobi - 2025/01/03
 
 open class OzobiAssistInteractionService: VoiceInteractionService() {
     companion object{

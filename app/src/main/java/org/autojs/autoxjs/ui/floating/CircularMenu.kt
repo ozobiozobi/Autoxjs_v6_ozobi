@@ -32,6 +32,7 @@ import com.stardust.autojs.runtime.api.Images
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.util.ClipboardUtil
+import com.stardust.util.Ozobi
 import com.stardust.view.accessibility.AccessibilityService.Companion.instance
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
 import com.stardust.view.accessibility.NodeInfo
@@ -98,6 +99,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private var captureStartTime = 0L
     private var isCapturing = false
     private var available = true
+    private var isAuth = false
     // <
     private var mRunningPackage: String? = null
     private var mRunningActivity: String? = null
@@ -108,6 +110,8 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         mWindow?.setOnActionViewTouchListener { v, event ->
 //            Log.d("ozobiLog","event.action: "+event.action)
              if(event.action == MotionEvent.ACTION_UP){
+                 LayoutHierarchyFloatyWindow.firstTagNodeInfo = null
+                 LayoutHierarchyFloatyWindow.secondTagNodeInfo = null
                  v.performClick()
                  if (mState == STATE_RECORDING) {
                      stopRecord()
@@ -115,44 +119,46 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                     mWindow?.collapse()
                  } else {
                      mWindow?.expand()
-                     isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
-                         .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
-                     isRefresh = PreferenceManager.getDefaultSharedPreferences(mContext)
-                         .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_refresh), false)
-                     isWaitForCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-                         .getBoolean(mContext.getString(R.string.ozobi_key_isWaitFor_capture), true)
-                     isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-                         .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
-                     // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-                     if(isCaptureScreenshot){
-                         if(!Images.availale){
-                             screenCapture.stopScreenCapturer()
-                             stopCapture()
-                         }
-                         GlobalScope.launch {
-                             if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
-                                 screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+                     if(isAuth){
+                         isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
+                         isRefresh = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_refresh), false)
+                         isWaitForCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_isWaitFor_capture), true)
+                         isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
+                         // Added by Ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+                         if(isCaptureScreenshot){
+                             if(!Images.availale){
+                                 screenCapture.stopScreenCapturer()
+                                 stopCapture()
+                             }
+                             GlobalScope.launch {
+                                 if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
+                                     screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
 //                                 Log.d("ozobiLog","CircularMenu: screenCapture.requestScreenCapture")
+                                 }
                              }
                          }
-                     }
-                     if(isRefresh || isWaitForCapture){
-                         NodeInfo.isDoneCapture = false
-                     }
-                     mLayoutInspector.setRefresh(isRefresh)
-                     mCaptureDeferred = DeferredObject()
-                     if(!isRefresh && !isStartCapture && !isCapturing && !isDelayCapture){
-                         captureStartTime = System.currentTimeMillis()
-                         available = mLayoutInspector.captureCurrentWindow()
-                         if(available){
-                             isCapturing = true
-                             checkIsCaptureDone()
+                         if(isRefresh || isWaitForCapture){
+                             NodeInfo.isDoneCapture = false
                          }
-                     }else{
-                         if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
-                             mWindow?.setAlpha(1f)
+                         mLayoutInspector.setRefresh(isRefresh)
+                         mCaptureDeferred = DeferredObject()
+                         if(!isRefresh && !isStartCapture && !isCapturing && !isDelayCapture){
+                             captureStartTime = System.currentTimeMillis()
+                             available = mLayoutInspector.captureCurrentWindow()
+                             if(available){
+                                 isCapturing = true
+                                 checkIsCaptureDone()
+                             }
                          }else{
-                             mWindow?.setAlpha(0.7f)
+                             if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
+                                 mWindow?.setAlpha(1f)
+                             }else{
+                                 mWindow?.setAlpha(0.7f)
+                             }
                          }
                      }
                      // <
@@ -160,7 +166,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             }
             return@setOnActionViewTouchListener true
         }
-        // Modified by ozobi - 2025/02/14 > 优化点击响应时长
+        // Modified by Ozobi - 2025/02/14 > 优化点击响应时长
         mWindow?.setOnActionViewClickListener {
 //            Log.d("ozobiLog","CircularMenu: clicked: "+ Date().time)
         }
@@ -447,7 +453,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             .build()
         DialogUtils.showDialog(mLastLayoutInspectDialog)
     }
-    @RequiresApi(Build.VERSION_CODES.O)
+
     private fun showInspectorDialog(){
         mLayoutInspectDialog = OperationDialogBuilder(mContext)
             .item(
@@ -500,7 +506,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         }
         if(isCaptureScreenshot && Images.availale){
             GlobalScope.launch {
-                // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+                // Added by Ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
                 try{
                     screenCapture.captureScreen(true)
 //                    Log.d("ozobiLog","截图成功")
@@ -602,7 +608,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         mLayoutInspectDialog?.dismiss()
         mLayoutInspectDialog = null
         if (instance == null) {
-            goToAccePage()// Modified by ozobi - 2025/02/07
+            goToAccePage()// Modified by Ozobi - 2025/02/07
             return
         }
         // Modified by ibozo - 2024/11/04 >
@@ -737,7 +743,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             mState = STATE_CLOSED
         }
         mRecorder.removeOnStateChangedListener(this)
-        mLayoutInspector.removeCaptureAvailableListener(this)// Modified by ozobi - 2025/02/18
+        mLayoutInspector.removeCaptureAvailableListener(this)// Modified by Ozobi - 2025/02/18
     }
 
     override fun onStart() {
@@ -759,10 +765,11 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     }
 
     init {
+        isAuth = Ozobi.authenticate(mContext)
         initFloaty()
         setupListeners()
         mRecorder = GlobalActionRecorder.getSingleton(context)
         mRecorder.addOnStateChangedListener(this)
-        mLayoutInspector.addCaptureAvailableListener(this)// Modified by ozobi - 2025/02/18
+        mLayoutInspector.addCaptureAvailableListener(this)// Modified by Ozobi - 2025/02/18
     }
 }

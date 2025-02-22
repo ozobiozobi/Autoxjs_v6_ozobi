@@ -56,7 +56,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
             return;
         }
         instance = new AutoJs(application);
-        // Added by ozobi - 2024/12/02 >
+        // Added by Ozobi - 2024/12/02 >
         Log.d("ozobiLog","Autojs initInstance");
         PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext())
                 .edit()
@@ -183,7 +183,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     @Override
     protected AccessibilityConfig createAccessibilityConfig() {
         AccessibilityConfig config = super.createAccessibilityConfig();
-        // Annotated by ozobi - 2024/12/02
+        // Annotated by Ozobi - 2024/12/02
 //        if (BuildConfig.CHANNEL.equals("coolapk")) {
 //            assert config != null;
 //            config.addWhiteList("com.coolapk.market");

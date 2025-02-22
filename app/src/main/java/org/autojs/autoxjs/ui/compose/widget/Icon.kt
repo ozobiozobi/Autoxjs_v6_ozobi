@@ -32,7 +32,7 @@ fun MyIcon(
 ){
     Icon(imageVector, contentDescription, modifier, tint)
 }
-// Added by ozobi - 2025/02/18
+// Added by Ozobi - 2025/02/18
 @Composable
 fun MyIcon(
     painter: Painter,

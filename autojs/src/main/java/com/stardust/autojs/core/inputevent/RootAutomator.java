@@ -192,7 +192,7 @@ public class RootAutomator implements Shell.Callback {
         sendEvent(EV_ABS, ABS_MT_WIDTH_MAJOR, 5);
         sendEvent(EV_SYN, SYN_REPORT, 0);
     }
-    // Modified by ozobi - 2025/01/28 > 返回 sendevent 字符串命令list
+    // Modified by Ozobi - 2025/01/28 > 返回 sendevent 字符串命令list
     private void touchDown0(int x, int y, int id) throws IOException {
         mSlotIdMap.put(id, 0);
         sendEvent(EV_ABS, ABS_MT_TRACKING_ID, mTracingId.getAndIncrement());
@@ -290,7 +290,7 @@ public class RootAutomator implements Shell.Callback {
     @Override
     public void onInitialized() {
         String path = RootAutomatorEngine.getExecutablePath(mContext);
-        // Modified by ozobi - 2025/01/28 > 修复: 输入设备名称存在空格时, RootAutomator 不生效
+        // Modified by Ozobi - 2025/01/28 > 修复: 输入设备名称存在空格时, RootAutomator 不生效
         String deviceNameOrPath = "'" + RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName()) + "'";
         // <
         Log.d(LOG_TAG, "deviceNameOrPath: " + deviceNameOrPath);

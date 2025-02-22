@@ -18,6 +18,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture;
+import com.stardust.util.Ozobi;
 import com.stardust.view.accessibility.NodeInfo;
 import com.stardust.util.ViewUtil;
 
@@ -32,17 +33,18 @@ import java.util.List;
 
 public class LayoutBoundsView extends View {
 
-    private static final int COLOR_SHADOW = 0x6a000000;// ozobi: Before modified
+    private static final int COLOR_SHADOW = 0x6a000000;// Ozobi: Before modified
 //    private static final int COLOR_SHADOW = 0x6d000000;
     private NodeInfo mRootNode;
     private NodeInfo mTouchedNode;
     private Paint mBoundsPaint;
     private Paint mFillingPaint;
     private OnNodeInfoSelectListener mOnNodeInfoSelectListener;
-//    private int mTouchedNodeBoundsColor = Color.RED;// ozobi: Before modified
+//    private int mTouchedNodeBoundsColor = Color.RED;// Ozobi: Before modified
     private int mTouchedNodeBoundsColor = 0xFF00B6FF;
-//    private int mNormalNodeBoundsColor = Color.GREEN;// ozobi:Before modified
+//    private int mNormalNodeBoundsColor = Color.GREEN;// Ozobi:Before modified
     private int mNormalNodeBoundsColor = Color.WHITE;
+    private boolean isAuth = false;
 
     private Rect mTouchedNodeBounds;
 
@@ -81,6 +83,7 @@ public class LayoutBoundsView extends View {
 
 
     private void init() {
+        isAuth = Ozobi.authenticate(getContext());
         mBoundsPaint = new Paint();
         mBoundsPaint.setStyle(Paint.Style.STROKE);
         mFillingPaint = new Paint();
@@ -92,13 +95,15 @@ public class LayoutBoundsView extends View {
     }
 
     @Override
-    protected void onDraw(@NonNull Canvas canvas) {// ozobi: Before modified: protected void onDraw(Canvas canvas) -> 使用 Android Studio 的建议
-        // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-        if(ScreenCapture.Companion.isCurImgBitmapValid() && ScreenCapture.Companion.getCurImgBitmap() != null){
-            if(getWidth() == ScreenCapture.Companion.getCurImgBitmap().getHeight() || getHeight() == ScreenCapture.Companion.getCurImgBitmap().getWidth()){
-                Log.d("ozobiLog","异常截图, 不绘制");
-            }else{
-                canvas.drawBitmap(ScreenCapture.Companion.getCurImgBitmap(),0f,-mStatusBarHeight,null);
+    protected void onDraw(@NonNull Canvas canvas) {// Ozobi: Before modified: protected void onDraw(Canvas canvas) -> 使用 Android Studio 的建议
+        // Added by Ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+        if(getContext().getPackageName().contains("ozobi")){
+            if(ScreenCapture.Companion.isCurImgBitmapValid() && ScreenCapture.Companion.getCurImgBitmap() != null){
+                if(getWidth() == ScreenCapture.Companion.getCurImgBitmap().getHeight() || getHeight() == ScreenCapture.Companion.getCurImgBitmap().getWidth()){
+                    Log.d("ozobiLog","异常截图, 不绘制");
+                }else{
+                    canvas.drawBitmap(ScreenCapture.Companion.getCurImgBitmap(),0f,-mStatusBarHeight,null);
+                }
             }
         }
         //
@@ -119,7 +124,7 @@ public class LayoutBoundsView extends View {
         // Before modified:
 //        canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), mFillingPaint);
         /*
-         * Modified by ozobi - 2024/10/07
+         * Modified by Ozobi - 2024/10/07
          * ->使用 Android Studio 的建议
          * */
         canvas.drawRect(0, 0, getWidth(), getHeight(), mFillingPaint);
@@ -152,7 +157,7 @@ public class LayoutBoundsView extends View {
     }
 
     /*
-     * Modified by ozobi - 2024/11/03
+     * Modified by Ozobi - 2024/11/03
      * */
     private void draw(Canvas canvas, NodeInfo node) {
         if (node == null)
@@ -160,16 +165,20 @@ public class LayoutBoundsView extends View {
         Rect bounds = node.getBoundsInScreen();
         if (bounds.right > -5 && bounds.bottom > -5 && bounds.left < bounds.right && bounds.top < bounds.bottom) {
             /*
-            * Added by ozobi - 2024/10/07
+            * Added by Ozobi - 2024/10/07
             * */
-            if(node.getClickable()){
-                mBoundsPaint.setColor(Color.GREEN);
-            }else if(node.getDesc() != null ) {
-                mBoundsPaint.setColor(0xFF9900FF);
-            }else if(!node.getText().isEmpty()){
-                mBoundsPaint.setColor(0xFFFF0099);
+            if(isAuth){
+                if(node.getClickable()){
+                    mBoundsPaint.setColor(Color.GREEN);
+                }else if(node.getDesc() != null ) {
+                    mBoundsPaint.setColor(0xFF9900FF);
+                }else if(!node.getText().isEmpty()){
+                    mBoundsPaint.setColor(0xFFFF0099);
+                }else{
+                    mBoundsPaint.setColor(Color.WHITE);
+                }
             }else{
-                mBoundsPaint.setColor(Color.WHITE);
+                mBoundsPaint.setColor(Color.GREEN);
             }
             /**/
             drawRect(canvas, bounds, mStatusBarHeight, mBoundsPaint);
@@ -185,7 +194,7 @@ public class LayoutBoundsView extends View {
         canvas.drawRect(offsetRect, paint);
     }
 
-    @SuppressLint("ClickableViewAccessibility")// Added by ozobi - 2024/10/07 -> 使用 Android Studio 的建议
+    @SuppressLint("ClickableViewAccessibility")// Added by Ozobi - 2024/10/07 -> 使用 Android Studio 的建议
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (mRootNode != null) {
@@ -212,7 +221,7 @@ public class LayoutBoundsView extends View {
             return null;
         }
         /*
-         * Modefied by ozobi - 2024/10/07
+         * Modefied by Ozobi - 2024/10/07
          * */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Collections.min(list, Comparator.comparingInt(o -> o.getBoundsInScreen().width() * o.getBoundsInScreen().height()));

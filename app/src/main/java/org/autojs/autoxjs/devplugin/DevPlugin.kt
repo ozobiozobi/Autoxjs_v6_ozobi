@@ -50,7 +50,7 @@ object DevPlugin {
         }
     }
 
-    // Added by ozobi - 2025/02/11 > 启动app第一次连接不显示失败弹窗
+    // Added by Ozobi - 2025/02/11 > 启动app第一次连接不显示失败弹窗
     var isFirstTime = false
     // <
 
@@ -114,24 +114,24 @@ object DevPlugin {
             when (it.state) {
                 State.CONNECTING -> {
                     Log.d(TAG, "ConnectComputerSwitch: CONNECTING")
-                    if(!isFirstTime){// Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                    if(!isFirstTime){// Modified by Ozobi - 2025/02/11 > 启动app第一次连接不显示toast
                         GlobalAppContext.toast(R.string.text_connecting)
                     }
                 }
                 State.RECONNECTING -> {
                     Log.d(TAG, "ConnectComputerSwitch: RECONNECTING")
-                    if(!isFirstTime){// Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                    if(!isFirstTime){// Modified by Ozobi - 2025/02/11 > 启动app第一次连接不显示toast
                         GlobalAppContext.toast(R.string.text_reconnecting)
                     }
                 }
                 State.CONNECTION_FAILED -> {
                     Log.d(TAG, "ConnectComputerSwitch: CONNECTION_FAILED")
-                    // Modified by ozobi - 2025/02/11 > 启动app第一次连接不显示toast
+                    // Modified by Ozobi - 2025/02/11 > 启动app第一次连接不显示toast
                     if(isFirstTime){
                         isFirstTime = false
                     }else{
                         GlobalAppContext.toast(
-                            false,// Modefied by ozobi - 2025/01/11 > 改为短时间的toast
+                            false,// Modefied by Ozobi - 2025/01/11 > 改为短时间的toast
                             R.string.text_connect_failed,
                             it.e?.localizedMessage ?: ""
                         )

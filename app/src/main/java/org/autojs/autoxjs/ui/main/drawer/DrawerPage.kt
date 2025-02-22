@@ -121,11 +121,11 @@ import org.joda.time.Instant
 private const val TAG = "DrawerPage"
 private const val URL_DEV_PLUGIN = "https://github.com/aiselp/Auto.js-VSCode-Extension"
 //private const val PROJECT_ADDRESS = "https://github.com/aiselp/AutoX"
-private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi"// Modified by ozobi - 2025/02/15
+private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi"// Modified by Ozobi - 2025/02/15
 //private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
-private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"// Modified by ozobi - 2025/02/15
+private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"// Modified by Ozobi - 2025/02/15
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
-// Added by ozobi - 2024/10/25
+// Added by Ozobi - 2024/10/25
 private var alwaysTryToConnectState = false
 private var isFirstTime = true
 private lateinit var devicePolicyManager: DevicePolicyManager
@@ -137,7 +137,7 @@ private const val ozobiSubfix = "_ozobi"
 @Composable
 fun DrawerPage() {
     val context = LocalContext.current
-    // Added by ozobi - 2024/10/26 >
+    // Added by Ozobi - 2024/10/26 >
     Log.d(ozobiLogTag,"启动app")
     if(isFirstTime){
         Log.d(ozobiLogTag,"第一次")
@@ -147,7 +147,7 @@ fun DrawerPage() {
         startUpCheck()
     }
     // <
-    // Added by ozobi - 2024/11/10 >
+    // Added by Ozobi - 2024/11/10 >
     devicePolicyManager = com.stardust.autojs.runtime.DevicePolicyManager.devicePolicyManager
     componentName = com.stardust.autojs.runtime.DevicePolicyManager.componentName
     // <
@@ -186,14 +186,14 @@ fun DrawerPage() {
             SwitchClassifyTittle(text = stringResource(id = R.string.text_script_record))
             FloatingWindowSwitch()
             VolumeDownControlSwitch()
-//            AutoBackupSwitch()// Annotated by ozobi - 2025/02/15
+//            AutoBackupSwitch()// Annotated by Ozobi - 2025/02/15
 
-            SwitchClassifyTittle("连接")//Modified by ozobi - 2025/02/18
+            SwitchClassifyTittle("连接")//Modified by Ozobi - 2025/02/18
             ConnectComputerSwitch()
             AlwaysTryToConnect()
             USBDebugSwitch()
-            // Added by ozobi - 2025/02/06 > 布局分析相关开关
-            SwitchClassifyTittle("布局分析")// Added by ozobi - 2025/02/18
+            // Added by Ozobi - 2025/02/06 > 布局分析相关开关
+            SwitchClassifyTittle("布局分析")// Added by Ozobi - 2025/02/18
             layoutInsWaitForCaptureSwitch()
             layoutInsDelayCaptureSwitch()
             layoutInsScreenshotSwitch()
@@ -203,8 +203,8 @@ fun DrawerPage() {
             showModificationDetailsButton()
             ProjectAddress(context)
             DownloadLink(context)
-//            Feedback(context)// Annotated by ozobi - 2025/02/15
-//            CheckForUpdate()// Annotated by ozobi - 2025/02/15
+//            Feedback(context)// Annotated by Ozobi - 2025/02/15
+//            CheckForUpdate()// Annotated by Ozobi - 2025/02/15
             SwitchTimedTaskScheduler()
             AppDetailsSettings(context)
         }
@@ -274,7 +274,7 @@ private fun DownloadLink(context: Context) {
             DOWNLOAD_ADDRESS
         )
     }) {
-        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)// Modified by ozobi - 2025/02/15
+        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)// Modified by Ozobi - 2025/02/15
     }
 }
 
@@ -286,7 +286,7 @@ private fun ProjectAddress(context: Context) {
             PROJECT_ADDRESS
         )
     }) {
-        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)// Modified by ozobi - 2025/02/15
+        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)// Modified by Ozobi - 2025/02/15
     }
 }
 
@@ -509,7 +509,7 @@ private fun ConnectComputerSwitch() {
                     DevPlugin.State.CONNECTED -> enable = true
                     DevPlugin.State.DISCONNECTED -> {
                         enable = false
-                        // Added by ozobi - 2024/10/02
+                        // Added by Ozobi - 2024/10/02
                         if(alwaysTryToConnectState){
                             checkConnectState(context)
                         }
@@ -552,7 +552,7 @@ private fun ConnectComputerSwitch() {
 
 }
 
-// Added by ozobi - 2025/01/03 >
+// Added by Ozobi - 2025/01/03 >
 @Composable
 private fun ShizukuSwitch(){
     val context = LocalContext.current
@@ -650,7 +650,7 @@ private fun VoiceAssistantSwitch(){
 }
 // <
 
-// Added by ozobi - 2024/11/10 >
+// Added by Ozobi - 2024/11/10 >
 @Composable
 private fun DeviceManagerSwitch(){
     val context = LocalContext.current
@@ -728,7 +728,7 @@ suspend fun checkDeviceManagerStatus(interval:Long, count:Int,callBack:()->Unit)
 }
 // <
 
-// Modified by ozobi - 2024/12/02
+// Modified by Ozobi - 2024/12/02
 @Composable
 private fun AlwaysTryToConnect(){
     val context = LocalContext.current
@@ -770,7 +770,7 @@ private fun AlwaysTryToConnect(){
         }
     )
 }
-// Added by ozobi - 2024/12/02
+// Added by Ozobi - 2024/12/02
 @OptIn(DelicateCoroutinesApi::class)
 fun checkConnectState(context: Context){
     val curCheckingStatus = PreferenceManager.getDefaultSharedPreferences(context)
@@ -806,7 +806,7 @@ fun checkConnectState(context: Context){
     }
 }
 
-// Modified by ozobi - 2024/10/26
+// Modified by Ozobi - 2024/10/26
 @Composable
 fun startUpCheck(){
     DevPlugin.isFirstTime = true
@@ -1282,7 +1282,7 @@ fun SwitchTimedTaskScheduler() {
     }
 }
 
-// Added by ozobi - 2025/02/06 > 添加布局分析截图开关
+// Added by Ozobi - 2025/02/06 > 添加布局分析截图开关
 @Composable
 private fun layoutInsScreenshotSwitch() {
     val context = LocalContext.current
@@ -1311,7 +1311,7 @@ private fun layoutInsScreenshotSwitch() {
     )
 }
 // <
-// Added by ozobi - 2025/02/06 > 添加布局分析刷新开关
+// Added by Ozobi - 2025/02/06 > 添加布局分析刷新开关
 @Composable
 private fun layoutInsRefreshSwitch() {
     val context = LocalContext.current
@@ -1339,7 +1339,7 @@ private fun layoutInsRefreshSwitch() {
         }
     )
 }
-// Added by ozobi - 2025/02/06 > 添加布局分析等待捕获开关
+// Added by Ozobi - 2025/02/06 > 添加布局分析等待捕获开关
 @Composable
 private fun layoutInsWaitForCaptureSwitch() {
     val context = LocalContext.current
@@ -1368,7 +1368,7 @@ private fun layoutInsWaitForCaptureSwitch() {
     )
 }
 // <
-// Added by ozobi - 2025/02/06 > 添加布局分析延迟捕获开关
+// Added by Ozobi - 2025/02/06 > 添加布局分析延迟捕获开关
 @Composable
 private fun layoutInsDelayCaptureSwitch() {
     val context = LocalContext.current
@@ -1397,7 +1397,7 @@ private fun layoutInsDelayCaptureSwitch() {
     )
 }
 // <
-// Added by ozobi - 2025/02/06 > 添加夜间模式开关
+// Added by Ozobi - 2025/02/06 > 添加夜间模式开关
 @Composable
 private fun nightModeSwitch() {
     val context = LocalContext.current
@@ -1425,7 +1425,7 @@ private fun nightModeSwitch() {
         }
     )
 }
-// Added by ozobi - 2024/11/06 > 添加关于魔改信息
+// Added by Ozobi - 2024/11/06 > 添加关于魔改信息
 @Composable
 fun showModificationDetailsButton() {
     val context = LocalContext.current
@@ -1455,7 +1455,9 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复(658): 布局层次分析页面显示选中不唯一\n\n"+
+            "修复(658): 布局层次分析页面\n"+
+                    "显示选中不唯一\n"+
+                    "返回无法关闭页面\n\n"+
             "添加: 布局层次分析页面:\n"+
                     "施法按钮\n"+
                     "\t\t数数？为什么不用法术(@-@)\n"+
@@ -1557,7 +1559,7 @@ fun detailsDialog(context: Context){
                     "format: 时间格式, 默认为 \"yyyy-MM-dd HH:mm:ss.SSS\"\n\n"+
             "添加: 设置 http 代理(options)\n"+
                     "设置代理: http.get(url, {proxyHost:\"192.168.1.10\", proxyPort:7890})\n"+
-                    "身份认证: {userName:\"ozobi\", password:"+context.resources.getString(R.string.qq_communication_group)+"}\n\n"+
+                    "身份认证: {userName:\"Ozobi\", password:"+context.resources.getString(R.string.qq_communication_group)+"}\n\n"+
             "添加: 设置 http 尝试次数、单次尝试超时时间(options)\n"+
                     "例如: http.get(url, {maxTry:3, timeout: 5000})\n"+
                     "一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+

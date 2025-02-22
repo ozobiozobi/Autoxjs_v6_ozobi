@@ -64,7 +64,7 @@ public class AboutActivity extends BaseActivity {
             Toast.makeText(this, R.string.text_mobile_qq_not_installed, Toast.LENGTH_SHORT).show();
         }
     }
-    // Added by ozobi - 2024/11/05 >
+    // Added by Ozobi - 2024/11/05 >
     @Click(R.id.mender_email)
     void onMenderEmailClick() {
         String email = getString(R.string.ozobi_text_mender_email);

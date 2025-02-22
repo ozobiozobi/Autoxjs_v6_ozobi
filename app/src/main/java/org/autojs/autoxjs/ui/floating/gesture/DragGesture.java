@@ -26,7 +26,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     private float mInitialTouchX;
     private float mInitialTouchY;
     private View.OnClickListener mOnClickListener;
-    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    // Added by Ozobi - 2025/02/14 > 添加 touchListener
     private View.OnTouchListener mOnTouchListener;
     public boolean isStuckToSide = false;
     // <
@@ -67,7 +67,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     protected boolean onTheEdge() {
         int dX1 = Math.abs(mWindowBridge.getX());
         int dX2 = Math.abs(mWindowBridge.getX() - mWindowBridge.getScreenWidth());
-        isStuckToSide = Math.min(dX1, dX2) < 5;// Added by ozobi - 2025/02/14 > 添加 touchListener
+        isStuckToSide = Math.min(dX1, dX2) < 5;// Added by Ozobi - 2025/02/14 > 添加 touchListener
         return isStuckToSide;
     }
 
@@ -144,7 +144,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     public void setOnDraggedViewClickListener(View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
-    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    // Added by Ozobi - 2025/02/14 > 添加 touchListener
     @Override
     public boolean onSingleTapUp(@NonNull MotionEvent e){
         if (mOnTouchListener != null)

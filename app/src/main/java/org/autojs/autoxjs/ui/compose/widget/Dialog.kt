@@ -28,7 +28,7 @@ fun AskSaveDialog(
     onDismissClick: () -> Unit
 ) {
     if (isShowDialog) {
-        // Added by ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/19
 //        val context = LocalContext.current
 //        val bg = if(PreferenceManager.getDefaultSharedPreferences(context)
 //            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)){

@@ -52,6 +52,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.stardust.app.DialogUtils
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.util.ClipboardUtil
+import com.stardust.util.Ozobi
 import com.stardust.view.accessibility.NodeInfo
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
@@ -64,6 +65,7 @@ import org.autojs.autoxjs.ui.widget.BubblePopupMenu
 import org.autojs.autoxjs.ui.widget.OnItemClickListener
 import pl.openrnd.multilevellistview.ItemInfo
 import pl.openrnd.multilevellistview.MultiLevelListView
+import kotlin.math.floor
 import kotlin.math.roundToInt
 
 /**
@@ -75,12 +77,13 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var mBubblePopMenu: BubblePopupMenu? = null
     private var mNodeInfoView: NodeInfoView? = null
     private var mContext: Context? = null
-    // Added by ozobi - 2025/02/21 >
+    // Added by Ozobi - 2025/02/21 >
     private var nightMode = false
     private var firstNodeList = mutableListOf<NodeInfo>()
     private var secondNodeList = mutableListOf<NodeInfo>()
+    private var isAuth = false
     // <
-    // Added by ozobi - 2025/02/21
+    // Added by Ozobi - 2025/02/21
     fun getNodeList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo>){
         if(nodeInfo == null){
             return
@@ -106,67 +109,74 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         if(first == second){
             return null
         }
-        getNodeList(first, firstNodeList)
-        getNodeList(second, secondNodeList)
-        firstNodeList.reverse()
-        secondNodeList.reverse()
-        var min = firstNodeList.size
-        if(secondNodeList.size < firstNodeList.size){
-            min = secondNodeList.size
+        try{
+            val key = Ozobi.bytesToSecretKey(Ozobi.AESKey,"AES")
+            val data1Arr = byteArrayOf(127,126,-46,-71,38,80,83,127,25,10,-124,105,48,85,-78,-33)
+            val data2Arr = byteArrayOf(114,-8,-61,58,42,120,-112,36,-51,34,-116,-65,65,-118,-123,-90)
+            val str1 = Ozobi.bytesToStr(Ozobi.decrypt(data1Arr,key,"AES"))
+            val str2 = Ozobi.bytesToStr(Ozobi.decrypt(data2Arr,key,"AES"))
+            getNodeList(first, firstNodeList)
+            getNodeList(second, secondNodeList)
+            firstNodeList.reverse()
+            secondNodeList.reverse()
+            var min = firstNodeList.size
+            if(secondNodeList.size < firstNodeList.size){
+                min = secondNodeList.size
+            }
+            var crossIndex = min - 1
+            for(index in 0 until min){
+                if(firstNodeList[index] != secondNodeList[index]){
+                    crossIndex = index - 1
+                    break
+                }
+            }
+            var parentString = ""
+            for(index in crossIndex until firstNodeList.size){
+                if(index < 0){
+                    return null
+                }
+                if(firstNodeList[index] == firstTagNodeInfo){
+                    break
+                }
+                parentString += str1
+            }
+            var childString = ""
+            for(index in crossIndex until secondNodeList.size){
+                if(secondNodeList[index] == secondTagNodeInfo){
+                    break
+                }
+                if(index+1 < secondNodeList.size){
+                    childString += str2 + secondNodeList[index+1].indexInParent + ")"
+                }
+            }
+            val result = parentString + childString
+            return result
+        }catch(e:Exception){
+            return null
         }
-        var crossIndex = min - 1
-        for(index in 0 until min){
-            if(firstNodeList[index] != secondNodeList[index]){
-                crossIndex = index - 1
-                Log.d("ozobiLog","genRelationShip: 相交点下标: $crossIndex")
-                break
-            }
-        }
-        var parentString = ""
-        for(index in crossIndex until firstNodeList.size){
-            if(index < 0){
-                return null
-            }
-            if(firstNodeList[index] == firstTagNodeInfo){
-                break
-            }
-            parentString += ".parent()"
-        }
-        var childString = ""
-        for(index in crossIndex until secondNodeList.size){
-            if(secondNodeList[index] == secondTagNodeInfo){
-                break
-            }
-            if(index+1 < secondNodeList.size){
-                childString += ".child(" + secondNodeList[index+1].indexInParent + ")"
-            }
-        }
-        val result = parentString + childString
-        Log.d("ozobiLog","关系为: $result")
-        return result
     }
     // <
     override fun onCreateView(floatyService: FloatyService): View {
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
+        isAuth = Ozobi.authenticate(mContext)
         nightMode = isNightModeNormal(mContext)
-        // Added by ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/19
         BubblePopupMenu.nightMode = nightMode
         NodeInfoView.nightMode = nightMode
         LayoutHierarchyView.nightMode = nightMode
         // <
         mLayoutHierarchyView = LayoutHierarchyView(mContext)
-
         val view = ComposeView(mContext!!).apply {
             isFocusableInTouchMode = true
-            setOnKeyListener { view, i, event ->
-                if (event.keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP ) {
-                    close()
+            isFocusable = true
+            setOnKeyListener { _, keyCode, event ->//Modified by ozobi - 2025/02/22
+                if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP ) {
+                    showLayoutBounds()
                     return@setOnKeyListener true
                 }
                 return@setOnKeyListener false
             }
         }
-
         view.setContent {
             AutoXJsTheme {
                 Content()
@@ -180,10 +190,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         ViewTreeLifecycleOwner.set(view, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(view) { viewModelStore }
         view.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
-
+        view.requestFocus()// Added by ozobi - 2025/02/22 > 修复: 监听返回键无效
         return view
     }
-    // Modified by ozobi - 2025/02/20 > 添加: 拖动隐藏
+    // Modified by Ozobi - 2025/02/20 > 添加: 拖动隐藏
     @Composable
     private fun Content() {
         val context = LocalContext.current
@@ -234,7 +244,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                         .offset {
                             IntOffset(offset.x.roundToInt(), offset.y.roundToInt())
                         }
-                        .padding(0.dp,0.dp,5.dp,5.dp)
+                        .padding(0.dp,1.dp,5.dp,4.dp)
                 ) {
                     Box(
                         modifier = Modifier
@@ -257,18 +267,21 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             .padding(horizontal = 6.dp)
                             .background(color = Color(0xee315FA8), shape = RoundedCornerShape(8.dp))
                             .clickable {
-                                val result = tagNode()
-                                var hint = "已经躺好在粘贴板[vscode]了"
-                                if(result == null){
-                                    if(firstTagNodeInfo == null){
-                                        hint = "饶了地球一圈, 还是不愿转身"
+                                if(isAuth){
+                                    val result = tagNode()
+                                    var hint = "真相已躺好在粘贴板[vscode]"
+                                    if(result == null){
+                                        if(firstTagNodeInfo == null){
+                                            val ranKey = floor(Math.random() * selfHints.size).toInt()
+                                            hint = selfHints[ranKey]
+                                        }else{
+                                            hint = "再给我一个方向, 还你一个真相"
+                                        }
                                     }else{
-                                        hint = "再给我一个目标"
+                                        ClipboardUtil.setClip(mContext, result)
                                     }
-                                }else{
-                                    ClipboardUtil.setClip(mContext, result)
+                                    mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
                                 }
-                                mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
                             }
                     ) {
                         Text(
@@ -293,21 +306,21 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .padding(horizontal = 6.dp)
-                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
-                            .clickable {
-                                showLayoutBounds()
-                            }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.text_show_layout_bounds_window),
-                            color=Color.White,
-                            modifier = Modifier
-                                .padding(7.dp)
-                        )
-                    }
+//                    Box(
+//                        modifier = Modifier
+//                            .padding(horizontal = 6.dp)
+//                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
+//                            .clickable {
+//                                showLayoutBounds()
+//                            }
+//                    ) {
+//                        Text(
+//                            text = stringResource(R.string.text_show_layout_bounds_window),
+//                            color=Color.White,
+//                            modifier = Modifier
+//                                .padding(7.dp)
+//                        )
+//                    }
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
@@ -350,7 +363,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(v: View) {
-        // Modified by ozobi - 2025/02/19
+        // Modified by Ozobi - 2025/02/19
         if(nightMode){
             mLayoutHierarchyView!!.setBackgroundColor(0xcc000000.toInt())
         }else{
@@ -479,11 +492,23 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     companion object {
         private const val TAG = "FloatingHierarchyView"
-        private const val COLOR_SHADOW = 0xccffffff// Modified by ozobi - 2025/02/19
-        // Added by ozobi - 2025/02/21
+        private const val COLOR_SHADOW = 0xccffffff// Modified by Ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/21
         var firstTagNodeInfo:NodeInfo? = null
         var secondTagNodeInfo:NodeInfo? = null
         var mSelectedNode: NodeInfo? = null
+        private var selfHints:Array<String> = arrayOf(
+            "饶了地球一圈, 终是回到原点",
+            "严重怀疑我花了一千万, 从未来穿越了回来",
+            "我还是我, 颜色不一样的烟火",
+            "谁把我的闪现偷了",
+            "没有困难? 那我造一点吧",
+            "你掉的是这个金节点, 还是这个银节点",
+            "禁止对麻瓜使用魔法",
+            "不是枪没压好, 是想打天上的鸟",
+            "还说没有开挂, 自瞄哪来的",
+            "谎言不会伤人, 所以我跟你说, 你手抖了"
+        )
         // <
     }
 }

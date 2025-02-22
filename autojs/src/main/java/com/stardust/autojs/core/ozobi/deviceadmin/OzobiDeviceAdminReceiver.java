@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 
 import java.util.Date;
 
-/* Created by ozobi - 2024/11/10
+/* Created by Ozobi - 2024/11/10
 * */
 public class OzobiDeviceAdminReceiver extends DeviceAdminReceiver {
 

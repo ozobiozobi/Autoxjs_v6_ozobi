@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.util.Log
 
-// Created by ozobi - 2024/11/23
+// Created by Ozobi - 2024/11/23
 class AddInfoDatabaseHelper(context:Context):SQLiteOpenHelper(context,
     DATABASE_NAME,null,
     DATABASE_VERSION

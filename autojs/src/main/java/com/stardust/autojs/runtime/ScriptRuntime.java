@@ -4,10 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Looper;
-import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 
@@ -81,7 +78,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import com.stardust.util.ViewUtil;
 import com.stardust.util.ViewUtils;
-import com.stardust.util.ozobi;
+import com.stardust.util.Ozobi;
 
 /**
  * Created by Stardust on 2017/1/27.
@@ -180,7 +177,7 @@ public class ScriptRuntime {
     @ScriptVariable
     public Device device;
 
-    // Added by ozobi - 2024/11/10 >
+    // Added by Ozobi - 2024/11/10 >
     @ScriptVariable
     public DeviceAdminReceiverMsg deviceAdminReceiverMsg;
 
@@ -197,7 +194,7 @@ public class ScriptRuntime {
     public AdbIME adbIMEShellCommand;
 
     @ScriptVariable
-    public ViewUtils viewUtils;// Added by ozobi - 2025/02/14 > 添加: viewUtils
+    public ViewUtils viewUtils;// Added by Ozobi - 2025/02/14 > 添加: viewUtils
 //    @ScriptVariable
 //    public SendEventCommand sendeventCommand;
     // <
@@ -266,13 +263,13 @@ public class ScriptRuntime {
         engines = new Engines(builder.mEngineService, this);
         dialogs = new Dialogs(this);
         device = new Device(context);
-        // Added by ozobi - 2024/11/10 >
+        // Added by Ozobi - 2024/11/10 >
         deviceAdminReceiverMsg = DeviceAdminReceiverMsg.INSTANCE;
         devicePolicyManager = DevicePolicyManager.INSTANCE;
         dbHelper = new AddInfoDatabaseHelper(context);
         dbManager = new AddInfoDatabaseManager(dbHelper);
         adbIMEShellCommand = new AdbIME();
-        viewUtils = new ViewUtils();// Added by ozobi - 2025/02/14 > 添加: viewUtils
+        viewUtils = new ViewUtils();// Added by Ozobi - 2025/02/14 > 添加: viewUtils
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
         floaty = new Floaty(uiHandler, ui, this);
@@ -300,11 +297,11 @@ public class ScriptRuntime {
             boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
             Log.d(logTag,"ScriptRuntime: init: is Shizuku BinderAlive: "+ isBinderAlive);
         }
-        // Added by ozobi - 2025/01/26 > Adb键盘
+        // Added by Ozobi - 2025/01/26 > Adb键盘
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
     }
-    // Added by ozobi - 2025/01/19 >
+    // Added by Ozobi - 2025/01/19 >
     public static AdbShell adbConnect(String host,int port){
         return new AdbShell(getApplicationContext(),host,port);
     }
@@ -340,7 +337,7 @@ public class ScriptRuntime {
         return intent;
     }
     // <
-    // Added by ozobi - 2025/02/06 > 获取状态栏高度
+    // Added by Ozobi - 2025/02/06 > 获取状态栏高度
     public static int getStatusBarHeight(){
         return ViewUtil.getStatusBarHeight(getApplicationContext());
     }
@@ -570,10 +567,6 @@ public class ScriptRuntime {
 
     public Continuation createContinuation(Scriptable scope) {
         return Continuation.Companion.create(this, scope);
-    }
-
-    public static String getOzobiString(){
-        return ozobi.INSTANCE.getOzobiString();
     }
 
     public static String getStackTrace(Throwable e, boolean printJavaStackTrace) {

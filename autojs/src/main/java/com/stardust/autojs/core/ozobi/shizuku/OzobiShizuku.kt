@@ -5,7 +5,7 @@ import android.os.IBinder
 import android.util.Log
 import rikka.shizuku.Shizuku
 
-// Created by ozobi - 2025/01/03
+// Created by Ozobi - 2025/01/03
 
 class OzobiShizuku {
     companion object{

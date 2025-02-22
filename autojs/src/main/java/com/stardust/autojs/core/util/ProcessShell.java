@@ -66,7 +66,7 @@ public class ProcessShell extends AbstractShell {
         }
     }
 
-    // Added by ozobi - 2025/01/08 >
+    // Added by Ozobi - 2025/01/08 >
     public static Process getShellProcess() throws IOException {
         return Runtime.getRuntime().exec(COMMAND_SH);
     }

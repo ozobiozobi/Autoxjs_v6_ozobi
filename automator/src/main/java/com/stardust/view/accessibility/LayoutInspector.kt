@@ -25,7 +25,7 @@ class LayoutInspector(private val mContext: Context) {
         private set
     private val mExecutor = Executors.newSingleThreadExecutor()
     private val mCaptureAvailableListeners = CopyOnWriteArrayList<CaptureAvailableListener>()
-    // Added by ozobi - 2024/11/04 >
+    // Added by Ozobi - 2024/11/04 >
     private var width = 0
     private var height = 0
     private val mVibrator: Vibrator = mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -36,7 +36,7 @@ class LayoutInspector(private val mContext: Context) {
     }
 
     /*
-    * Added by ozobi - 2024/10/06
+    * Added by Ozobi - 2024/10/06
     * 获取屏幕宽高
     * */
     private fun getScreenDimensions(): Array<Int> {
@@ -50,7 +50,7 @@ class LayoutInspector(private val mContext: Context) {
     }
     /**/
 
-    // Added by ozobi - 2024/11/04 >
+    // Added by Ozobi - 2024/11/04 >
     private fun isNodeOnScreen(nodeInfo:AccessibilityNodeInfo):Boolean{
         if(width == 0 || height == 0){
             return true
@@ -93,7 +93,7 @@ class LayoutInspector(private val mContext: Context) {
             return false
         }
         /*
-        * Added by ozobi - 2024/10/06
+        * Added by Ozobi - 2024/10/06
         * */
         if(width == 0 || height == 0){
             getScreenDimensions()
@@ -131,8 +131,8 @@ class LayoutInspector(private val mContext: Context) {
         return service.rootInActiveWindow ?: return service.fastRootInActiveWindow()
 
     }
-    // Modified by ozobi - 2024/11/04 >
-    //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)// ozobi: 使用 Android studio 的建议
+    // Modified by Ozobi - 2024/11/04 >
+    //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)// Ozobi: 使用 Android studio 的建议
     private fun refreshChildList(root: AccessibilityNodeInfo?) {
         if (root == null)
             return
@@ -152,7 +152,7 @@ class LayoutInspector(private val mContext: Context) {
     }
 
     companion object {
-        // Added by ozobi - 2025/02/18 >
+        // Added by Ozobi - 2025/02/18 >
         var isRefresh = true
         // <
         private val LOG_TAG = LayoutInspector::class.java.simpleName

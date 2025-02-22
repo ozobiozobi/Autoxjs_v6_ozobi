@@ -9,7 +9,7 @@ import androidx.core.content.ContextCompat.getSystemService
 import com.stardust.autojs.core.ozobi.deviceadmin.OzobiDeviceAdminReceiver
 import com.stardust.autojs.runtime.ScriptRuntime.getApplicationContext
 
-// Created by ozobi - 2024/11/10
+// Created by Ozobi - 2024/11/10
 object DevicePolicyManager {
     val devicePolicyManager: DevicePolicyManager = getSystemService(getApplicationContext(),DevicePolicyManager::class.java) as DevicePolicyManager
     val componentName = ComponentName(getApplicationContext(), OzobiDeviceAdminReceiver::class.java)

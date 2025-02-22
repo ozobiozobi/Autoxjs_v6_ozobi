@@ -90,7 +90,7 @@ class MainActivity : FragmentActivity() {
             else Pref.setFloatingMenuShown(false)
         }
 
-        // Added by ozobi - 2025/01/12 > 绑定自定义 Messenger 服务
+        // Added by Ozobi - 2025/01/12 > 绑定自定义 Messenger 服务
         val serviceConnection =
             MessengerServiceConnection(Looper.getMainLooper())
         val intent = Intent("com.stardust.autojs.messengerAction")

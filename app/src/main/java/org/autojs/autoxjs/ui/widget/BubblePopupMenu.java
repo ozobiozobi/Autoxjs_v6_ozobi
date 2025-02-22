@@ -29,13 +29,13 @@ public class BubblePopupMenu extends PopupWindow {
     private RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private View mLittleTriangle;
-    // Added by ozobi - 2025/02/19
+    // Added by Ozobi - 2025/02/19
     public static boolean nightMode = false;
     // <
 
     public BubblePopupMenu(Context context, List<String> options) {
         super(context);
-        // Added by ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/19
         int menuResource = R.layout.bubble_popup_menu;
         int itemResource = R.layout.bubble_popup_menu_item;
         if(nightMode){

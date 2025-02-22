@@ -39,7 +39,7 @@ public class LevelBeamView extends View {
     private int mLinesWidth;
     private int mLinesOffset;
     private Paint mLinePaint;
-    // Added by ozobi - 2024/11/02 >
+    // Added by Ozobi - 2024/11/02 >
     private Paint mLevelTextPaint;
     private float mTextWidth;
     private float mTextHeight;
@@ -47,8 +47,7 @@ public class LevelBeamView extends View {
     private Boolean mHasDesc;
     private Boolean mHasText;
     public static int levelInfoTextColor = Color.BLACK;
-    public static NodeInfo selectedNode;
-    private int selectedColor;
+    public static NodeInfo selectedNode = null;
     private Paint selectedPaint;
     private NodeInfo curNodeInfo;
     // <
@@ -72,7 +71,7 @@ public class LevelBeamView extends View {
         mLevel = level;
         requestLayout();
     }
-    // Added by ozobi - 2024/11/02 >
+    // Added by Ozobi - 2024/11/02 >
     public void setNodeInfo(Boolean clickable,Boolean hasDesc,Boolean hasText){
         mClickable = clickable;
         mHasDesc = hasDesc;
@@ -106,7 +105,7 @@ public class LevelBeamView extends View {
         mLinePaint.setColor(Color.RED);
         mLinePaint.setStyle(Paint.Style.FILL);
         mLinePaint.setStrokeWidth(mLinesWidth);
-        // Added by ozobi - 2024/11/02 >
+        // Added by Ozobi - 2024/11/02 >
         mLevelTextPaint = new Paint();
         Rect textBounds = new Rect();
         mLevelTextPaint.setTextSize(32f);
@@ -115,7 +114,6 @@ public class LevelBeamView extends View {
         mLevelTextPaint.setTextAlign(Paint.Align.LEFT);
         selectedPaint = new Paint();
         selectedPaint.setStyle(Paint.Style.FILL);
-        selectedPaint.setColor(selectedColor);
         mTextWidth = (float) textBounds.width();
         mTextHeight = (float) textBounds.height();
         mClickable = false;
@@ -126,7 +124,7 @@ public class LevelBeamView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = mPaddingLeft + mPaddingRight + mLevel * (mLinesWidth + mLinesOffset) + (int) mTextWidth;// Modified by ozobi - 2024/11/02 > added textWidth, 将线条数量改为与 level 相同: -1
+        int width = mPaddingLeft + mPaddingRight + mLevel * (mLinesWidth + mLinesOffset) + (int) mTextWidth;// Modified by Ozobi - 2024/11/02 > added textWidth, 将线条数量改为与 level 相同: -1
         int height = View.MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
@@ -134,7 +132,7 @@ public class LevelBeamView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        // Added by ozobi - 2024/11/02 >
+        // Added by Ozobi - 2024/11/02 >
         canvas.drawRect(0, 0, mTextWidth, getHeight(), selectedPaint);
         String levelText = mLevel+">";
         canvas.drawText(levelText,16, mTextHeight +6f, mLevelTextPaint);
@@ -156,8 +154,8 @@ public class LevelBeamView extends View {
         }
         canvas.drawText(infoText,16, (mTextHeight +9f)*2, mLevelTextPaint);
         // <
-         for (int lvl = 0; lvl < mLevel; lvl++) {// Modified by ozobi - 2025/01/30 > 将线条数量改为与 level 相同
-            float LINE_X = mTextWidth + mPaddingLeft + lvl * mLinesWidth;// Modified by ozobi - 2024/11/02 > added textWidth
+         for (int lvl = 0; lvl < mLevel; lvl++) {// Modified by Ozobi - 2025/01/30 > 将线条数量改为与 level 相同
+            float LINE_X = mTextWidth + mPaddingLeft + lvl * mLinesWidth;// Modified by Ozobi - 2024/11/02 > added textWidth
             if (lvl >= 1) {
                 LINE_X += lvl * mLinesOffset;
             }

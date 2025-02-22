@@ -417,7 +417,7 @@
             android:name="org.autojs.autoxjs.ui.main.MainActivity"
             android:exported="true"
             android:launchMode="singleTask"/>
-<!--        // Modified by ozobi - 2025/02/16 > 添加: 防止系统在横竖屏切换时重启 Activity，从而避免布局和数据的重新加载 : android:configChanges="orientation|screenSize|keyboardHidden"-->
+<!--        // Modified by Ozobi - 2025/02/16 > 添加: 防止系统在横竖屏切换时重启 Activity，从而避免布局和数据的重新加载 : android:configChanges="orientation|screenSize|keyboardHidden"-->
         <activity
             android:name="org.autojs.autoxjs.external.shortcut.ShortcutActivity"
             android:exported="true"
@@ -536,7 +536,7 @@
                 <action android:name="android.service.quicksettings.action.QS_TILE" />
             </intent-filter>
         </service>
-<!--        Added by ozobi - 2024/11/10 >添加设备管理员 -->
+<!--        Added by Ozobi - 2024/11/10 >添加设备管理员 -->
 <!--        <receiver android:name=".OzobiDeviceAdminReceiver"-->
 <!--            android:permission="android.permission.BIND_DEVICE_ADMIN">-->
 <!--            <meta-data android:name="android.app.device_admin"-->

@@ -1,7 +1,6 @@
 package com.stardust.util;
 
 import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class MD5 {
 
@@ -27,9 +26,9 @@ public class MD5 {
         }
         return hexString.toString();
     }
-    // Added by ozobi - 2024/11/20 >
+    // Added by Ozobi - 2024/11/20 > 邮箱: ozobi@qq.com
     public static String ozobiMD5(String message) {
-        String m = message + ozobi.INSTANCE.getOzobiString();
+        String m = message + Ozobi.ozobiString;
         byte[] bytes = md5Bytes(m);
         StringBuilder hexString = new StringBuilder(32);
         for (byte b : bytes) {

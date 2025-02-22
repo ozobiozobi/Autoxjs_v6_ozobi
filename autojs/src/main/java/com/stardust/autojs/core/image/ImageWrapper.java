@@ -166,7 +166,7 @@ public class ImageWrapper {
         }
         return new ImageWrapper(mBitmap.copy(mBitmap.getConfig(), true), mMat.clone());
     }
-    // Added by ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    // Added by Ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
     public ImageWrapper clone(boolean isNew) {
         if(!isNew || mBitmap == null || mMat == null){
 //            Log.d("ozobiLog","ImageWrapper: clone: !isNew || mBitmap == null || mMat == null");

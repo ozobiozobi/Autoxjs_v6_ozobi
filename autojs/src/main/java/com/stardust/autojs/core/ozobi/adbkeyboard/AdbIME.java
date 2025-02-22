@@ -59,10 +59,10 @@ public class AdbIME extends InputMethodService {
         return " am broadcast -a ADB_CLEAR_TEXT";
     }
     public static String enableAdbIME(){
-        return " ime enable "+packageName+"/com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME";
+        return " ime enable "+packageName+"/com.stardust.autojs.core.Ozobi.adbkeyboard.AdbIME";
     }
     public static String setAdbIME(){
-        return " ime set "+packageName+"/com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME";
+        return " ime set "+packageName+"/com.stardust.autojs.core.Ozobi.adbkeyboard.AdbIME";
     }
     public static String resetIME(){
         return " ime reset";

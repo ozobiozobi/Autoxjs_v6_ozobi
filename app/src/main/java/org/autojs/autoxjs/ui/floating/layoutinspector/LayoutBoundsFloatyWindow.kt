@@ -33,7 +33,7 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
     override fun onCreateView(floatyService: FloatyService): View {
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
         nightMode = isNightModeNormal(mContext)
-        // Added by ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/19
         BubblePopupMenu.nightMode = nightMode
         NodeInfoView.nightMode = nightMode
         LayoutHierarchyView.nightMode = nightMode
@@ -118,7 +118,7 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
         FloatyService.addWindow(window)
     }
     private fun ensureDialog() {
-        // Added by ozobi - 2025/02/19
+        // Added by Ozobi - 2025/02/19
         var theme = Theme.LIGHT
         if(nightMode){
             theme = Theme.DARK
@@ -148,7 +148,7 @@ open class LayoutBoundsFloatyWindow(private val mRootNode: NodeInfo?) : FullScre
                 }
             }
             inspector.addCaptureAvailableListener(listener)
-            if (inspector.captureCurrentWindow()) {// Modified by ozobi - 2024/10/31
+            if (inspector.captureCurrentWindow()) {// Modified by Ozobi - 2024/10/31
                 inspector.removeCaptureAvailableListener(listener)
             }
         }

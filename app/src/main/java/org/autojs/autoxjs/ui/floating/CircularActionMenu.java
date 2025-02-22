@@ -76,7 +76,7 @@ public class CircularActionMenu extends FrameLayout {
     private boolean mCollapsing = false;
     private float mRadius = 200;
     private float mAngle = (float) Math.toRadians(90);
-    private long mDuration = 100;// Modified by ozobi - 2025/02/14 > 更改动画时长
+    private long mDuration = 100;// Modified by Ozobi - 2025/02/14 > 更改动画时长
     private int mExpandedHeight = -1;
     private int mExpandedWidth = -1;
     private final Interpolator mInterpolator = new FastOutSlowInInterpolator();

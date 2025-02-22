@@ -35,7 +35,7 @@ public class CircularMenuWindow extends FloatyWindow {
     protected WindowManager.LayoutParams mActionViewWindowLayoutParams;
     protected WindowManager.LayoutParams mMenuWindowLayoutParams;
     protected View.OnClickListener mActionViewOnClickListener;
-    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    // Added by Ozobi - 2025/02/14 > 添加 touchListener
     protected View.OnTouchListener mActionViewOnTouchListener;
     // <
     protected float mKeepToSideHiddenWidthRadio;
@@ -127,7 +127,7 @@ public class CircularMenuWindow extends FloatyWindow {
             }
             Log.d("ozobiLog","CircularMenuWindow: initClickListener");
         });
-        // Added by ozobi - 2025/02/14 > 使用抬起触发展开和折叠
+        // Added by Ozobi - 2025/02/14 > 使用抬起触发展开和折叠
         setOnActionViewTouchListener((v,e)->{
              if(e.getAction() == MotionEvent.ACTION_UP){
                  Log.d("ozobiLog","CircularMenuWindow: touchUp: ");
@@ -144,7 +144,7 @@ public class CircularMenuWindow extends FloatyWindow {
         if (mActionViewOnClickListener != null) {
             mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
         }
-        // Added by ozobi - 2025/02/14 > 添加 touchListener
+        // Added by Ozobi - 2025/02/14 > 添加 touchListener
         if(mActionViewOnClickListener != null){
             mDragGesture.setOnDraggedViewTouchListener(mActionViewOnTouchListener);
         }
@@ -167,7 +167,7 @@ public class CircularMenuWindow extends FloatyWindow {
             mDragGesture.setOnDraggedViewClickListener(listener);
         }
     }
-    // Added by ozobi - 2025/02/14 > 添加 touchListener
+    // Added by Ozobi - 2025/02/14 > 添加 touchListener
     public void setOnActionViewTouchListener(View.OnTouchListener listener){
         if (mDragGesture == null) {
             mActionViewOnTouchListener = listener;
@@ -176,7 +176,7 @@ public class CircularMenuWindow extends FloatyWindow {
         }
     }
     // <
-    // Added by ozobi - 2025/02/18
+    // Added by Ozobi - 2025/02/18
     public void setAlpha(float alpha){
         mCircularActionMenu.setAlpha(alpha);
     }

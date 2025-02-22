@@ -113,7 +113,7 @@ open class AssetsProjectLauncher(
     }
 
     private fun initKey(projectConfig: ProjectConfig) {
-        // Modified by ozobi - 2024/11/20 > md5 -> ozobiMD5
+        // Modified by Ozobi - 2024/11/20 > md5 -> ozobiMD5
         val key =
             MD5.ozobiMD5(projectConfig.packageName + projectConfig.versionName + projectConfig.mainScript)
         val vec = MD5.ozobiMD5(projectConfig.buildInfo.buildId + projectConfig.name).substring(0, 16)

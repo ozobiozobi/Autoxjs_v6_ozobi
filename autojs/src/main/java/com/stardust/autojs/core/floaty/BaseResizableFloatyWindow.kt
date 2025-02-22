@@ -48,7 +48,7 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
         super.setWindowView(windowView)
         super.setWindowManager(context.getSystemService(FloatyService.WINDOW_SERVICE) as WindowManager)
         super.setWindowBridge(super.onCreateWindowBridge(layoutParams))
-        // Added by ozobi - 2025/01/17 : 悬浮窗以位置屏幕左上角为原点 >
+        // Added by Ozobi - 2025/01/17 : 悬浮窗以位置屏幕左上角为原点 >
         val windowLayoutParams = windowLayoutParams
         windowLayoutParams.flags = windowLayoutParams.flags or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         // <

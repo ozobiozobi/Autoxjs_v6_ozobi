@@ -113,7 +113,7 @@ public class Device {
         }
     }
 
-    // Added by ozobi - 2025/02/16 > 添加: 获取屏幕实时宽高
+    // Added by Ozobi - 2025/02/16 > 添加: 获取屏幕实时宽高
     public Point getCurScreenSize(){
         WindowManager wm = getSystemService(Context.WINDOW_SERVICE);
         Point screenSize = new Point();

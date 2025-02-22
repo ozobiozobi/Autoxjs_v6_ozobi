@@ -16,13 +16,13 @@ import java.util.zip.CRC32
  */
 @Keep
 data class ProjectConfig(
-    var name: String? = "temporaryName",// Modified by ozobi - 2025/01/10 > null --> "temporaryName"
-    var packageName: String? = "com.temporary.pkg",// Modified by ozobi - 2025/01/10 > null --> "com.temporary.pkg"
+    var name: String? = "temporaryName",// Modified by Ozobi - 2025/01/10 > null --> "temporaryName"
+    var packageName: String? = "com.temporary.pkg",// Modified by Ozobi - 2025/01/10 > null --> "com.temporary.pkg"
     var versionCode: Int = 1,
     var versionName: String = "1.0.0",
     var icon: String? = null,
     @SerializedName("main")
-    var mainScript: String? = "main.js",// Modified by ozobi - 2025/01/10 > null --> "main.js"
+    var mainScript: String? = "main.js",// Modified by Ozobi - 2025/01/10 > null --> "main.js"
     var scripts: Map<String, ScriptConfig> = HashMap(),
     @SerializedName("build")
     var buildInfo: BuildInfo = BuildInfo(),
@@ -85,7 +85,7 @@ data class ProjectConfig(
                 if (isDirectory) return@with File(this, CONFIG_FILE_NAME)
                 null
             }
-            // Modified by ozobi - 2025/01/10 > 如果文件不存在且是远程项目临时文件夹, 则返回默认 ProjectConfig
+            // Modified by Ozobi - 2025/01/10 > 如果文件不存在且是远程项目临时文件夹, 则返回默认 ProjectConfig
             if(path.toString().contains("/cache/remote_project/")){
                 if(file == null){
                     return ProjectConfig()

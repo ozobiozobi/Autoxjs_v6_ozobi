@@ -7,7 +7,7 @@
         android:label="@string/app_name"
         android:supportsRtl="true">
 
-        <!--        添加自定义 Messenger 服务声明: ozobi - 2025/01/12 -->
+        <!--        添加自定义 Messenger 服务声明: Ozobi - 2025/01/12 -->
         <service
             android:name=".ServiceMessenger"
             android:enabled="true"

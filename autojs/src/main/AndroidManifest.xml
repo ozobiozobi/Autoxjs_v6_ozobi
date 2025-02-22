@@ -64,7 +64,7 @@
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />
 
-        <!--        Added by ozobi - 2024/11/10 >添加设备管理员 -->
+        <!--        Added by Ozobi - 2024/11/10 >添加设备管理员 -->
         <receiver android:name=".core.ozobi.deviceadmin.OzobiDeviceAdminReceiver"
             android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
@@ -77,7 +77,7 @@
             </intent-filter>
         </receiver>
         <!--        // < -->
-        <!--        添加 shuzukuProvider 声明 : ozobi - 2025/01/03 -->
+        <!--        添加 shuzukuProvider 声明 : Ozobi - 2025/01/03 -->
         <provider
             android:authorities="${applicationId}.shizuku"
             android:multiprocess="false"
@@ -87,7 +87,7 @@
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
         <!--        // < -->
 
-        <!--        添加语音助手服务声明 : ozobi - 2025/01/03-->
+        <!--        添加语音助手服务声明 : Ozobi - 2025/01/03-->
         <service
             android:name=".core.ozobi.voiceassistant.OzobiAssistInteractionService"
             android:exported="true"
@@ -103,7 +103,7 @@
             android:permission="android.permission.BIND_VOICE_INTERACTION"
             android:exported="true" />
         <!--        //-->
-<!--        添加自定义 Messenger 服务声明: ozobi - 2025/01/12 -->
+<!--        添加自定义 Messenger 服务声明: Ozobi - 2025/01/12 -->
 <!--        <service-->
 <!--            android:name=".ServiceMessenger"-->
 <!--            android:enabled="true"-->
@@ -114,7 +114,7 @@
 <!--            </intent-filter>-->
 <!--        </service>-->
 <!--        //-->
-<!--        添加ADB键盘:ozobi - 2025/01/18     -->
+<!--        添加ADB键盘:Ozobi - 2025/01/18     -->
         <service android:name=".core.ozobi.adbkeyboard.AdbIME"
             android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">
@@ -124,7 +124,7 @@
             <meta-data android:name="android.view.im" android:resource="@xml/methods"/>
         </service>
 <!--        //-->
-<!--        AdbShell 服务 : ozobi - 2025/01/18-->
+<!--        AdbShell 服务 : Ozobi - 2025/01/18-->
         <service android:name=".core.ozobi.remoteadb.service.ShellService" />
 <!--        //-->
     </application>

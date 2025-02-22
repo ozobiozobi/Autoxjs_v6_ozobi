@@ -352,7 +352,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
                         .timedTask(mSelectedItem.toScriptFile());
                 notifyOperated();
                 break;
-            // Annotated by ozobi - 2024/11/11 > 移除打包
+            // Annotated by Ozobi - 2024/11/11 > 移除打包
             case R.id.action_build_apk:
                 BuildActivity.Companion.start(getContext(),mSelectedItem.getPath());
                 notifyOperated();

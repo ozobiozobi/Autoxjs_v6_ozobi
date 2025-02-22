@@ -1,6 +1,6 @@
 package com.stardust.autojs.core.ozobi.inputevent;
 
-// Created by ozobi - 2025/01/28
+// Created by Ozobi - 2025/01/28
 
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_X;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_Y;

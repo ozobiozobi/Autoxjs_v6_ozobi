@@ -17,12 +17,10 @@ import android.widget.ListView
 import android.widget.TextView
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitmap
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
+import com.stardust.util.Ozobi
 import com.stardust.util.ViewUtil
 import com.stardust.view.accessibility.NodeInfo
 import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.floating.layoutinspector.LayoutHierarchyFloatyWindow.Companion.mSelectedNode
 import org.autojs.autoxjs.ui.widget.LevelBeamView
@@ -53,7 +51,7 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             false
         }
-    // Added by ozobi - 2025/02/19 >
+    // Added by Ozobi - 2025/02/19 >
     companion object{
         var nightMode = false
     }
@@ -70,6 +68,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     private var mClickedColor = -0x664d4c49
     private var mRootNode: NodeInfo? = null
     private val mInitiallyExpandedNodes: MutableSet<NodeInfo?> = HashSet()
+    private var isAuth = false
 
     constructor(context: Context?) : super(context) {
         init()
@@ -98,7 +97,8 @@ open class LayoutHierarchyView : MultiLevelListView {
     @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
-        // Added by ozobi - 2025/02/19 >
+        // Added by Ozobi - 2025/02/19 >
+        isAuth = Ozobi.authenticate(context)
         if(nightMode){
             LevelBeamView.levelInfoTextColor = Color.WHITE
         }else{
@@ -154,7 +154,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         boundsPaint!!.color = Color.DKGRAY
         boundsPaint!!.style = Paint.Style.STROKE
         boundsPaint!!.isAntiAlias = true
-        boundsPaint!!.strokeWidth = 10f// Modified by ozobi - 2025/02/21
+        boundsPaint!!.strokeWidth = 10f// Modified by Ozobi - 2025/02/21
         mStatusBarHeight = ViewUtil.getStatusBarHeight(context)
     }
 
@@ -172,7 +172,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     fun setOnItemLongClickListener(onNodeInfoSelectListener: (view: View, nodeInfo: NodeInfo) -> Unit) {
         mOnItemLongClickListener = onNodeInfoSelectListener
     }
-    // Added by ozobi - 2024/11/04 >
+    // Added by Ozobi - 2024/11/04 >
     fun expandChild(nodeInfo: NodeInfo?){
         if(nodeInfo == null){
             return
@@ -184,7 +184,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
     }
     fun expand(){
-        mInitiallyExpandedNodes.clear()
+//        mInitiallyExpandedNodes.clear()
         expandChild(mClickedNodeInfo)
         val parents = Stack<NodeInfo?>()
         mClickedNodeInfo?.let { searchNodeParents(it, mRootNode, parents) }
@@ -194,12 +194,14 @@ open class LayoutHierarchyView : MultiLevelListView {
     // <
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Added by ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
-        if (isCurImgBitmapValid && curImgBitmap != null) {
-            if (width == curImgBitmap!!.height || height == curImgBitmap!!.width) {
-                Log.d("ozobiLog", "异常截图, 不绘制")
-            } else {
-                canvas.drawBitmap(curImgBitmap!!, 0f, -mStatusBarHeight.toFloat(), null)
+        // Added by Ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+        if(isAuth){
+            if (isCurImgBitmapValid && curImgBitmap != null) {
+                if (width == curImgBitmap!!.height || height == curImgBitmap!!.width) {
+                    Log.d("ozobiLog", "异常截图, 不绘制")
+                } else {
+                    canvas.drawBitmap(curImgBitmap!!, 0f, -mStatusBarHeight.toFloat(), null)
+                }
             }
         }
         if (mBoundsInScreen == null) {
@@ -221,12 +223,14 @@ open class LayoutHierarchyView : MultiLevelListView {
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
         searchNodeParents(selectedNode, mRootNode, parents)
-        mClickedNodeInfo = parents.peek()
+        if(parents.isNotEmpty()){// Added by Ozobi - 2025/02/22 >
+            mClickedNodeInfo = parents.peek()
+        }
         mInitiallyExpandedNodes.addAll(parents)
         mAdapter!!.reloadData()
     }
 
-    // Added by ozobi - 2025/02/20 >
+    // Added by Ozobi - 2025/02/20 >
     fun ozobiSetSelectedNode(selectedNode: NodeInfo){
         mClickedNodeInfo = selectedNode
         LevelBeamView.selectedNode = mClickedNodeInfo
@@ -305,51 +309,47 @@ open class LayoutHierarchyView : MultiLevelListView {
             val viewHolder: ViewHolder
             val convertView1 = if (convertView != null) {
                 viewHolder = convertView.tag as ViewHolder
-//                convertView.setBackgroundColor(color.toInt())// Added by ozobi - 2025/02/19
+//                convertView.setBackgroundColor(color.toInt())// Added by Ozobi - 2025/02/19
                 convertView
             } else {
                 val convertView2 =
                     LayoutInflater.from(context).inflate(itemResource, null)
                 viewHolder = ViewHolder(convertView2)
                 convertView2.tag = viewHolder
-//                convertView2.setBackgroundColor(color.toInt())// Added by ozobi - 2025/02/19
+//                convertView2.setBackgroundColor(color.toInt())// Added by Ozobi - 2025/02/19
                 convertView2
             }
-            // Added by ozobi - 2025/02/19
+            // Added by Ozobi - 2025/02/19
             if(nightMode){
                 viewHolder.levelBeamView.alpha = 0.9f
             }
             // <
-            var textInfo = ""
-            nodeInfo.desc?.let{
-                if(it.isNotEmpty()){
-                    textInfo += if(it.indexOf("\n") != -1){
-                        it.substring(0,it.indexOf("\n"))
-                    }else{
-                        it
+            if(isAuth){
+                var textInfo = ""
+                var descInfo = ""
+                nodeInfo.desc?.let{
+                    if(it.isNotEmpty()){
+                        descInfo += if(it.indexOf("\n") != -1){
+                            it.substring(0,it.indexOf("\n"))
+                        }else{
+                            it
+                        }
                     }
                 }
-            }
-            nodeInfo.text.let {
-                if(it.isNotEmpty()){
-                    if(textInfo.length > 15){
-                        textInfo = textInfo.substring(0,12) + "..."
-                    }
-                    textInfo += if(it.indexOf("\n") != -1){
-                        " <> " + it.substring(0,it.indexOf("\n"))
-                    }else{
-                        " <> $it"
+                nodeInfo.text.let {
+                    if(it.isNotEmpty()){
+                        textInfo += if(it.indexOf("\n") != -1){
+                            it.substring(0,it.indexOf("\n"))
+                        }else{
+                            it
+                        }
                     }
                 }
+                val shotClassName = simplifyClassName(nodeInfo.className)
+                viewHolder.nameView.text = shotClassName + "\n" +descInfo + "\n" + textInfo
+            }else{
+                viewHolder.nameView.text = simplifyClassName(nodeInfo.className)
             }
-            textInfo += "\n"
-            var shotClassName = simplifyClassName(nodeInfo.className)
-            shotClassName?.let{
-                if(it.indexOf(".") != -1){
-                    shotClassName = "(s)" + it.substring(it.lastIndexOf("."))
-                }
-            }
-            viewHolder.nameView.text = shotClassName +"\n"+ textInfo
             viewHolder.nodeInfo = nodeInfo
             if (viewHolder.infoView.visibility == VISIBLE) viewHolder.infoView.text =
                 getItemInfoDsc(itemInfo)
@@ -363,7 +363,7 @@ open class LayoutHierarchyView : MultiLevelListView {
             if (nodeInfo == mClickedNodeInfo) {
                 convertView1?.let { setClickedItem(it, nodeInfo) }
             }
-            // Added by ozobi - 2024/11/02 >
+            // Added by Ozobi - 2024/11/02 >
             val clickable = nodeInfo.clickable
             var hasDesc = false
             var hasText = false

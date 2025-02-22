@@ -316,7 +316,7 @@ open class ExplorerViewKt : ThemeColorSwipeRefreshLayout, OnRefreshListener,
                     .timedTask(selectedItem!!.toScriptFile())
                 notifyOperated()
             }
-            // Annotated by ozobi - 2024/11/11 > 移除打包
+            // Annotated by Ozobi - 2024/11/11 > 移除打包
             R.id.action_build_apk -> {
                 BuildActivity.start(context, selectedItem!!.path)
                 notifyOperated()

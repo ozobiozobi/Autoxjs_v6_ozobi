@@ -12,7 +12,7 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue
 
-// Created by ozobi - 2025/01/13
+// Created by Ozobi - 2025/01/13
 
 class ScreenCapture( private val mContext: Context) {
 //    private val mScreenCaptureRequester: ScreenCaptureRequester = ScreenCaptureManager()

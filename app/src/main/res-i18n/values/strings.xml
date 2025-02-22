@@ -15,7 +15,7 @@
     <string name="developer" translatable="false">aaron</string>
     <string name="qq" translatable="false">895775483</string>
     <string name="text_qq" translatable="false">QQ群：895775483</string>
-<!--    // Added by ozobi - 2024/11/05-->
+<!--    // Added by Ozobi - 2024/11/05-->
     <string name="ok">OK</string>
     <string name="qq_communication_group">1014521824</string>
     <string name="ozobi_modification_content" translatable="false">魔改内容</string>
@@ -23,7 +23,7 @@
     <string name="ozobi_title_modification_details" translatable="false">魔改细节</string>
     <string name="ozobi_text_about_mender" translatable="false">~~~~~~~~ 关于魔改 ~~~~~~~~</string>
     <string name="ozobi_mender_name" translatable="false">ozobi</string>
-    <string name="ozobi_text_mender_email" translatable="false">ozobi@proton.me</string>
+    <string name="ozobi_text_mender_email" translatable="false">ozobi@qq.com</string>
     <string name="ozobi_text_email_already_copy_to_clip" translatable="false">邮箱已复制到粘贴板</string>
     <string name="ozobi_text_isCapture_Screenshot" translatable="false">截图分析_ozobi</string>
     <string name="ozobi_text_isCapture_refresh" translatable="false">刷新分析_ozobi</string>
@@ -266,12 +266,12 @@
     <string name="text_jump_to_start">转到文件开始</string>
     <string name="text_jump_to_line_start">转到行首</string>
     <string name="text_jump_to_line_end">转到行尾</string>
-<!--    // Added by ozobi - 2024/11/04-->
+<!--    // Added by Ozobi - 2024/11/04-->
     <string name="text_expand_all_hierarchy">展开</string>
     <string name="text_spell_casting">施法</string>
     <string name="text_show_layout_bounds_window">边界</string>
 <!--    //<-->
-<!--    // Modified by ozobi - 2024/11/04 > 退出悬浮窗 -> 退出-->
+<!--    // Modified by Ozobi - 2024/11/04 > 退出悬浮窗 -> 退出-->
     <string name="text_exit_floating_window">退出</string>
     <string name="text_select_save_path">保存到</string>
     <string name="text_cancel_download">取消下载</string>
@@ -427,7 +427,7 @@
     <string name="text_notification">通知</string>
     <string name="apk_builder_plugin_version_too_low">打包插件版本过低，打包的应用可能无法正常运行。是否立即下载对应版本的打包插件？</string>
     <string name="text_inspect_layout_bounds">布局范围分析</string>
-    <!--    // Added by ozobi - 2024/11/10 >-->
+    <!--    // Added by Ozobi - 2024/11/10 >-->
     <string name="text_Shizuku" >Shizuku</string>
     <string name="key_voiceAssistant" >数字助理开关</string>
     <string name="text_voiceAssistant" >数字助理</string>
