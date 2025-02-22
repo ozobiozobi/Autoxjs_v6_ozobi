@@ -3,32 +3,32 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="42sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:padding="3sp">
-
-    <ImageView
-        android:id="@+id/dataItemArrow"
-        android:layout_width="15sp"
-        android:layout_height="42sp"
-        android:layout_alignParentStart="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="2sp"
-        android:src="@drawable/arrow_down"
-        android:background="#ffffff"/>
 
     <org.autojs.autoxjs.ui.widget.LevelBeamView
         android:id="@+id/dataItemLevelBeam"
         android:layout_width="wrap_content"
         android:layout_height="42sp"
-        android:layout_toEndOf="@+id/dataItemArrow"
+        android:layout_alignParentStart="true"
         android:background="#eeffffff"/>
+
+    <ImageView
+        android:id="@+id/dataItemArrow"
+        android:layout_width="15sp"
+        android:layout_height="42sp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/dataItemLevelBeam"
+        android:src="@drawable/arrow_down"
+        android:background="#ffffff"
+        app:tint="#000000"/>
+
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="42sp"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="3sp"
-        android:layout_marginRight="3sp"
-        android:layout_toEndOf="@+id/dataItemLevelBeam"
+        android:layout_toEndOf="@+id/dataItemArrow"
         android:gravity="start|center_vertical"
         android:orientation="vertical">
 

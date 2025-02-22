@@ -306,21 +306,21 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-//                    Box(
-//                        modifier = Modifier
-//                            .padding(horizontal = 6.dp)
-//                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
-//                            .clickable {
-//                                showLayoutBounds()
-//                            }
-//                    ) {
-//                        Text(
-//                            text = stringResource(R.string.text_show_layout_bounds_window),
-//                            color=Color.White,
-//                            modifier = Modifier
-//                                .padding(7.dp)
-//                        )
-//                    }
+                    Box(
+                        modifier = Modifier
+                            .padding(horizontal = 6.dp)
+                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
+                            .clickable {
+                                showLayoutBounds()
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_show_layout_bounds_window),
+                            color=Color.White,
+                            modifier = Modifier
+                                .padding(7.dp)
+                        )
+                    }
                     Box(
                         modifier = Modifier
                             .align(Alignment.CenterVertically)
@@ -365,7 +365,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     override fun onViewCreated(v: View) {
         // Modified by Ozobi - 2025/02/19
         if(nightMode){
-            mLayoutHierarchyView!!.setBackgroundColor(0xcc000000.toInt())
+            mLayoutHierarchyView!!.setBackgroundColor(0xaaffffff.toInt())
         }else{
             mLayoutHierarchyView!!.setBackgroundColor(COLOR_SHADOW.toInt())
         }
@@ -492,11 +492,13 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     companion object {
         private const val TAG = "FloatingHierarchyView"
-        private const val COLOR_SHADOW = 0xccffffff// Modified by Ozobi - 2025/02/19
+        private const val COLOR_SHADOW = 0xaa000000// Modified by Ozobi - 2025/02/19
         // Added by Ozobi - 2025/02/21
         var firstTagNodeInfo:NodeInfo? = null
         var secondTagNodeInfo:NodeInfo? = null
         var mSelectedNode: NodeInfo? = null
+        var curSelectedNodeChildren : List<NodeInfo>? = null
+        var curSelectedNodeParents = mutableListOf<NodeInfo?>()
         private var selfHints:Array<String> = arrayOf(
             "饶了地球一圈, 终是回到原点",
             "严重怀疑我花了一千万, 从未来穿越了回来",

@@ -222,9 +222,14 @@ open class LayoutHierarchyView : MultiLevelListView {
     fun setSelectedNode(selectedNode: NodeInfo) {
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
+        LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()// Added by ozobi - 2025/02/23
         searchNodeParents(selectedNode, mRootNode, parents)
         if(parents.isNotEmpty()){// Added by Ozobi - 2025/02/22 >
             mClickedNodeInfo = parents.peek()
+            LayoutHierarchyFloatyWindow.curSelectedNodeChildren = mClickedNodeInfo!!.getChildren()
+            LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
+            getParentsList(mClickedNodeInfo, LayoutHierarchyFloatyWindow.curSelectedNodeParents)
+            LayoutHierarchyFloatyWindow.curSelectedNodeParents.removeAt(0)
         }
         mInitiallyExpandedNodes.addAll(parents)
         mAdapter!!.reloadData()
@@ -233,6 +238,10 @@ open class LayoutHierarchyView : MultiLevelListView {
     // Added by Ozobi - 2025/02/20 >
     fun ozobiSetSelectedNode(selectedNode: NodeInfo){
         mClickedNodeInfo = selectedNode
+        LayoutHierarchyFloatyWindow.curSelectedNodeChildren = mClickedNodeInfo!!.getChildren()
+        LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
+        getParentsList(mClickedNodeInfo, LayoutHierarchyFloatyWindow.curSelectedNodeParents)
+        LayoutHierarchyFloatyWindow.curSelectedNodeParents.removeAt(0)
         LevelBeamView.selectedNode = mClickedNodeInfo
         if(mInitiallyExpandedNodes.contains(mClickedNodeInfo)){
             mInitiallyExpandedNodes.remove(mClickedNodeInfo)
@@ -240,6 +249,13 @@ open class LayoutHierarchyView : MultiLevelListView {
             mInitiallyExpandedNodes.add(mClickedNodeInfo)
         }
         mAdapter!!.reloadData()
+    }
+    fun getParentsList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo?>){
+        if(nodeInfo == null){
+            return
+        }
+        nodeList.add(nodeInfo)
+        getParentsList(nodeInfo.parent, nodeList)
     }
     // <
 
@@ -319,12 +335,13 @@ open class LayoutHierarchyView : MultiLevelListView {
 //                convertView2.setBackgroundColor(color.toInt())// Added by Ozobi - 2025/02/19
                 convertView2
             }
-            // Added by Ozobi - 2025/02/19
-            if(nightMode){
-                viewHolder.levelBeamView.alpha = 0.9f
-            }
-            // <
             if(isAuth){
+                if(nightMode){
+                    viewHolder.levelBeamView.alpha = 0.9f
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xff266926.toInt())
+                }else{
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xff77FF7D.toInt())
+                }
                 var textInfo = ""
                 var descInfo = ""
                 nodeInfo.desc?.let{
@@ -364,17 +381,24 @@ open class LayoutHierarchyView : MultiLevelListView {
                 convertView1?.let { setClickedItem(it, nodeInfo) }
             }
             // Added by Ozobi - 2024/11/02 >
-            val clickable = nodeInfo.clickable
-            var hasDesc = false
-            var hasText = false
-            if(nodeInfo.desc != null){
-                hasDesc = true
-            }
-            if(nodeInfo.text.isNotEmpty()){
-                hasText = true
-            }
-            viewHolder.levelBeamView.setNodeInfo(clickable,hasDesc,hasText)
+            viewHolder.levelBeamView.setNodeClickable(nodeInfo.clickable)
             viewHolder.levelBeamView.setCurNodeInfo(nodeInfo)
+            LayoutHierarchyFloatyWindow.curSelectedNodeChildren?.let {
+                if(it.contains(nodeInfo)){
+                    if(nightMode){
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xff535B94.toInt())
+                    }else{
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xff9BA8F2.toInt())
+                    }
+                }
+            }
+            if(mClickedNodeInfo != nodeInfo && LayoutHierarchyFloatyWindow.curSelectedNodeParents.contains(nodeInfo)){
+                if(nightMode){
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xff833491.toInt())
+                }else{
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xffEA81FF.toInt())
+                }
+            }
             // <
             return convertView1!!
         }

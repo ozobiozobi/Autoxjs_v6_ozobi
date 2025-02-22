@@ -1456,12 +1456,15 @@ fun detailsDialog(context: Context){
             R.id.modification_detail,
             R.drawable.ic_ali_log,
             "修复(658): 布局层次分析页面\n"+
-                    "显示选中不唯一\n"+
-                    "返回无法关闭页面\n\n"+
+                    "-显示选中不唯一\n"+
+                    "-返回无法关闭页面\n\n"+
             "添加: 布局层次分析页面:\n"+
-                    "施法按钮\n"+
+                    "-施法按钮\n"+
                     "\t\t数数？为什么不用法术(@-@)\n"+
-                    "显示描述和文本"
+                    "-显示描述和文本\n"+
+                    "-显示当前选中节点的孩子\n"+
+                    "-显示当前选中节点的所有直系长辈(大概就这个意思-.-)\n"+
+                    "-布局分析, 为所欲为QwQ"
         )
         .item(
             R.id.modification_detail,
@@ -1473,20 +1476,20 @@ fun detailsDialog(context: Context){
             R.drawable.ic_ali_log,
             "优化: 夜间模式\n\n"+
             "优化: 布局层次分析页面\n"+
-                    "修复展开后不可收起\n"+
-                    "隐藏按钮可拖动\n\n"+
+                    "-修复展开后不可收起\n"+
+                    "-隐藏按钮可拖动\n\n"+
             "修复(6587): 布局分析相关 bug\n\n"+
             "更改(658): app抽屉页面使用随机彩色图标\n\n"+
             "修复(6587): app布局分析刷新显示不全\n"+
-                    "一般用不到刷新, 除非画面发生变动之后捕获结果没有改变\n" +
-                    "(刷新会比等待捕获多花 2-3 倍的时间)\n\n"+
+                    "-一般用不到刷新, 除非画面发生变动之后捕获结果没有改变\n" +
+                    "-(刷新会比等待捕获多花 2-3 倍的时间)\n\n"+
             "添加: app布局分析等待捕获、延迟捕获开关\n"+
-                    "布局分析, 随心所欲(~.-\n\n"+
+                    "-布局分析, 随心所欲(~.-\n\n"+
             "添加: 截图是否返回新的对象\n"+
-                    "let img1 = images.captureScreen(true)\n"+
-                    "let img2 = images.captureScreen(true)\n"+
-                    "即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是同一个对象\n"+
-                    "反之如果不加参数 true, img1 === img2"
+                    "-let img1 = images.captureScreen(true)\n"+
+                    "-let img2 = images.captureScreen(true)\n"+
+                    "-即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是同一个对象\n"+
+                    "-反之如果不加参数 true, img1 === img2"
         )
         .item(
             R.id.modification_detail,
@@ -1497,33 +1500,33 @@ fun detailsDialog(context: Context){
             R.id.modification_detail,
             R.drawable.ic_ali_log,
             "添加: 获取屏幕实时宽高\n"+
-                    "let curW = device.getCurWidth()\n"+
-                    "let curH = device.getCurHeight()\n"+
-                    "let size = device.getCurScreenSize()\n"+
-                    "size.x == curW\n"+
-                    "size.y == curH\n\n"+
+                    "-let curW = device.getCurWidth()\n"+
+                    "-let curH = device.getCurHeight()\n"+
+                    "-let size = device.getCurScreenSize()\n"+
+                    "-size.x == curW\n"+
+                    "-size.y == curH\n\n"+
             "添加: 获取当前屏幕方向\n"+
-                    "let ori = getCurOrientation()\n"+
-                    "竖屏: 1  横屏: 2\n\n"+
+                    "-let ori = getCurOrientation()\n"+
+                    "-竖屏: 1  横屏: 2\n\n"+
             "添加: app布局分析刷新开关\n" +
-                    "有些情况刷新会出问题(比如某音极速版啥的)，可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析\n\n"+
+                    "-有些情况刷新会出问题(比如某音极速版啥的)，可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析\n\n"+
             "添加: 通过 setClip 复制的文本会发送到 vscode 的输出\n"+
-                    "例如: app布局分析复制控件属性/生成代码后点击复制\n"+
-                    "\t脚本使用 setClip\n"+
-                    "(长按手动复制不会触发)\n\n"+
+                    "-例如: app布局分析复制控件属性/生成代码后点击复制\n"+
+                    "\t\t脚本使用 setClip\n"+
+                    "-(长按手动复制不会触发)\n\n"+
             "优化(658): 减少 app 悬浮窗点击响应时长(慢不了一点\n\n"+
             "更改: app 抽屉页面\n\n"+
             "添加: 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局\n\n"+
             "添加: viewUtils\n"+
-                    "let v = viewUtils.findParentById(view,id)\n"+
-                    "let sp = viewUtils.pxToSp(px)\n"+
-                    "let px = viewUtils.dpToPx(dp)\n"+
-                    "let dp = viewUtils.pxToDp(px)\n"+
-                    "let px = viewUtils.spToPx(sp)\n\n"+
+                    "-let v = viewUtils.findParentById(view,id)\n"+
+                    "-let sp = viewUtils.pxToSp(px)\n"+
+                    "-let px = viewUtils.dpToPx(dp)\n"+
+                    "-let dp = viewUtils.pxToDp(px)\n"+
+                    "-let px = viewUtils.spToPx(sp)\n\n"+
             "添加: 获取[raw]悬浮窗 contentView\n"+
-                    "let fw = floaty.window(<frame id=\"content\"></frame>)\n"+
-                    "let contentView = fw.getContentView()\n"+
-                    "contentView === fw.content"
+                    "-let fw = floaty.window(<frame id=\"content\"></frame>)\n"+
+                    "-let contentView = fw.getContentView()\n"+
+                    "-contentView === fw.content"
         )
         .item(
             R.id.modification_detail,
@@ -1536,10 +1539,10 @@ fun detailsDialog(context: Context){
             "优化: 启动 app 自动连接不显示 toast\n\n"+
             "升级: SDK35、gradle-8.7、AGP-8.6.0\n\n"+
             "添加: 获取状态栏高度(px)\n"+
-                    "let h = getStatusBarHeight()\n\n"+
+                    "-let h = getStatusBarHeight()\n\n"+
             "添加: 布局分析截图开关\n\n"+
             "添加: 获取当前存在的本地存储 名称[路径] 数组\n"+
-                    "let arr = storages.getExisting([returnPath])"
+                    "-let arr = storages.getExisting([returnPath])"
         )
         .item(
             R.id.modification_detail,
@@ -1551,18 +1554,18 @@ fun detailsDialog(context: Context){
             R.drawable.ic_ali_log,
 //            "修复(6582): 布局分析影响脚本截图服务\n\n"+
             "添加: 跟踪堆栈行号打印\n"+
-                    "traceLog(\"嘿嘿\"[,path(输出到文件)])\n"+
-                    "(让 bug 无处可藏>_>)\n\n"+
+                    "-traceLog(\"嘿嘿\"[,path(输出到文件)])\n"+
+                    "-(让 bug 无处可藏>_>)\n\n"+
             "添加: 时间戳格式化\n"+
-                    "let ts = Date.now();\n"+
-                    "let fm = dateFormat(ts[,format])\n"+
-                    "format: 时间格式, 默认为 \"yyyy-MM-dd HH:mm:ss.SSS\"\n\n"+
+                    "-let ts = Date.now();\n"+
+                    "-let fm = dateFormat(ts[,format])\n"+
+                    "-format: 时间格式, 默认为 \"yyyy-MM-dd HH:mm:ss.SSS\"\n\n"+
             "添加: 设置 http 代理(options)\n"+
-                    "设置代理: http.get(url, {proxyHost:\"192.168.1.10\", proxyPort:7890})\n"+
-                    "身份认证: {userName:\"Ozobi\", password:"+context.resources.getString(R.string.qq_communication_group)+"}\n\n"+
+                    "-设置代理: http.get(url, {proxyHost:\"192.168.1.10\", proxyPort:7890})\n"+
+                    "-身份认证: {userName:\"Ozobi\", password:"+context.resources.getString(R.string.qq_communication_group)+"}\n\n"+
             "添加: 设置 http 尝试次数、单次尝试超时时间(options)\n"+
-                    "例如: http.get(url, {maxTry:3, timeout: 5000})\n"+
-                    "一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+
+                    "-例如: http.get(url, {maxTry:3, timeout: 5000})\n"+
+                    "-一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n"+
             "修改:将布局层次分析页面的彩色线条数量改为与 depth 相等"
 //            "优化: 布局分析不显示异常截图(宽高异常/全黑截图)"
 //            "添加: 生成 sendevent 命令(touch)\n"+ // 好像没什么用 -_-
@@ -1589,40 +1592,40 @@ fun detailsDialog(context: Context){
 //            "修复(6583):找不到方法 runtime.adbConnect(string, number)\n\n"+
 //            "修复(6583):布局分析时反复申请投影权限\n\n"+
             "添加: Adb输入法\n"+
-                    "let command = runtime.adbIMEShellCommand.inputText(\"嘿嘿\")\n"+
-                    "执行命令: adb shell + command\n"+
-                    "将输出文本 嘿嘿 到当前光标所在位置(需要先启用然后设置为当前输入法)\n\n"+
-                    "enableAdbIME() 启用adb输入法\n"+
-                    "setAdbIME() 设置adb输入法为当前输入法\n"+
-                    "resetIME() 重置输入法\n"+
-                    "clearAllText() 清除所有文本\n"+
-                    "inputTextB64(text) 如果inputText没用试试这个\n"+
-                    "inputKey(keyCode) 输入按键\n"+
-                    "inputCombKey(metaKey, keyCode) 组合键\n"+
-                    "inputCombKey(metaKey[], keyCode) 多meta组合键\n\n"+
-                    "meta 键对照:\n"+
-                    "SHIFT == 1\n" +
-                    "SHIFT_LEFT == 64\n" +
-                    "SHIFT_RIGHT == 128\n" +
-                    "CTRL == 4096\n" +
-                    "CTRL_LEFT == 8192\n" +
-                    "CTRL_RIGHT == 16384\n" +
-                    "ALT == 2\n" +
-                    "ALT_LEFT == 16\n" +
-                    "ALT_RIGHT == 32\n"+
-                    "输入组合键: ctrl+shift+v:\n"+
-                    "adb shell + runtime.adbIMEShellCommand.inputCombKey([4096,1], 50)\n\n"+
-                    "调用 termux\n"+
-                    "安装 termux(版本需0.95以上)\n"+
-                    "编辑 ~/.termux/termux.properties 文件, 将 allow-external-apps=true 前面的注释#去掉, 保存退出\n"+
-                    "安装 adb 工具\n"+
-                    "pkg update\n"+
-                    "pkg install android-tools\n"+
-                    "adb连接手机后授权 autoxjs(打包后的应用也需要授权)\n"+
-                    "(如果有)手机需要开启 USB调试(安全设置)\n"+
-                    "adb shell pm grant 包名 com.termux.permission.RUN_COMMAND\n"+
-                    "调用: runtime.termux(\"adb shell input keyevent 3\") 返回桌面\n"+
-                    "这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtime.sendTermuxIntent(intent)"
+                    "-let command = runtime.adbIMEShellCommand.inputText(\"嘿嘿\")\n"+
+                    "-执行命令: adb shell + command\n"+
+                    "-将输出文本 嘿嘿 到当前光标所在位置(需要先启用然后设置为当前输入法)\n\n"+
+                    "-enableAdbIME() 启用adb输入法\n"+
+                    "-setAdbIME() 设置adb输入法为当前输入法\n"+
+                    "-resetIME() 重置输入法\n"+
+                    "-clearAllText() 清除所有文本\n"+
+                    "-inputTextB64(text) 如果inputText没用试试这个\n"+
+                    "-inputKey(keyCode) 输入按键\n"+
+                    "-inputCombKey(metaKey, keyCode) 组合键\n"+
+                    "-inputCombKey(metaKey[], keyCode) 多meta组合键\n\n"+
+                    "-meta 键对照:\n"+
+                    "-SHIFT == 1\n" +
+                    "-SHIFT_LEFT == 64\n" +
+                    "-SHIFT_RIGHT == 128\n" +
+                    "-CTRL == 4096\n" +
+                    "-CTRL_LEFT == 8192\n" +
+                    "-CTRL_RIGHT == 16384\n" +
+                    "-ALT == 2\n" +
+                    "-ALT_LEFT == 16\n" +
+                    "-ALT_RIGHT == 32\n"+
+                    "-输入组合键: ctrl+shift+v:\n"+
+                    "-adb shell + runtime.adbIMEShellCommand.inputCombKey([4096,1], 50)\n\n"+
+                    "-调用 termux\n"+
+                    "-安装 termux(版本需0.95以上)\n"+
+                    "-编辑 ~/.termux/termux.properties 文件, 将 allow-external-apps=true 前面的注释#去掉, 保存退出\n"+
+                    "-安装 adb 工具\n"+
+                    "-pkg update\n"+
+                    "-pkg install android-tools\n"+
+                    "-adb连接手机后授权 autoxjs(打包后的应用也需要授权)\n"+
+                    "-(如果有)手机需要开启 USB调试(安全设置)\n"+
+                    "-adb shell pm grant 包名 com.termux.permission.RUN_COMMAND\n"+
+                    "-调用: runtime.termux(\"adb shell input keyevent 3\") 返回桌面\n"+
+                    "-这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtime.sendTermuxIntent(intent)"
         )
         .item(
             R.id.modification_detail,
@@ -1633,17 +1636,17 @@ fun detailsDialog(context: Context){
             R.id.modification_detail,
             R.drawable.ic_ali_log,
         "添加: 远程AdbShell(好像不支持远程配对, 手机需要设置 adb 监听端口)\n"+
-                    "let adbShell = runtime.adbConnect(host,port)连接设备\n"+
-                    "adbShell.exec(\"ls /\") 执行命令\n"+
-                    "adbShell.close() 断开连接\n"+
-                    "adbShell.connection.getHost() 获取当前连接主机名\n"+
-                    "adbShell.connection.getPost() 获取当前连接端口\n\n"+
+                    "-let adbShell = runtime.adbConnect(host,port)连接设备\n"+
+                    "-adbShell.exec(\"ls /\") 执行命令\n"+
+                    "-adbShell.close() 断开连接\n"+
+                    "-adbShell.connection.getHost() 获取当前连接主机名\n"+
+                    "-adbShell.connection.getPost() 获取当前连接端口\n\n"+
             "修改: 将悬浮窗位置改为以屏幕左上角为原点(终于可以指哪打哪了\n"+
             ">_<)\n\n"+
 //            "修复(6582): 脚本请求截图权限后再进行布局分析时打不开悬浮窗\n\n"+
             "增强: 使用相对路径显示本地图片\n"+
-                    "<img src=\"./pic.png\" />\n"+
-                    "./ 等于 file://当前引擎的工作目录/"
+                    "-<img src=\"./pic.png\" />\n"+
+                    "-./ 等于 file://当前引擎的工作目录/"
         )
         .item(
             R.id.modification_detail,
