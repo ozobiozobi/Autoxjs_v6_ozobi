@@ -110,9 +110,9 @@ public class LevelBeamView extends View {
         mLinesWidth = (int) getResources().getDimension(R.dimen.level_beam_view_line_width);
         mBoxPaint = new Paint();
         if(levelInfoTextColor == Color.BLACK){
-            mBoxPaint.setColor(0xffFFDECF);
+            mBoxPaint.setColor(0xff2E2020);
         }else {
-            mBoxPaint.setColor(0xff806F67);
+            mBoxPaint.setColor(0xff574343);
         }
         mBoxPaint.setStyle(Paint.Style.FILL);
         mCorePaint = new Paint();
