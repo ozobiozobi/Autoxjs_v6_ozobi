@@ -339,7 +339,6 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             if(isAuth){
                 if(nightMode){
-                    viewHolder.levelBeamView.alpha = 0.9f
                     viewHolder.levelBeamView.setSelectedPaintColor(0xff266926.toInt())
                 }else{
                     viewHolder.levelBeamView.setSelectedPaintColor(0xff77FF7D.toInt())
@@ -388,9 +387,9 @@ open class LayoutHierarchyView : MultiLevelListView {
             LayoutHierarchyFloatyWindow.curSelectedNodeChildren?.let {
                 if(it.contains(nodeInfo)){
                     if(nightMode){
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xdd4D8F8F.toInt())
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xdd5087B0.toInt())
                     }else{
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xddB9C2F2.toInt())
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xddA7A8E3.toInt())
                     }
                 }
             }

@@ -532,7 +532,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 return
             }
         }
-        if(hasToWait){
+        if(isAuth && hasToWait){
             var waitCount = 0
             while(true){
                 if((NodeInfo.isDoneCapture && ScreenCapture.isDoneVerity) || waitCount > 600){

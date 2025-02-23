@@ -430,7 +430,7 @@ open class UiGlobalSelector {
     }
 
     fun findAndReturnList(node: UiObject, max: Int = Int.MAX_VALUE,isRefresh:Boolean): List<UiObject> {// Modified by ibozo - 2024/10/31
-        return mSearchAlgorithm.search(node, mSelector, max,isRefresh)// Modified by ibozo - 2024/10/31
+        return mSearchAlgorithm.search(node, mSelector, max, isRefresh)// Modified by ibozo - 2024/10/31
     }
 
 

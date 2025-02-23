@@ -24,14 +24,14 @@ public class LevelBeamView extends View {
 
     private static final String TAG = "LevelBeamView";
 
-    private static final int[] colors = {
-            0xff1abc9c,
-            0xff3498db,
-            0xffe67e22,
-            0xff8e44ad,
-            0xfff1c40f,
-            0xff2ecc71,
-    };
+//    private static final int[] colors = {
+//            0xff1abc9c,
+//            0xff3498db,
+//            0xffe67e22,
+//            0xff8e44ad,
+//            0xfff1c40f,
+//            0xff2ecc71,
+//    };
 
     private int mLevel;
 

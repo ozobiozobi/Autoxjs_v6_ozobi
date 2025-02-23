@@ -68,6 +68,7 @@ import org.autojs.autoxjs.ui.widget.OnItemClickListener
 import pl.openrnd.multilevellistview.ItemInfo
 import pl.openrnd.multilevellistview.MultiLevelListView
 import pxb.android.axml.R.attr.hint
+import kotlin.math.exp
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -320,6 +321,9 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                     }
                                 )
                             }
+                            .clickable {
+                                expandAll()
+                            }
                     ) {
                         Text(
                             text = stringResource(R.string.text_expand_all_hierarchy),
@@ -330,7 +334,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 4.dp)
+                            .padding(4.dp,0.dp,8.dp,0.dp)
                             .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 showLayoutBounds()
@@ -377,7 +381,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-                    mLayoutHierarchyView?.let { Snackbar.make(it, "(拖动)展开:能否折叠 隐/显:暂时显示选中边界", Snackbar.LENGTH_SHORT).show() }
+                    mLayoutHierarchyView?.let { Snackbar.make(it, "[展开] 和 [隐/显] 可以拖动哈", Snackbar.LENGTH_SHORT).show() }
                 }
             }
         }
@@ -523,7 +527,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         var curSelectedNodeParents = mutableListOf<NodeInfo?>()
         private var selfHints:Array<String> = arrayOf(
             "饶了地球一圈, 终是回到原点",
-            "严重怀疑我花了一千万, 从未来穿越了回来",
+            "没有两片完全相同的树叶, 但我是节点",
             "我还是我, 颜色不一样的烟火",
             "谁把我的闪现偷了",
             "没有困难? 那我造一点吧",
@@ -531,7 +535,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
             "禁止对麻瓜使用魔法",
             "不是枪没压好, 是想打天上的鸟",
             "还说没有开挂, 自瞄哪来的",
-            "谎言不会伤人, 所以我跟你说, 你手抖了"
+            "谎言不会伤人, 所以我想说, 你手抖了"
         )
         // <
     }
