@@ -33,6 +33,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
@@ -53,6 +54,7 @@ import com.stardust.app.DialogUtils
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.util.ClipboardUtil
 import com.stardust.util.Ozobi
+import com.stardust.util.ViewUtils
 import com.stardust.view.accessibility.NodeInfo
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
@@ -65,6 +67,7 @@ import org.autojs.autoxjs.ui.widget.BubblePopupMenu
 import org.autojs.autoxjs.ui.widget.OnItemClickListener
 import pl.openrnd.multilevellistview.ItemInfo
 import pl.openrnd.multilevellistview.MultiLevelListView
+import pxb.android.axml.R.attr.hint
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -223,10 +226,11 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                 }
             }
+            var isShowLayoutHierarchyView by remember {
+                mutableStateOf(true)
+            }
+            var offset by remember { mutableStateOf(Offset.Zero) }
             Column(modifier = Modifier.fillMaxSize()) {
-                var isShowLayoutHierarchyView by remember {
-                    mutableStateOf(true)
-                }
                 AndroidView(
                     factory = {
                         mLayoutHierarchyView!!
@@ -238,7 +242,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                         it.alpha = if (isShowLayoutHierarchyView) 1f else 0f
                     }
                 )
-                var offset by remember { mutableStateOf(Offset.Zero) }
                 Row(
                     modifier = Modifier.fillMaxWidth()
                         .offset {
@@ -248,7 +251,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                 ) {
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 6.dp)
+                            .padding(horizontal = 4.dp)
                             .background(color=Color(0xeeBA3636), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 close()
@@ -264,7 +267,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     Spacer(modifier = Modifier.weight(1f))
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 6.dp)
+                            .padding(horizontal = 4.dp)
                             .background(color = Color(0xee315FA8), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 if(isAuth){
@@ -275,7 +278,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                             val ranKey = floor(Math.random() * selfHints.size).toInt()
                                             hint = selfHints[ranKey]
                                         }else{
-                                            hint = "再给我一个方向, 还你一个真相"
+                                            hint = "真相只有一个, 是哪个呢"
                                         }
                                     }else{
                                         ClipboardUtil.setClip(mContext, result)
@@ -293,10 +296,29 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 6.dp)
+                            .padding(horizontal = 4.dp)
                             .background(color=Color(0xee53BA5C), shape = RoundedCornerShape(8.dp))
-                            .clickable {
-                                expandAll()
+                            .pointerInput(Unit) {
+                                detectDragGestures(
+                                    onDragStart = {
+                                        canCollapse = !canCollapse
+                                        var hint = "禁止折叠"
+                                        if(canCollapse){
+                                            hint = "允许折叠"
+                                        }
+                                        mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
+                                    },
+                                    onDragEnd = {
+                                        offset = Offset(0f,0f)
+                                    },
+                                    onDragCancel = {
+                                        offset = Offset(0f,0f)
+                                    },
+                                    onDrag = { change: PointerInputChange, dragAmount: Offset ->
+                                        change.consume()
+                                        offset += dragAmount
+                                    }
+                                )
                             }
                     ) {
                         Text(
@@ -308,7 +330,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                     Box(
                         modifier = Modifier
-                            .padding(horizontal = 6.dp)
+                            .padding(horizontal = 4.dp)
                             .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 showLayoutBounds()
@@ -323,9 +345,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                     Box(
                         modifier = Modifier
-                            .align(Alignment.CenterVertically)
                             .background(color=Color(0xee5AA6B5), shape = RoundedCornerShape(8.dp))
-                            .padding(horizontal = 6.dp)
+                            .padding(horizontal = 4.dp)
                             .clickable {
                                 isShowLayoutHierarchyView = !isShowLayoutHierarchyView
                             }
@@ -356,6 +377,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
+                    mLayoutHierarchyView?.let { Snackbar.make(it, "(拖动)展开:能否折叠 隐/显:暂时显示选中边界", Snackbar.LENGTH_SHORT).show() }
                 }
             }
         }
@@ -365,9 +387,9 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     override fun onViewCreated(v: View) {
         // Modified by Ozobi - 2025/02/19
         if(nightMode){
-            mLayoutHierarchyView!!.setBackgroundColor(0xaaffffff.toInt())
+            mLayoutHierarchyView!!.setBackgroundColor(0xaa666666.toInt())
         }else{
-            mLayoutHierarchyView!!.setBackgroundColor(COLOR_SHADOW.toInt())
+            mLayoutHierarchyView!!.setBackgroundColor(0xaa888888.toInt())
         }
         // <
         mLayoutHierarchyView!!.setShowClickedNodeBounds(true)
@@ -413,7 +435,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
             mBubblePopMenu!!.showAsDropDown(
                 view,
                 view.width / 2 - mBubblePopMenu!!.contentView.measuredWidth / 2,
-                0
+                -(ViewUtils.spToPx(mContext,45f)).toInt()
             )
         }
         mLayoutHierarchyView!!.setRootNode(mRootNode)
@@ -425,8 +447,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         mBubblePopMenu = BubblePopupMenu(
             mContext, listOf(
                 mContext!!.getString(R.string.text_show_widget_infomation),
-                mContext!!.getString(R.string.text_show_layout_bounds),
-                mContext!!.getString(R.string.text_generate_code)
+                mContext!!.getString(R.string.text_generate_code),
+                mContext!!.getString(R.string.text_show_layout_bounds)
             )
         )
         mBubblePopMenu!!.setOnItemClickListener { view: View?, position: Int ->
@@ -436,10 +458,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     showNodeInfo()
                 }
                 1 -> {
-                    showLayoutBounds()
+                    generateCode()
                 }
                 else -> {
-                    generateCode()
+                    showLayoutBounds()
                 }
             }
         }
@@ -492,8 +514,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     companion object {
         private const val TAG = "FloatingHierarchyView"
-        private const val COLOR_SHADOW = 0xaa000000// Modified by Ozobi - 2025/02/19
         // Added by Ozobi - 2025/02/21
+        var canCollapse = true
         var firstTagNodeInfo:NodeInfo? = null
         var secondTagNodeInfo:NodeInfo? = null
         var mSelectedNode: NodeInfo? = null

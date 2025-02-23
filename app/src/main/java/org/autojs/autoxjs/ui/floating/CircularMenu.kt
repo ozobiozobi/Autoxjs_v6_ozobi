@@ -108,7 +108,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     @OptIn(DelicateCoroutinesApi::class)
     private fun setupListeners() {
         mWindow?.setOnActionViewTouchListener { v, event ->
-//            Log.d("ozobiLog","event.action: "+event.action)
              if(event.action == MotionEvent.ACTION_UP){
                  LayoutHierarchyFloatyWindow.firstTagNodeInfo = null
                  LayoutHierarchyFloatyWindow.secondTagNodeInfo = null
@@ -141,24 +140,24 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                                  }
                              }
                          }
-                         if(isRefresh || isWaitForCapture){
-                             NodeInfo.isDoneCapture = false
+                     }
+                     if(isRefresh || isWaitForCapture){
+                         NodeInfo.isDoneCapture = false
+                     }
+                     mLayoutInspector.setRefresh(isRefresh)
+                     mCaptureDeferred = DeferredObject()
+                     if(!isRefresh && !isStartCapture && !isCapturing && !isDelayCapture){
+                         captureStartTime = System.currentTimeMillis()
+                         available = mLayoutInspector.captureCurrentWindow()
+                         if(available){
+                             isCapturing = true
+                             checkIsCaptureDone()
                          }
-                         mLayoutInspector.setRefresh(isRefresh)
-                         mCaptureDeferred = DeferredObject()
-                         if(!isRefresh && !isStartCapture && !isCapturing && !isDelayCapture){
-                             captureStartTime = System.currentTimeMillis()
-                             available = mLayoutInspector.captureCurrentWindow()
-                             if(available){
-                                 isCapturing = true
-                                 checkIsCaptureDone()
-                             }
+                     }else{
+                         if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
+                             mWindow?.setAlpha(1f)
                          }else{
-                             if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
-                                 mWindow?.setAlpha(1f)
-                             }else{
-                                 mWindow?.setAlpha(0.7f)
-                             }
+                             mWindow?.setAlpha(0.7f)
                          }
                      }
                      // <

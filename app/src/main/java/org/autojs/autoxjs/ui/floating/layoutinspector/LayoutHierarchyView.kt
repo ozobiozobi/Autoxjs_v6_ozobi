@@ -244,7 +244,9 @@ open class LayoutHierarchyView : MultiLevelListView {
         LayoutHierarchyFloatyWindow.curSelectedNodeParents.removeAt(0)
         LevelBeamView.selectedNode = mClickedNodeInfo
         if(mInitiallyExpandedNodes.contains(mClickedNodeInfo)){
-            mInitiallyExpandedNodes.remove(mClickedNodeInfo)
+            if(LayoutHierarchyFloatyWindow.canCollapse){
+                mInitiallyExpandedNodes.remove(mClickedNodeInfo)
+            }
         }else{
             mInitiallyExpandedNodes.add(mClickedNodeInfo)
         }
@@ -382,21 +384,21 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             // Added by Ozobi - 2024/11/02 >
             viewHolder.levelBeamView.setNodeClickable(nodeInfo.clickable)
-            viewHolder.levelBeamView.setCurNodeInfo(nodeInfo)
+            viewHolder.levelBeamView.setSelectedColor(nodeInfo)
             LayoutHierarchyFloatyWindow.curSelectedNodeChildren?.let {
                 if(it.contains(nodeInfo)){
                     if(nightMode){
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xff535B94.toInt())
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xdd4D8F8F.toInt())
                     }else{
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xff9BA8F2.toInt())
+                        viewHolder.levelBeamView.setSelectedPaintColor(0xddB9C2F2.toInt())
                     }
                 }
             }
             if(mClickedNodeInfo != nodeInfo && LayoutHierarchyFloatyWindow.curSelectedNodeParents.contains(nodeInfo)){
                 if(nightMode){
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xff833491.toInt())
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xdd8D3CA3.toInt())
                 }else{
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xffEA81FF.toInt())
+                    viewHolder.levelBeamView.setSelectedPaintColor(0xddE998FF.toInt())
                 }
             }
             // <
