@@ -103,7 +103,7 @@ public class LevelBeamView extends View {
         }
         if(nightMode){
             if(isSelected){
-                selectedPaint.setColor(0xff66D17A);
+                selectedPaint.setColor(0xff73D973);
             }else if(isChild){
                 selectedPaint.setColor(0xdd72739C);
             }else if(isParent){
@@ -113,9 +113,9 @@ public class LevelBeamView extends View {
             }
         }else{
             if(isSelected){
-                selectedPaint.setColor(0xff66D17A);
+                selectedPaint.setColor(0xff73D973);
             }else if(isChild){
-                selectedPaint.setColor(0xddA7A8E3);
+                selectedPaint.setColor(0xddC6CDFF);
             }else if(isParent){
                 selectedPaint.setColor(0xddE998FF);
             }else{
@@ -123,7 +123,7 @@ public class LevelBeamView extends View {
             }
         }
         if(isBrother){
-            brotherPaint.setColor(0xff66D17A);
+            brotherPaint.setColor(0xff73D973);
             float right = mTextWidth + mLevel * mLinesWidth;
             brotherBoxRectF = new RectF(right - 10*oneSp,3*oneSp,right - 4*oneSp,viewHeight-3*oneSp);
         }

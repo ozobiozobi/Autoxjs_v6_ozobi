@@ -63,6 +63,10 @@ import com.stardust.util.ClipboardUtil
 import com.stardust.util.Ozobi
 import com.stardust.util.ViewUtils
 import com.stardust.view.accessibility.NodeInfo
+import kotlinx.coroutines.DelicateCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.codegeneration.CodeGenerateDialog
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
@@ -209,6 +213,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         return view
     }
     // Modified by Ozobi - 2025/02/20 > 添加: 拖动隐藏
+    @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun Content() {
         val context = LocalContext.current
@@ -403,6 +408,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             .padding(horizontal = 4.dp)
                             .clickable {
                                 isShowLayoutHierarchyView = !isShowLayoutHierarchyView
+                                GlobalScope.launch {
+                                    delay(100L)
+                                    mLayoutHierarchyView?.mAdapter?.reloadData()
+                                }
                             }
                             .pointerInput(Unit){
                                 detectDragGestures(
@@ -416,6 +425,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                     onDragEnd = {
                                         offset = Offset(0f,0f)
                                         isShowLayoutHierarchyView = true
+                                        GlobalScope.launch {
+                                            delay(100L)
+                                            mLayoutHierarchyView?.mAdapter?.reloadData()
+                                        }
                                     },
                                     onDragCancel = {
                                         offset = Offset(0f,0f)
@@ -437,7 +450,17 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             snackBar.setTextColor(0xff000000.toInt())
                             snackBar.setBackgroundTint(0xffcfcfcf.toInt())
                         }
+                        snackBar.addCallback(object : Snackbar.Callback(){
+                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                super.onDismissed(transientBottomBar, event)
+                                mLayoutHierarchyView!!.mAdapter?.reloadData()
+                            }
+                        })
                         snackBar.show()
+                        GlobalScope.launch {
+                            delay(300L)
+                            mLayoutHierarchyView!!.mAdapter?.reloadData()
+                        }
                     }
                 }
             }

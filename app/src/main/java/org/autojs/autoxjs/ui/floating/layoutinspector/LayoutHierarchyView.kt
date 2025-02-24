@@ -41,7 +41,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         fun onItemLongClick(view: View, nodeInfo: NodeInfo)
     }
 
-    private var mAdapter: Adapter? = null
+    var mAdapter: Adapter? = null
     private var mOnItemLongClickListener: ((view: View, nodeInfo: NodeInfo) -> Unit)? = null
     private var onItemTouchListener: ((view: View, event: MotionEvent) -> Boolean)? = null
     private val mOnItemLongClickListenerProxy =
@@ -307,7 +307,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
     }
 
-    private inner class Adapter : MultiLevelListAdapter() {
+    inner class Adapter : MultiLevelListAdapter() {
         override fun getSubObjects(`object`: Any): List<*> {
             return (`object` as NodeInfo).getChildren()
         }
