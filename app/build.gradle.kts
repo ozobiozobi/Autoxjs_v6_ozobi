@@ -89,7 +89,7 @@ android {
             reset()
 
             // Specifies a list of ABIs that Gradle should create APKs for.
-            include("armeabi-v7a", "arm64-v8a") // Annotated by ozobi - 2025/02/23 > 不单独生成这两个apk
+//            include("armeabi-v7a", "arm64-v8a") // Annotated by ozobi - 2025/02/23 > 不单独生成这两个apk
 
             // Specifies that we do not want to also generate a universal APK that includes all ABIs.
             isUniversalApk = true
@@ -127,7 +127,7 @@ android {
     flavorDimensions.add("channel")
     productFlavors {
         create("common") {
-            versionCode = 6582
+            versionCode = 6589
             versionName = versions.appVersionName
             buildConfigField("String", "CHANNEL", "\"common\"")
 //            buildConfigField("String", "APPID", "\"?id=21\"")

@@ -15,6 +15,7 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
+import com.flurry.sdk.it
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitmap
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
 import com.stardust.util.Ozobi
@@ -230,6 +231,7 @@ open class LayoutHierarchyView : MultiLevelListView {
             LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
             getParentsList(mClickedNodeInfo, LayoutHierarchyFloatyWindow.curSelectedNodeParents)
             LayoutHierarchyFloatyWindow.curSelectedNodeParents.removeAt(0)
+            LayoutHierarchyFloatyWindow.curSelectedBrotherList = getBrotherList(mClickedNodeInfo)
         }
         mInitiallyExpandedNodes.addAll(parents)
         mAdapter!!.reloadData()
@@ -242,6 +244,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
         getParentsList(mClickedNodeInfo, LayoutHierarchyFloatyWindow.curSelectedNodeParents)
         LayoutHierarchyFloatyWindow.curSelectedNodeParents.removeAt(0)
+        LayoutHierarchyFloatyWindow.curSelectedBrotherList = getBrotherList(mClickedNodeInfo)
         LevelBeamView.selectedNode = mClickedNodeInfo
         if(mInitiallyExpandedNodes.contains(mClickedNodeInfo)){
             if(LayoutHierarchyFloatyWindow.canCollapse){
@@ -258,6 +261,12 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
         nodeList.add(nodeInfo)
         getParentsList(nodeInfo.parent, nodeList)
+    }
+    fun getBrotherList(nodeInfo:NodeInfo?):List<NodeInfo>?{
+        if(nodeInfo?.parent != null){
+            return nodeInfo.parent!!.getChildren()
+        }
+        return null
     }
     // <
 
@@ -338,11 +347,6 @@ open class LayoutHierarchyView : MultiLevelListView {
                 convertView2
             }
             if(isAuth){
-                if(nightMode){
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xff266926.toInt())
-                }else{
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xff77FF7D.toInt())
-                }
                 var textInfo = ""
                 var descInfo = ""
                 nodeInfo.desc?.let{
@@ -369,38 +373,40 @@ open class LayoutHierarchyView : MultiLevelListView {
                 viewHolder.nameView.text = simplifyClassName(nodeInfo.className)
             }
             viewHolder.nodeInfo = nodeInfo
-            if (viewHolder.infoView.visibility == VISIBLE) viewHolder.infoView.text =
-                getItemInfoDsc(itemInfo)
-            if (itemInfo.isExpandable && !isAlwaysExpanded) {
+//            if (viewHolder.infoView.visibility == VISIBLE) viewHolder.infoView.text =
+//                getItemInfoDsc(itemInfo)
+            if (itemInfo.isExpandable) {
                 viewHolder.arrowView.visibility = VISIBLE
                 viewHolder.arrowView.setImageResource(if (itemInfo.isExpanded) R.drawable.arrow_down else R.drawable.arrow_right)
-            } else {
+            }else{
                 viewHolder.arrowView.visibility = INVISIBLE
             }
-            viewHolder.levelBeamView.setLevel(itemInfo.level)
             if (nodeInfo == mClickedNodeInfo) {
                 convertView1?.let { setClickedItem(it, nodeInfo) }
             }
-            // Added by Ozobi - 2024/11/02 >
-            viewHolder.levelBeamView.setNodeClickable(nodeInfo.clickable)
-            viewHolder.levelBeamView.setSelectedColor(nodeInfo)
-            LayoutHierarchyFloatyWindow.curSelectedNodeChildren?.let {
-                if(it.contains(nodeInfo)){
-                    if(nightMode){
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xdd5087B0.toInt())
-                    }else{
-                        viewHolder.levelBeamView.setSelectedPaintColor(0xddA7A8E3.toInt())
+            if(isAuth){
+                var isSelected = false
+                var isParent = false
+                var isChild = false
+                var isBrother = false
+                if(mSelectedNode == nodeInfo){
+                    isSelected = true
+                }
+                LayoutHierarchyFloatyWindow.curSelectedNodeChildren?.let {
+                    if(it.contains(nodeInfo)){
+                        isChild = true
                     }
                 }
-            }
-            if(mClickedNodeInfo != nodeInfo && LayoutHierarchyFloatyWindow.curSelectedNodeParents.contains(nodeInfo)){
-                if(nightMode){
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xdd8D3CA3.toInt())
-                }else{
-                    viewHolder.levelBeamView.setSelectedPaintColor(0xddE998FF.toInt())
+                if(mClickedNodeInfo != nodeInfo && LayoutHierarchyFloatyWindow.curSelectedNodeParents.contains(nodeInfo)){
+                    isParent = true
                 }
+                LayoutHierarchyFloatyWindow.curSelectedBrotherList?.let {
+                    if(it.contains(nodeInfo)){
+                        isBrother = true
+                    }
+                }
+                viewHolder.levelBeamView.setAttr(itemInfo.level,nodeInfo.clickable,isSelected,isParent,isChild,isBrother)
             }
-            // <
             return convertView1!!
         }
 

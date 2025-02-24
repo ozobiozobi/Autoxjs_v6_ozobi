@@ -7,6 +7,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -33,27 +34,31 @@ public class LevelBeamView extends View {
 //            0xff2ecc71,
 //    };
 
-    private int mLevel;
+    private int mLevel = 0;
 
 //    private int mPaddingLeft, mPaddingRight;
     private int mLinesWidth;
 //    private int mLinesOffset;
-    private Paint mBoxPaint;
-    private Paint mCorePaint;
+    private Paint mClickableBoxPaint;
+    private Paint mClickableCorePaint;
     // Added by Ozobi - 2024/11/02 >
     private Paint mLevelTextPaint;
     private float mTextWidth;
     private float mTextHeight;
-    private Boolean mClickable;
+    private Boolean mClickable = false;
+    private Boolean mIsBrother = false;
     public static int levelInfoTextColor = Color.BLACK;
     public static NodeInfo selectedNode = null;
     private Paint selectedPaint;
-    private RectF rectf = null;
+    private RectF selectedRectf = null;
     private final float oneSp = ViewUtils.spToPx(getContext(),1f);
     private float roundRadius = 16f;
     private int viewHeight = 0;
     private RectF clickableBoxRectF = null;
     private RectF clickableCoreRectF = null;
+    public static Paint brotherPaint = new Paint();
+    private RectF brotherBoxRectF = null;
+    public static boolean nightMode = false;
     // <
 
     public LevelBeamView(Context context) {
@@ -71,36 +76,56 @@ public class LevelBeamView extends View {
         init();
     }
 
-    public void setLevel(int level) {
+    public void setAttr(int level, boolean isClickable, boolean isSelected, boolean isParent,boolean isChild, boolean isBrother) {
         mLevel = level;
+        mClickable = isClickable;
+        mIsBrother = isBrother;
         viewHeight = getHeight();
-        float left = 3*oneSp;
-        float top = viewHeight - left - mTextWidth/2;
-        float right = mTextWidth/2 + left;
-        float bottom = top + mTextWidth/2;
-        clickableBoxRectF = new RectF(left,top,right, bottom);
-        float width = mTextWidth/10;
-        clickableCoreRectF = new RectF(left+width,top+width,right-width, bottom-width);
-        requestLayout();
-    }
-    // Added by Ozobi - 2024/11/02 >
-    public void setNodeClickable(Boolean clickable){
-        mClickable = clickable;
-        requestLayout();
-    }
-    public void setSelectedPaintColor(int color){
-        viewHeight = getHeight();
-        rectf = new RectF(0f,0f,mTextWidth + mLevel * mLinesWidth, viewHeight);
-        selectedPaint.setColor(color);
-        requestLayout();
-    }
-    public void setSelectedColor(NodeInfo nodeInfo){
-        viewHeight = getHeight();
-        rectf = new RectF(0f,0f,mTextWidth + mLevel * mLinesWidth, viewHeight);
-        if(nodeInfo == selectedNode){
-            selectedPaint.setColor(0xff49C949);
+        selectedRectf = new RectF(0f,0f,mTextWidth + mLevel * mLinesWidth, viewHeight);
+        if(isClickable){
+            mClickableBoxPaint = new Paint();
+            mClickableBoxPaint.setStyle(Paint.Style.FILL);
+            mClickableCorePaint = new Paint();
+            mClickableCorePaint.setColor(Color.GREEN);
+            mClickableCorePaint.setStyle(Paint.Style.FILL);
+            float left = 3*oneSp;
+            float top = viewHeight - left - mTextWidth/2;
+            float right = mTextWidth/2 + left;
+            float bottom = top + mTextWidth/2;
+            clickableBoxRectF = new RectF(left,top,right, bottom);
+            float width = mTextWidth/10;
+            clickableCoreRectF = new RectF(left+width,top+width,right-width, bottom-width);
+            if(nightMode){
+                mClickableBoxPaint.setColor(0xff574343);
+            }else {
+                mClickableBoxPaint.setColor(0xff2E2020);
+            }
+        }
+        if(nightMode){
+            if(isSelected){
+                selectedPaint.setColor(0xff66D17A);
+            }else if(isChild){
+                selectedPaint.setColor(0xdd72739C);
+            }else if(isParent){
+                selectedPaint.setColor(0xdd8E5D9C);
+            }else{
+                selectedPaint.setColor(Color.BLACK);
+            }
         }else{
-            selectedPaint.setColor(0);
+            if(isSelected){
+                selectedPaint.setColor(0xff66D17A);
+            }else if(isChild){
+                selectedPaint.setColor(0xddA7A8E3);
+            }else if(isParent){
+                selectedPaint.setColor(0xddE998FF);
+            }else{
+                selectedPaint.setColor(Color.WHITE);
+            }
+        }
+        if(isBrother){
+            brotherPaint.setColor(0xff66D17A);
+            float right = mTextWidth + mLevel * mLinesWidth;
+            brotherBoxRectF = new RectF(right - 10*oneSp,3*oneSp,right - 4*oneSp,viewHeight-3*oneSp);
         }
         requestLayout();
     }
@@ -108,16 +133,6 @@ public class LevelBeamView extends View {
     private void init() {
         setWillNotDraw(false);
         mLinesWidth = (int) getResources().getDimension(R.dimen.level_beam_view_line_width);
-        mBoxPaint = new Paint();
-        if(levelInfoTextColor == Color.BLACK){
-            mBoxPaint.setColor(0xff2E2020);
-        }else {
-            mBoxPaint.setColor(0xff574343);
-        }
-        mBoxPaint.setStyle(Paint.Style.FILL);
-        mCorePaint = new Paint();
-        mCorePaint.setColor(Color.GREEN);
-        mCorePaint.setStyle(Paint.Style.FILL);
         // Added by Ozobi - 2024/11/02 >
         mLevelTextPaint = new Paint();
         Rect textBounds = new Rect();
@@ -127,6 +142,13 @@ public class LevelBeamView extends View {
         mLevelTextPaint.setTextAlign(Paint.Align.LEFT);
         selectedPaint = new Paint();
         selectedPaint.setStyle(Paint.Style.FILL);
+        brotherPaint.setStyle(Paint.Style.FILL);
+        if(nightMode){
+            selectedPaint.setColor(Color.WHITE);
+        }else{
+            selectedPaint.setColor(Color.BLACK);
+        }
+        selectedRectf = new RectF(0f,0f,mTextWidth + mLevel * mLinesWidth, viewHeight);
         mTextWidth = (float) textBounds.width();
         mTextHeight = (float) textBounds.height();
         mClickable = false;
@@ -145,12 +167,15 @@ public class LevelBeamView extends View {
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
         // Added by Ozobi - 2024/11/02 >
-        canvas.drawRoundRect(rectf, roundRadius, roundRadius, selectedPaint);
+        canvas.drawRoundRect(selectedRectf, roundRadius, roundRadius, selectedPaint);
         String levelText = mLevel+"";
         canvas.drawText(levelText,4, mTextHeight + 4*oneSp, mLevelTextPaint);
         if(mClickable){
-            canvas.drawRoundRect(clickableBoxRectF,mTextWidth/16,mTextWidth/16, mBoxPaint);
-            canvas.drawRoundRect(clickableCoreRectF,mTextWidth/20,mTextWidth/20, mCorePaint);
+            canvas.drawRoundRect(clickableBoxRectF,mTextWidth/16,mTextWidth/16, mClickableBoxPaint);
+            canvas.drawRoundRect(clickableCoreRectF,mTextWidth/20,mTextWidth/20, mClickableCorePaint);
+        }
+        if(mIsBrother){
+            canvas.drawRoundRect(brotherBoxRectF, 3*oneSp, 3*oneSp, brotherPaint);
         }
     }
 

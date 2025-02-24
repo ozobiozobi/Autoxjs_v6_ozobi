@@ -117,7 +117,7 @@
     <LinearLayout
         android:id="@+id/split_line"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="36dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -142,36 +142,9 @@
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/mender"
-        android:layout_width="match_parent"
-        android:layout_height="52dp"
-        android:background="?selectableItemBackground"
-        android:clickable="true"
-        android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:focusable="true">
-
-        <ImageView
-            android:layout_width="20dp"
-            android:layout_height="20dp"
-            android:layout_margin="16dp"
-            android:src="@drawable/ozobi_ic_developer_reverse"
-            app:tint="@color/on_surface"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/ozobi_mender_name"
-            android:textColor="@color/on_surface"
-            android:textIsSelectable="true"
-            android:textSize="16sp"/>
-
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/mender_email"
         android:layout_width="match_parent"
-        android:layout_height="52dp"
+        android:layout_height="36dp"
         android:background="?selectableItemBackground"
         android:clickable="true"
         android:gravity="center_vertical"

@@ -18,7 +18,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -1456,17 +1455,20 @@ fun detailsDialog(context: Context){
             R.id.modification_detail,
             R.drawable.ic_ali_log,
             "优化: 还是布局层次分析页面\n"+
-                    "-就, 好看了一点吧\n\n"+
+                    "-就, 好看了一点吧(也可能是我谦虚了\n\n"+
             "修复(658): 布局层次分析页面\n"+
                     "-显示选中不唯一\n"+
                     "-返回无法关闭页面\n\n"+
             "添加: 布局层次分析页面:\n"+
                     "-施法按钮\n"+
                     "\t\t数数？为什么不用法术(@-@)\n"+
+                    "-给当前选中节点周围添加标记\n"+
+                    "\t\t没有火眼金睛? 不要紧, 我来助你\n"+
                     "-切换是否可以折叠(化bug为功能:D)\n"+
                     "-显示描述和文本\n"+
-                    "-显示当前选中节点的孩子\n"+
-                    "-显示当前选中节点的所有直系长辈(大概就这个意思-.-)\n"+
+                    "-标记当前选中节点的兄弟\n"+
+                    "-标记当前选中节点的孩子\n"+
+                    "-标记当前选中节点的所有直系长辈(大概就这个意思-.-)\n"+
                     "-布局分析, 为所欲为QwQ"
         )
         .item(

@@ -8,6 +8,7 @@ import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -32,7 +33,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.ComposeView
@@ -41,12 +45,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.core.graphics.drawable.toBitmap
+import androidx.core.graphics.scale
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
+import coil.decode.ImageSource
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.google.android.material.snackbar.Snackbar
@@ -64,11 +71,10 @@ import org.autojs.autoxjs.ui.floating.FullScreenFloatyWindow
 import org.autojs.autoxjs.ui.floating.MyLifecycleOwner
 import org.autojs.autoxjs.ui.main.drawer.isNightModeNormal
 import org.autojs.autoxjs.ui.widget.BubblePopupMenu
+import org.autojs.autoxjs.ui.widget.LevelBeamView
 import org.autojs.autoxjs.ui.widget.OnItemClickListener
 import pl.openrnd.multilevellistview.ItemInfo
 import pl.openrnd.multilevellistview.MultiLevelListView
-import pxb.android.axml.R.attr.hint
-import kotlin.math.exp
 import kotlin.math.floor
 import kotlin.math.roundToInt
 
@@ -86,6 +92,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var firstNodeList = mutableListOf<NodeInfo>()
     private var secondNodeList = mutableListOf<NodeInfo>()
     private var isAuth = false
+    private val tagCircleRadius = 50f
+    private var tagImageBitmap:ImageBitmap? = null
     // <
     // Added by Ozobi - 2025/02/21
     fun getNodeList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo>){
@@ -164,10 +172,13 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         mContext = ContextThemeWrapper(floatyService, R.style.AppTheme)
         isAuth = Ozobi.authenticate(mContext)
         nightMode = isNightModeNormal(mContext)
+        LevelBeamView.nightMode = nightMode
         // Added by Ozobi - 2025/02/19
         BubblePopupMenu.nightMode = nightMode
         NodeInfoView.nightMode = nightMode
         LayoutHierarchyView.nightMode = nightMode
+        tagImageBitmap = AppCompatResources.getDrawable(mContext as ContextThemeWrapper,R.drawable.arrow_tag)
+            ?.toBitmap()?.scale(100,100)?.asImageBitmap()
         // <
         mLayoutHierarchyView = LayoutHierarchyView(mContext)
         val view = ComposeView(mContext!!).apply {
@@ -208,7 +219,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
             ) {
                 Canvas(modifier = Modifier.fillMaxSize()) {
                     if (mLayoutHierarchyView!!.mShowClickedNodeBounds) {
-                        mLayoutHierarchyView!!.mClickedNodeInfo?.let {
+                        mLayoutHierarchyView!!.mClickedNodeInfo?.let { it ->
                             val statusBarHeight = mLayoutHierarchyView!!.mStatusBarHeight
                             val rect = Rect(it.boundsInScreen)
                             rect.offset(0, -statusBarHeight)
@@ -223,6 +234,31 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                         ?: 3f
                                 )
                             )
+                            tagImageBitmap?.let {
+                                drawImage(//左
+                                    image = it,
+                                    topLeft = Offset((rect.left - it.width).toFloat(),(rect.centerY()-it.height/2).toFloat())
+                                )
+                                val tagOffset = Offset(0f,0f)
+                                rotate(90f,tagOffset){
+                                    drawImage(//上
+                                        image = it,
+                                        topLeft = Offset((rect.top-it.height).toFloat(),-(rect.centerX()+it.width/2).toFloat())
+                                    )
+                                }
+                                rotate(180f,tagOffset){
+                                    drawImage(//右
+                                        image = it,
+                                        topLeft = Offset(-(rect.right+it.width).toFloat(),-(rect.centerY()+it.height/2).toFloat())
+                                    )
+                                }
+                                rotate(270f,tagOffset){
+                                    drawImage(//下
+                                        image = it,
+                                        topLeft = Offset(-rect.bottom.toFloat()-it.height,(rect.centerX()-it.width/2).toFloat())
+                                    )
+                                }
+                            }
                         }
                     }
                 }
@@ -279,12 +315,19 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                             val ranKey = floor(Math.random() * selfHints.size).toInt()
                                             hint = selfHints[ranKey]
                                         }else{
-                                            hint = "真相只有一个, 是哪个呢"
+                                            hint = "ozobi: 真相只有一个, 是哪个呢"
                                         }
                                     }else{
                                         ClipboardUtil.setClip(mContext, result)
                                     }
-                                    mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
+                                    mLayoutHierarchyView?.let {
+                                        val snackBar =  Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
+                                        if(nightMode){
+                                            snackBar.setTextColor(0xff000000.toInt())
+                                            snackBar.setBackgroundTint(0xffcfcfcf.toInt())
+                                        }
+                                        snackBar.show()
+                                    }
                                 }
                             }
                     ) {
@@ -303,11 +346,18 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 detectDragGestures(
                                     onDragStart = {
                                         canCollapse = !canCollapse
-                                        var hint = "禁止折叠"
+                                        var hint = "ozobi: 禁止折叠"
                                         if(canCollapse){
-                                            hint = "允许折叠"
+                                            hint = "ozobi: 允许折叠"
                                         }
-                                        mLayoutHierarchyView?.let { Snackbar.make(it, hint, Snackbar.LENGTH_SHORT).show() }
+                                        mLayoutHierarchyView?.let {
+                                            val snackBar =  Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
+                                            if(nightMode){
+                                                snackBar.setTextColor(0xff000000.toInt())
+                                                snackBar.setBackgroundTint(0xffcfcfcf.toInt())
+                                            }
+                                            snackBar.show()
+                                        }
                                     },
                                     onDragEnd = {
                                         offset = Offset(0f,0f)
@@ -381,7 +431,14 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-                    mLayoutHierarchyView?.let { Snackbar.make(it, "[展开] 和 [隐/显] 可以拖动哈", Snackbar.LENGTH_SHORT).show() }
+                    mLayoutHierarchyView?.let {
+                        val snackBar =  Snackbar.make(it, "ozobi: [展开]、[隐/显] 可以拖动哦", Snackbar.LENGTH_SHORT)
+                        if(nightMode){
+                            snackBar.setTextColor(0xff000000.toInt())
+                            snackBar.setBackgroundTint(0xffcfcfcf.toInt())
+                        }
+                        snackBar.show()
+                    }
                 }
             }
         }
@@ -525,6 +582,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         var mSelectedNode: NodeInfo? = null
         var curSelectedNodeChildren : List<NodeInfo>? = null
         var curSelectedNodeParents = mutableListOf<NodeInfo?>()
+        var curSelectedBrotherList : List<NodeInfo>? = null
         private var selfHints:Array<String> = arrayOf(
             "饶了地球一圈, 终是回到原点",
             "没有两片完全相同的树叶, 但我是节点",

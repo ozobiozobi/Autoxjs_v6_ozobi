@@ -4,7 +4,13 @@
 
 #### ======== 随缘更新 ========
 
-#### QQ 交流群: 1014521824
+#### QQ 交流群: 1014521824 / 1035653475
+
+    好东西群友先吃 >.<
+
+#### B站直达: https://b23.tv/iduDccP
+
+    后面可能会做一些内容, 比如魔改功能的使用演示、Autox的魔改过程等, 感兴趣的可以先关注一波, 两波也不是不可以;D
 
 ---
 
@@ -14,7 +20,9 @@
 
 ### 优化(658): 还是布局层次分析页面
 
-    就, 好看了一点吧
+    就, 好看了一点吧(也可能是我谦虚了
+
+    ![image](https://github.com/ozobiozobi/Autoxjs_v6_ozobi/blob/master/LayoutHierarchyPage.png)
 
 ### 修复(658): 布局层次分析页面:
 
@@ -32,6 +40,12 @@
     显示当前选中节点的所有直系长辈(大概就这个意思-.-)
 
     显示当前选中节点的孩子
+
+    标记当前选中节点的兄弟
+
+    给当前选中节点周围添加标记
+        没有火眼金睛? 不要紧, 我来助你
+        ![image](https://github.com/ozobiozobi/Autoxjs_v6_ozobi/blob/master/LayoutHierarchyPage_2.png)
 
     切换是否可以折叠(化bug为功能:D)
 
