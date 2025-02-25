@@ -79,7 +79,7 @@ class NodeInfoView : RecyclerView {
 
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-            // Added by Ozobi - 2025/02/19 > 适配夜间模式
+            
             var itemResource = R.layout.node_info_view_item
             var headerResource = R.layout.node_info_view_header
             if(nightMode){
@@ -115,7 +115,7 @@ class NodeInfoView : RecyclerView {
                 val pos = adapterPosition
                 if (pos < 1 || pos >= mData.size)
                     return@setOnClickListener
-                // Modified by Ozobi - 2025/01/17 > 复制 nodeInfo 属性格式问题 >
+                
                 var text = mData[pos][0] + "(\"" + mData[pos][1] + "\")"
                 if(mData[pos][0] == "bounds"){
                     text = mData[pos][0] + mData[pos][1]
@@ -130,10 +130,10 @@ class NodeInfoView : RecyclerView {
     }
 
     companion object {
-        // Added by Ozobi - 2025/02/19
+        
         var nightMode = false
         // <
-//        private val FIELD_NAMES = sortedArrayOf( //Modified by Ozobi - 2024/11/03 > 将常用节点属性往上排
+
         private val FIELD_NAMES = arrayOf(
             "packageName",
             "className",
@@ -152,7 +152,7 @@ class NodeInfoView : RecyclerView {
             "selected",
             "enabled",
             "longClickable",
-            "visibleToUser",// Added by Ozobi - 2024/10/07 > added : "visibleToUser"
+            "visibleToUser",
             "idHex",
             "accessibilityFocused",
             "column",

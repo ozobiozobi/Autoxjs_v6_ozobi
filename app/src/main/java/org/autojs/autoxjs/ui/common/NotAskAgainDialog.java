@@ -2,13 +2,15 @@ package org.autojs.autoxjs.ui.common;
 
 import android.content.Context;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 import android.text.TextUtils;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.stardust.util.HashUtils;
+
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
-import com.stardust.util.HashUtils;
 
 
 /**

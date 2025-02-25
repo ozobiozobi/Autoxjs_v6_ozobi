@@ -1,9 +1,10 @@
 package org.autojs.autoxjs.ui.widget;
 
 import android.content.Context;
-import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.widget.CompoundButton;
+
+import androidx.appcompat.widget.AppCompatCheckBox;
 
 /**
  * Created by Stardust on 2017/10/19.

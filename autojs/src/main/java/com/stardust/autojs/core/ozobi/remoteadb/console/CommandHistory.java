@@ -1,11 +1,11 @@
 package com.stardust.autojs.core.ozobi.remoteadb.console;
 
-import java.util.LinkedList;
-
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.view.ContextMenu;
 import android.view.Menu;
+
+import java.util.LinkedList;
 
 public class CommandHistory {
     private SharedPreferences prefs;

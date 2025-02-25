@@ -1,10 +1,8 @@
 package com.stardust.view.accessibility
 
 import android.graphics.Rect
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import android.view.accessibility.AccessibilityNodeInfo
-
-import com.stardust.automator.UiObject
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 
 /**
  * Created by Stardust on 2017/3/6.

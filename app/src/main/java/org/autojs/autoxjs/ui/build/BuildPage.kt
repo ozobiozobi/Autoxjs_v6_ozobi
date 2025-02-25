@@ -72,7 +72,6 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.preference.PreferenceManager
 import coil.compose.rememberAsyncImagePainter
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
@@ -81,6 +80,7 @@ import com.stardust.pio.PFile
 import com.stardust.pio.PFiles
 import com.stardust.util.IntentUtil
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.build.ApkKeyStore
 import org.autojs.autoxjs.build.ApkSigner
 import org.autojs.autoxjs.external.fileprovider.AppFileProvider
@@ -88,7 +88,6 @@ import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder
 import org.autojs.autoxjs.ui.compose.widget.ProgressDialog
 import org.autojs.autoxjs.ui.filechooser.FileChooserDialogBuilder
 import org.autojs.autoxjs.ui.shortcut.ShortcutIconSelectResult
-import org.autojs.autoxjs.R
 import java.io.File
 import kotlin.reflect.KMutableProperty0
 

@@ -15,16 +15,20 @@
  */
 package pxb.android.arsc;
 
-import pxb.android.ResConst;
-import pxb.android.StringItem;
-import pxb.android.StringItems;
-import pxb.android.axml.Util;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
+import pxb.android.ResConst;
+import pxb.android.StringItem;
+import pxb.android.StringItems;
+import pxb.android.axml.Util;
 
 /**
  * Write pkgs to an arsc file

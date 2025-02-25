@@ -3,9 +3,10 @@ package org.autojs.autoxjs.ui.widget;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Context;
-import androidx.core.view.MenuItemCompat;
-import androidx.appcompat.widget.SearchView;
 import android.view.MenuItem;
+
+import androidx.appcompat.widget.SearchView;
+import androidx.core.view.MenuItemCompat;
 
 /**
  * Created by Stardust on 2017/10/25.

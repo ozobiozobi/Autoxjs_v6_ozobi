@@ -16,9 +16,9 @@ import com.stardust.theme.app.ColorSelectActivity
 import com.stardust.theme.app.ColorSelectActivity.ColorItem
 import com.stardust.theme.util.ListBuilder
 import de.psdev.licensesdialog.LicensesDialog
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.settings.LicenseInfo.install
 import org.autojs.autoxjs.ui.widget.CommonMarkdownView.DialogBuilder
-import org.autojs.autoxjs.R
 
 /**
  * Created by Stardust on 2017/2/2.

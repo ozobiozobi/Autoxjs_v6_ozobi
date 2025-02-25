@@ -26,7 +26,7 @@ public class MD5 {
         }
         return hexString.toString();
     }
-    // Added by Ozobi - 2024/11/20 > 邮箱: ozobi@qq.com
+    
     public static String ozobiMD5(String message) {
         String m = message + Ozobi.ozobiString;
         byte[] bytes = md5Bytes(m);

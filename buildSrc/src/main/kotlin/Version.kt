@@ -1,4 +1,5 @@
-import com.google.gson.*
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
 import org.gradle.internal.impldep.com.google.gson.annotations.SerializedName
 import java.io.File
 

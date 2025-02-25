@@ -143,18 +143,18 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
     companion object {
 
         fun boundsToString(rect: Rect): String {
-            // Modified by Ozobi - 2024/11/03
+            
             return rect.toString().replace(" - ",", ").substring(4)
 //            return rect.toString().replace('-', ',').replace(" ", "").substring(4)
         }
 
-        // Added by Ozobi - 2025/02/18 > 添加: 布局分析刷新参数
+        
         var isRefresh = false
         var nodeCount = 0
         // <
 
         internal fun capture(resourcesCache: HashMap<String, Resources>, context: Context, uiObject: UiObject, parent: NodeInfo?): NodeInfo {
-            // Modified by Ozobi - 2025/02/18 >
+            
             var resources: Resources? = null
             if(isRefresh){
                 val pkg = uiObject.packageName()
@@ -176,7 +176,7 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
                 return nodeInfo
             }
             val childCount = uiObject.childCount
-            // Added by Ozobi - 2025/02/18
+            
             nodeCount ++
             //
             for (i in 0 until childCount) {
@@ -186,12 +186,12 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
                     nodeInfo.children.add(capture(resourcesCache, context, child, nodeInfo))
                 }
             }
-//            Log.d("ozobiLog","nodeCount: $nodeCount")
+
             return nodeInfo
         }
         var isDoneCapture = false
         fun capture(context: Context, root: AccessibilityNodeInfo): NodeInfo {
-            // Added by Ozobi - 2025/02/18
+            
             nodeCount = 0
             isDoneCapture = false
             //
@@ -199,7 +199,7 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
             val resourcesCache = HashMap<String, Resources>()
             val node = capture(resourcesCache, context, r, null)
             isDoneCapture = true
-//            Log.d("ozobiLog","capture end")
+
             return node
         }
     }

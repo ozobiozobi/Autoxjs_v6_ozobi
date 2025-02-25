@@ -2,10 +2,8 @@ package com.stardust.autojs.core.ozobi.shizuku
 
 import android.content.pm.PackageManager
 import android.os.IBinder
-import android.util.Log
 import rikka.shizuku.Shizuku
 
-// Created by Ozobi - 2025/01/03
 
 class OzobiShizuku {
     companion object{
@@ -21,13 +19,13 @@ class OzobiShizuku {
                     binder = Shizuku.getBinder()
                 }
                 if(binder == null){
-                    Log.d(logTag,"OzobiShizuku: checkPermission: Shizuku绑定失败")
+                    
                 }else{
-                    Log.d(logTag,"OzobiShizuku: checkPermission: Shizuku绑定成功")
+                    
                 }
             }
         }catch (e:Exception){
-            Log.d("ozobiLog",e.toString())
+            
         }
         return result
     }

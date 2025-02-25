@@ -1,6 +1,5 @@
 package com.stardust.autojs.apkbuilder.util;
 
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;

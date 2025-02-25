@@ -28,9 +28,9 @@ import com.stardust.autojs.script.StringScriptSource
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.model.script.Scripts
 import org.autojs.autoxjs.tool.ImageSelector
-import org.autojs.autoxjs.R
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -768,7 +768,7 @@ open class EWebView : FrameLayout, SwipeRefreshLayout.OnRefreshListener,
 
     fun readAssetsTxt(context: Context, fileName: String): String? {
         try {
-            //Return an AssetManager instance for your application's package
+            //Return an AssetManager instance for your application's package 
             val `is`: InputStream = context.assets.open("$fileName")
             val size: Int = `is`.available()
 

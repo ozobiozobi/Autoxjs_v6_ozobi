@@ -10,9 +10,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.ViewModelProvider
-import androidx.preference.PreferenceManager
 import com.afollestad.materialdialogs.MaterialDialog
-import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autoxjs.ui.compose.util.SetSystemUI
 

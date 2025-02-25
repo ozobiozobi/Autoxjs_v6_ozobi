@@ -1,10 +1,11 @@
 package com.stardust.util;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import static com.stardust.pio.PFiles.getExtension;
+
 import android.webkit.MimeTypeMap;
 
-import static com.stardust.pio.PFiles.getExtension;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 /**
  * Created by Stardust on 2018/2/12.

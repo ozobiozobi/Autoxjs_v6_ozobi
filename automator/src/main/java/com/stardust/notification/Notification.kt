@@ -2,7 +2,6 @@ package com.stardust.notification
 
 import android.app.PendingIntent
 import android.os.Build
-import android.os.Parcel
 import androidx.annotation.RequiresApi
 
 /**

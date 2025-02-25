@@ -2,8 +2,8 @@ package com.stardust
 
 import android.content.Context
 import android.util.Log
-import androidx.annotation.StringRes
 import android.widget.Toast
+import androidx.annotation.StringRes
 import java.lang.ref.WeakReference
 
 private var toast: WeakReference<Toast>? = null

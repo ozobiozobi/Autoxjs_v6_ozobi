@@ -1,9 +1,7 @@
 package com.stardust.util;
 
 import android.app.Activity;
-import android.os.Handler;
 import android.widget.Toast;
-
 
 import java.util.concurrent.CopyOnWriteArrayList;
 

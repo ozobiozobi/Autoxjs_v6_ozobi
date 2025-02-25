@@ -2,10 +2,10 @@ package com.stardust.autojs.core.ui.widget;
 
 import android.content.Context;
 
-import com.stardust.autojs.runtime.ScriptRuntime;
-
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.stardust.autojs.runtime.ScriptRuntime;
 
 /**
  * Created by Stardust on 2018/3/30.

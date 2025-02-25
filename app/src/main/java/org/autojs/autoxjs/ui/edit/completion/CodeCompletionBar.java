@@ -2,13 +2,15 @@ package org.autojs.autoxjs.ui.edit.completion;
 
 import android.content.Context;
 import android.os.Looper;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.stardust.autojs.workground.WrapContentLinearLayoutManager;
 
 import org.autojs.autoxjs.R;

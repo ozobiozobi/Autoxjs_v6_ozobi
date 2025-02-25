@@ -26,6 +26,7 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.build.ApkBuilder
 import org.autojs.autoxjs.build.ApkBuilderPluginHelper
 import org.autojs.autoxjs.build.ApkKeyStore
@@ -33,8 +34,10 @@ import org.autojs.autoxjs.build.ApkSigner
 import org.autojs.autoxjs.model.explorer.ExplorerFileItem
 import org.autojs.autoxjs.model.explorer.Explorers
 import org.autojs.autoxjs.model.script.ScriptFile
-import org.autojs.autoxjs.tool.*
-import org.autojs.autoxjs.R
+import org.autojs.autoxjs.tool.addIfNotExist
+import org.autojs.autoxjs.tool.getRandomString
+import org.autojs.autoxjs.tool.parseUriOrNull
+import org.autojs.autoxjs.tool.saveIcon
 import java.io.File
 import java.net.URLDecoder
 

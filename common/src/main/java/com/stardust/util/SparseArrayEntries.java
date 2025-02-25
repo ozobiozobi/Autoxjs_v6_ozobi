@@ -1,7 +1,8 @@
 package com.stardust.util;
 
-import androidx.annotation.NonNull;
 import android.util.SparseArray;
+
+import androidx.annotation.NonNull;
 
 /**
  * Created by Stardust on 2017/1/26.

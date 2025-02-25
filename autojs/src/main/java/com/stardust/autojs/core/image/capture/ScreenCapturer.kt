@@ -118,11 +118,11 @@ class ScreenCapturer(
         mCachedImageWrapper.set(newImageWrapper)
         return@coroutineScope newImageWrapper ?: throw Exception("Not available yet ImageWrapper")
     }
-    // Added by Ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    
     suspend fun captureImageWrapper(isNew:Boolean): ImageWrapper = coroutineScope {
         val imageWrapper = mCachedImageWrapper.get()
         if (isNew  && imageWrapper != null) {
-//            Log.i("ozobiLog", "返回新对象")
+
             val newImageWrapper = imageWrapper.clone(true)
             return@coroutineScope newImageWrapper
         }

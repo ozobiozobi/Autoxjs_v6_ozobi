@@ -15,15 +15,29 @@
  */
 package pxb.android.axml;
 
-import pxb.android.StringItem;
-import pxb.android.StringItems;
+import static pxb.android.axml.AxmlParser.RES_STRING_POOL_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_CDATA_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_END_ELEMENT_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_END_NAMESPACE_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_RESOURCE_MAP_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_START_ELEMENT_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_START_NAMESPACE_TYPE;
+import static pxb.android.axml.AxmlParser.RES_XML_TYPE;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.Stack;
+import java.util.TreeSet;
 
-import static pxb.android.axml.AxmlParser.*;
+import pxb.android.StringItem;
+import pxb.android.StringItems;
 
 /**
  * a class to write android axml

@@ -1,7 +1,6 @@
 package com.baidu.paddle.lite.demo.ocr
 
 import android.graphics.Point
-import java.util.ArrayList
 
 data class OcrResultModel(
     val points: MutableList<Point> = mutableListOf(),

@@ -7,7 +7,6 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.drawable.Drawable
 import android.util.AttributeSet
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -15,7 +14,6 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import com.flurry.sdk.it
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitmap
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
 import com.stardust.util.Ozobi
@@ -52,7 +50,7 @@ open class LayoutHierarchyView : MultiLevelListView {
             }
             false
         }
-    // Added by Ozobi - 2025/02/19 >
+    
     companion object{
         var nightMode = false
     }
@@ -98,7 +96,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     @OptIn(DelicateCoroutinesApi::class)
     @SuppressLint("ClickableViewAccessibility")
     private fun init() {
-        // Added by Ozobi - 2025/02/19 >
+        
         isAuth = Ozobi.authenticate(context)
         if(nightMode){
             LevelBeamView.levelInfoTextColor = Color.WHITE
@@ -155,7 +153,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         boundsPaint!!.color = Color.DKGRAY
         boundsPaint!!.style = Paint.Style.STROKE
         boundsPaint!!.isAntiAlias = true
-        boundsPaint!!.strokeWidth = 10f// Modified by Ozobi - 2025/02/21
+        boundsPaint!!.strokeWidth = 10f
         mStatusBarHeight = ViewUtil.getStatusBarHeight(context)
     }
 
@@ -173,7 +171,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     fun setOnItemLongClickListener(onNodeInfoSelectListener: (view: View, nodeInfo: NodeInfo) -> Unit) {
         mOnItemLongClickListener = onNodeInfoSelectListener
     }
-    // Added by Ozobi - 2024/11/04 >
+    
     fun expandChild(nodeInfo: NodeInfo?){
         if(nodeInfo == null){
             return
@@ -195,11 +193,11 @@ open class LayoutHierarchyView : MultiLevelListView {
     // <
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        // Added by Ozobi - 2025/01/13 > 将布局范围分析的背景设置为捕获时的截图
+        
         if(isAuth){
             if (isCurImgBitmapValid && curImgBitmap != null) {
                 if (width == curImgBitmap!!.height || height == curImgBitmap!!.width) {
-                    Log.d("ozobiLog", "异常截图, 不绘制")
+                    
                 } else {
                     canvas.drawBitmap(curImgBitmap!!, 0f, -mStatusBarHeight.toFloat(), null)
                 }
@@ -223,9 +221,9 @@ open class LayoutHierarchyView : MultiLevelListView {
     fun setSelectedNode(selectedNode: NodeInfo) {
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
-        LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()// Added by ozobi - 2025/02/23
+        LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
         searchNodeParents(selectedNode, mRootNode, parents)
-        if(parents.isNotEmpty()){// Added by Ozobi - 2025/02/22 >
+        if(parents.isNotEmpty()){
             mClickedNodeInfo = parents.peek()
             LayoutHierarchyFloatyWindow.curSelectedNodeChildren = mClickedNodeInfo!!.getChildren()
             LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
@@ -237,7 +235,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         mAdapter!!.reloadData()
     }
 
-    // Added by Ozobi - 2025/02/20 >
+    
     fun ozobiSetSelectedNode(selectedNode: NodeInfo){
         mClickedNodeInfo = selectedNode
         LayoutHierarchyFloatyWindow.curSelectedNodeChildren = mClickedNodeInfo!!.getChildren()
@@ -336,14 +334,14 @@ open class LayoutHierarchyView : MultiLevelListView {
             val viewHolder: ViewHolder
             val convertView1 = if (convertView != null) {
                 viewHolder = convertView.tag as ViewHolder
-//                convertView.setBackgroundColor(color.toInt())// Added by Ozobi - 2025/02/19
+
                 convertView
             } else {
                 val convertView2 =
                     LayoutInflater.from(context).inflate(itemResource, null)
                 viewHolder = ViewHolder(convertView2)
                 convertView2.tag = viewHolder
-//                convertView2.setBackgroundColor(color.toInt())// Added by Ozobi - 2025/02/19
+
                 convertView2
             }
             if(isAuth){

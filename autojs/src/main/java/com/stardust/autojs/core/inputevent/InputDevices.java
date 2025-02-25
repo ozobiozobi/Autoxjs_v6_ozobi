@@ -1,8 +1,9 @@
 package com.stardust.autojs.core.inputevent;
 
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.view.InputDevice;
+
+import androidx.annotation.Nullable;
 
 
 /**

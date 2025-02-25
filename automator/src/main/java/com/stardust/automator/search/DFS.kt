@@ -1,11 +1,8 @@
 package com.stardust.automator.search
 
-import android.util.Log
 import com.stardust.automator.UiObject
 import com.stardust.automator.filter.Filter
-import java.util.*
-
-import kotlin.collections.ArrayList
+import java.util.LinkedList
 
 /**
  * Created by Stardust on 2017/3/9.

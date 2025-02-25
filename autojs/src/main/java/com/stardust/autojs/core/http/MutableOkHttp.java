@@ -1,7 +1,5 @@
 package com.stardust.autojs.core.http;
 
-import android.util.Log;
-
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.SocketTimeoutException;
@@ -18,16 +16,16 @@ import okhttp3.Response;
  */
 
 public class MutableOkHttp extends OkHttpClient {
-    private final Builder mOkHttpClient;// Modified by Ozobi : 添加: 设置代理
+    private final Builder mOkHttpClient;
     private int mMaxRetries = 3;
-    private long mTimeout = 10 * 1000;// Modified by Ozobi - 2025/01/31 : 3000 -> 1000
+    private long mTimeout = 10 * 1000;
     private Interceptor mRetryInterceptor = chain -> {
         Request request = chain.request();
         Response response = null;
-        int tryCount = 1;// Modified by Ozobi - 2025/01/31 > 设置 http 最大尝试次数、超时时间 : 0 -> 1
+        int tryCount = 1;
         do {
             if(tryCount > getMaxRetries()){
-                Log.d("ozobiLog","次数达到限制");
+                
                 throw new SocketTimeoutException();
             }
             boolean succeed;
@@ -89,15 +87,15 @@ public class MutableOkHttp extends OkHttpClient {
 
     public void setTimeout(long timeout) {
         mTimeout = timeout;
-        // Annotated by Ozobi - 2025/01/31 > 设置 http 最大尝试次数、超时时间
+        
         // muteClient();
-        // Added by Ozobi > 设置 http 最大尝试次数、超时时间
+        
         mOkHttpClient.readTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .writeTimeout(getTimeout(), TimeUnit.MILLISECONDS)
                 .connectTimeout(getTimeout(), TimeUnit.MILLISECONDS);
     }
 
-    // Added by Ozobi - 2025/02/01 > 添加: 设置代理
+    
     public void setProxy(String host, int port){
         mOkHttpClient.proxy(new Proxy(Proxy.Type.HTTP, new InetSocketAddress(host,port)));
     }

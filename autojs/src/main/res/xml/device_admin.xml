@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<device-admin xmlns:android="http://schemas.android.com/apk/res/android">
+<device-admin>
 <!--    Created by Ozobi - 2024/11/10-->
     <uses-policies>
         <!-- 设置密码规则 -->

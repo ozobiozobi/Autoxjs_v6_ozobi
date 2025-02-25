@@ -177,7 +177,7 @@ public class ScriptRuntime {
     @ScriptVariable
     public Device device;
 
-    // Added by Ozobi - 2024/11/10 >
+    
     @ScriptVariable
     public DeviceAdminReceiverMsg deviceAdminReceiverMsg;
 
@@ -194,7 +194,7 @@ public class ScriptRuntime {
     public AdbIME adbIMEShellCommand;
 
     @ScriptVariable
-    public ViewUtils viewUtils;// Added by Ozobi - 2025/02/14 > 添加: viewUtils
+    public ViewUtils viewUtils;
 //    @ScriptVariable
 //    public SendEventCommand sendeventCommand;
     // <
@@ -263,13 +263,13 @@ public class ScriptRuntime {
         engines = new Engines(builder.mEngineService, this);
         dialogs = new Dialogs(this);
         device = new Device(context);
-        // Added by Ozobi - 2024/11/10 >
+        
         deviceAdminReceiverMsg = DeviceAdminReceiverMsg.INSTANCE;
         devicePolicyManager = DevicePolicyManager.INSTANCE;
         dbHelper = new AddInfoDatabaseHelper(context);
         dbManager = new AddInfoDatabaseManager(dbHelper);
         adbIMEShellCommand = new AdbIME();
-        viewUtils = new ViewUtils();// Added by Ozobi - 2025/02/14 > 添加: viewUtils
+        viewUtils = new ViewUtils();
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
         floaty = new Floaty(uiHandler, ui, this);
@@ -290,18 +290,18 @@ public class ScriptRuntime {
         events = new Events(uiHandler.getContext(), accessibilityBridge, this);
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
-        Log.d(logTag,"ScriptRuntime: init");
+        
         if(OzobiShizuku.Companion.getBinder() == null){
             new OzobiShizuku().checkPermission();
         }else{
             boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
-            Log.d(logTag,"ScriptRuntime: init: is Shizuku BinderAlive: "+ isBinderAlive);
+            
         }
-        // Added by Ozobi - 2025/01/26 > Adb键盘
+        
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
     }
-    // Added by Ozobi - 2025/01/19 >
+    
     public static AdbShell adbConnect(String host,int port){
         return new AdbShell(getApplicationContext(),host,port);
     }
@@ -337,7 +337,7 @@ public class ScriptRuntime {
         return intent;
     }
     // <
-    // Added by Ozobi - 2025/02/06 > 获取状态栏高度
+    
     public static int getStatusBarHeight(){
         return ViewUtil.getStatusBarHeight(getApplicationContext());
     }

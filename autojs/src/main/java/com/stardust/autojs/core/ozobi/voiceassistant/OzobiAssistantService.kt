@@ -1,9 +1,8 @@
 package com.stardust.autojs.core.ozobi.voiceassistant
 
-import android.app.Service
 import android.content.ComponentName
-import android.content.Intent
 import android.content.Context
+import android.content.Intent
 import android.content.ServiceConnection
 import android.os.IBinder
 import android.util.Log
@@ -20,11 +19,11 @@ class OzobiAssistantService : OzobiAssistInteractionService() {
 
     fun bindToOzobiService() {
         val serviceIntent = Intent(this, OzobiAssistInteractionService::class.java)
-        Log.d("ozobiLog", "OzobiAssistInteractionService : serviceIntent $serviceIntent")
+        
 
         serviceConnection = object : ServiceConnection {
             override fun onServiceConnected(name: ComponentName?, serviceBinder: IBinder?) {
-                Log.d("ozobiLog", "OzobiAssistInteractionService : onServiceConnected : $name")
+                
                 active = true
                 val binder = serviceBinder as OzobiAssistInteractionService.MyBinder
                 ozobiService = binder.getService()
@@ -32,7 +31,7 @@ class OzobiAssistantService : OzobiAssistInteractionService() {
             }
 
             override fun onServiceDisconnected(name: ComponentName?) {
-                Log.d("ozobiLog", "OzobiAssistInteractionService : onServiceDisconnected")
+                
                 active = false
                 ozobiService = null
             }
@@ -49,7 +48,7 @@ class OzobiAssistantService : OzobiAssistInteractionService() {
         serviceConnection = null
         ozobiService = null
         active = false
-        Log.d("ozobiLog", "OzobiAssistInteractionService : onDestroy")
+        
     }
 }
 
@@ -57,7 +56,7 @@ class OzobiAssistantService : OzobiAssistInteractionService() {
 
 
 //
-//class OzobiAssistantService: OzobiAssistInteractionService() {
+
 //    var service:Service? = null
 //
 //    override fun onCreate() {
@@ -66,26 +65,26 @@ class OzobiAssistantService : OzobiAssistInteractionService() {
 //    }
 //
 //    fun getService(context: Context):Service?{
-//        Log.d("ozobiLog","OzobiAssistInteractionService : getService")
+
 //        // 客户端代码
-//        val serviceIntent = Intent(context, OzobiAssistInteractionService::class.java)
-//        Log.d("ozobiLog", "OzobiAssistInteractionService : serviceIntent$serviceIntent")
+
+
 //        var service: Service? = null
 //        val bindResult = bindService(serviceIntent, object :
 //            ServiceConnection {
 //            override fun onServiceConnected(name: ComponentName?, serviceBinder: IBinder?) {
-//                Log.d("ozobiLog","OzobiAssistInteractionService : onServiceConnected : $name")
+
 //                active = true
-//                val binder = serviceBinder as OzobiAssistInteractionService.MyBinder
+
 //                // 获取服务实例
 //                service = binder.getService()
 //                // 调用服务中的方法
-//                (service as OzobiAssistInteractionService).doSomething()
+
 //            }
 //
 //            override fun onServiceDisconnected(name: ComponentName?) {
 //                // 服务连接断开时的回调
-//                Log.d("ozobiLog","OzobiAssistInteractionService : onServiceDisconnected")
+
 //            }
 //        }, Context.BIND_AUTO_CREATE)
 //        if(bindResult){

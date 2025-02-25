@@ -1,5 +1,6 @@
 package com.stardust.autojs.core.floaty
 
+//import com.stardust.lib.R.layout
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.View
@@ -7,15 +8,16 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
 import com.stardust.autojs.R
-import com.stardust.enhancedfloaty.*
-
+import com.stardust.autojs.R.layout
+import com.stardust.enhancedfloaty.FloatyService
+import com.stardust.enhancedfloaty.FloatyWindow
+import com.stardust.enhancedfloaty.ResizableFloaty
+import com.stardust.enhancedfloaty.ResizableFloatyWindow
+import com.stardust.enhancedfloaty.WindowBridge
 import com.stardust.enhancedfloaty.WindowBridge.DefaultImpl
 import com.stardust.enhancedfloaty.gesture.DragGesture
 import com.stardust.enhancedfloaty.gesture.ResizeGesture
 import com.stardust.enhancedfloaty.util.WindowTypeCompat
-//import com.stardust.lib.R.layout
-import com.stardust.autojs.R.layout
-
 
 
 class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : FloatyWindow() {
@@ -48,7 +50,7 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
         super.setWindowView(windowView)
         super.setWindowManager(context.getSystemService(FloatyService.WINDOW_SERVICE) as WindowManager)
         super.setWindowBridge(super.onCreateWindowBridge(layoutParams))
-        // Added by Ozobi - 2025/01/17 : 悬浮窗以位置屏幕左上角为原点 >
+        
         val windowLayoutParams = windowLayoutParams
         windowLayoutParams.flags = windowLayoutParams.flags or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
         // <

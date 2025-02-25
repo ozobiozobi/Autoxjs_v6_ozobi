@@ -1,11 +1,27 @@
 package com.stardust.autojs.core.inputevent;
 
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_X;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_Y;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_SLOT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TOUCH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TRACKING_ID;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_WIDTH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.BTN_TOUCH;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.DOWN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_ABS;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_KEY;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_SYN;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_MT_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.SYN_REPORT;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.UP;
+
 import android.content.Context;
 import android.os.SystemClock;
-import androidx.annotation.Nullable;
 import android.util.Log;
 import android.util.SparseIntArray;
 import android.view.ViewConfiguration;
+
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.util.Shell;
 import com.stardust.autojs.engine.RootAutomatorEngine;
@@ -13,13 +29,8 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.util.ScreenMetrics;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.List;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import static com.stardust.autojs.core.inputevent.InputEventCodes.*;
 
 /**
  * Created by Stardust on 2017/7/16.
@@ -192,7 +203,7 @@ public class RootAutomator implements Shell.Callback {
         sendEvent(EV_ABS, ABS_MT_WIDTH_MAJOR, 5);
         sendEvent(EV_SYN, SYN_REPORT, 0);
     }
-    // Modified by Ozobi - 2025/01/28 > 返回 sendevent 字符串命令list
+    
     private void touchDown0(int x, int y, int id) throws IOException {
         mSlotIdMap.put(id, 0);
         sendEvent(EV_ABS, ABS_MT_TRACKING_ID, mTracingId.getAndIncrement());
@@ -290,7 +301,7 @@ public class RootAutomator implements Shell.Callback {
     @Override
     public void onInitialized() {
         String path = RootAutomatorEngine.getExecutablePath(mContext);
-        // Modified by Ozobi - 2025/01/28 > 修复: 输入设备名称存在空格时, RootAutomator 不生效
+        
         String deviceNameOrPath = "'" + RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName()) + "'";
         // <
         Log.d(LOG_TAG, "deviceNameOrPath: " + deviceNameOrPath);

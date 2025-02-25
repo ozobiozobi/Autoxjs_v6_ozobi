@@ -1,6 +1,6 @@
 package org.autojs.autoxjs.network;
 
-// Created by Ozobi - 2025/01/12
+
 
 import android.content.ComponentName;
 import android.content.ServiceConnection;
@@ -29,11 +29,11 @@ public class MessengerServiceConnection implements ServiceConnection {
         this.clientHandler = new Handler(looper){
             @Override
             public void handleMessage(@NonNull Message msg){
-                Log.d("ozobiLog","MessengerServiceConnection: handleMessage: msg: "+msg);
+                
                 if(msg.what == ServiceMessenger.SEND_TO_DEVPLUGIN){
                     Bundle data = msg.getData();
                     String message = Objects.requireNonNull(data.getString("setClip"));
-//                    Log.d("ozobiLog","MessengerServiceConnection: handleMessage: message: "+message);
+
                     DevPlugin.INSTANCE.log(message);
                 }
             }
@@ -43,7 +43,7 @@ public class MessengerServiceConnection implements ServiceConnection {
 
     @Override
     public void onServiceConnected(ComponentName name, IBinder service) {
-//        Log.d("ozobiLog","MessengerServiceConnection: onServiceConnected");
+
         mMessenger = new Messenger(service);
         Message message = Message.obtain();
         message.what = 1;
@@ -60,7 +60,7 @@ public class MessengerServiceConnection implements ServiceConnection {
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-        Log.d("ozobiLog","MessengerServiceConnection: onServiceDisconnected: name: "+name);
+        
     }
 
 

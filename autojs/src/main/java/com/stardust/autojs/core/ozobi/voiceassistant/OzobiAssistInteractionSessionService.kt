@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.provider.Settings
 import android.service.voice.VoiceInteractionSession
 import android.service.voice.VoiceInteractionSessionService
-import android.util.Log
 import kotlin.jvm.internal.Intrinsics
 
 
@@ -16,11 +15,11 @@ class OzobiAssistInteractionSessionService: VoiceInteractionSessionService() {
 
     override fun onCreate() {
         super.onCreate()
-        Log.d("ozobiLog","OzobiAssistInteractionSessionService : onCreate")
+        
     }
 
     override fun onNewSession(bundle: Bundle?):VoiceInteractionSession  {
-        Log.d("ozobiLog","OzobiAssistInteractionSessionService : onNewSession")
+        
         startLinkToDeath(applicationContext)
         val voiceInteractionSession = VoiceInteractionSession(this)
         if (Build.VERSION.SDK_INT >= 26) {
@@ -35,7 +34,7 @@ class OzobiAssistInteractionSessionService: VoiceInteractionSessionService() {
         try{
             return Settings.Secure.getInt(context.contentResolver,linkToDeath)
         }catch (e:Exception){
-            Log.d("ozobiLog",e.toString())
+            
         }
         return 0
     }

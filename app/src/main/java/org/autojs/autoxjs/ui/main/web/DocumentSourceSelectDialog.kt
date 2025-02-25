@@ -28,7 +28,7 @@ class DocumentSourceSelectDialog(private val webView: WebView) {
 
     private fun switchDocument() {
         val documentSource = select ?: return
-        // Added by Ozobi - 2025/01/12 > 将编辑器左侧文档源改为当前选中的文档源
+        
         Pref.setCurDocumentationSource(select)//<
         EditorAppManager.switchDocument(webView, documentSource)
     }

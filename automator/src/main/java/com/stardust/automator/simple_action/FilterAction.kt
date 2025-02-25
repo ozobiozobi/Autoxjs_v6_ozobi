@@ -2,7 +2,7 @@ package com.stardust.automator.simple_action
 
 import android.graphics.Rect
 import com.stardust.automator.UiObject
-import java.util.*
+import java.util.LinkedList
 
 /**
  * Created by Stardust on 2017/1/27.

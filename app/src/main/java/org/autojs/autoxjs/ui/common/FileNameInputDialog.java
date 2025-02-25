@@ -1,9 +1,10 @@
 package org.autojs.autoxjs.ui.common;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.widget.EditText;
+
+import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;

@@ -1,16 +1,17 @@
 package org.autojs.autoxjs.ui.user;
 
 import android.content.Intent;
+
 import androidx.annotation.NonNull;
 
 import com.stardust.app.OnActivityResultDelegate;
-import org.autojs.autoxjs.R;
-import org.autojs.autoxjs.ui.BaseActivity;
-import org.autojs.autoxjs.ui.widget.EWebView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.ui.BaseActivity;
+import org.autojs.autoxjs.ui.widget.EWebView;
 
 /**
  * Created by Stardust on 2017/10/26.

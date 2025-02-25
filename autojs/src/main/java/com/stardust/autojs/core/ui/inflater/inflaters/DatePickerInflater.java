@@ -1,12 +1,12 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
 import android.os.Build;
-import androidx.annotation.Nullable;
 import android.view.InflateException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.R;
 import com.stardust.autojs.core.ui.inflater.ResourceParser;

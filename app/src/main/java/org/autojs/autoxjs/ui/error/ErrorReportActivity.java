@@ -16,9 +16,9 @@ import androidx.appcompat.widget.Toolbar;
 
 import com.heinrichreimersoftware.androidissuereporter.model.DeviceInfo;
 
+import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.ui.BaseActivity;
 import org.autojs.autoxjs.ui.main.MainActivity;
-import org.autojs.autoxjs.R;
 
 import java.io.File;
 import java.io.FileWriter;

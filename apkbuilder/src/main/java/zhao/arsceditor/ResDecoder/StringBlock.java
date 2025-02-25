@@ -1,5 +1,5 @@
 /**
- *  Copyright 2011 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright 2011 Ryszard Wi'sniewski <brut.alll@gmail.com>
  *  Modified Copyright 2015 ZhaoHai <2801045898@qq.com>
  *  
  *  Licensed under the Apache License, Version 2.0 (the "License");
@@ -31,7 +31,7 @@ import zhao.arsceditor.ResDecoder.IO.LEDataOutputStream;
 
 
 /**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
+ * @author Ryszard Wi'sniewski <brut.alll@gmail.com>
  * @author Dmitry Skiba
  * @author ZhaoHai
  * 

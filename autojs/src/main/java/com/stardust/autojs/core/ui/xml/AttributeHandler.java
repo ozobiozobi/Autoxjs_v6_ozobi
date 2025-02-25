@@ -1,7 +1,5 @@
 package com.stardust.autojs.core.ui.xml;
 
-import android.util.Log;
-
 import org.w3c.dom.Node;
 
 import java.util.HashMap;

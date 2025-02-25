@@ -1,6 +1,5 @@
 package com.stardust.auojs.inrt.autojs;
 
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.text.TextUtils;
 
@@ -8,9 +7,6 @@ import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.accessibility.AccessibilityService;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
-
-//import org.autojs.autojs.Pref;
-//import org.autojs.autoxjs.R;
 
 import java.util.Locale;
 

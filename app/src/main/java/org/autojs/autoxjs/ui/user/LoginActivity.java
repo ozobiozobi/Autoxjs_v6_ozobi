@@ -8,16 +8,16 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
-import org.autojs.autoxjs.R;
-import org.autojs.autoxjs.network.NodeBB;
-import org.autojs.autoxjs.network.UserService;
-import org.autojs.autoxjs.ui.BaseActivity;
 import com.stardust.theme.ThemeColorManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.network.NodeBB;
+import org.autojs.autoxjs.network.UserService;
+import org.autojs.autoxjs.ui.BaseActivity;
 
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;

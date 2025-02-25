@@ -1,5 +1,5 @@
 /**
- * Copyright 2011 Ryszard Wiśniewski <brut.alll@gmail.com>
+ * Copyright 2011 Ryszard Wi'sniewski <brut.alll@gmail.com>
  * Modified Copyright 2015 ZhaoHai <2801045898@qq.com>
  * <p>
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,7 @@ import zhao.arsceditor.ResDecoder.data.value.ResValue;
 import zhao.arsceditor.ResDecoder.data.value.ResValueFactory;
 
 /**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
+ * @author Ryszard Wi'sniewski <brut.alll@gmail.com>
  * @author ZhaoHai
  */
 public class ARSCDecoder {

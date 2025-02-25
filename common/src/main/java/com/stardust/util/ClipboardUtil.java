@@ -22,7 +22,7 @@ import java.util.Date;
 public class ClipboardUtil {
 
     public static void setClip(Context context, CharSequence text) {
-        // Added by Ozobi - 2025/02/15 > 添加: 将复制的内容发送到vscode
+        
         try{
             String format = "HH:mm:ss.SSS";
             Date date = new Date();
@@ -31,7 +31,7 @@ public class ClipboardUtil {
             Bundle data = new Bundle();
             data.putString("setClip","\n[Ozobi:D "+formattedDate+"]\n"+text.toString()+"\n");
             ServiceMessenger.sendMessageToClient("@app",ServiceMessenger.SEND_TO_DEVPLUGIN,data);
-//            Log.d("ozobiLog","ClipboardUtil: "+text);
+
         }catch(Exception e){
             Log.e("ozobiLog","ClipboardUtil: setClip: e: "+e);
         }

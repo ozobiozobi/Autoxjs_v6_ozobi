@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.IBinder;
-import android.util.Log;
 
 import com.cgutman.adblib.AdbCrypto;
 import com.stardust.autojs.core.ozobi.remoteadb.console.ConsoleBuffer;
@@ -49,7 +48,7 @@ public class AdbShell implements DeviceConnectionListener  {
                     break;
                 }
             }
-//            Log.d("ozobiLog","AdbShell: execCommand: 结束");
+
             return shellResult;
         }
         return "connection is null";
@@ -71,7 +70,7 @@ public class AdbShell implements DeviceConnectionListener  {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-//            Log.d(logTag,"AdbShell: onServiceConnected");
+//            
         }
 
         @Override
@@ -98,7 +97,7 @@ public class AdbShell implements DeviceConnectionListener  {
 
         /* Begin the async connection process */
         conn.startConnect();
-        Log.d("ozobiLog","AdbShell: startConnection: host: "+host+" port: "+port);
+        
         return conn;
     }
 
@@ -117,49 +116,49 @@ public class AdbShell implements DeviceConnectionListener  {
 
     @Override
     public void notifyConnectionEstablished(DeviceConnection devConn) {
-        Log.d(logTag,"AdbShell: notifyConnectionEstablished");
+        
     }
 
     @Override
     public void notifyConnectionFailed(DeviceConnection devConn, Exception e) {
-        Log.d(logTag,"AdbShell: notifyConnectionFailed");
+        
     }
 
     @Override
     public void notifyStreamFailed(DeviceConnection devConn, Exception e) {
-        Log.d(logTag,"AdbShell: notifyStreamFailed");
+        
     }
 
     @Override
     public void notifyStreamClosed(DeviceConnection devConn) {
-        Log.d(logTag,"AdbShell: notifyStreamClosed");
+        
     }
 
     @Override
     public AdbCrypto loadAdbCrypto(DeviceConnection devConn) {
-        Log.d(logTag,"AdbShell: loadAdbCrypto");
+        
         return null;
     }
 
     @Override
     public boolean canReceiveData() {
-        Log.d(logTag,"AdbShell: canReceiveData");
+        
         return false;
     }
 
     @Override
     public void receivedData(DeviceConnection devConn, byte[] data, int offset, int length) {
-        Log.d(logTag,"AdbShell: receivedData");
+        
     }
 
     @Override
     public boolean isConsole() {
-        Log.d(logTag,"AdbShell: isConsole");
+        
         return false;
     }
 
     @Override
     public void consoleUpdated(DeviceConnection devConn, ConsoleBuffer console) {
-        Log.d(logTag,"AdbShell: consoleUpdated");
+        
     }
 }

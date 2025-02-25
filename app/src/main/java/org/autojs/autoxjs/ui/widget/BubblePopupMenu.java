@@ -3,13 +3,13 @@ package org.autojs.autoxjs.ui.widget;
 import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.view.Gravity;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 import org.autojs.autoxjs.R;
 
@@ -29,13 +29,13 @@ public class BubblePopupMenu extends PopupWindow {
     private RecyclerView mRecyclerView;
     private OnItemClickListener mOnItemClickListener;
     private View mLittleTriangle;
-    // Added by Ozobi - 2025/02/19
+    
     public static boolean nightMode = false;
     // <
 
     public BubblePopupMenu(Context context, List<String> options) {
         super(context);
-        // Added by Ozobi - 2025/02/19
+        
         int menuResource = R.layout.bubble_popup_menu;
         int itemResource = R.layout.bubble_popup_menu_item;
         if(nightMode){

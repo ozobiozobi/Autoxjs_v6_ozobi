@@ -2,12 +2,13 @@ package org.autojs.autoxjs.ui.edit.toolbar;
 
 import android.os.Bundle;
 import android.os.Handler;
-import androidx.annotation.Nullable;
-import androidx.recyclerview.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.rhino.debug.DebugCallback;

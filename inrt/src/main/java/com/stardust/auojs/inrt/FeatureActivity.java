@@ -19,7 +19,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ProgressBar;
 
-
 import androidx.annotation.RequiresApi;
 
 import com.stardust.auojs.inrt.util.MarketJavascriptInterface;

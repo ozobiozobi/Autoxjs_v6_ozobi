@@ -5,13 +5,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.inputmethodservice.InputMethodService;
+import android.util.Base64;
 import android.util.Log;
 import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.ExtractedTextRequest;
 import android.view.inputmethod.InputConnection;
-import android.util.Base64;
 
 import com.stardust.autojs.R;
 
@@ -95,7 +95,7 @@ public class AdbIME extends InputMethodService {
     class AdbReceiver extends BroadcastReceiver {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.d("ozobiLog","AdbIME: onReceive");
+            
             if (Objects.equals(intent.getAction(), IME_MESSAGE)) {
                 // normal message
                 String msg = intent.getStringExtra("msg");

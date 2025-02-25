@@ -15,10 +15,15 @@
  */
 package pxb.android.axml;
 
+import static pxb.android.axml.AxmlParser.END_FILE;
+import static pxb.android.axml.AxmlParser.END_NS;
+import static pxb.android.axml.AxmlParser.END_TAG;
+import static pxb.android.axml.AxmlParser.START_NS;
+import static pxb.android.axml.AxmlParser.START_TAG;
+import static pxb.android.axml.AxmlParser.TEXT;
+
 import java.io.IOException;
 import java.util.Stack;
-
-import static pxb.android.axml.AxmlParser.*;
 
 /**
  * a class to read android axml

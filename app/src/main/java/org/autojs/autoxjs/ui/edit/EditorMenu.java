@@ -18,10 +18,10 @@ import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.model.indices.AndroidClass;
 import org.autojs.autoxjs.model.indices.ClassSearchingItem;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import org.autojs.autoxjs.ui.build.BuildActivity;
 import org.autojs.autoxjs.ui.common.NotAskAgainDialog;
 import org.autojs.autoxjs.ui.edit.editor.CodeEditor;
 import org.autojs.autoxjs.ui.log.LogActivityKt;
-import org.autojs.autoxjs.ui.build.BuildActivity;
 
 import java.util.Locale;
 
@@ -132,7 +132,7 @@ public class EditorMenu {
             case R.id.action_info:
                 showInfo();
                 return true;
-            // Annotated by Ozobi - 2024/11/11 > 移除打包
+            
             case R.id.action_build_apk:
                 startBuildApkActivity();
                 return true;

@@ -2,7 +2,6 @@ package com.stardust.util;
 
 import android.content.SharedPreferences;
 
-import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

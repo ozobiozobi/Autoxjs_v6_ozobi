@@ -30,6 +30,7 @@ import org.androidannotations.annotations.AfterViews
 import org.androidannotations.annotations.Click
 import org.androidannotations.annotations.EActivity
 import org.androidannotations.annotations.ViewById
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.model.explorer.ExplorerDirPage
 import org.autojs.autoxjs.model.explorer.ExplorerFileItem
 import org.autojs.autoxjs.model.explorer.Explorers
@@ -40,7 +41,6 @@ import org.autojs.autoxjs.ui.BaseActivity
 import org.autojs.autoxjs.ui.shortcut.ShortcutIconSelectActivity.Companion.getBitmapFromIntent
 import org.autojs.autoxjs.ui.shortcut.ShortcutIconSelectActivity_
 import org.autojs.autoxjs.ui.widget.SimpleTextWatcher
-import org.autojs.autoxjs.R
 import java.io.File
 import java.io.FileOutputStream
 

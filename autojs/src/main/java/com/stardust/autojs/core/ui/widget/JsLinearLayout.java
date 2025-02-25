@@ -2,11 +2,12 @@ package com.stardust.autojs.core.ui.widget;
 
 import android.content.Context;
 import android.os.Build;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 import com.stardust.autojs.core.ui.JsViewHelper;
 

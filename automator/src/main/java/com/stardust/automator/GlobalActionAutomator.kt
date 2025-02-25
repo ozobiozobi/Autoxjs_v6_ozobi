@@ -6,9 +6,8 @@ import android.graphics.Path
 import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.RequiresApi
 import android.view.ViewConfiguration
-
+import androidx.annotation.RequiresApi
 import com.stardust.concurrent.VolatileBox
 import com.stardust.concurrent.VolatileDispose
 import com.stardust.util.ScreenMetrics

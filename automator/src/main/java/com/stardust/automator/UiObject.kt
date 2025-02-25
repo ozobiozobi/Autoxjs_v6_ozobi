@@ -2,16 +2,9 @@ package com.stardust.automator
 
 import android.graphics.Rect
 import android.os.Bundle
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
-
-import com.stardust.view.accessibility.AccessibilityNodeInfoAllocator
-import com.stardust.view.accessibility.AccessibilityNodeInfoHelper
-
-import java.util.ArrayList
-import java.util.Arrays
-
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_CONTEXT_CLICK
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_DOWN
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_LEFT
@@ -20,6 +13,9 @@ import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Accessibilit
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_UP
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SHOW_ON_SCREEN
+import com.stardust.view.accessibility.AccessibilityNodeInfoAllocator
+import com.stardust.view.accessibility.AccessibilityNodeInfoHelper
+import java.util.Arrays
 
 /**
  * Created by Stardust on 2017/3/9.

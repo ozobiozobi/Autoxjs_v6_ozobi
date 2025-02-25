@@ -1,5 +1,10 @@
 package org.autojs.autoxjs.ui.explorer;
 
+import static androidx.core.content.ContextCompat.getColor;
+import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_AUTO_FILE;
+import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_JAVASCRIPT;
+import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_UNKNOWN;
+
 import android.graphics.Color;
 
 import com.stardust.app.GlobalAppContext;
@@ -11,11 +16,6 @@ import org.autojs.autoxjs.model.explorer.ExplorerItem;
 import org.autojs.autoxjs.model.explorer.ExplorerPage;
 import org.autojs.autoxjs.model.explorer.ExplorerProjectPage;
 import org.autojs.autoxjs.model.explorer.ExplorerSamplePage;
-
-import static androidx.core.content.ContextCompat.getColor;
-import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_AUTO_FILE;
-import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_JAVASCRIPT;
-import static org.autojs.autoxjs.model.explorer.ExplorerItem.TYPE_UNKNOWN;
 
 public class ExplorerViewHelper {
 

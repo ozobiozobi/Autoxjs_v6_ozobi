@@ -1,5 +1,7 @@
 package org.autojs.autoxjs.ui.build;
 
+import static com.stardust.app.GlobalAppContext.getString;
+
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
@@ -17,13 +19,10 @@ import com.stardust.pio.PFiles;
 import org.autojs.autoxjs.Pref;
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.build.ApkSigner;
-
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.stardust.app.GlobalAppContext.getString;
 
 public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder {
 

@@ -1,14 +1,5 @@
 package com.stardust.autojs.core.ozobi.remoteadb.service;
 
-import java.util.HashMap;
-
-import com.cgutman.adblib.AdbCrypto;
-import com.stardust.autojs.R;
-import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
-import com.stardust.autojs.core.ozobi.remoteadb.console.ConsoleBuffer;
-import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnection;
-import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnectionListener;
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,9 +14,17 @@ import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
-import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
+
+import com.cgutman.adblib.AdbCrypto;
+import com.stardust.autojs.R;
+import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
+import com.stardust.autojs.core.ozobi.remoteadb.console.ConsoleBuffer;
+import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnection;
+import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnectionListener;
+
+import java.util.HashMap;
 
 public class ShellService extends Service implements DeviceConnectionListener {
 
@@ -137,7 +136,7 @@ public class ShellService extends Service implements DeviceConnectionListener {
         if (wakeLock.isHeld()) {
             wakeLock.release();
         }
-        Log.d("ozobiLog","ShellService: onDestroy");
+        
         super.onDestroy();
     }
 
@@ -329,7 +328,7 @@ public class ShellService extends Service implements DeviceConnectionListener {
 
     @Override
     public AdbCrypto loadAdbCrypto(DeviceConnection devConn) {
-        Log.d("ozobiLog","ShellService: loadAdbCrypto");
+        
         return null;
     }
 

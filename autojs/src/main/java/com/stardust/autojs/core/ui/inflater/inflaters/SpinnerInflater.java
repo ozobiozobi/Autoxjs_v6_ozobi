@@ -1,10 +1,9 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.view.ViewGroup;
 import android.widget.Spinner;
+
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.ViewCreator;

@@ -3,7 +3,6 @@ package com.stardust.autojs.core.ui.nativeview;
 import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Looper;
-import androidx.core.view.ViewCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.CompoundButton;

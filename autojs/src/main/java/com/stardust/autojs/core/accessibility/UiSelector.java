@@ -167,7 +167,7 @@ public class UiSelector extends UiGlobalSelector {
     }
 
     private void ensureAccessibilityServiceEnabled() {
-        mAccessibilityBridge.ensureServiceEnabled();// Annotated by Ozobi - 2025/01/04 : 测试
+        mAccessibilityBridge.ensureServiceEnabled();
     }
 
     @ScriptInterface

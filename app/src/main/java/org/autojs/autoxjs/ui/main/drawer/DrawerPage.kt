@@ -10,7 +10,6 @@ import android.content.Intent
 import android.content.res.Configuration
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -120,11 +119,11 @@ import org.joda.time.Instant
 private const val TAG = "DrawerPage"
 private const val URL_DEV_PLUGIN = "https://github.com/aiselp/Auto.js-VSCode-Extension"
 //private const val PROJECT_ADDRESS = "https://github.com/aiselp/AutoX"
-private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi"// Modified by Ozobi - 2025/02/15
+private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi"
 //private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
-private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"// Modified by Ozobi - 2025/02/15
+private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
-// Added by Ozobi - 2024/10/25
+
 private var alwaysTryToConnectState = false
 private var isFirstTime = true
 private lateinit var devicePolicyManager: DevicePolicyManager
@@ -136,17 +135,17 @@ private const val ozobiSubfix = "_ozobi"
 @Composable
 fun DrawerPage() {
     val context = LocalContext.current
-    // Added by Ozobi - 2024/10/26 >
-    Log.d(ozobiLogTag,"启动app")
+    
+    
     if(isFirstTime){
-        Log.d(ozobiLogTag,"第一次")
+        
         isFirstTime = false
     }else{
-        Log.d(ozobiLogTag,"第二次")
+        
         startUpCheck()
     }
     // <
-    // Added by Ozobi - 2024/11/10 >
+    
     devicePolicyManager = com.stardust.autojs.runtime.DevicePolicyManager.devicePolicyManager
     componentName = com.stardust.autojs.runtime.DevicePolicyManager.componentName
     // <
@@ -185,14 +184,14 @@ fun DrawerPage() {
             SwitchClassifyTittle(text = stringResource(id = R.string.text_script_record))
             FloatingWindowSwitch()
             VolumeDownControlSwitch()
-//            AutoBackupSwitch()// Annotated by Ozobi - 2025/02/15
 
-            SwitchClassifyTittle("连接")//Modified by Ozobi - 2025/02/18
+
+            SwitchClassifyTittle("连接")
             ConnectComputerSwitch()
             AlwaysTryToConnect()
             USBDebugSwitch()
-            // Added by Ozobi - 2025/02/06 > 布局分析相关开关
-            SwitchClassifyTittle("布局分析")// Added by Ozobi - 2025/02/18
+            
+            SwitchClassifyTittle("布局分析")
             layoutInsWaitForCaptureSwitch()
             layoutInsDelayCaptureSwitch()
             layoutInsScreenshotSwitch()
@@ -202,8 +201,8 @@ fun DrawerPage() {
             showModificationDetailsButton()
             ProjectAddress(context)
             DownloadLink(context)
-//            Feedback(context)// Annotated by Ozobi - 2025/02/15
-//            CheckForUpdate()// Annotated by Ozobi - 2025/02/15
+
+
             SwitchTimedTaskScheduler()
             AppDetailsSettings(context)
         }
@@ -233,7 +232,7 @@ private fun SwitchClassifyTittle(text:String){
 fun isNightMode():Boolean{
 //    val context = LocalContext.current
 //    return PreferenceManager.getDefaultSharedPreferences(context)
-//        .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)
+
 //    return isSystemInDarkTheme()
     return (LocalContext.current.resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK) == Configuration.UI_MODE_NIGHT_YES
 }
@@ -273,7 +272,7 @@ private fun DownloadLink(context: Context) {
             DOWNLOAD_ADDRESS
         )
     }) {
-        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)// Modified by Ozobi - 2025/02/15
+        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)
     }
 }
 
@@ -285,7 +284,7 @@ private fun ProjectAddress(context: Context) {
             PROJECT_ADDRESS
         )
     }) {
-        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)// Modified by Ozobi - 2025/02/15
+        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)
     }
 }
 
@@ -508,7 +507,7 @@ private fun ConnectComputerSwitch() {
                     DevPlugin.State.CONNECTED -> enable = true
                     DevPlugin.State.DISCONNECTED -> {
                         enable = false
-                        // Added by Ozobi - 2024/10/02
+                        
                         if(alwaysTryToConnectState){
                             checkConnectState(context)
                         }
@@ -551,7 +550,7 @@ private fun ConnectComputerSwitch() {
 
 }
 
-// Added by Ozobi - 2025/01/03 >
+
 @Composable
 private fun ShizukuSwitch(){
     val context = LocalContext.current
@@ -649,7 +648,7 @@ private fun VoiceAssistantSwitch(){
 }
 // <
 
-// Added by Ozobi - 2024/11/10 >
+
 @Composable
 private fun DeviceManagerSwitch(){
     val context = LocalContext.current
@@ -686,7 +685,7 @@ private fun DeviceManagerSwitch(){
             .putBoolean(context.getString(R.string.key_device_manager), it)
             .apply()
         if (it) {
-            Log.d(ozobiLogTag, "激活设备管理员")
+            
             scope.launch {
                 checkDeviceManagerStatus(1000L, 120) {
                     isDeviceManagerActive = devicePolicyManager.isAdminActive(componentName)
@@ -698,7 +697,7 @@ private fun DeviceManagerSwitch(){
             intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, componentName)
             context.startActivity(intent)
         } else {
-            Log.d(ozobiLogTag, "禁用设备管理员")
+            
             devicePolicyManager.removeActiveAdmin(componentName)
             isDeviceManagerActive = false
             DeviceAdminReceiverMsg.isEnabled = false
@@ -706,7 +705,7 @@ private fun DeviceManagerSwitch(){
     }
 }
 suspend fun checkDeviceManagerStatus(interval:Long, count:Int,callBack:()->Unit){
-    Log.d(ozobiLogTag,"开始检测设备管理员状态")
+    
     var countLeft = count
     val initStatus = devicePolicyManager.isAdminActive(componentName)
     while (countLeft > 0){
@@ -717,17 +716,17 @@ suspend fun checkDeviceManagerStatus(interval:Long, count:Int,callBack:()->Unit)
         }
         countLeft--
         if(initStatus != devicePolicyManager.isAdminActive(componentName)){
-            Log.d(ozobiLogTag,"设备管理员状态发生改变, 调用回调函数")
+            
             callBack()
             return
         }
     }
-    Log.d(ozobiLogTag,"检测超时")
+    
     return
 }
 // <
 
-// Modified by Ozobi - 2024/12/02
+
 @Composable
 private fun AlwaysTryToConnect(){
     val context = LocalContext.current
@@ -760,22 +759,22 @@ private fun AlwaysTryToConnect(){
                 .apply()
             enable = it
             if (it) {
-                Log.d(ozobiLogTag,"打开连上为止")
+                
                 alwaysTryToConnectState = true
             }else{
-                Log.d(ozobiLogTag,"适可而止")
+                
                 alwaysTryToConnectState = false
             }
         }
     )
 }
-// Added by Ozobi - 2024/12/02
+
 @OptIn(DelicateCoroutinesApi::class)
 fun checkConnectState(context: Context){
     val curCheckingStatus = PreferenceManager.getDefaultSharedPreferences(context)
         .getBoolean(context.getString(R.string.key_cur_check_connection_status), false)
     if(curCheckingStatus){
-        Log.d(ozobiLogTag,"当前已在检测中")
+        
         return
     }
     PreferenceManager.getDefaultSharedPreferences(context)
@@ -784,16 +783,16 @@ fun checkConnectState(context: Context){
         .apply()
     GlobalScope.launch{
         delay(5000L)
-        Log.d(ozobiLogTag,"开始监控连接状态")
+        
         while (true){
             if(alwaysTryToConnectState){
-                Log.d(ozobiLogTag,"当前连接状态: ${DevPlugin.isActive}")
+                
                 if(!DevPlugin.isActive){
                     val host = Pref.getServerAddressOrDefault(WifiTool.getRouterIp(context))
                     DevPlugin.connect(getUrl(host))
                 }
             }else{
-                Log.d(ozobiLogTag,"关闭连接检测")
+                
                 break
             }
             delay(15000L)
@@ -805,11 +804,11 @@ fun checkConnectState(context: Context){
     }
 }
 
-// Modified by Ozobi - 2024/10/26
+
 @Composable
 fun startUpCheck(){
     DevPlugin.isFirstTime = true
-    Log.d(ozobiLogTag,"启动时检查连接")
+    
     val context = LocalContext.current
     val host by remember {
         mutableStateOf(Pref.getServerAddressOrDefault(WifiTool.getRouterIp(context)))
@@ -1281,7 +1280,7 @@ fun SwitchTimedTaskScheduler() {
     }
 }
 
-// Added by Ozobi - 2025/02/06 > 添加布局分析截图开关
+
 @Composable
 private fun layoutInsScreenshotSwitch() {
     val context = LocalContext.current
@@ -1310,7 +1309,7 @@ private fun layoutInsScreenshotSwitch() {
     )
 }
 // <
-// Added by Ozobi - 2025/02/06 > 添加布局分析刷新开关
+
 @Composable
 private fun layoutInsRefreshSwitch() {
     val context = LocalContext.current
@@ -1338,7 +1337,7 @@ private fun layoutInsRefreshSwitch() {
         }
     )
 }
-// Added by Ozobi - 2025/02/06 > 添加布局分析等待捕获开关
+
 @Composable
 private fun layoutInsWaitForCaptureSwitch() {
     val context = LocalContext.current
@@ -1367,7 +1366,7 @@ private fun layoutInsWaitForCaptureSwitch() {
     )
 }
 // <
-// Added by Ozobi - 2025/02/06 > 添加布局分析延迟捕获开关
+
 @Composable
 private fun layoutInsDelayCaptureSwitch() {
     val context = LocalContext.current
@@ -1396,7 +1395,7 @@ private fun layoutInsDelayCaptureSwitch() {
     )
 }
 // <
-// Added by Ozobi - 2025/02/06 > 添加夜间模式开关
+
 @Composable
 private fun nightModeSwitch() {
     val context = LocalContext.current
@@ -1424,7 +1423,7 @@ private fun nightModeSwitch() {
         }
     )
 }
-// Added by Ozobi - 2024/11/06 > 添加关于魔改信息
+
 @Composable
 fun showModificationDetailsButton() {
     val context = LocalContext.current

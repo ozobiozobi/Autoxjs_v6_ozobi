@@ -38,7 +38,7 @@ public abstract class AbstractShell {
                     '}';
         }
 
-        // Added by Ozobi - 2025/01/08 >
+        
         public Result() {
             this(-1);
         }

@@ -280,14 +280,14 @@ public class CodeEditText extends AppCompatEditText {
             paint.setColor(previousColor);
             float offsetX = paint.measureText(text, lineStart, previousColorPos);
             if (previousColorPos < 0 || visibleCharEnd > textLength || previousColorPos >= visibleCharEnd) {
-                if (DEBUG) {// Added by Ozobi - 2025/01/10 >
+                if (DEBUG) {
                     Log.e(LOG_TAG, "IndexOutOfBounds: previousColorPos = " + previousColorPos + ", visibleCharEnd = "
                             + visibleCharEnd + ", textLength = " + textLength);
                 }
                 //postInvalidate();
                 return;
             }
-            // Modified by Ozobi - 2025/01/10 > 修复老版编辑器长按删除崩溃闪退
+            
             try{
                 canvas.drawText(text, previousColorPos, visibleCharEnd, paddingLeft + offsetX, lineBaseline, paint);
                 if (DEBUG) {

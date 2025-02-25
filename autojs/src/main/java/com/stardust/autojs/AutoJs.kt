@@ -4,7 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.os.Bundle
-import android.util.Log
 import com.stardust.app.SimpleActivityLifecycleCallbacks
 import com.stardust.autojs.core.accessibility.AccessibilityBridge
 import com.stardust.autojs.core.activity.ActivityInfoProvider
@@ -12,7 +11,6 @@ import com.stardust.autojs.core.console.ConsoleImpl
 import com.stardust.autojs.core.console.GlobalConsole
 import com.stardust.autojs.core.image.capture.ScreenCaptureManager
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester
-import com.stardust.autojs.core.ozobi.shizuku.OzobiShizuku
 import com.stardust.autojs.core.record.accessibility.AccessibilityActionRecorder
 import com.stardust.autojs.core.util.Shell
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine
@@ -35,7 +33,6 @@ import com.stardust.view.accessibility.AccessibilityService.Companion.addDelegat
 import com.stardust.view.accessibility.LayoutInspector
 import org.mozilla.javascript.ContextFactory
 import org.mozilla.javascript.WrappedException
-import rikka.shizuku.Shizuku
 import java.io.File
 
 /**

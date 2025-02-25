@@ -1,5 +1,5 @@
 /**
- *  Copyright 2014 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright 2014 Ryszard Wi'sniewski <brut.alll@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ import zhao.arsceditor.ResDecoder.IO.Duo;
 import zhao.arsceditor.ResDecoder.data.ResResource;
 
 /**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
+ * @author Ryszard Wi'sniewski <brut.alll@gmail.com>
  */
 public class ResArrayValue extends ResBagValue implements GetResValues {
 	public static final int BAG_KEY_ARRAY_START = 0x02000000;

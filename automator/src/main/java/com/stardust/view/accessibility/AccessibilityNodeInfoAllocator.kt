@@ -1,15 +1,12 @@
 package com.stardust.view.accessibility
 
 import android.os.Build
-import androidx.annotation.RequiresApi
-import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import android.util.Log
 import android.view.accessibility.AccessibilityNodeInfo
-
+import androidx.annotation.RequiresApi
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat
 import com.stardust.automator.BuildConfig
-
 import java.util.Arrays
-import java.util.HashMap
 
 /**
  * Created by Stardust on 2017/3/22.

@@ -1,6 +1,5 @@
 package com.stardust.autojs.core.ozobi.inputevent;
 
-// Created by Ozobi - 2025/01/28
 
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_X;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_POSITION_Y;
@@ -18,8 +17,8 @@ import static com.stardust.autojs.core.inputevent.InputEventCodes.UP;
 
 import android.content.Context;
 import android.util.DisplayMetrics;
-import android.util.Log;
 import android.util.SparseIntArray;
+
 import androidx.annotation.Nullable;
 
 import com.stardust.util.ScreenMetrics;

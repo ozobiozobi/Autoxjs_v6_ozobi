@@ -1,5 +1,5 @@
 /**
- *  Copyright 2010 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright 2010 Ryszard Wi'sniewski <brut.alll@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -17,7 +17,7 @@
 package zhao.arsceditor.ResDecoder.IO;
 
 /**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
+ * @author Ryszard Wi'sniewski <brut.alll@gmail.com>
  */
 public class Duo<T1, T2> {
 	public final T1 m1;

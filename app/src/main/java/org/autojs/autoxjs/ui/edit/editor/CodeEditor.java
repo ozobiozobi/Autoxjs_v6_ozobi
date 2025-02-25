@@ -17,8 +17,8 @@ import com.stardust.util.TextUtils;
 import com.stardust.util.ViewUtils;
 
 import org.autojs.autoxjs.Pref;
-import org.autojs.autoxjs.ui.edit.theme.Theme;
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.ui.edit.theme.Theme;
 
 import java.util.LinkedHashMap;
 import java.util.Objects;

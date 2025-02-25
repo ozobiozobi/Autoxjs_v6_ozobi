@@ -158,7 +158,7 @@ public class Floaty {
             );
         }
 
-        // Added by Ozobi - 2025/02/12 > 添加: 获取 contentView
+        
         public View getContentView(){
             return mWindow.getContentView();
         }
@@ -262,7 +262,7 @@ public class Floaty {
             );
         }
 
-        // Added by Ozobi - 2025/02/12 > 添加: 获取 contentView
+        
         public View getContentView(){
             return mView;
         }

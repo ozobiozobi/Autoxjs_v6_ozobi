@@ -3,10 +3,10 @@ package com.stardust.autojs.core.ui.attribute;
 import android.graphics.Color;
 import android.view.View;
 
+import androidx.cardview.widget.CardView;
+
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Dimensions;
-
-import androidx.cardview.widget.CardView;
 
 public class CardAttributes extends ViewAttributes {
 

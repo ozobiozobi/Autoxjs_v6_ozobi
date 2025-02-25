@@ -15,10 +15,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.network.VersionService2
 import org.autojs.autoxjs.network.entity.GithubReleaseInfo
 import org.autojs.autoxjs.network.entity.isLatestVersion
-import org.autojs.autoxjs.R
 import java.io.File
 
 class DrawerViewModel(private val context: Application) : AndroidViewModel(context) {

@@ -3,9 +3,9 @@ package com.stardust.autojs.core.ozobi.database
 import android.annotation.SuppressLint
 import android.content.ContentValues
 import android.database.Cursor
-// Created by Ozobi - 2024/11/23
+
 class AddInfoDatabaseManager(private val dbHelper: AddInfoDatabaseHelper) {
-//    private val TAG = "ozobiLog"
+
     fun insertData(qq:String, result:String, time:String, loginQQ:String):Long{
         val db = dbHelper.writableDatabase
         val contentValue = ContentValues().apply {

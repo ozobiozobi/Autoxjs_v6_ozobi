@@ -5,9 +5,8 @@ import android.graphics.Bitmap
 import android.graphics.Matrix
 import android.media.ExifInterface
 import android.os.Environment
-import java.io.*
-import java.lang.Exception
-import java.util.*
+import java.io.File
+import java.util.Locale
 import kotlin.math.floor
 
 object Utils {

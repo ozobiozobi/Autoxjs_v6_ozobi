@@ -31,15 +31,13 @@ public class Pref {
 
 
     public static boolean getEditor() {
-        return def().getBoolean(KEY_EDITOR_NEW, false);// Modified by Ozobi - 2024/11/10 > 默认不启用新版编辑器 true -> false
+        return def().getBoolean(KEY_EDITOR_NEW, false);
     }
-    // Added by Ozobi - 2025/01/12 > 将编辑器左侧文档源改为当前选中的在线文档
     public static void setCurDocumentationSource(DocumentSource source){
-        Log.d("ozobiLog","Pref: setCurDocumentationSource: "+source.getUri());
         if(!source.isLocal()){
             def().edit().putString(KEY_DOCUMENTATION_SOURCE, source.getUri()).apply();
         }
-    }//<
+    }
 
     public static void setEditor(boolean shouldOpen) {
         def().edit().putBoolean(KEY_EDITOR_NEW, shouldOpen).apply();
@@ -152,7 +150,7 @@ public class Pref {
     }
 
     public static String getDocumentationUrl() {
-        return def().getString(KEY_DOCUMENTATION_SOURCE, "https://autoxjs.dayudada.com/");// Modified by Ozobi - 2025/01/12 > 更改编辑器左侧默认文档源
+        return def().getString(KEY_DOCUMENTATION_SOURCE, "https://autoxjs.dayudada.com/");
     }
 
     public static boolean isFloatingMenuShown() {

@@ -15,9 +15,6 @@
  */
 package pxb.android.arsc;
 
-import pxb.android.ResConst;
-import pxb.android.StringItems;
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -25,6 +22,9 @@ import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+
+import pxb.android.ResConst;
+import pxb.android.StringItems;
 
 /**
  * Read the resources.arsc inside an Android apk.

@@ -5,7 +5,7 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Text
 
-// Created by Ozobi - 2025/01/03
+
 
 class SettingsActivity:AppCompatActivity() {
     override fun onCreate(savedInstanceState:Bundle?){

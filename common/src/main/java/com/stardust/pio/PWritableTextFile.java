@@ -1,5 +1,7 @@
 package com.stardust.pio;
 
+import static com.stardust.pio.PFiles.DEFAULT_BUFFER_SIZE;
+
 import java.io.BufferedWriter;
 import java.io.Closeable;
 import java.io.FileNotFoundException;
@@ -9,8 +11,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
 import java.util.List;
-
-import static com.stardust.pio.PFiles.DEFAULT_BUFFER_SIZE;
 
 /**
  * Created by Stardust on 2017/4/1.

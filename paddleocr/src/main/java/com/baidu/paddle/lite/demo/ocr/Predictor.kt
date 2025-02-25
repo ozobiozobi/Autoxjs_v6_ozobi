@@ -1,13 +1,19 @@
 package com.baidu.paddle.lite.demo.ocr
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Rect
 import android.util.Base64
 import android.util.Log
 import android.webkit.JavascriptInterface
 import java.io.File
-import java.util.*
-import kotlin.math.abs
+import java.util.Date
+import java.util.Vector
 
 open class Predictor {
     private var isLoaded = false

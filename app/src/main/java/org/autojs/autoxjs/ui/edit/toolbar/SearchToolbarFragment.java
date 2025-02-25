@@ -1,9 +1,9 @@
 package org.autojs.autoxjs.ui.edit.toolbar;
 
 import android.os.Bundle;
-import androidx.annotation.Nullable;
-
 import android.view.View;
+
+import androidx.annotation.Nullable;
 
 import org.androidannotations.annotations.EFragment;
 import org.autojs.autoxjs.R;

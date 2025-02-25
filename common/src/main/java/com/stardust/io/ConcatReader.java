@@ -18,9 +18,9 @@ package com.stardust.io;
  * See COPYING.TXT for details.
  */
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * A reader which reads sequentially from multiple sources.

@@ -10,14 +10,15 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AppCompatActivity;
 
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.external.ScriptIntents;
@@ -25,8 +26,8 @@ import org.autojs.autoxjs.external.shortcut.Shortcut;
 import org.autojs.autoxjs.external.shortcut.ShortcutActivity;
 import org.autojs.autoxjs.external.shortcut.ShortcutManager;
 import org.autojs.autoxjs.model.script.ScriptFile;
-import org.autojs.autoxjs.tool.BitmapTool;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import org.autojs.autoxjs.tool.BitmapTool;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;

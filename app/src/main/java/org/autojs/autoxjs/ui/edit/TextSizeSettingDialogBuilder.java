@@ -1,12 +1,14 @@
 package org.autojs.autoxjs.ui.edit;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
 import android.view.View;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.afollestad.materialdialogs.MaterialDialog;
+
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 

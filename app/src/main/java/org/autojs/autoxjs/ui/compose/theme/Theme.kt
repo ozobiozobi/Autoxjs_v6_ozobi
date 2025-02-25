@@ -1,6 +1,5 @@
 package org.autojs.autoxjs.ui.compose.theme
 
-import android.content.Context
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
@@ -8,11 +7,8 @@ import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
-import androidx.compose.runtime.currentCompositionLocalContext
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
-import androidx.preference.PreferenceManager
-import org.autojs.autoxjs.R
 
 val DarkColorPalette = darkColors(
     primary = Color(0xFF009688),

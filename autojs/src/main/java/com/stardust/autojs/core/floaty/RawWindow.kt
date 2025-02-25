@@ -47,7 +47,7 @@ class RawWindow(rawFloaty: RawFloaty, context: Context) : FloatyWindow() {
                 or WindowManager.LayoutParams.FLAG_FULLSCREEN
                 or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
-                or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)// Added by Ozobi - 2025/01/17 : 悬浮窗位置以屏幕左上角为原点
+                or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
         val layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,

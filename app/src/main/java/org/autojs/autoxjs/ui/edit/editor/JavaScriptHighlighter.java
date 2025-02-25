@@ -10,7 +10,6 @@ import com.stardust.pio.UncheckedIOException;
 
 import org.autojs.autoxjs.ui.edit.theme.Theme;
 import org.autojs.autoxjs.ui.widget.SimpleTextWatcher;
-
 import org.mozilla.javascript.Token;
 
 import java.io.IOException;

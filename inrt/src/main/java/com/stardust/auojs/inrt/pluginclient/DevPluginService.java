@@ -15,10 +15,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonPrimitive;
 import com.stardust.app.GlobalAppContext;
-import org.autojs.autoxjs.inrt.BuildConfig;
 import com.stardust.auojs.inrt.Pref;
 import com.stardust.util.MapBuilder;
 
+import org.autojs.autoxjs.inrt.BuildConfig;
 
 import java.io.File;
 import java.net.SocketTimeoutException;

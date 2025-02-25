@@ -3,7 +3,6 @@ package com.stardust.autojs.core.util;
 
 import android.util.Log;
 
-import com.stardust.autojs.R;
 import com.stardust.autojs.runtime.api.AbstractShell;
 import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.util.ProcessUtils;
@@ -66,7 +65,7 @@ public class ProcessShell extends AbstractShell {
         }
     }
 
-    // Added by Ozobi - 2025/01/08 >
+    
     public static Process getShellProcess() throws IOException {
         return Runtime.getRuntime().exec(COMMAND_SH);
     }

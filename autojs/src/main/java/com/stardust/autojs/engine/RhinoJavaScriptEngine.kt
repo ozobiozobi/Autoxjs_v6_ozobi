@@ -62,7 +62,7 @@ open class RhinoJavaScriptEngine(private val mAndroidContext: android.content.Co
         runtime.bridges.setup(this)
         runtime.topLevelScope = mScriptable
     }
-    // Modified by Ozobi - 2025/01/13 > 使用相对路径显示本地图片
+    
     public override fun doExecution(source: JavaScriptSource): Any? {
         val newSource =  modifyScriptString(source)
         val reader = newSource.nonNullScriptReader
@@ -77,7 +77,7 @@ open class RhinoJavaScriptEngine(private val mAndroidContext: android.content.Co
             throw UncheckedIOException(e)
         }
     }
-    // Added by Ozobi - 2025/01/13 > 使用相对路径显示本地图片
+    
     fun modifyScriptString(source: JavaScriptSource):JavaScriptSource{
         val sourseName = source.name
         val reader = source.nonNullScriptReader
@@ -92,7 +92,7 @@ open class RhinoJavaScriptEngine(private val mAndroidContext: android.content.Co
             replaceString = replaceString.replace(match.value,tempStr)
         }
         val newSource = StringScriptSource(sourseName,replaceString)
-//        Log.d("ozobiLog","modifyScriptString: replaceString: $replaceString")
+
         return newSource
     }
     // <

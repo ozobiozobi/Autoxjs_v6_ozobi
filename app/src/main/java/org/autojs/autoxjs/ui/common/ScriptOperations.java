@@ -5,17 +5,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.Looper;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
 import android.text.Editable;
 import android.text.InputType;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.android.material.snackbar.Snackbar;
 import com.stardust.app.DialogUtils;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.pio.PFiles;
@@ -30,16 +31,15 @@ import org.autojs.autoxjs.model.explorer.ExplorerDirPage;
 import org.autojs.autoxjs.model.explorer.ExplorerFileItem;
 import org.autojs.autoxjs.model.explorer.ExplorerPage;
 import org.autojs.autoxjs.model.explorer.Explorers;
-import org.autojs.autoxjs.storage.file.TmpScriptFiles;
 import org.autojs.autoxjs.model.sample.SampleFile;
 import org.autojs.autoxjs.model.script.ScriptFile;
 import org.autojs.autoxjs.model.script.Scripts;
 import org.autojs.autoxjs.network.download.DownloadManager;
+import org.autojs.autoxjs.storage.file.TmpScriptFiles;
+import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autoxjs.ui.filechooser.FileChooserDialogBuilder;
 import org.autojs.autoxjs.ui.shortcut.ShortcutCreateActivity;
 import org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity_;
-import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
-
 import org.reactivestreams.Publisher;
 
 import java.io.File;

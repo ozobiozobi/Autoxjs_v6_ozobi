@@ -6,7 +6,6 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.os.Looper
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -26,7 +25,6 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
-import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.aiselp.autojs.codeeditor.EditActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -90,13 +88,13 @@ class MainActivity : FragmentActivity() {
             else Pref.setFloatingMenuShown(false)
         }
 
-        // Added by Ozobi - 2025/01/12 > 绑定自定义 Messenger 服务
+        
         val serviceConnection =
             MessengerServiceConnection(Looper.getMainLooper())
         val intent = Intent("com.stardust.autojs.messengerAction")
         intent.setPackage(this.packageName)
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
-        Log.d("ozobiLog","MainActivity: 绑定自定义 Messenger 服务")
+        
         // >
         setContent {
             scope = rememberCoroutineScope()

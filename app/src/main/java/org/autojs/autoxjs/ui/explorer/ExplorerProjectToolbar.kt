@@ -17,13 +17,13 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.model.explorer.ExplorerChangeEvent
 import org.autojs.autoxjs.model.explorer.Explorers
 import org.autojs.autoxjs.ui.build.BuildActivity.Companion.start
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity_
-import org.autojs.autoxjs.R
 import org.greenrobot.eventbus.Subscribe
 import java.io.File
 

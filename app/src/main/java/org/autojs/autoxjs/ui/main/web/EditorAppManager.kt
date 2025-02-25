@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.webkit.WebView
 import androidx.fragment.app.Fragment
-import androidx.webkit.WebViewAssetLoader
 import org.autojs.autoxjs.ui.widget.SwipeRefreshWebView
 import org.autojs.autoxjs.ui.widget.fillMaxSize
 

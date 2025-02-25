@@ -1,5 +1,5 @@
 /**
- *  Copyright 2014 Ryszard Wiśniewski <brut.alll@gmail.com>
+ *  Copyright 2014 Ryszard Wi'sniewski <brut.alll@gmail.com>
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -33,7 +33,7 @@ import zhao.arsceditor.ResDecoder.data.value.ResFileValue;
 import zhao.arsceditor.ResDecoder.data.value.ResValueFactory;
 
 /**
- * @author Ryszard Wiśniewski <brut.alll@gmail.com>
+ * @author Ryszard Wi'sniewski <brut.alll@gmail.com>
  */
 public class ResPackage {
 	private final static Logger LOGGER = Logger.getLogger(ResPackage.class.getName());

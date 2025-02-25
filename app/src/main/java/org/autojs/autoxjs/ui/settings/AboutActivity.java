@@ -62,7 +62,7 @@ public class AboutActivity extends BaseActivity {
             Toast.makeText(this, R.string.text_mobile_qq_not_installed, Toast.LENGTH_SHORT).show();
         }
     }
-    // Added by Ozobi - 2024/11/05 >
+    
     @SuppressLint("NonConstantResourceId")
     @Click(R.id.mender_email)
     void onMenderEmailClick() {

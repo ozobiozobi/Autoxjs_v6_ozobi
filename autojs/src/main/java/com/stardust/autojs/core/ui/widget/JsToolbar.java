@@ -3,12 +3,12 @@ package com.stardust.autojs.core.ui.widget;
 import android.app.Activity;
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.util.AttributeSet;
+
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import android.util.AttributeSet;
 
 import com.stardust.autojs.R;
 

@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.ContextWrapper;
-import android.content.res.Resources;
 import android.os.Build;
 import android.os.Looper;
 import android.view.Window;
@@ -33,7 +32,7 @@ public class DialogUtils {
         if (Looper.getMainLooper() == Looper.myLooper()) {
             dialog.show();
         } else {
-            GlobalAppContext.post(dialog::show);// Modified by Ozobi - 2024/11/02 > took Android Studio's advice
+            GlobalAppContext.post(dialog::show);
 //            GlobalAppContext.post(new Runnable() {
 //                @Override
 //                public void run() {

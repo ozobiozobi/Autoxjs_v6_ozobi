@@ -1,7 +1,7 @@
 package com.stardust.automator.filter
 
 import com.stardust.automator.UiObject
-import java.util.*
+import java.util.LinkedList
 
 class Selector : Filter {
     private val mFilters = LinkedList<Filter>()

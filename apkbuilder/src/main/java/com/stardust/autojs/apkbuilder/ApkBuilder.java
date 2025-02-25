@@ -3,22 +3,15 @@ package com.stardust.autojs.apkbuilder;
 
 import com.stardust.autojs.apkbuilder.util.StreamUtils;
 
-import org.apache.commons.io.IOUtils;
-
 import java.io.BufferedInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 import zhao.arsceditor.ResDecoder.ARSCDecoder;
-import zhao.arsceditor.ResDecoder.AXMLDecoder;
 
 /**
  * Created by Stardust on 2017/7/1.
@@ -81,7 +74,7 @@ public class ApkBuilder {
     }
 
     private void buildArsc() throws IOException {
-        // Annotated by ozobi - 2024/11/11 > 移除打包
+        
         File oldArsc = new File(mWorkspacePath, "resources.arsc");
         File newArsc = new File(mWorkspacePath, "resources.arsc.new");
         ARSCDecoder decoder = new ARSCDecoder(new BufferedInputStream(new FileInputStream(oldArsc)), null, false);

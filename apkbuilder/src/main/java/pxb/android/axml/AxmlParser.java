@@ -15,16 +15,16 @@
  */
 package pxb.android.axml;
 
-import pxb.android.ResConst;
-import pxb.android.StringItems;
+import static pxb.android.axml.NodeVisitor.TYPE_INT_BOOLEAN;
+import static pxb.android.axml.NodeVisitor.TYPE_STRING;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.IntBuffer;
 
-import static pxb.android.axml.NodeVisitor.TYPE_INT_BOOLEAN;
-import static pxb.android.axml.NodeVisitor.TYPE_STRING;
+import pxb.android.ResConst;
+import pxb.android.StringItems;
 
 /**
  * a class to read android axml

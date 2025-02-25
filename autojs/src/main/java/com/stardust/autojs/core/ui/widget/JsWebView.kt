@@ -3,7 +3,7 @@ package com.stardust.autojs.core.ui.widget
 import android.content.Context
 import android.os.Build
 import android.util.AttributeSet
-import android.webkit.*
+import android.webkit.WebView
 import androidx.annotation.RequiresApi
 import com.stardust.autojs.core.web.JsBridge
 

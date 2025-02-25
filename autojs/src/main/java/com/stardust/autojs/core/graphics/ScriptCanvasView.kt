@@ -3,7 +3,6 @@ package com.stardust.autojs.core.graphics
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Canvas
-import android.graphics.Color
 import android.graphics.SurfaceTexture
 import android.os.SystemClock
 import android.util.Log
@@ -28,7 +27,7 @@ class ScriptCanvasView(context: Context, private val mScriptRuntime: ScriptRunti
     private var mDrawingThreadPool: ExecutorService? = null
     @Volatile
     private var mTimePerDraw = (1000 / 30).toLong()
-    // Added by Ozobi - 2025/02/08 >
+    
     private var mCanvas:Canvas? = null
     private var isClearCanvas = false
 

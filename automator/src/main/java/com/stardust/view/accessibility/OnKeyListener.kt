@@ -2,8 +2,6 @@ package com.stardust.view.accessibility
 
 import android.util.Log
 import android.view.KeyEvent
-import android.view.View
-
 import java.util.concurrent.CopyOnWriteArrayList
 
 /**

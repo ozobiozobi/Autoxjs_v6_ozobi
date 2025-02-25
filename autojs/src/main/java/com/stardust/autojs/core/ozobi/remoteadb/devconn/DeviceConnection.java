@@ -1,6 +1,9 @@
 package com.stardust.autojs.core.ozobi.remoteadb.devconn;
 
-import android.util.Log;
+import com.cgutman.adblib.AdbConnection;
+import com.cgutman.adblib.AdbCrypto;
+import com.cgutman.adblib.AdbStream;
+import com.stardust.autojs.core.ozobi.remoteadb.AdbUtils;
 
 import java.io.Closeable;
 import java.io.IOException;
@@ -8,11 +11,6 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import com.cgutman.adblib.AdbConnection;
-import com.cgutman.adblib.AdbCrypto;
-import com.cgutman.adblib.AdbStream;
-import com.stardust.autojs.core.ozobi.remoteadb.AdbUtils;
 
 public class DeviceConnection implements Closeable {
     private static final int CONN_TIMEOUT = 5000;
@@ -45,7 +43,7 @@ public class DeviceConnection implements Closeable {
     }
 
     public boolean queueCommand(String command) {
-        Log.d("ozobiLog","DeviceConnection: queueCommand: "+command);
+        
         /* Queue it up for sending to the device */
         commandQueue.add(command.getBytes(StandardCharsets.UTF_8));
         return true;
@@ -68,7 +66,7 @@ public class DeviceConnection implements Closeable {
                 /* Load the crypto config */
                 crypto = listener.loadAdbCrypto(DeviceConnection.this);
                 if (crypto == null) {
-                    Log.d("ozobiLog","DeviceConnection: crypto is null");
+                    
                     return;
                 }
 
@@ -76,7 +74,7 @@ public class DeviceConnection implements Closeable {
                     /* Establish a connect to the remote host */
                     socket.connect(new InetSocketAddress(host, port), CONN_TIMEOUT);
                 } catch (IOException e) {
-                    Log.d("ozobiLog","DeviceConnection: startConnect: "+e);
+                    
                     listener.notifyConnectionFailed(DeviceConnection.this, e);
                     return;
                 }
@@ -90,7 +88,7 @@ public class DeviceConnection implements Closeable {
                     shellStream = connection.open("shell:");
                     connected = true;
                 } catch (IOException | InterruptedException e) {
-                    Log.d("ozobiLog","DeviceConnection: startConnect: "+e);
+                    
                     listener.notifyConnectionFailed(DeviceConnection.this, e);
                 } finally {
                     /* Cleanup if the connection failed */
@@ -123,7 +121,7 @@ public class DeviceConnection implements Closeable {
     }
 
     private void sendLoop() {
-        Log.d("ozobiLog","DeviceConnection: sendLoop");
+        
         /* We become the send thread */
         try {
             for (;;) {
@@ -132,12 +130,12 @@ public class DeviceConnection implements Closeable {
 
                 /* This may be a close indication */
                 if (shellStream.isClosed()) {
-                    Log.d("ozobiLog","DeviceConnection: sendLoop: shellStream is closed");
+                    
                     listener.notifyStreamClosed(DeviceConnection.this);
                     break;
                 }else if(command.length > 0){
                     String cStr = new String (command,StandardCharsets.UTF_8);
-                    Log.d("ozobiLog","DeviceConnection: sendLoop: 字节数据不为空: "+cStr);
+                    
                 }
 
                 /* Issue it to the device */
@@ -152,7 +150,7 @@ public class DeviceConnection implements Closeable {
     }
 
     private void startReceiveThread() {
-        Log.d("ozobiLog","DeviceConnection: startReceiveThread");
+        
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -178,7 +176,7 @@ public class DeviceConnection implements Closeable {
 
     @Override
     public void close() throws IOException {
-        Log.d("ozobiLog","DeviceConnection: close");
+        
         if (isClosed()) {
             return;
         }

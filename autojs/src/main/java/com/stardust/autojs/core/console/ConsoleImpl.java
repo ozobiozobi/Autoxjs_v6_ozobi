@@ -2,13 +2,13 @@ package com.stardust.autojs.core.console;
 
 import android.content.Context;
 import android.content.Intent;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
 import android.graphics.Color;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.WindowManager;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.R;
 import com.stardust.autojs.annotation.ScriptInterface;

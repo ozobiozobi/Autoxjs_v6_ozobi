@@ -44,7 +44,7 @@ class Images(
     private val mScreenCaptureRequester: ScreenCaptureRequester
 ) {
     private val mScreenMetrics: ScreenMetrics = mScriptRuntime.screenMetrics
-    // Added by Ozobi - 2025/02/02 >
+    
     companion object{
         var ozobiScreenCaptureRequester:ScreenCaptureRequester = ScreenCaptureManager()
         var availale = false
@@ -65,7 +65,7 @@ class Images(
             mScreenCaptureRequester.requestScreenCapture(
                 mContext, orientation
             )
-            // Added by Ozobi - 2025/02/02 >
+            
             ozobiScreenCaptureRequester = mScreenCaptureRequester
             availale = true
             // <
@@ -73,7 +73,7 @@ class Images(
         }.isSuccess
     }
     fun stopScreenCapturer(){
-        availale = false// Added by Ozobi - 2025/02/02 >
+        availale = false
         mScreenCaptureRequester.recycle()
     }
 
@@ -85,7 +85,7 @@ class Images(
             screenCapture.captureImageWrapper()
         }
     }
-    // Added by Ozobi - 2025/02/17 > 添加: 参数-是否返回新的对象
+    
     @Synchronized
     fun captureScreen(isNew:Boolean): ImageWrapper {
         val screenCapture = mScreenCaptureRequester.screenCapture

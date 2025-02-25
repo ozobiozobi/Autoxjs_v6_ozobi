@@ -3,13 +3,6 @@ package org.autojs.autoxjs.ui.explorer;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
-import androidx.annotation.Nullable;
-import com.google.android.material.snackbar.Snackbar;
-import androidx.core.content.ContextCompat;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,6 +14,14 @@ import android.widget.ImageView;
 import android.widget.PopupMenu;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 import com.stardust.pio.PFiles;
 
 import org.autojs.autoxjs.R;
@@ -36,14 +37,13 @@ import org.autojs.autoxjs.model.explorer.ExplorerSamplePage;
 import org.autojs.autoxjs.model.explorer.Explorers;
 import org.autojs.autoxjs.model.script.ScriptFile;
 import org.autojs.autoxjs.model.script.Scripts;
+import org.autojs.autoxjs.theme.widget.ThemeColorSwipeRefreshLayout;
 import org.autojs.autoxjs.tool.Observers;
 import org.autojs.autoxjs.ui.build.BuildActivity;
 import org.autojs.autoxjs.ui.common.ScriptLoopDialog;
 import org.autojs.autoxjs.ui.common.ScriptOperations;
 import org.autojs.autoxjs.ui.viewmodel.ExplorerItemList;
 import org.autojs.autoxjs.ui.widget.BindableViewHolder;
-import org.autojs.autoxjs.theme.widget.ThemeColorSwipeRefreshLayout;
-
 import org.autojs.autoxjs.workground.WrapContentGridLayoutManger;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
@@ -352,7 +352,7 @@ public class ExplorerView extends ThemeColorSwipeRefreshLayout implements SwipeR
                         .timedTask(mSelectedItem.toScriptFile());
                 notifyOperated();
                 break;
-            // Annotated by Ozobi - 2024/11/11 > 移除打包
+            
             case R.id.action_build_apk:
                 BuildActivity.Companion.start(getContext(),mSelectedItem.getPath());
                 notifyOperated();

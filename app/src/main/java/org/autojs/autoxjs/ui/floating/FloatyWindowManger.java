@@ -1,5 +1,7 @@
 package org.autojs.autoxjs.ui.floating;
 
+import static com.stardust.autojs.util.FloatingPermission.manageDrawOverlays;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -13,8 +15,6 @@ import com.stardust.enhancedfloaty.FloatyWindow;
 import org.autojs.autoxjs.R;
 
 import java.lang.ref.WeakReference;
-
-import static com.stardust.autojs.util.FloatingPermission.manageDrawOverlays;
 
 /**
  * Created by Stardust on 2017/9/30.

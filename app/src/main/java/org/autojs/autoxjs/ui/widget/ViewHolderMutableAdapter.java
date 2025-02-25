@@ -1,7 +1,8 @@
 package org.autojs.autoxjs.ui.widget;
 
-import androidx.recyclerview.widget.RecyclerView;
 import android.view.ViewGroup;
+
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * Created by Stardust on 2017/4/8.

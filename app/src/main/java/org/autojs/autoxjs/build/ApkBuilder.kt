@@ -241,7 +241,7 @@ class ApkBuilder(
     }
 
     private fun copyLibraries(config: ProjectConfig) {
-        // Annotated by Ozobi - 2024/11/11 > 移除打包
+        
         config.libs.addAllIfNotExist(Constant.Libraries.TERMINAL_EMULATOR)
         config.abis.forEach { abi ->
             config.libs.forEach { name ->
@@ -271,7 +271,7 @@ class ApkBuilder(
         val projectFile = File(workspacePath, "assets/project/project.json")
         projectFile.parentFile?.let { if (!it.exists()) it.mkdirs() }
         projectFile.writeText(config.toJson())
-        // Modified by Ozobi - 2024/11/20 > md5 -> ozobiMD5
+        
         encryptKey =
             MD5.ozobiMD5(config.packageName + config.versionName + config.mainScript)
         encryptInitVector =

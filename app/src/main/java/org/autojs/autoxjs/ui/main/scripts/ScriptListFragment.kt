@@ -33,6 +33,7 @@ import com.leinardi.android.speeddial.compose.SpeedDialState
 import com.stardust.app.GlobalAppContext.get
 import com.stardust.util.IntentUtil
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.external.fileprovider.AppFileProvider
 import org.autojs.autoxjs.model.explorer.ExplorerDirPage
 import org.autojs.autoxjs.model.explorer.Explorers
@@ -45,7 +46,6 @@ import org.autojs.autoxjs.ui.main.rememberExternalStoragePermissionsState
 import org.autojs.autoxjs.ui.main.showExternalStoragePermissionToast
 import org.autojs.autoxjs.ui.viewmodel.ExplorerItemList.SortConfig
 import org.autojs.autoxjs.ui.widget.fillMaxSize
-import org.autojs.autoxjs.R
 
 
 /**

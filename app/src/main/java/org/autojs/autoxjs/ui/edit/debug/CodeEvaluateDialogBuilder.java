@@ -3,12 +3,13 @@ package org.autojs.autoxjs.ui.edit.debug;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import androidx.annotation.NonNull;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;

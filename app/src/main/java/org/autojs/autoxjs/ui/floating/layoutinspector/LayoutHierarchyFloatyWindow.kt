@@ -3,7 +3,6 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
@@ -53,7 +52,6 @@ import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.lifecycle.ViewTreeViewModelStoreOwner
 import androidx.recyclerview.widget.RecyclerView
 import androidx.savedstate.setViewTreeSavedStateRegistryOwner
-import coil.decode.ImageSource
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.Theme
 import com.google.android.material.snackbar.Snackbar
@@ -91,15 +89,14 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var mBubblePopMenu: BubblePopupMenu? = null
     private var mNodeInfoView: NodeInfoView? = null
     private var mContext: Context? = null
-    // Added by Ozobi - 2025/02/21 >
+    
     private var nightMode = false
     private var firstNodeList = mutableListOf<NodeInfo>()
     private var secondNodeList = mutableListOf<NodeInfo>()
     private var isAuth = false
-    private val tagCircleRadius = 50f
     private var tagImageBitmap:ImageBitmap? = null
     // <
-    // Added by Ozobi - 2025/02/21
+    
     fun getNodeList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo>){
         if(nodeInfo == null){
             return
@@ -177,18 +174,18 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         isAuth = Ozobi.authenticate(mContext)
         nightMode = isNightModeNormal(mContext)
         LevelBeamView.nightMode = nightMode
-        // Added by Ozobi - 2025/02/19
+        
         BubblePopupMenu.nightMode = nightMode
         NodeInfoView.nightMode = nightMode
         LayoutHierarchyView.nightMode = nightMode
-        tagImageBitmap = AppCompatResources.getDrawable(mContext as ContextThemeWrapper,R.drawable.arrow_tag)
+        tagImageBitmap = AppCompatResources.getDrawable(mContext as ContextThemeWrapper,R.drawable.arrow_tag2)
             ?.toBitmap()?.scale(100,100)?.asImageBitmap()
         // <
         mLayoutHierarchyView = LayoutHierarchyView(mContext)
         val view = ComposeView(mContext!!).apply {
             isFocusableInTouchMode = true
             isFocusable = true
-            setOnKeyListener { _, keyCode, event ->//Modified by ozobi - 2025/02/22
+            setOnKeyListener { _, keyCode, event ->
                 if (keyCode == KeyEvent.KEYCODE_BACK && event.action == KeyEvent.ACTION_UP ) {
                     showLayoutBounds()
                     return@setOnKeyListener true
@@ -209,10 +206,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         ViewTreeLifecycleOwner.set(view, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(view) { viewModelStore }
         view.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
-        view.requestFocus()// Added by ozobi - 2025/02/22 > 修复: 监听返回键无效
+        view.requestFocus()
         return view
     }
-    // Modified by Ozobi - 2025/02/20 > 添加: 拖动隐藏
+    
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun Content() {
@@ -469,7 +466,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     @SuppressLint("ClickableViewAccessibility")
     override fun onViewCreated(v: View) {
-        // Modified by Ozobi - 2025/02/19
+        
         if(nightMode){
             mLayoutHierarchyView!!.setBackgroundColor(0xaa666666.toInt())
         }else{
@@ -508,7 +505,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                 }
             }
             override fun onItemClick(parent: RecyclerView?, item: View?, position: Int) {
-                Log.d("ozobiLog","mLayoutHierarchyView: onItemClick")
+                
             }
         })
         // <
@@ -598,7 +595,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
 
     companion object {
         private const val TAG = "FloatingHierarchyView"
-        // Added by Ozobi - 2025/02/21
+        
         var canCollapse = true
         var firstTagNodeInfo:NodeInfo? = null
         var secondTagNodeInfo:NodeInfo? = null

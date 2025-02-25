@@ -3,7 +3,6 @@ package org.autojs.autoxjs.ui.floating;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.OrientationEventListener;
@@ -16,10 +15,6 @@ import com.stardust.enhancedfloaty.WindowBridge;
 import com.stardust.util.ScreenMetrics;
 
 import org.autojs.autoxjs.ui.floating.gesture.BounceDragGesture;
-
-import java.util.Date;
-
-import kotlin.reflect.jvm.internal.impl.descriptors.annotations.Annotated;
 
 public class CircularMenuWindow extends FloatyWindow {
 
@@ -35,7 +30,7 @@ public class CircularMenuWindow extends FloatyWindow {
     protected WindowManager.LayoutParams mActionViewWindowLayoutParams;
     protected WindowManager.LayoutParams mMenuWindowLayoutParams;
     protected View.OnClickListener mActionViewOnClickListener;
-    // Added by Ozobi - 2025/02/14 > 添加 touchListener
+    
     protected View.OnTouchListener mActionViewOnTouchListener;
     // <
     protected float mKeepToSideHiddenWidthRadio;
@@ -125,12 +120,12 @@ public class CircularMenuWindow extends FloatyWindow {
             } else {
                 expand();
             }
-            Log.d("ozobiLog","CircularMenuWindow: initClickListener");
+            
         });
-        // Added by Ozobi - 2025/02/14 > 使用抬起触发展开和折叠
+        
         setOnActionViewTouchListener((v,e)->{
              if(e.getAction() == MotionEvent.ACTION_UP){
-                 Log.d("ozobiLog","CircularMenuWindow: touchUp: ");
+                 
                 if (isExpanded()) {
                     collapse();
                 } else {
@@ -144,7 +139,7 @@ public class CircularMenuWindow extends FloatyWindow {
         if (mActionViewOnClickListener != null) {
             mDragGesture.setOnDraggedViewClickListener(mActionViewOnClickListener);
         }
-        // Added by Ozobi - 2025/02/14 > 添加 touchListener
+        
         if(mActionViewOnClickListener != null){
             mDragGesture.setOnDraggedViewTouchListener(mActionViewOnTouchListener);
         }
@@ -167,7 +162,7 @@ public class CircularMenuWindow extends FloatyWindow {
             mDragGesture.setOnDraggedViewClickListener(listener);
         }
     }
-    // Added by Ozobi - 2025/02/14 > 添加 touchListener
+    
     public void setOnActionViewTouchListener(View.OnTouchListener listener){
         if (mDragGesture == null) {
             mActionViewOnTouchListener = listener;
@@ -176,7 +171,7 @@ public class CircularMenuWindow extends FloatyWindow {
         }
     }
     // <
-    // Added by Ozobi - 2025/02/18
+    
     public void setAlpha(float alpha){
         mCircularActionMenu.setAlpha(alpha);
     }

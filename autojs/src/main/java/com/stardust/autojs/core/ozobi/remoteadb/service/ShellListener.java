@@ -1,12 +1,6 @@
 package com.stardust.autojs.core.ozobi.remoteadb.service;
 
-import java.nio.charset.StandardCharsets;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.concurrent.ConcurrentHashMap;
-
 import android.app.Service;
-import android.util.Log;
 
 import com.cgutman.adblib.AdbCrypto;
 import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
@@ -14,6 +8,11 @@ import com.stardust.autojs.core.ozobi.remoteadb.AdbUtils;
 import com.stardust.autojs.core.ozobi.remoteadb.console.ConsoleBuffer;
 import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnection;
 import com.stardust.autojs.core.ozobi.remoteadb.devconn.DeviceConnectionListener;
+
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ShellListener implements DeviceConnectionListener {
     private static final int TERM_LENGTH = 25000;
@@ -122,7 +121,7 @@ public class ShellListener implements DeviceConnectionListener {
 
     @Override
     public AdbCrypto loadAdbCrypto(DeviceConnection devConn) {
-        Log.d("ozobiLog","ShellListener: loadAdbCrypto");
+        
         AdbCrypto crypto;
         crypto = AdbUtils.writeNewCryptoConfig(service.getFilesDir());
         if(crypto == null){
@@ -147,12 +146,12 @@ public class ShellListener implements DeviceConnectionListener {
                 AdbShell.isDone = true;
                 command = null;
                 shellResult = "";
-//                Log.d("ozobiLog","result: "+AdbShell.shellResult);
+
             }else{
                 shellResult += dataStr;
             }
         }
-//        Log.d("ozobiLog","ShellListener: receivedData: data: "+dataStr);
+
 //        if (console != null) {
 //            /* Hack to remove the bell from the end of the prompt */
 //            if (data[offset+length-1] == 0x07) {

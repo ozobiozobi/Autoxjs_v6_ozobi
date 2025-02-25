@@ -2,8 +2,8 @@ package com.stardust.auojs.inrt;
 
 import android.content.SharedPreferences;
 import android.os.Environment;
-import androidx.preference.PreferenceManager;
 
+import androidx.preference.PreferenceManager;
 
 import com.stardust.app.GlobalAppContext;
 

@@ -1,7 +1,6 @@
 package com.stardust.util
 
 import android.content.Context
-import android.content.Intent
 
 object IntentUtilKt {
     fun launchQQ(context: Context): Boolean {

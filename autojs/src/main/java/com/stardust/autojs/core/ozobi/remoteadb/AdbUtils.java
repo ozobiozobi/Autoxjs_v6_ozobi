@@ -1,13 +1,11 @@
 package com.stardust.autojs.core.ozobi.remoteadb;
 
-import android.util.Log;
+import com.cgutman.adblib.AdbCrypto;
+import com.stardust.autojs.core.ozobi.remoteadb.adbLib.AndroidBase64;
 
 import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
-
-import com.cgutman.adblib.AdbCrypto;
-import com.stardust.autojs.core.ozobi.remoteadb.adbLib.AndroidBase64;
 
 public class AdbUtils {
 
@@ -15,7 +13,7 @@ public class AdbUtils {
     public static final String PRIVATE_KEY_NAME = "private.key";
 
     public static AdbCrypto readCryptoConfig(File dataDir) {
-        Log.d("ozobiLog","AdbUtils: readCryptoConfig: dataDir: "+ dataDir);
+        
         File pubKey = new File(dataDir, PUBLIC_KEY_NAME);
         File privKey = new File(dataDir, PRIVATE_KEY_NAME);
 
@@ -25,7 +23,7 @@ public class AdbUtils {
             try {
                 crypto = AdbCrypto.loadAdbKeyPair(new AndroidBase64(), privKey, pubKey);
             } catch (Exception e) {
-                Log.d("ozobiLog","AdbUtils: readCryptoConfig: e: "+e);
+                
                 crypto = null;
             }
         }
@@ -34,7 +32,7 @@ public class AdbUtils {
     }
 
     public static AdbCrypto writeNewCryptoConfig(File dataDir) {
-        Log.d("ozobiLog","AdbUtils: writeNewCryptoConfig");
+        
         File pubKey = new File(dataDir, PUBLIC_KEY_NAME);
         File privKey = new File(dataDir, PRIVATE_KEY_NAME);
 
@@ -44,7 +42,7 @@ public class AdbUtils {
             crypto = AdbCrypto.generateAdbKeyPair(new AndroidBase64());
             crypto.saveAdbKeyPair(privKey, pubKey);
         } catch (Exception e) {
-            Log.d("ozobiLog","AdbUtils: writeNewCryptoConfig: e: "+e);
+            
             crypto = null;
         }
         return crypto;

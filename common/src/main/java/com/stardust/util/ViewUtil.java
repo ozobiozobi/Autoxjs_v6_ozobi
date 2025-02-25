@@ -3,11 +3,11 @@ package com.stardust.util;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import androidx.annotation.IdRes;
 import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.IdRes;
 
 /**
  * Created by Stardust on 2017/1/24.
@@ -23,7 +23,7 @@ public class ViewUtil {
     // FIXME: 2018/1/23 not working in some devices (https://github.com/hyb1996/Auto.js/issues/268)
     public static int getStatusBarHeight(Context context) {
         int result = 0;
-        @SuppressLint({"InternalInsetResource", "DiscouragedApi"})// Added by Ozobi - 2024/11/05 > took Android Studio's advice
+        @SuppressLint({"InternalInsetResource", "DiscouragedApi"})
         int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
         if (resourceId > 0) {
             result = context.getResources().getDimensionPixelSize(resourceId);

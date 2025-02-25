@@ -23,10 +23,10 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.stardust.util.IntentUtil
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.ui.log.LogActivityKt
 import org.autojs.autoxjs.ui.main.web.DocumentSourceSelectDialog
 import org.autojs.autoxjs.ui.main.web.EditorAppManager.Companion.loadHomeDocument
-import org.autojs.autoxjs.R
 
 //主界面日志按钮
 @Composable

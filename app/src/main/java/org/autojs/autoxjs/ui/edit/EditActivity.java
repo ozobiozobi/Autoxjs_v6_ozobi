@@ -30,12 +30,12 @@ import com.stardust.pio.PFiles;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
+import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.storage.file.TmpScriptFiles;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autoxjs.tool.Observers;
 import org.autojs.autoxjs.ui.BaseActivity;
 import org.autojs.autoxjs.ui.main.MainActivity;
-import org.autojs.autoxjs.R;
 
 import java.io.File;
 import java.io.IOException;

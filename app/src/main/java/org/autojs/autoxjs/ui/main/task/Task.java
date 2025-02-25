@@ -1,5 +1,7 @@
 package org.autojs.autoxjs.ui.main.task;
 
+import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.execution.ScriptExecution;
@@ -11,12 +13,7 @@ import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.timing.IntentTask;
 import org.autojs.autoxjs.timing.TimedTask;
 import org.autojs.autoxjs.timing.TimedTaskManager;
-
 import org.joda.time.format.DateTimeFormat;
-
-import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
-
-import android.util.Log;
 
 /**
  * Created by Stardust on 2017/11/28.

@@ -6,10 +6,9 @@ import android.content.Intent
 import android.provider.Settings
 import android.text.TextUtils
 import com.stardust.app.GlobalAppContext
-import com.stardust.app.GlobalAppContext.get
 import com.stardust.autojs.core.util.ProcessShell
 import com.stardust.view.accessibility.AccessibilityServiceUtils.isAccessibilityServiceEnabled
-import java.util.*
+import java.util.Locale
 
 /**
  * Created by Stardust on 2017/7/1.

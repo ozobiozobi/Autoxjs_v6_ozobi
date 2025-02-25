@@ -7,7 +7,6 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -41,7 +40,7 @@ public class LevelBeamView extends View {
 //    private int mLinesOffset;
     private Paint mClickableBoxPaint;
     private Paint mClickableCorePaint;
-    // Added by Ozobi - 2024/11/02 >
+    
     private Paint mLevelTextPaint;
     private float mTextWidth;
     private float mTextHeight;
@@ -133,7 +132,7 @@ public class LevelBeamView extends View {
     private void init() {
         setWillNotDraw(false);
         mLinesWidth = (int) getResources().getDimension(R.dimen.level_beam_view_line_width);
-        // Added by Ozobi - 2024/11/02 >
+        
         mLevelTextPaint = new Paint();
         Rect textBounds = new Rect();
         mLevelTextPaint.setTextSize(18 * oneSp);
@@ -158,7 +157,7 @@ public class LevelBeamView extends View {
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        int width = mLevel * mLinesWidth + (int) mTextWidth;// Modified by Ozobi - 2024/11/02 > added textWidth, 将线条数量改为与 level 相同: -1
+        int width = mLevel * mLinesWidth + (int) mTextWidth;
         int height = View.MeasureSpec.getSize(heightMeasureSpec);
         setMeasuredDimension(width, height);
     }
@@ -166,7 +165,7 @@ public class LevelBeamView extends View {
     @Override
     protected void onDraw(@NonNull Canvas canvas) {
         super.onDraw(canvas);
-        // Added by Ozobi - 2024/11/02 >
+        
         canvas.drawRoundRect(selectedRectf, roundRadius, roundRadius, selectedPaint);
         String levelText = mLevel+"";
         canvas.drawText(levelText,4, mTextHeight + 4*oneSp, mLevelTextPaint);

@@ -5,8 +5,6 @@ package org.autojs.autoxjs.ui.edit.editor;
  * RESTRICTIONS OR ANY WARRANTY.
  */
 
-import java.util.LinkedList;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Handler;
@@ -15,6 +13,8 @@ import android.text.Selection;
 import android.text.TextWatcher;
 import android.text.style.UnderlineSpan;
 import android.widget.TextView;
+
+import java.util.LinkedList;
 
 /**
  * A generic undo/redo implementation for TextViews.

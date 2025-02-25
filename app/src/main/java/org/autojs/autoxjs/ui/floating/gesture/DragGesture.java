@@ -1,13 +1,13 @@
 package org.autojs.autoxjs.ui.floating.gesture;
 
-import androidx.annotation.NonNull;
-import androidx.core.view.GestureDetectorCompat;
-
 import android.annotation.SuppressLint;
 import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+
+import androidx.annotation.NonNull;
+import androidx.core.view.GestureDetectorCompat;
 
 import com.stardust.enhancedfloaty.WindowBridge;
 
@@ -26,7 +26,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     private float mInitialTouchX;
     private float mInitialTouchY;
     private View.OnClickListener mOnClickListener;
-    // Added by Ozobi - 2025/02/14 > 添加 touchListener
+    
     private View.OnTouchListener mOnTouchListener;
     public boolean isStuckToSide = false;
     // <
@@ -67,7 +67,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     protected boolean onTheEdge() {
         int dX1 = Math.abs(mWindowBridge.getX());
         int dX2 = Math.abs(mWindowBridge.getX() - mWindowBridge.getScreenWidth());
-        isStuckToSide = Math.min(dX1, dX2) < 5;// Added by Ozobi - 2025/02/14 > 添加 touchListener
+        isStuckToSide = Math.min(dX1, dX2) < 5;
         return isStuckToSide;
     }
 
@@ -144,7 +144,7 @@ public class DragGesture extends GestureDetector.SimpleOnGestureListener {
     public void setOnDraggedViewClickListener(View.OnClickListener onClickListener) {
         mOnClickListener = onClickListener;
     }
-    // Added by Ozobi - 2025/02/14 > 添加 touchListener
+    
     @Override
     public boolean onSingleTapUp(@NonNull MotionEvent e){
         if (mOnTouchListener != null)

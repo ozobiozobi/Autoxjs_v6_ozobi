@@ -5,7 +5,12 @@ import android.content.Context
 import android.graphics.drawable.GradientDrawable
 import android.util.AttributeSet
 import android.util.Log
-import android.view.*
+import android.view.KeyEvent
+import android.view.LayoutInflater
+import android.view.MenuItem
+import android.view.View
+import android.view.ViewGroup
+import android.view.ViewTreeObserver
 import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
@@ -22,7 +27,17 @@ import com.stardust.pio.PFiles
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
-import org.autojs.autoxjs.model.explorer.*
+import org.autojs.autoxjs.R
+import org.autojs.autoxjs.model.explorer.Explorer
+import org.autojs.autoxjs.model.explorer.ExplorerChangeEvent
+import org.autojs.autoxjs.model.explorer.ExplorerDirPage
+import org.autojs.autoxjs.model.explorer.ExplorerFileItem
+import org.autojs.autoxjs.model.explorer.ExplorerItem
+import org.autojs.autoxjs.model.explorer.ExplorerPage
+import org.autojs.autoxjs.model.explorer.ExplorerProjectPage
+import org.autojs.autoxjs.model.explorer.ExplorerSampleItem
+import org.autojs.autoxjs.model.explorer.ExplorerSamplePage
+import org.autojs.autoxjs.model.explorer.Explorers
 import org.autojs.autoxjs.model.script.ScriptFile
 import org.autojs.autoxjs.model.script.Scripts.edit
 import org.autojs.autoxjs.model.script.Scripts.openByOtherApps
@@ -37,10 +52,9 @@ import org.autojs.autoxjs.ui.viewmodel.ExplorerItemList
 import org.autojs.autoxjs.ui.viewmodel.ExplorerItemList.SortConfig
 import org.autojs.autoxjs.ui.widget.BindableViewHolder
 import org.autojs.autoxjs.workground.WrapContentGridLayoutManger
-import org.autojs.autoxjs.R
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
-import java.util.*
+import java.util.Stack
 
 open class ExplorerViewKt : ThemeColorSwipeRefreshLayout, OnRefreshListener,
     PopupMenu.OnMenuItemClickListener, ViewTreeObserver.OnGlobalFocusChangeListener {
@@ -316,7 +330,7 @@ open class ExplorerViewKt : ThemeColorSwipeRefreshLayout, OnRefreshListener,
                     .timedTask(selectedItem!!.toScriptFile())
                 notifyOperated()
             }
-            // Annotated by Ozobi - 2024/11/11 > 移除打包
+            
             R.id.action_build_apk -> {
                 BuildActivity.start(context, selectedItem!!.path)
                 notifyOperated()

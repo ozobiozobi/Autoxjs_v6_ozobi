@@ -66,13 +66,13 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     private NodeInfo mRootNode;
     private NodeInfo mTargetNode;
     private Adapter mAdapter;
-    // Added by Ozobi - 2025/02/19 >
+    
     private boolean isNightMode;
     // <
 
     public CodeGenerateDialog(@NonNull Context context, NodeInfo rootNode, NodeInfo targetNode) {
         super(context);
-        // Added by Ozobi - 2025/02/19
+        
         isNightMode = NightModeKt.isSystemNightMode(context);
         ThemeColor themeColor = new ThemeColor( GetFitRandomColorKt.getFitRandomColorNormal(isNightMode));
         setThemeColor(themeColor);
@@ -145,7 +145,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
     }
 
     private void setupViews() {
-        // Added by Ozobi - 2025/02/19 >
+        
         int resource = R.layout.dialog_code_generate;
         if(isNightMode){
             resource = R.layout.dialog_code_generate_night;
@@ -298,7 +298,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         @NonNull
         @Override
         public OptionGroupViewHolder onCreateParentViewHolder(@NonNull ViewGroup parentViewGroup, int viewType) {
-            // Added by Ozobi - 2025/02/19 >
+            
             int resource = R.layout.dialog_code_generate_option_group;
             if(isNightMode){
                 resource = R.layout.dialog_code_generate_option_group_night;
@@ -311,7 +311,7 @@ public class CodeGenerateDialog extends ThemeColorMaterialDialogBuilder {
         @NonNull
         @Override
         public OptionViewHolder onCreateChildViewHolder(@NonNull ViewGroup childViewGroup, int viewType) {
-            // Added by Ozobi - 2025/02/19 >
+            
             int resource = R.layout.dialog_code_generate_option;
             if(isNightMode){
                 resource = R.layout.dialog_code_generate_option_night;

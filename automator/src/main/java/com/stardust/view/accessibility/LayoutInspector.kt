@@ -2,15 +2,13 @@ package com.stardust.view.accessibility
 
 import android.content.Context
 import android.graphics.Rect
-import android.os.Looper
 import android.os.Vibrator
+import android.util.DisplayMetrics
 import android.util.Log
+import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
-import android.util.DisplayMetrics
-import android.view.WindowManager
-import kotlinx.coroutines.delay
 
 /**
  * Created by Stardust on 2017/3/10.
@@ -25,7 +23,7 @@ class LayoutInspector(private val mContext: Context) {
         private set
     private val mExecutor = Executors.newSingleThreadExecutor()
     private val mCaptureAvailableListeners = CopyOnWriteArrayList<CaptureAvailableListener>()
-    // Added by Ozobi - 2024/11/04 >
+    
     private var width = 0
     private var height = 0
     private val mVibrator: Vibrator = mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
@@ -50,7 +48,7 @@ class LayoutInspector(private val mContext: Context) {
     }
     /**/
 
-    // Added by Ozobi - 2024/11/04 >
+    
     private fun isNodeOnScreen(nodeInfo:AccessibilityNodeInfo):Boolean{
         if(width == 0 || height == 0){
             return true
@@ -131,8 +129,8 @@ class LayoutInspector(private val mContext: Context) {
         return service.rootInActiveWindow ?: return service.fastRootInActiveWindow()
 
     }
-    // Modified by Ozobi - 2024/11/04 >
-    //    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)// Ozobi: 使用 Android studio 的建议
+    
+    
     private fun refreshChildList(root: AccessibilityNodeInfo?) {
         if (root == null)
             return
@@ -152,7 +150,7 @@ class LayoutInspector(private val mContext: Context) {
     }
 
     companion object {
-        // Added by Ozobi - 2025/02/18 >
+        
         var isRefresh = true
         // <
         private val LOG_TAG = LayoutInspector::class.java.simpleName
