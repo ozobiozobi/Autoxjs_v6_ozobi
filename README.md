@@ -22,8 +22,6 @@
 
     就, 好看了一点吧(也可能是我谦虚了
 
-    ![image](https://github.com/ozobiozobi/Autoxjs_v6_ozobi/blob/master/LayoutHierarchyPage.png)
-
 ### 修复(658): 布局层次分析页面:
 
     显示选中不唯一
@@ -45,7 +43,6 @@
 
     给当前选中节点周围添加标记
         没有火眼金睛? 不要紧, 我来助你
-        ![image](https://github.com/ozobiozobi/Autoxjs_v6_ozobi/blob/master/LayoutHierarchyPage_2.png)
 
     切换是否可以折叠(化bug为功能:D)
 
