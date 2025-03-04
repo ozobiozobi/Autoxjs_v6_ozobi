@@ -29,11 +29,13 @@
     <string name="ozobi_text_isCapture_refresh" translatable="false">刷新分析_ozobi</string>
     <string name="ozobi_text_isWaitFor_capture" translatable="false">等待捕获_ozobi</string>
     <string name="ozobi_text_isDelay_capture" translatable="false">延迟捕获_ozobi</string>
+    <string name="ozobi_text_docs_service" translatable="false">文档服务_ozobi</string>
     <string name="ozobi_text_isNightMode" translatable="false">夜间模式_ozobi</string>
     <string name="ozobi_key_isCapture_Screenshot" translatable="false">布局分析截图开关</string>
     <string name="ozobi_key_isCapture_refresh" translatable="false">布局分析刷新开关</string>
     <string name="ozobi_key_isWaitFor_capture" translatable="false">布局分析等待捕获开关</string>
     <string name="ozobi_key_isDelay_capture" translatable="false">布局分析延迟捕获开关</string>
+    <string name="ozobi_key_docs_service" translatable="false">文档服务开关</string>
     <string name="ozobi_key_isNightMode" translatable="false">夜间模式开关</string>
 <!--    //-->
     <string name="email" translatable="false">chengshulun@live.com</string>

@@ -2,6 +2,8 @@ package org.autojs.autoxjs.ui.main.task;
 
 import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
 
+import android.util.Log;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.execution.ScriptExecution;

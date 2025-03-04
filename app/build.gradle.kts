@@ -52,6 +52,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     lint {
         abortOnError = false
@@ -157,14 +158,16 @@ android {
         exclude(group = "com.github.atlassian.commonmark-java", module = "commonmark")
     }
 
-    packagingOptions {
+    packaging {
         //ktor netty implementation("io.ktor:ktor-server-netty:2.0.1")
-        resources.pickFirsts.addAll(
-            listOf(
-                "META-INF/io.netty.versions.properties",
-                "META-INF/INDEX.LIST"
+        resources{
+            pickFirsts.addAll(
+                listOf(
+                    "META-INF/io.netty.versions.properties",
+                    "META-INF/INDEX.LIST"
+                )
             )
-        )
+        }
     }
     namespace = "org.autojs.autoxjs"
     ndkVersion = "26.2.11394342"
@@ -172,7 +175,37 @@ android {
 }
 
 dependencies {
+
     val AAVersion = "4.5.2"
+
+    // Added by ozobi - 2025/03/03
+    // Ktor Server Core
+    implementation("io.ktor:ktor-server-core-jvm:2.0.3")
+
+    // Ktor Server Engine (Netty)
+    implementation("io.ktor:ktor-server-netty-jvm:2.0.3")
+
+    // Ktor Content Negotiation (用于 JSON 序列化)
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.0.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:2.0.2")
+
+    // Ktor Server HTML DSL
+    implementation("io.ktor:ktor-server-html-builder-jvm:2.0.2")
+    // Ktor Server Call Logging
+    implementation("io.ktor:ktor-server-call-logging-jvm:2.0.2")
+
+    // Ktor Server Status Pages
+    implementation("io.ktor:ktor-server-status-pages-jvm:2.0.2")
+
+    // Ktor Server Content Negotiation
+    implementation("io.ktor:ktor-server-content-negotiation-jvm:2.0.2")
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:2.0.2")
+
+    // Ktor Server Auth
+    implementation("io.ktor:ktor-server-auth-jvm:2.0.2")
+    // 日志依赖
+    implementation("ch.qos.logback:logback-classic:1.2.11")
+    // <
 
     implementation("androidx.localbroadcastmanager:localbroadcastmanager:1.1.0")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
@@ -372,5 +405,6 @@ tasks.register("installationDocumentation") {
     }
 }
 tasks.named("clean").configure {
-    doFirst { delete(docsDir) }
+//    doFirst { delete(docsDir) }
+    delete(layout.buildDirectory.get().asFile)
 }

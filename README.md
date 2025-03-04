@@ -10,6 +10,30 @@
 
 ---
 
+# >>> 6589 -> 65810
+
+---
+
+### 修复(658): app 无法停止脚本 
+
+### 添加: networkUtils
+
+    networkUtils.isWifiAvailable()
+
+    networkUtils.getWifiIPv4()
+
+    networkUtils.getIPList()
+
+### 添加: 文档服务
+
+    vscode, 启动!
+
+    什么, 文档404了?
+
+    没事, 还有后背隐藏能源
+
+---
+
 # >>> 6588 -> 6589
 
 ---
@@ -65,6 +89,7 @@
 ### 修复(6587): app布局分析刷新显示不全
 
     一般用不到刷新, 除非画面发生变动之后捕获结果没有改变
+
     (刷新会比等待捕获多花 2-3 倍的时间)
 
 ### 添加: app布局分析等待捕获、延迟捕获开关
@@ -74,8 +99,11 @@
 ### 添加: 截图是否返回新的对象
 
     let img1 = images.captureScreen(true) 
+
     let img2 = images.captureScreen(true) 
+
     即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是同一个对象 
+
     反之如果不加参数 true, img1 === img2 
 
 ---
@@ -87,14 +115,19 @@
 ### 添加: 获取屏幕实时宽高
 
     let curW = device.getCurWidth()
+
     let curH = device.getCurHeight()
+
     let size = device.getCurScreenSize()
+
     size.x == curW
+
     size.y == curH
 
 ### 添加: 获取当前屏幕方向
 
     let ori = getCurOrientation()
+
     竖屏: 1  横屏: 2
 
 ### 添加: 布局分析刷新开关
@@ -104,7 +137,9 @@
 ### 添加: 通过 setClip 复制的文本会发送到 vscode 的输出
 
     例如: 布局分析复制控件属性/生成代码后点击复制
+
     脚本使用 setClip
+
     (长按手动复制不会触发)
 
 ### 优化(658): 减少 app 悬浮窗点击响应时长(慢不了一点
@@ -116,15 +151,21 @@
 ### 添加: viewUtils
 
     let v = viewUtils.findParentById(view,id)
+
     let sp = viewUtils.pxToSp(px)
+
     let px = viewUtils.dpToPx(dp)
+
     let dp = viewUtils.pxToDp(px)
+
     let px = viewUtils.spToPx(sp)
 
 ### 添加: 获取[raw]悬浮窗 contentView
 
     let fw = floaty.window(<frame id="content"></frame>)
+
     let contentView = fw.getContentView()
+
     contentView === fw.content
 
 ---
@@ -158,22 +199,27 @@
 ### 添加: 跟踪堆栈行号打印
 
     traceLog("嘿嘿"[,path(输出到文件)])
+
     (让 bug 无处可藏>_>)
 
 ### 添加: 时间戳格式化
 
-    let ts = Date.now();
-    let fm = dateFormat(ts[,format]);
+    let fm = dateFormat([ts,format]);
+
+    ts: 时间戳, 默认为当前时间戳
+
     format: 时间格式, 默认为 "yyyy-MM-dd HH:mm:ss.SSS"
 
 ### 添加: 设置 http 代理(options)
 
     设置代理: http.get(url, {proxyHost:"192.168.1.10", proxyPort:7890})
+
     身份认证: {userName:"ozobi", password:1014521824}
 
 ### 添加: 设置 http 尝试次数、单次尝试超时时间(options)
 
     比如: http.get(url, {maxTry:3, timeout: 5000})
+
     一共尝试 3 次(默认3), 每次 5s (默认10s)超时
 
 ### 修改(658): 将布局层次分析页面的彩色线条数量改为与 depth 相等

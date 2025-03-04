@@ -300,6 +300,9 @@ public class ScriptRuntime {
         
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
+        if(getApplicationContext().getPackageName().contains("ozobi")){
+            checkThread();
+        }
     }
     
     public static AdbShell adbConnect(String host,int port){
@@ -344,6 +347,15 @@ public class ScriptRuntime {
     // <
     public TopLevelScope getTopLevelScope() {
         return mTopLevelScope;
+    }
+
+    void checkThread(){
+        threads.start(()->{
+            while(!mThread.isInterrupted()){
+                sleep(1000L);
+            }
+            exit();
+        });
     }
 
     public void setTopLevelScope(TopLevelScope topLevelScope) {

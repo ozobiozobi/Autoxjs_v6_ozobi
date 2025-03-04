@@ -38,7 +38,7 @@ module.exports = function (runtime, global) {
     // Added by ozobi - 2025/02/01 > 时间戳转换
     global.dateFormat = function(timestamp, format){
         let fm = format === undefined ? "yyyy-MM-dd HH:mm:ss.SSS" : format;
-        let date = new Date(timestamp); // 创建Date对象
+        let date = timestamp === undefined ? new Date() : new Date(timestamp); // 创建Date对象
         let sdf = new SimpleDateFormat(fm); // 定义格式
         let formattedDate = sdf.format(date); // 格式化时间
         return formattedDate;
@@ -80,7 +80,20 @@ module.exports = function (runtime, global) {
     global.getCurOrientation = function(){
          return context.getResources().getConfiguration().orientation
     }
+    // Added by ozobi - 2025/03/04 > 添加: networkUtils
+    global.networkUtils = function(){ }
+    global.networkUtils.isWifiAvailable = function(){
+        return com.stardust.util.NetworkUtils.isWifiAvailable(context)
+    }
+    global.networkUtils.getWifiIPv4 = function(){
+        return com.stardust.util.NetworkUtils.getWifiIPv4(context)
+    }
+    global.networkUtils.getIPList = function(){
+        return com.stardust.util.NetworkUtils.getIPList(context)
+    }
     // <
+
+
     global.toast = function (text) {
         runtime.toast(text);
     }

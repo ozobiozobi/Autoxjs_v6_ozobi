@@ -15,6 +15,9 @@ import com.stardust.autojs.runtime.ScriptRuntime
 import com.stardust.autojs.script.JavaScriptSource
 import com.stardust.autojs.script.StringScriptSource
 import com.stardust.pio.UncheckedIOException
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 import org.mozilla.javascript.Context
 import org.mozilla.javascript.Script
 import org.mozilla.javascript.Scriptable

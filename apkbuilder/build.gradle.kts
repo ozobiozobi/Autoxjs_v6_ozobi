@@ -10,6 +10,9 @@ android {
         minSdk = versions.mini
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
+    buildFeatures{
+        buildConfig = true
+    }
     buildTypes {
         named("release") {
             isMinifyEnabled = false

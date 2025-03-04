@@ -698,6 +698,9 @@
                 android:value="androidx.startup"
                 tools:node="remove" />
         </provider>
+
+        <service android:name=".network.ozobi.KtorDocsService"/>
+
     </application>
 
 </manifest>

@@ -1,6 +1,7 @@
 package org.autojs.autoxjs.ui.main
 
 import android.Manifest
+import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
 import android.os.Build
@@ -25,6 +26,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
+import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
 import com.aiselp.autojs.codeeditor.EditActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
@@ -38,6 +40,7 @@ import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.external.foreground.ForegroundService
 import org.autojs.autoxjs.network.MessengerServiceConnection
+import org.autojs.autoxjs.network.ozobi.KtorDocsService
 import org.autojs.autoxjs.timing.TimedTaskScheduler
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity
 import org.autojs.autoxjs.ui.build.ProjectConfigActivity_
@@ -94,7 +97,22 @@ class MainActivity : FragmentActivity() {
         val intent = Intent("com.stardust.autojs.messengerAction")
         intent.setPackage(this.packageName)
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
-        
+
+        KtorDocsService.getDocs(this)
+        val isDocsServiceRunning =  isServiceRunning(this,"org.autojs.autoxjs.network.ozobi.KtorDocsService")
+        PreferenceManager.getDefaultSharedPreferences(applicationContext)
+            .edit()
+            .putBoolean(applicationContext.getString(R.string.ozobi_key_docs_service), isDocsServiceRunning)
+            .apply()
+//        getDocs(this)
+//        GlobalScope.launch(Dispatchers.IO) {
+//            delay(1000L)
+//            startServer(this@MainActivity,8888)
+//            withContext(Dispatchers.Main) {
+//                Toast.makeText(this@MainActivity, "Server started on port 8888", Toast.LENGTH_SHORT).show()
+//            }
+//        }
+
         // >
         setContent {
             scope = rememberCoroutineScope()
@@ -121,6 +139,16 @@ class MainActivity : FragmentActivity() {
                 }
             }
         }
+    }
+
+    fun isServiceRunning(context: Context, serviceName: String): Boolean {
+        val manager = context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceName == service.service.className) {
+                return true
+            }
+        }
+        return false
     }
 
     override fun onResume() {

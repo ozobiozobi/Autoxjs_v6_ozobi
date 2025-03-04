@@ -19,6 +19,7 @@
     <item name="last_layout_bounds" type="id"/>
     <item name="last_layout_hierarchy" type="id"/>
     <item name="modification_detail" type="id"/>
+    <item name="docs_service_address" type="id"/>
     <item name="qq_communication_group" type="id"/>
 <!--    // <-->
     <item name="layout_hierarchy" type="id"/>
