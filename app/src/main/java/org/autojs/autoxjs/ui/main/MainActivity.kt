@@ -28,7 +28,7 @@ import androidx.core.view.WindowCompat
 import androidx.fragment.app.FragmentActivity
 import androidx.preference.PreferenceManager
 import androidx.viewpager2.widget.ViewPager2
-import com.aiselp.autojs.codeeditor.EditActivity
+//import com.aiselp.autojs.codeeditor.EditActivity
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
@@ -48,6 +48,7 @@ import org.autojs.autoxjs.ui.common.ScriptOperations
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autoxjs.ui.compose.widget.MyIcon
 import org.autojs.autoxjs.ui.compose.widget.SearchBox2
+import org.autojs.autoxjs.ui.edit.EditActivity
 import org.autojs.autoxjs.ui.explorer.ExplorerViewKt
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.main.components.DocumentPageMenuButton

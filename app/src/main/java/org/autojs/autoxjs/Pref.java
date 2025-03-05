@@ -30,9 +30,9 @@ public class Pref {
     private static final String KEY_DOCUMENTATION_SOURCE = "KEY_DOCUMENTATION_SOURCE";
 
 
-    public static boolean getEditor() {
-        return def().getBoolean(KEY_EDITOR_NEW, false);
-    }
+//    public static boolean getEditor() {
+//        return def().getBoolean(KEY_EDITOR_NEW, false);
+//    }
     public static void setCurDocumentationSource(DocumentSource source){
         if(!source.isLocal()){
             def().edit().putString(KEY_DOCUMENTATION_SOURCE, source.getUri()).apply();

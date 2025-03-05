@@ -4,11 +4,16 @@ import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_
 
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.engine.ScriptEngine;
+import com.stardust.autojs.engine.ScriptEngineManager;
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.AutoFileSource;
 import com.stardust.autojs.script.JavaScriptSource;
+import com.stardust.autojs.script.ScriptSource;
+import com.stardust.autojs.script.StringScriptSource;
 import com.stardust.pio.PFiles;
 
 import org.autojs.autoxjs.R;
@@ -16,6 +21,11 @@ import org.autojs.autoxjs.timing.IntentTask;
 import org.autojs.autoxjs.timing.TimedTask;
 import org.autojs.autoxjs.timing.TimedTaskManager;
 import org.joda.time.format.DateTimeFormat;
+
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Stardust on 2017/11/28.
@@ -148,7 +158,9 @@ public abstract class Task {
         @Override
         public void cancel() {
             ScriptEngine engine = mScriptExecution.getEngine();
+            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "log(\"app 停止脚本\");exit()");
             if (engine != null) {
+                engine.execute(exit);
                 engine.forceStop();
             }
         }

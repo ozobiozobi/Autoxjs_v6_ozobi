@@ -1180,21 +1180,21 @@ private fun AccessibilityServiceSwitch() {
                 ).show()
             }
         }
-    var editor by remember { mutableStateOf(Pref.getEditor()) }
-    SwitchItem(
-        icon = {
-            MyIcon(
-                Icons.Default.Edit,
-                contentDescription = null,nightMode=isNightMode()
-            )
-        },
-        text = { Text(text = "启用新编辑器") },
-        checked = editor,
-        onCheckedChange = { isChecked ->
-            editor = isChecked
-            Pref.setEditor(isChecked)
-        }
-    )
+//    var editor by remember { mutableStateOf(Pref.getEditor()) }
+//    SwitchItem(
+//        icon = {
+//            MyIcon(
+//                Icons.Default.Edit,
+//                contentDescription = null,nightMode=isNightMode()
+//            )
+//        },
+//        text = { Text(text = "启用新编辑器") },
+//        checked = editor,
+//        onCheckedChange = { isChecked ->
+//            editor = isChecked
+//            Pref.setEditor(isChecked)
+//        }
+//    )
     SwitchItem(
         icon = {
             MyIcon(
@@ -1505,7 +1505,8 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复(658): app 无法停止脚本\n\n"+
+            "移除(658): 新版编辑器\n\n"+
+            "修复(658): app 无法停止脚本(好像可以秒停@.@)\n\n"+
             "添加: networkUtils\n"+
                     "> networkUtils.isWifiAvailable()\n"+
                     "> networkUtils.getWifiIPv4()\n"+

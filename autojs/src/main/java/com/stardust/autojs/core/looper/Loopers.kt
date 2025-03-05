@@ -78,6 +78,9 @@ class Loopers(val runtime: ScriptRuntime) {
         if (available) mTimer.post(EMPTY_RUNNABLE)
     }
 
+    fun getCurTaskSize():Int{
+        return allTasks.size
+    }
 
     private fun checkTask(): Boolean {
         allTasks.removeAll(allTasks.filter { it.isEnd }.toSet())

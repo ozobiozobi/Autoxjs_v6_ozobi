@@ -66,6 +66,18 @@ class Threads(private val mRuntime: ScriptRuntime) {
         return thread
     }
 
+    fun startCheck(runnable: Runnable): TimerThread {
+        val thread = createThread(runnable)
+        synchronized(mThreads) {
+            check(!mExit) { "script exiting" }
+//            mThreads.add(thread)
+            thread.name = mainThread.name + " (Spawn-" + mSpawnCount + ")"
+//            mSpawnCount++
+            thread.start()
+        }
+        return thread
+    }
+
     private fun createThread(runnable: Runnable): TimerThread {
         return object : TimerThread(mRuntime, runnable) {
             override fun onExit() {
@@ -102,6 +114,10 @@ class Threads(private val mRuntime: ScriptRuntime) {
             shutDownAll()
             mExit = true
         }
+    }
+
+    fun getThreadsCount():Int{
+        return mThreads.size
     }
 
     fun hasRunningThreads(): Boolean {

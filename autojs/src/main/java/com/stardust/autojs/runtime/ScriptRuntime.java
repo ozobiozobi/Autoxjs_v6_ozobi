@@ -246,6 +246,7 @@ public class ScriptRuntime {
     private Thread mThread;
     private TopLevelScope mTopLevelScope;
     private final String logTag = "ozobiLog";
+    private Thread checkThread = null;
 
 
     protected ScriptRuntime(Builder builder) {
@@ -297,12 +298,8 @@ public class ScriptRuntime {
             boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
             
         }
-        
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
-        if(getApplicationContext().getPackageName().contains("ozobi")){
-            checkThread();
-        }
     }
     
     public static AdbShell adbConnect(String host,int port){
@@ -347,15 +344,6 @@ public class ScriptRuntime {
     // <
     public TopLevelScope getTopLevelScope() {
         return mTopLevelScope;
-    }
-
-    void checkThread(){
-        threads.start(()->{
-            while(!mThread.isInterrupted()){
-                sleep(1000L);
-            }
-            exit();
-        });
     }
 
     public void setTopLevelScope(TopLevelScope topLevelScope) {

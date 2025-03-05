@@ -304,7 +304,7 @@ dependencies {
     // Optional, if you use support library fragments:
     implementation(project(":autojs"))
     implementation(project(":apkbuilder"))
-    implementation(project(":codeeditor"))
+//    implementation(project(":codeeditor"))
     implementation("androidx.multidex:multidex:2.0.1")
 
     val lifecycle_version = "2.5.1"

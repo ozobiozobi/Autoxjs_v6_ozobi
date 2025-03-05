@@ -3,11 +3,13 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,12 +31,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
 import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
@@ -209,7 +213,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         view.requestFocus()
         return view
     }
-    
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun Content() {
