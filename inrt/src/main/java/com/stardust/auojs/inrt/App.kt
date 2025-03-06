@@ -118,7 +118,7 @@ class App : Application() {
                 "点击打开【" + GlobalAppContext.appName + "】",
                 R.mipmap.ic_launcher
             )  //定义前台服务的通知点击事件
-            { context, intent ->
+            { context, _ ->
                 Log.d(TAG, "foregroundNotificationClick: ");
                 val splashActivityintent = Intent(context, ScriptExecuteActivity::class.java)
                 splashActivityintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

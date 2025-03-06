@@ -3,13 +3,10 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
-import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -17,7 +14,6 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -31,25 +27,20 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.drawscope.Stroke
-import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInRoot
 import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
-import androidx.core.graphics.drawable.toBitmap
-import androidx.core.graphics.scale
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.ViewModelStore
 import androidx.lifecycle.ViewTreeLifecycleOwner
@@ -98,7 +89,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
     private var firstNodeList = mutableListOf<NodeInfo>()
     private var secondNodeList = mutableListOf<NodeInfo>()
     private var isAuth = false
-    private var tagImageBitmap:ImageBitmap? = null
+    private var firstTime = true
     // <
     
     fun getNodeList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo>){
@@ -182,8 +173,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         BubblePopupMenu.nightMode = nightMode
         NodeInfoView.nightMode = nightMode
         LayoutHierarchyView.nightMode = nightMode
-        tagImageBitmap = AppCompatResources.getDrawable(mContext as ContextThemeWrapper,R.drawable.arrow_tag2)
-            ?.toBitmap()?.scale(100,100)?.asImageBitmap()
         // <
         mLayoutHierarchyView = LayoutHierarchyView(mContext)
         val view = ComposeView(mContext!!).apply {
@@ -207,27 +196,72 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         val lifecycleOwner = MyLifecycleOwner()
         lifecycleOwner.performRestore(null)
         lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_CREATE)
+        // ozobi - 2025/03/06 修复: 无法触发 compose重组 >
+        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_START)
+        lifecycleOwner.handleLifecycleEvent(Lifecycle.Event.ON_RESUME)
+        // <
         ViewTreeLifecycleOwner.set(view, lifecycleOwner)
         ViewTreeViewModelStoreOwner.set(view) { viewModelStore }
         view.setViewTreeSavedStateRegistryOwner(lifecycleOwner)
         view.requestFocus()
         return view
     }
+    @Composable
+    private fun CurSelectedBounds(rect:Rect, offset: Offset){
+        Box(
+            modifier = Modifier.offset {
+                IntOffset(offset.x.roundToInt(), offset.y.roundToInt())
+            }
+        ){
+            Canvas(modifier = Modifier.fillMaxSize()) {
+                drawRect(
+                    color = Color(0xffff66ff),
+                    topLeft = Offset(rect.left.toFloat(), rect.top.toFloat()),
+                    size = Size(rect.width().toFloat(), rect.height().toFloat()),
+                    style = Stroke(
+                        width = mLayoutHierarchyView!!.boundsPaint?.strokeWidth
+                            ?: 3f
+                    )
+                )
+            }
+        }
+    }
+    @Composable
+    fun ConnectLine(start:Offset, end:Offset){
+        Canvas(modifier = Modifier.fillMaxSize()) {
+            drawLine(color = Color(0xffff66ff),start,end,3.dp.toPx())
+        }
+    }
     @OptIn(DelicateCoroutinesApi::class)
     @Composable
     private fun Content() {
         val context = LocalContext.current
+        var isShowLayoutHierarchyView by remember {
+            mutableStateOf(true)
+        }
+        var offset by remember { mutableStateOf(Offset.Zero) }
+        var castSpellText by remember {
+            mutableStateOf(
+                if(firstTagNodeInfo == null){
+                    context.getString(R.string.text_tag_node)
+                }else{
+                    context.getString(R.string.text_spell_casting)
+                }
+            )
+        }
+        val (globalPosition, setGlobalPosition) = remember { mutableStateOf(Offset.Zero) }
+        var rect by remember { mutableStateOf(Rect()) }
         Box(modifier = Modifier.fillMaxSize()) {
             Box(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                Canvas(modifier = Modifier.fillMaxSize()) {
-                    if (mLayoutHierarchyView!!.mShowClickedNodeBounds) {
-                        mLayoutHierarchyView!!.mClickedNodeInfo?.let { it ->
-                            val statusBarHeight = mLayoutHierarchyView!!.mStatusBarHeight
-                            val rect = Rect(it.boundsInScreen)
-                            rect.offset(0, -statusBarHeight)
+                if (mLayoutHierarchyView!!.mShowClickedNodeBounds) {
+                    mLayoutHierarchyView!!.mClickedNodeInfo?.let { it ->
+                        val statusBarHeight = mLayoutHierarchyView!!.mStatusBarHeight
+                        rect = Rect(it.boundsInScreen)
+                        rect.offset(0, -statusBarHeight)
+                        Canvas(modifier = Modifier.fillMaxSize()) {
                             drawRect(
                                 color = Color(
                                     mLayoutHierarchyView!!.boundsPaint?.color ?: 0x2cd0d1
@@ -239,39 +273,14 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                         ?: 3f
                                 )
                             )
-                            tagImageBitmap?.let {
-                                drawImage(//左
-                                    image = it,
-                                    topLeft = Offset((rect.left - it.width).toFloat(),(rect.centerY()-it.height/2).toFloat())
-                                )
-                                val tagOffset = Offset(0f,0f)
-                                rotate(90f,tagOffset){
-                                    drawImage(//上
-                                        image = it,
-                                        topLeft = Offset((rect.top-it.height).toFloat(),-(rect.centerX()+it.width/2).toFloat())
-                                    )
-                                }
-                                rotate(180f,tagOffset){
-                                    drawImage(//右
-                                        image = it,
-                                        topLeft = Offset(-(rect.right+it.width).toFloat(),-(rect.centerY()+it.height/2).toFloat())
-                                    )
-                                }
-                                rotate(270f,tagOffset){
-                                    drawImage(//下
-                                        image = it,
-                                        topLeft = Offset(-rect.bottom.toFloat()-it.height,(rect.centerX()-it.width/2).toFloat())
-                                    )
-                                }
-                            }
+                        }
+                        if(globalPosition != Offset.Zero){
+                            CurSelectedBounds(rect, offset)
+                            ConnectLine(globalPosition, Offset(rect.centerX().toFloat(),rect.centerY().toFloat()))
                         }
                     }
                 }
             }
-            var isShowLayoutHierarchyView by remember {
-                mutableStateOf(true)
-            }
-            var offset by remember { mutableStateOf(Offset.Zero) }
             Column(modifier = Modifier.fillMaxSize()) {
                 AndroidView(
                     factory = {
@@ -285,16 +294,19 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                     }
                 )
                 Row(
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier
+                        .fillMaxWidth()
                         .offset {
                             IntOffset(offset.x.roundToInt(), offset.y.roundToInt())
                         }
-                        .padding(0.dp,1.dp,5.dp,4.dp)
+                        .padding(6.dp)
                 ) {
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
+                            .weight(1f)
                             .padding(horizontal = 4.dp)
-                            .background(color=Color(0xeeBA3636), shape = RoundedCornerShape(8.dp))
+                            .background(color = Color(0xeeBA3636), shape = RoundedCornerShape(8.dp))
                             .clickable {
                                 close()
                             }
@@ -306,28 +318,101 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-                    Spacer(modifier = Modifier.weight(1f))
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
+                            .weight(1f)
+                            .padding(horizontal = 4.dp)
+                            .background(color = Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
+                            .clickable {
+                                showLayoutBounds()
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_show_layout_bounds_window),
+                            color=Color.White,
+                            modifier = Modifier
+                                .padding(7.dp)
+                        )
+                    }
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .background(color = Color(0xee5AA6B5), shape = RoundedCornerShape(8.dp))
+                            .weight(1f)
+                            .padding(horizontal = 4.dp)
+                            .clickable {
+                                isShowLayoutHierarchyView = !isShowLayoutHierarchyView
+                                GlobalScope.launch {
+                                    delay(100L)
+                                    mLayoutHierarchyView?.mAdapter?.reloadData()
+                                }
+                            }
+                            .onGloballyPositioned {
+                                setGlobalPosition(it.positionInRoot())
+                            }
+                            .pointerInput(Unit) {
+                                detectDragGestures(
+                                    onDragStart = {Offset->
+                                        isShowLayoutHierarchyView = false
+                                    },
+                                    onDrag = { change, dragAmount ->
+                                        change.consume()
+                                        offset += dragAmount
+                                    },
+                                    onDragEnd = {
+                                        offset = Offset(0f, 0f)
+                                        isShowLayoutHierarchyView = true
+                                        GlobalScope.launch {
+                                            delay(100L)
+                                            mLayoutHierarchyView?.mAdapter?.reloadData()
+                                        }
+                                    },
+                                    onDragCancel = {
+                                        offset = Offset(0f, 0f)
+                                        isShowLayoutHierarchyView = true
+                                    }
+                                )
+                            }
+                    ) {
+                        Text(
+                            text = stringResource(R.string.text_hide_and_show),
+                            color=Color.White,
+                            modifier = Modifier
+                                .padding(7.dp)
+                        )
+                    }
+                    Box(
+                        contentAlignment = Alignment.Center,
+                        modifier = Modifier
+                            .weight(1f)
                             .padding(horizontal = 4.dp)
                             .background(color = Color(0xee315FA8), shape = RoundedCornerShape(8.dp))
                             .clickable {
-                                if(isAuth){
+                                if (isAuth) {
                                     val result = tagNode()
                                     var hint = "真相已躺好在粘贴板[vscode]"
-                                    if(result == null){
-                                        if(firstTagNodeInfo == null){
-                                            val ranKey = floor(Math.random() * selfHints.size).toInt()
+                                    if (result == null) {
+                                        if (firstTagNodeInfo == null) {
+                                            val ranKey =
+                                                floor(Math.random() * selfHints.size).toInt()
                                             hint = selfHints[ranKey]
-                                        }else{
+                                            castSpellText =
+                                                context.getString(R.string.text_tag_node)
+                                        } else {
                                             hint = "ozobi: 真相只有一个, 是哪个呢"
+                                            castSpellText =
+                                                context.getString(R.string.text_spell_casting)
                                         }
-                                    }else{
+                                    } else {
+                                        castSpellText =
+                                            context.getString(R.string.text_tag_node)
                                         ClipboardUtil.setClip(mContext, result)
                                     }
                                     mLayoutHierarchyView?.let {
-                                        val snackBar =  Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
-                                        if(nightMode){
+                                        val snackBar =
+                                            Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
+                                        if (nightMode) {
                                             snackBar.setTextColor(0xff000000.toInt())
                                             snackBar.setBackgroundTint(0xffcfcfcf.toInt())
                                         }
@@ -337,27 +422,30 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                             }
                     ) {
                         Text(
-                            text = stringResource(R.string.text_spell_casting),
+                            text = castSpellText,
                             color = Color.White,
                             modifier = Modifier
                                 .padding(7.dp)
                         )
                     }
                     Box(
+                        contentAlignment = Alignment.Center,
                         modifier = Modifier
+                            .weight(1f)
                             .padding(horizontal = 4.dp)
-                            .background(color=Color(0xee53BA5C), shape = RoundedCornerShape(8.dp))
+                            .background(color = Color(0xee53BA5C), shape = RoundedCornerShape(8.dp))
                             .pointerInput(Unit) {
                                 detectDragGestures(
                                     onDragStart = {
                                         canCollapse = !canCollapse
-                                        var hint = "ozobi: 禁止折叠"
-                                        if(canCollapse){
-                                            hint = "ozobi: 允许折叠"
+                                        var hint = "ozobi: " + context.getString(R.string.text_not_allow_collapse)
+                                        if (canCollapse) {
+                                            hint = "ozobi: " + context.getString(R.string.text_allow_collapse)
                                         }
                                         mLayoutHierarchyView?.let {
-                                            val snackBar =  Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
-                                            if(nightMode){
+                                            val snackBar =
+                                                Snackbar.make(it, hint, Snackbar.LENGTH_SHORT)
+                                            if (nightMode) {
                                                 snackBar.setTextColor(0xff000000.toInt())
                                                 snackBar.setBackgroundTint(0xffcfcfcf.toInt())
                                             }
@@ -365,10 +453,10 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                         }
                                     },
                                     onDragEnd = {
-                                        offset = Offset(0f,0f)
+                                        offset = Offset(0f, 0f)
                                     },
                                     onDragCancel = {
-                                        offset = Offset(0f,0f)
+                                        offset = Offset(0f, 0f)
                                     },
                                     onDrag = { change: PointerInputChange, dragAmount: Offset ->
                                         change.consume()
@@ -387,79 +475,25 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 .padding(7.dp)
                         )
                     }
-                    Box(
-                        modifier = Modifier
-                            .padding(4.dp,0.dp,8.dp,0.dp)
-                            .background(color=Color(0xee7461BF), shape = RoundedCornerShape(8.dp))
-                            .clickable {
-                                showLayoutBounds()
+                    if(firstTime){
+                        firstTime = false
+                        mLayoutHierarchyView?.let {
+                            val snackBar =  Snackbar.make(it, "ozobi: [展开]、[隐/显] 可以拖动哦", Snackbar.LENGTH_SHORT)
+                            if(nightMode){
+                                snackBar.setTextColor(0xff000000.toInt())
+                                snackBar.setBackgroundTint(0xffcfcfcf.toInt())
                             }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.text_show_layout_bounds_window),
-                            color=Color.White,
-                            modifier = Modifier
-                                .padding(7.dp)
-                        )
-                    }
-                    Box(
-                        modifier = Modifier
-                            .background(color=Color(0xee5AA6B5), shape = RoundedCornerShape(8.dp))
-                            .padding(horizontal = 4.dp)
-                            .clickable {
-                                isShowLayoutHierarchyView = !isShowLayoutHierarchyView
-                                GlobalScope.launch {
-                                    delay(100L)
-                                    mLayoutHierarchyView?.mAdapter?.reloadData()
+                            snackBar.addCallback(object : Snackbar.Callback(){
+                                override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
+                                    super.onDismissed(transientBottomBar, event)
+                                    mLayoutHierarchyView!!.mAdapter?.reloadData()
                                 }
-                            }
-                            .pointerInput(Unit){
-                                detectDragGestures(
-                                    onDragStart = {
-                                        isShowLayoutHierarchyView = false
-                                    },
-                                    onDrag = { change, Offset ->
-                                        change.consume()
-                                        offset += Offset
-                                    },
-                                    onDragEnd = {
-                                        offset = Offset(0f,0f)
-                                        isShowLayoutHierarchyView = true
-                                        GlobalScope.launch {
-                                            delay(100L)
-                                            mLayoutHierarchyView?.mAdapter?.reloadData()
-                                        }
-                                    },
-                                    onDragCancel = {
-                                        offset = Offset(0f,0f)
-                                        isShowLayoutHierarchyView = true
-                                    }
-                                )
-                            }
-                    ) {
-                        Text(
-                            text = stringResource(R.string.text_hide_and_show),
-                            color=Color.White,
-                            modifier = Modifier
-                                .padding(7.dp)
-                        )
-                    }
-                    mLayoutHierarchyView?.let {
-                        val snackBar =  Snackbar.make(it, "ozobi: [展开]、[隐/显] 可以拖动哦", Snackbar.LENGTH_SHORT)
-                        if(nightMode){
-                            snackBar.setTextColor(0xff000000.toInt())
-                            snackBar.setBackgroundTint(0xffcfcfcf.toInt())
-                        }
-                        snackBar.addCallback(object : Snackbar.Callback(){
-                            override fun onDismissed(transientBottomBar: Snackbar?, event: Int) {
-                                super.onDismissed(transientBottomBar, event)
+                            })
+                            snackBar.show()
+                            GlobalScope.launch {
+                                delay(300L)
                                 mLayoutHierarchyView!!.mAdapter?.reloadData()
                             }
-                        })
-                        snackBar.show()
-                        GlobalScope.launch {
-                            delay(300L)
-                            mLayoutHierarchyView!!.mAdapter?.reloadData()
                         }
                     }
                 }

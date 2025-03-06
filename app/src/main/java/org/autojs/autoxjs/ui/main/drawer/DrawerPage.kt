@@ -44,7 +44,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TextButton
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Build
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
@@ -1505,6 +1504,11 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "优化: 布局层次分析页面\n"+
+                    "> 修复 compose 无法触发重组\n" +
+                    "> 调整按钮大小和位置\n" +
+                    "> 将标记箭头改为方框，并在拖动时跟随\n" +
+                    "> 在隐显按钮和当前选中节点边界之间添加连接线\n\n"+
             "移除(658): 新版编辑器\n\n"+
             "修复(658): app 无法停止脚本(好像可以秒停@.@)\n\n"+
             "添加: networkUtils\n"+

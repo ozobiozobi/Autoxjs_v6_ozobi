@@ -270,7 +270,10 @@
     <string name="text_jump_to_line_end">转到行尾</string>
 <!--    // Added by Ozobi - 2024/11/04-->
     <string name="text_expand_all_hierarchy">展开</string>
+    <string name="text_not_allow_collapse">禁止折叠</string>
+    <string name="text_allow_collapse">允许折叠</string>
     <string name="text_spell_casting">施法</string>
+    <string name="text_tag_node">标记</string>
     <string name="text_show_layout_bounds_window">边界</string>
 <!--    //<-->
 <!--    // Modified by Ozobi - 2024/11/04 > 退出悬浮窗 -> 退出-->
