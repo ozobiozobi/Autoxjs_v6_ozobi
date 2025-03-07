@@ -49,6 +49,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +61,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -69,6 +71,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.preference.PreferenceManager
 import coil.compose.rememberAsyncImagePainter
@@ -173,7 +177,7 @@ fun DrawerPage() {
                 )
             }
             SwitchClassifyTittle(text = stringResource(id = R.string.text_service))
-//            ShizukuSwitch()
+            ShizukuSwitch()
 //            DeviceManagerSwitch()
 //            VoiceAssistantSwitch()
             AccessibilityServiceSwitch()
@@ -553,53 +557,49 @@ private fun ConnectComputerSwitch() {
 
 }
 
-
 @Composable
 private fun ShizukuSwitch(){
     val context = LocalContext.current
     var isShizukuActive by remember {
         mutableStateOf(ozobiShizuku.checkPermission())
     }
-    val launcher = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.StartActivityForResult(),
-        onResult = {
-            isShizukuActive = ozobiShizuku.checkPermission()
+    val lifecycleOwner = LocalLifecycleOwner.current
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                // 用户返回应用时触发的操作
+                isShizukuActive = ozobiShizuku.checkPermission()
+            }
         }
-    )
-//    val scope = rememberCoroutineScope()
+        lifecycleOwner.lifecycle.addObserver(observer)
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
     LaunchedEffect(key1 = Unit, block = {
-
+        isShizukuActive = ozobiShizuku.checkPermission()
     })
     SwitchItem(
         icon = {
             MyIcon(
-                Icons.Default.Warning,
-                contentDescription = null,nightMode=isNightMode()
+                painterResource(R.drawable.ic_shizuku_thick),
+                contentDescription = null,nightMode=isNightMode(),
+                modifier = Modifier.size(24.dp)
             )
         },
         text = {
             Text(
                 text = stringResource(
                     id = R.string.text_Shizuku
-                ),
-                modifier = Modifier
-                    .background(Color(0x33df73ff))
+                )
             )
         },
         checked = isShizukuActive
     ) {
-        if(ozobiShizuku.checkPermission()){
-            // 提示已激活
-            Toast.makeText(context,"Shizuku 已激活",Toast.LENGTH_SHORT).show()
+        if(isShizukuActive){
+            OzobiShizuku.openShizuku(context)
         }else{
-            // 打开shizuku
-            val packageName = "moe.shizuku.privileged.api"
-            val intent = context.packageManager.getLaunchIntentForPackage(packageName)
-            if (intent != null) {
-                launcher.launch(intent)
-            } else {
-                Toast.makeText(context, "Shizuku 未安装", Toast.LENGTH_SHORT).show()
-            }
+            OzobiShizuku.requestPermision(context,1)
         }
     }
 }
@@ -1495,6 +1495,17 @@ fun detailsDialog(context: Context){
             R.id.qq_communication_group,
             R.drawable.ic_group_black_48dp,
             "QQ交流群: "+context.resources.getString(R.string.qq_communication_group)
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65810->65811 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "添加: Shizuku\n"+
+                    "开关(哈哈)"
         )
         .item(
             R.id.modification_detail,

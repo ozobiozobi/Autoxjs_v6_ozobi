@@ -292,12 +292,12 @@ public class ScriptRuntime {
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
         
-        if(OzobiShizuku.Companion.getBinder() == null){
-            new OzobiShizuku().checkPermission();
-        }else{
-            boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
-            
-        }
+//        if(OzobiShizuku.Companion.getBinder() == null){
+//            new OzobiShizuku().checkPermission(1);
+//        }else{
+//            boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
+//
+//        }
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
     }

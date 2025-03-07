@@ -17,10 +17,10 @@ android {
             setProguardFiles(listOf(getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"))
         }
     }
-
-//    buildFeatures {
-//        aidl = true
-//    }
+    buildFeatures {
+        buildConfig = true
+        aidl = true
+    }
     lint.abortOnError = false
     sourceSets {
         named("main") {
@@ -37,6 +37,11 @@ android {
 }
 
 dependencies {
+    // Added by ozobi - 2025/03/07 > 添加 shizuku 依赖
+    implementation(libs.api)
+    implementation(libs.provider)
+    // <
+
     implementation(libs.api)
     implementation(libs.provider)
 

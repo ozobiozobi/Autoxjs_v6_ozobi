@@ -90,7 +90,7 @@ android {
             reset()
 
             // Specifies a list of ABIs that Gradle should create APKs for.
-            include("armeabi-v7a", "arm64-v8a") // Annotated by ozobi - 2025/02/23 > 注释则不单独生成这两个apk
+//            include("armeabi-v7a", "arm64-v8a") // Annotated by ozobi - 2025/02/23 > 注释则不单独生成这两个apk
 
             // Specifies that we do not want to also generate a universal APK that includes all ABIs.
             isUniversalApk = true

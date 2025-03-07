@@ -9,7 +9,6 @@ buildscript {
         set("kotlin_version", kotlin_version)
         set("compose_version", compose_version)
     }
-
     repositories {
         mavenLocal()
         //首选国外镜像加快github CI

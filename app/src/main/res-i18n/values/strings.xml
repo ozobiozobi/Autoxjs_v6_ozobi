@@ -433,7 +433,7 @@
     <string name="apk_builder_plugin_version_too_low">打包插件版本过低，打包的应用可能无法正常运行。是否立即下载对应版本的打包插件？</string>
     <string name="text_inspect_layout_bounds">布局范围分析</string>
     <!--    // Added by Ozobi - 2024/11/10 >-->
-    <string name="text_Shizuku" >Shizuku</string>
+    <string name="text_Shizuku" >Shizuku_ozobi</string>
     <string name="key_voiceAssistant" >数字助理开关</string>
     <string name="text_voiceAssistant" >数字助理</string>
     <string name="key_device_manager" >设备管理员开关</string>
