@@ -128,6 +128,7 @@ private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_oz
 //private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
 private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
+private const val DONATION_PAGE_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi_some_info"
 
 private var alwaysTryToConnectState = false
 private var isFirstTime = true
@@ -206,6 +207,7 @@ fun DrawerPage() {
             // <
 //            nightModeSwitch()
             showModificationDetailsButton()
+            doantionPage(context)
             ProjectAddress(context)
             DownloadLink(context)
 
@@ -224,6 +226,18 @@ fun DrawerPage() {
             modifier = Modifier
                 .windowInsetsBottomHeight(WindowInsets.navigationBars)
         )
+    }
+}
+
+@Composable
+fun doantionPage(context:Context){
+    TextButton(onClick = {
+        IntentUtil.browse(
+            context,
+            DONATION_PAGE_ADDRESS
+        )
+    }) {
+        Text(text = stringResource(R.string.ozobi_text_donation_page))
     }
 }
 
@@ -1504,6 +1518,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 魔改充电\n\n"+
             "修复(65810): app 无法停止脚本(这回应该没问题了)\n\n"+
             "添加: Shizuku\n"+
                     "开关(哈哈)"

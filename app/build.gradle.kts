@@ -33,8 +33,8 @@ android {
         applicationId = "org.autojs.autoxjs"
         minSdk = versions.mini
         targetSdk = versions.target
-        versionCode = 6589
-        versionName = "6.5.8.9"
+        versionCode = 65811
+        versionName = "6.5.8.11"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
         buildConfigField("boolean", "isMarket", "false")

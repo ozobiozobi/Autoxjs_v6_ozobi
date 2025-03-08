@@ -24,6 +24,7 @@
     <string name="ozobi_text_about_mender" translatable="false">~~~~~~~~ 关于魔改 ~~~~~~~~</string>
     <string name="ozobi_mender_name" translatable="false">ozobi</string>
     <string name="ozobi_text_mender_email" translatable="false">ozobi@qq.com</string>
+    <string name="ozobi_text_donation_page" translatable="false">魔改充电_ozobi</string>
     <string name="ozobi_text_email_already_copy_to_clip" translatable="false">邮箱已复制到粘贴板</string>
     <string name="ozobi_text_isCapture_Screenshot" translatable="false">截图分析_ozobi</string>
     <string name="ozobi_text_isCapture_refresh" translatable="false">刷新分析_ozobi</string>
