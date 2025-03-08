@@ -27,6 +27,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import kotlinx.coroutines.GlobalScope;
+
 /**
  * Created by Stardust on 2017/11/28.
  */
@@ -158,10 +160,15 @@ public abstract class Task {
         @Override
         public void cancel() {
             ScriptEngine engine = mScriptExecution.getEngine();
-            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "log(\"app 停止脚本\");exit()");
+            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "exit();");
             if (engine != null) {
-                engine.execute(exit);
-                engine.forceStop();
+                try{
+                    engine.forceStop();
+                    engine.execute(exit);
+                    engine.uncaughtException(new Exception("app 停止脚本"));
+                }catch(Exception e){
+                    Log.d("ozobiLog",e.toString());
+                }
             }
         }
 

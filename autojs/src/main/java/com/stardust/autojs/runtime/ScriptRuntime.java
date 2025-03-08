@@ -10,7 +10,6 @@ import androidx.annotation.NonNull;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.R;
-//import com.stardust.autojs.BuildConfig;
 import com.stardust.autojs.ScriptEngineService;
 import com.stardust.autojs.annotation.ScriptVariable;
 import com.stardust.autojs.core.accessibility.AccessibilityBridge;
@@ -24,7 +23,6 @@ import com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME;
 import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseHelper;
 import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseManager;
 import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
-import com.stardust.autojs.core.ozobi.shizuku.OzobiShizuku;
 import com.stardust.autojs.core.permission.Permissions;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.rhino.AndroidClassLoader;
@@ -60,6 +58,8 @@ import com.stardust.util.ScreenMetrics;
 import com.stardust.util.SdkVersionUtil;
 import com.stardust.util.Supplier;
 import com.stardust.util.UiHandler;
+import com.stardust.util.ViewUtil;
+import com.stardust.util.ViewUtils;
 
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.RhinoException;
@@ -75,10 +75,6 @@ import java.io.StringWriter;
 import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-
-import com.stardust.util.ViewUtil;
-import com.stardust.util.ViewUtils;
-import com.stardust.util.Ozobi;
 
 /**
  * Created by Stardust on 2017/1/27.
@@ -291,7 +287,6 @@ public class ScriptRuntime {
         events = new Events(uiHandler.getContext(), accessibilityBridge, this);
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
-        
 //        if(OzobiShizuku.Companion.getBinder() == null){
 //            new OzobiShizuku().checkPermission(1);
 //        }else{
@@ -301,7 +296,12 @@ public class ScriptRuntime {
         AdbIME.packageName = getApplicationContext().getPackageName();
         // <
     }
-    
+    public Thread getmThread(){
+        return mThread;
+    }
+    public Threads getThreads(){
+        return threads;
+    }
     public static AdbShell adbConnect(String host,int port){
         return new AdbShell(getApplicationContext(),host,port);
     }

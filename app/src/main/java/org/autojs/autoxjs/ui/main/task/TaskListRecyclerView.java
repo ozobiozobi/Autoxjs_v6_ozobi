@@ -1,5 +1,7 @@
 package org.autojs.autoxjs.ui.main.task;
 
+import static java.lang.Thread.sleep;
+
 import android.content.Context;
 import android.graphics.drawable.GradientDrawable;
 import android.util.AttributeSet;
@@ -241,6 +243,15 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         void stop() {
             if (mTask != null) {
                 mTask.cancel();
+                Thread thread = new Thread(()->{
+                    try {
+                        sleep(300);
+                        refresh();
+                    } catch (InterruptedException e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+                thread.start();
             }
         }
 

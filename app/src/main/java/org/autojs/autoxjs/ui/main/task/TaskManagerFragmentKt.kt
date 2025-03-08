@@ -97,14 +97,19 @@ class TaskManagerFragmentKt : Fragment() {
 
     private fun init() {
         swipeRefreshLayout.setOnRefreshListener {
-            taskListRecyclerView.refresh()
-            taskListRecyclerView.postDelayed({
-                swipeRefreshLayout.isRefreshing = false
-            }, 800)
+            refresh()
         }
+    }
+
+    fun refresh(){
+        taskListRecyclerView.refresh()
+        taskListRecyclerView.postDelayed({
+            swipeRefreshLayout.isRefreshing = false
+        }, 800)
     }
 
     init {
         arguments = Bundle()
     }
+
 }
