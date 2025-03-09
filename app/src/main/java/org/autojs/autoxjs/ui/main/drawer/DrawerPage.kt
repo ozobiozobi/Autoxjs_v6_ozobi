@@ -249,7 +249,8 @@ fun CommunityWebsite(context:Context){
 fun DonationDialog(
     showDialog: Boolean,
     onDismissRequest: () -> Unit,
-    imageResId: Int,
+    imageResId1: Int,
+    imageResId2: Int,
     contentText: String,
     linkText: String,
     linkUrl: String
@@ -285,15 +286,23 @@ fun DonationDialog(
                     Spacer(modifier = Modifier.height(3.dp))
                     // 显示图片
                     Image(
-                        painter = painterResource(id = imageResId),
+                        painter = painterResource(id = imageResId1),
                         contentDescription = "Dialog Image",
                         contentScale = ContentScale.Fit,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(200.dp)
                     )
-                    Spacer(modifier = Modifier.height(16.dp))
-
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Image(
+                        painter = painterResource(id = imageResId2),
+                        contentDescription = "Dialog Image",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
+                    Spacer(modifier = Modifier.height(10.dp))
                     // 显示文字
                     Text(
                         text = contentText,
@@ -347,7 +356,8 @@ fun ShowDonationDialog(onDismiss:()->Unit){
         onDismissRequest = {
             onDismiss()
             showDialog = false},
-        imageResId = R.drawable.donation_qr_ozobi,
+        imageResId1 = R.drawable.donation_qr_ozobi,
+        imageResId2 = R.drawable.donation_qr_qq,
         contentText = "为魔改充电(推荐加入QQ群)\n备注可以指定充电的开发者、版本或功能\n(没有备注则默认充电时的最新版)",
         linkText = "github充电记录页面",
         linkUrl = DONATION_PAGE_ADDRESS

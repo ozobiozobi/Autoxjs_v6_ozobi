@@ -3,6 +3,7 @@ package org.autojs.autoxjs.ui.floating.layoutinspector
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Rect
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.KeyEvent
 import android.view.View
@@ -214,22 +215,30 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
             }
         ){
             Canvas(modifier = Modifier.fillMaxSize()) {
-                drawRect(
-                    color = Color(0xffff66ff),
-                    topLeft = Offset(rect.left.toFloat(), rect.top.toFloat()),
-                    size = Size(rect.width().toFloat(), rect.height().toFloat()),
-                    style = Stroke(
-                        width = mLayoutHierarchyView!!.boundsPaint?.strokeWidth
-                            ?: 3f
+                try{
+                    drawRect(
+                        color = Color(0xffff66ff),
+                        topLeft = Offset(rect.left.toFloat(), rect.top.toFloat()),
+                        size = Size(rect.width().toFloat(), rect.height().toFloat()),
+                        style = Stroke(
+                            width = mLayoutHierarchyView!!.boundsPaint?.strokeWidth
+                                ?: 3f
+                        )
                     )
-                )
+                }catch(e:Exception){
+                    Log.e("ozobiLog","LayoutHierarchyFloatyWindow: CurSelectedBounds: $e")
+                }
             }
         }
     }
     @Composable
     fun ConnectLine(start:Offset, end:Offset){
         Canvas(modifier = Modifier.fillMaxSize()) {
-            drawLine(color = Color(0xffff66ff),start,end,3.dp.toPx())
+            try{
+                drawLine(color = Color(0xffff66ff),start,end,3.dp.toPx())
+            }catch(e:Exception){
+                Log.e("ozobiLog","LayoutHierarchyFloatyWindow: ConnectLine: $e")
+            }
         }
     }
     @OptIn(DelicateCoroutinesApi::class)
@@ -274,10 +283,8 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                                 )
                             )
                         }
-                        if(globalPosition != Offset.Zero){
-                            CurSelectedBounds(rect, offset)
-                            ConnectLine(globalPosition, Offset(rect.centerX().toFloat(),rect.centerY().toFloat()))
-                        }
+                        CurSelectedBounds(rect, offset)
+                        ConnectLine(globalPosition, Offset(rect.centerX().toFloat(),rect.centerY().toFloat()))
                     }
                 }
             }
