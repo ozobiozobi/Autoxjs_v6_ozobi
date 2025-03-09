@@ -243,15 +243,12 @@ public class TaskListRecyclerView extends ThemeColorRecyclerView {
         void stop() {
             if (mTask != null) {
                 mTask.cancel();
-                Thread thread = new Thread(()->{
-                    try {
-                        sleep(300);
-                        refresh();
-                    } catch (InterruptedException e) {
-                        throw new RuntimeException(e);
-                    }
-                });
-                thread.start();
+                try {
+                    sleep(300);
+                    refresh();
+                } catch (InterruptedException e) {
+                    Log.e("ozobiLog","TaskListRecyclerView: stop: e: "+e);
+                }
             }
         }
 

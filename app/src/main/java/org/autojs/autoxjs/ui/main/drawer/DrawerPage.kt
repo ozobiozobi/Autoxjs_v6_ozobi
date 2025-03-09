@@ -1518,6 +1518,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(65811): app 停止脚本后打开日志页面返回闪退\n\n"+
             "添加: 魔改充电\n\n"+
             "修复(65810): app 无法停止脚本(这回应该没问题了)\n\n"+
             "添加: Shizuku\n"+
