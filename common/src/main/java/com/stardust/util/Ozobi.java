@@ -1,12 +1,20 @@
 package com.stardust.util;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.security.SecureRandom;
 import java.security.spec.KeySpec;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.util.Locale;
 
 import javax.crypto.Cipher;
 import javax.crypto.SecretKey;
@@ -118,5 +126,16 @@ public class Ozobi {
     }
     public static Boolean authenticate(Context context){
         return context.getPackageName().contains("ozobi");
+    }
+    public static long dateTimeToTimestamp(String dateTimeString, String pattern) {
+        SimpleDateFormat formatter = new SimpleDateFormat(pattern, Locale.getDefault());
+        try {
+            Date date = formatter.parse(dateTimeString);
+            assert date != null;
+            return date.getTime(); // 获取毫秒级时间戳
+        } catch (ParseException e) {
+            Log.e("ozobiLog","Ozobi: dateTimeToTimestamp: "+e);
+            return -1; // 如果解析失败，返回 -1
+        }
     }
 }

@@ -8,6 +8,7 @@ import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.content.res.Configuration
+import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import android.widget.TextView
@@ -60,13 +61,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
@@ -91,6 +95,7 @@ import com.stardust.toast
 import com.stardust.util.ClipboardUtil
 import com.stardust.util.IntentUtil
 import com.stardust.util.NetworkUtils.getWifiIPv4
+import com.stardust.util.Ozobi
 import com.stardust.view.accessibility.AccessibilityService
 import io.github.g00fy2.quickie.QRResult
 import io.github.g00fy2.quickie.ScanQRCode
@@ -102,6 +107,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.PrefManager
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.devplugin.DevPlugin
@@ -119,6 +125,7 @@ import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.settings.SettingsActivity
 import org.joda.time.DateTimeZone
 import org.joda.time.Instant
+import org.joda.time.Minutes
 
 
 private const val TAG = "DrawerPage"
@@ -129,32 +136,28 @@ private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_oz
 private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
 private const val DONATION_PAGE_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi_some_info"
+private const val COMMUNITY_ADDRESS = "http://zh.bmxwz.top"
+private const val OZOBI_SUBFIX = "_ozobi"
+private const val DOCS_SERVICE_PORT = "16868"
+private const val MODIFICATION_SINCE = "2024-10-01"
 
 private var alwaysTryToConnectState = false
 private var isFirstTime = true
 private lateinit var devicePolicyManager: DevicePolicyManager
 private lateinit var componentName: ComponentName
 private val ozobiShizuku = OzobiShizuku()
-private const val ozobiSubfix = "_ozobi"
-private const val docsServicePort = "16868"
+private val modification_since_timestamp = Ozobi.dateTimeToTimestamp(MODIFICATION_SINCE,"yyyy-MM-dd")
 //
 @Composable
 fun DrawerPage() {
     val context = LocalContext.current
-    
-    
     if(isFirstTime){
-        
         isFirstTime = false
     }else{
-        
         startUpCheck()
     }
-    // <
-    
     devicePolicyManager = com.stardust.autojs.runtime.DevicePolicyManager.devicePolicyManager
     componentName = com.stardust.autojs.runtime.DevicePolicyManager.componentName
-    // <
     rememberCoroutineScope()
     Column(
         Modifier
@@ -207,7 +210,8 @@ fun DrawerPage() {
             // <
 //            nightModeSwitch()
             showModificationDetailsButton()
-            doantionPage(context)
+            DonationPage(context)
+            CommunityWebsite(context)
             ProjectAddress(context)
             DownloadLink(context)
 
@@ -230,14 +234,136 @@ fun DrawerPage() {
 }
 
 @Composable
-fun doantionPage(context:Context){
+fun CommunityWebsite(context:Context){
     TextButton(onClick = {
         IntentUtil.browse(
             context,
-            DONATION_PAGE_ADDRESS
+            COMMUNITY_ADDRESS
         )
     }) {
+        Text(text = stringResource(R.string.bmx_text_community_website))
+    }
+}
+
+@Composable
+fun DonationDialog(
+    showDialog: Boolean,
+    onDismissRequest: () -> Unit,
+    imageResId: Int,
+    contentText: String,
+    linkText: String,
+    linkUrl: String
+) {
+    if (showDialog) {
+        var timeDifference = calculateTimeDifference(modification_since_timestamp,System.currentTimeMillis())
+        var elapseString by remember { mutableStateOf(timeDifference.toString()) }
+        LaunchedEffect(Unit) {
+            while (true) {
+                delay(1000) // 每秒更新一次
+                timeDifference = calculateTimeDifference(modification_since_timestamp,System.currentTimeMillis())
+                elapseString = timeDifference.toString()
+            }
+        }
+        Dialog(onDismissRequest = onDismissRequest) {
+            Surface(
+                shape = RoundedCornerShape(16.dp),
+                color = colorResource(R.color.background)
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(
+                        text = "能走多远，且看诸位",
+                        style = TextStyle(color = Color(R.color.primary))
+                    )
+                    Spacer(modifier = Modifier.height(3.dp))
+                    Text(
+                        text = elapseString,
+                        style = TextStyle(color = Color(R.color.primary))
+                    )
+                    Spacer(modifier = Modifier.height(3.dp))
+                    // 显示图片
+                    Image(
+                        painter = painterResource(id = imageResId),
+                        contentDescription = "Dialog Image",
+                        contentScale = ContentScale.Fit,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(200.dp)
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // 显示文字
+                    Text(
+                        text = contentText,
+                        textAlign = TextAlign.Center
+                    )
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // 点击跳转的链接文字
+                    val context = LocalContext.current
+                    Text(
+                        text = linkText,
+                        color = colorResource(R.color.colorPrimary),
+                        modifier = Modifier
+                            .clickable {
+                                val intent = Intent(Intent.ACTION_VIEW, Uri.parse(linkUrl))
+                                context.startActivity(intent)
+                            }
+                    )
+                }
+            }
+        }
+    }
+}
+data class TimeDifference(val years: Int, val days: Int, val hours: Int,val minutes: Int, val seconds: Int){
+    override fun toString(): String {
+        return "$years 年 $days 天 $hours 时 $minutes 分 $seconds 秒"
+    }
+}
+
+fun calculateTimeDifference(from: Long,to: Long): TimeDifference {
+    val difference = to - from
+    val seconds = (difference / 1000).toInt()
+    val minutes = seconds / 60
+    val hours = minutes / 60
+    val days = hours / 24
+    val years = days / 365
+
+    return TimeDifference(
+        years = years,
+        days = days % 365,
+        hours = hours % 24,
+        minutes = minutes % 60,
+        seconds = seconds % 60
+    )
+}
+@Composable
+fun ShowDonationDialog(onDismiss:()->Unit){
+    var showDialog by remember { mutableStateOf(true) }
+    DonationDialog(
+        showDialog = showDialog,
+        onDismissRequest = {
+            onDismiss()
+            showDialog = false},
+        imageResId = R.drawable.donation_qr_ozobi,
+        contentText = "为魔改充电(推荐加入QQ群)\n备注可以指定充电的开发者、版本或功能\n(没有备注则默认充电时的最新版)",
+        linkText = "github充电记录页面",
+        linkUrl = DONATION_PAGE_ADDRESS
+    )
+}
+
+@Composable
+fun DonationPage(context: Context){
+    var showContent by remember { mutableStateOf(PrefManager.isVersionChanged(context)) }
+    TextButton(onClick = {
+        showContent = true
+    }) {
         Text(text = stringResource(R.string.ozobi_text_donation_page))
+    }
+    if(showContent){
+        ShowDonationDialog(onDismiss = { showContent = false })
     }
 }
 
@@ -293,7 +419,7 @@ private fun DownloadLink(context: Context) {
             DOWNLOAD_ADDRESS
         )
     }) {
-        Text(text =stringResource(R.string.text_app_download_link)+ozobiSubfix)
+        Text(text =stringResource(R.string.text_app_download_link)+OZOBI_SUBFIX)
     }
 }
 
@@ -305,7 +431,7 @@ private fun ProjectAddress(context: Context) {
             PROJECT_ADDRESS
         )
     }) {
-        Text(text = stringResource(R.string.text_project_link) + ozobiSubfix)
+        Text(text = stringResource(R.string.text_project_link) + OZOBI_SUBFIX)
     }
 }
 
@@ -1420,7 +1546,7 @@ private fun docsServiceSwitch() {
             .getBoolean(context.getString(R.string.ozobi_key_docs_service), false)
         mutableStateOf(default)
     }
-    val ipAddress = getWifiIPv4(context)+":$docsServicePort"
+    val ipAddress = getWifiIPv4(context)+":$DOCS_SERVICE_PORT"
     SwitchItem(
         icon = {
             MyIcon(
@@ -1499,7 +1625,7 @@ fun showModificationDetailsButton() {
             detailsDialog(context)
         }
     }) {
-        Text(text = stringResource(id = R.string.ozobi_modification_content)+ozobiSubfix)
+        Text(text = stringResource(id = R.string.ozobi_modification_content)+OZOBI_SUBFIX)
     }
 }
 
@@ -1518,11 +1644,16 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 时间转时间戳\n"+
+                    "> let ts = dateToTimestamp(dateStr, pattern)\n"+
+                    "> dateStr: 时间字符串(2025-01-20)\n"+
+                    "> pattern: 时间字符串对应的模式(yyyy-MM-dd)\n\n"+
+            "添加: 社区(由 BMX 提供)\n\n"+
             "修复(65811): app 停止脚本后打开日志页面返回闪退\n\n"+
             "添加: 魔改充电\n\n"+
             "修复(65810): app 无法停止脚本(这回应该没问题了)\n\n"+
             "添加: Shizuku\n"+
-                    "开关(哈哈)"
+                    "> 开关(哈哈)"
         )
         .item(
             R.id.modification_detail,

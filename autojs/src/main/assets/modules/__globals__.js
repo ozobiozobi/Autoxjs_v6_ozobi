@@ -44,6 +44,9 @@ module.exports = function (runtime, global) {
         return formattedDate;
     }
     // <
+    global.dateToTimestamp = function(dateTimeString, pattern){
+        return com.stardust.util.Ozobi.dateTimeToTimestamp(dateTimeString, pattern)
+    }
     // Added by ozobi - 2025/02/06 > 获取状态栏高度
     global.getStatusBarHeight = runtime.getStatusBarHeight;
     // <
