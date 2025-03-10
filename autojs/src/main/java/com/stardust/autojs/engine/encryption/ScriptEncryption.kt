@@ -1,6 +1,5 @@
 package com.stardust.autojs.engine.encryption
 
-import android.util.Log
 import com.stardust.util.AdvancedEncryptionStandard
 
 object ScriptEncryption{

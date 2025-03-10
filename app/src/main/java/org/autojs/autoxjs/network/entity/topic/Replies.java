@@ -1,10 +1,11 @@
 
 package org.autojs.autoxjs.network.entity.topic;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
 
 import org.autojs.autoxjs.network.entity.user.User;
+
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Replies {

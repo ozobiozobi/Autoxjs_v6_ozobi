@@ -1,5 +1,7 @@
 package org.autojs.autoxjs.build.apksigner;
 
+import org.spongycastle.jce.provider.BouncyCastleProvider;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -9,8 +11,6 @@ import java.io.PrintWriter;
 import java.security.KeyStore;
 import java.security.Provider;
 import java.security.Security;
-
-import org.spongycastle.jce.provider.BouncyCastleProvider;
 
 public class KeyStoreFileManager {
 

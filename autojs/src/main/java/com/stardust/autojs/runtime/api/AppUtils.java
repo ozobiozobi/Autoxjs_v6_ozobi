@@ -6,10 +6,10 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.util.Log;
+
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-
-import android.util.Log;
 
 import com.stardust.autojs.annotation.ScriptInterface;
 import com.stardust.util.IntentUtil;

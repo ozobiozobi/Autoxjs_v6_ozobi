@@ -1,7 +1,8 @@
 package org.autojs.autoxjs.network.entity.config;
 
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.List;
 
 public class Config{
 

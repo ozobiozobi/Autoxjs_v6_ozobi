@@ -5,6 +5,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+
 import androidx.annotation.NonNull;
 
 import com.stardust.autojs.core.eventloop.EventEmitter;

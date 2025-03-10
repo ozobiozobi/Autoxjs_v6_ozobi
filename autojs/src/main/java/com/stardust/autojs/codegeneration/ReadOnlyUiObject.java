@@ -1,6 +1,7 @@
 package com.stardust.autojs.codegeneration;
 
 import android.graphics.Rect;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;

@@ -1,7 +1,6 @@
 package com.stardust.autojs.project
 
 import android.content.Context
-import android.util.Log
 import androidx.annotation.Keep
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName

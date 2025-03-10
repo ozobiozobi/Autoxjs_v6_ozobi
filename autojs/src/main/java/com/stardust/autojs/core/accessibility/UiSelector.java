@@ -1,29 +1,5 @@
 package com.stardust.autojs.core.accessibility;
 
-import android.os.Looper;
-import android.os.SystemClock;
-
-import androidx.annotation.NonNull;
-
-import android.util.Log;
-import android.view.accessibility.AccessibilityNodeInfo;
-
-//import com.stardust.autojs.BuildConfig;
-import com.stardust.autojs.annotation.ScriptInterface;
-import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
-import com.stardust.automator.ActionArgument;
-import com.stardust.automator.UiGlobalSelector;
-import com.stardust.automator.UiObject;
-import com.stardust.automator.UiObjectCollection;
-import com.stardust.automator.filter.Filter;
-import com.stardust.concurrent.VolatileBox;
-import com.stardust.view.accessibility.AccessibilityNodeInfoAllocator;
-
-import org.jetbrains.annotations.NotNull;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.ACTION_ACCESSIBILITY_FOCUS;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.ACTION_ARGUMENT_COLUMN_INT;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.ACTION_ARGUMENT_PROGRESS_VALUE;
@@ -55,6 +31,29 @@ import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.Acces
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SCROLL_UP;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SET_PROGRESS;
 import static androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat.ACTION_SHOW_ON_SCREEN;
+import static java.lang.Thread.sleep;
+
+import android.os.Looper;
+import android.os.SystemClock;
+import android.util.Log;
+import android.view.accessibility.AccessibilityNodeInfo;
+
+import androidx.annotation.NonNull;
+
+import com.stardust.autojs.annotation.ScriptInterface;
+import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
+import com.stardust.automator.ActionArgument;
+import com.stardust.automator.UiGlobalSelector;
+import com.stardust.automator.UiObject;
+import com.stardust.automator.UiObjectCollection;
+import com.stardust.automator.filter.Filter;
+import com.stardust.concurrent.VolatileBox;
+import com.stardust.view.accessibility.AccessibilityNodeInfoAllocator;
+
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Stardust on 2017/3/9.
@@ -77,26 +76,26 @@ public class UiSelector extends UiGlobalSelector {
         mAllocator = allocator;
     }
 
-    protected UiObjectCollection find(int max,Boolean isRefresh) {// Modified by ibozo - 2024/10/31
+    protected UiObjectCollection find(int max,Boolean isRefresh) {// Modified by ozobi - 2024/10/31
 //        Log.d("autoxjsv6","UiSelector : protected UiObjectCollection find(int max)");
         ensureAccessibilityServiceEnabled();
         if ((mAccessibilityBridge.getFlags() & AccessibilityBridge.FLAG_FIND_ON_UI_THREAD) != 0
                 && Looper.myLooper() != Looper.getMainLooper()) {
             VolatileBox<UiObjectCollection> result = new VolatileBox<>();
-            mAccessibilityBridge.post(() -> result.setAndNotify(findImpl(max,isRefresh)));// Modified by ibozo - 2024/10/31
+            mAccessibilityBridge.post(() -> result.setAndNotify(findImpl(max,isRefresh)));// Modified by ozobi - 2024/10/31
             return result.blockedGet();
         }
-        return findImpl(max,isRefresh);// Modified by ibozo - 2024/10/31
+        return findImpl(max,isRefresh);// Modified by ozobi - 2024/10/31
     }
 
     @NonNull
     @ScriptInterface
-    public UiObjectCollection find(Boolean isRefresh) {// Modified by ibozo - 2024/10/31
+    public UiObjectCollection find(Boolean isRefresh) {// Modified by ozobi - 2024/10/31
 //        Log.d("autoxjsv6","UiSelector : public UiObjectCollection find()");
-        return find(Integer.MAX_VALUE,isRefresh);// Modified by ibozo - 2024/10/31
+        return find(Integer.MAX_VALUE,isRefresh);// Modified by ozobi - 2024/10/31
     }
 
-    // Added by ibozo - 2024/10/31 >
+    // Added by ozobi - 2024/10/31 >
     @NonNull
     @ScriptInterface
     public UiObjectCollection find() {
@@ -106,7 +105,7 @@ public class UiSelector extends UiGlobalSelector {
     // <
 
     @ScriptInterface
-    protected UiObjectCollection findImpl(int max,Boolean isRefresh) {// Modified by ibozo - 2024/10/31
+    protected UiObjectCollection findImpl(int max,Boolean isRefresh) {// Modified by ozobi - 2024/10/31
 //        Log.d("autoxjsv6","UiSelector : protected UiObjectCollection findImpl(int max)");
         List<AccessibilityNodeInfo> roots = mAccessibilityBridge.windowRoots();
 //        if (BuildConfig.DEBUG)
@@ -174,17 +173,17 @@ public class UiSelector extends UiGlobalSelector {
     @NonNull
     public UiObjectCollection untilFind() {
         ensureNonUiThread();
-        UiObjectCollection uiObjectCollection = find(false);// Modified by ibozo - 2024/10/31
+        UiObjectCollection uiObjectCollection = find(false);// Modified by ozobi - 2024/10/31
         while (uiObjectCollection.empty()) {
             if (Thread.currentThread().isInterrupted()) {
                 throw new ScriptInterruptedException();
             }
             try {
-                Thread.sleep(50);
+                sleep(50);
             } catch (InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
-            uiObjectCollection = find(false);// Modified by ibozo - 2024/10/31
+            uiObjectCollection = find(false);// Modified by ozobi - 2024/10/31
         }
         return uiObjectCollection;
     }
@@ -198,7 +197,7 @@ public class UiSelector extends UiGlobalSelector {
 
     @ScriptInterface
     public UiObject findOne(long timeout) {
-        UiObjectCollection uiObjectCollection = find(1,false);// Modified by ibozo - 2024/10/31
+        UiObjectCollection uiObjectCollection = find(1,false);// Modified by ozobi - 2024/10/31
         long start = SystemClock.uptimeMillis();
         while (uiObjectCollection.empty()) {
             if (Thread.currentThread().isInterrupted()) {
@@ -208,11 +207,11 @@ public class UiSelector extends UiGlobalSelector {
                 return null;
             }
             try {
-                Thread.sleep(50);
+                sleep(50);
             } catch (InterruptedException e) {
                 throw new ScriptInterruptedException();
             }
-            uiObjectCollection = find(1,false);// Modified by ibozo - 2024/10/31
+            uiObjectCollection = find(1,false);// Modified by ozobi - 2024/10/31
         }
         return uiObjectCollection.get(0);
     }
@@ -222,7 +221,7 @@ public class UiSelector extends UiGlobalSelector {
     }
 
     public UiObject findOnce(int index) {
-        UiObjectCollection uiObjectCollection = find(index + 1,false);// Modified by ibozo - 2024/10/31
+        UiObjectCollection uiObjectCollection = find(index + 1,false);// Modified by ozobi - 2024/10/31
         if (index >= uiObjectCollection.size()) {
             return null;
         }
@@ -236,7 +235,7 @@ public class UiSelector extends UiGlobalSelector {
 
     @ScriptInterface
     public boolean exists() {
-        UiObjectCollection collection = find(false);// Modified by ibozo - 2024/10/31
+        UiObjectCollection collection = find(false);// Modified by ozobi - 2024/10/31
         return collection.nonEmpty();
     }
 

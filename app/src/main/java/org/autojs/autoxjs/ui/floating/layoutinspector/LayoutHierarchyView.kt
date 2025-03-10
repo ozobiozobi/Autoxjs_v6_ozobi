@@ -218,7 +218,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
     }
 
-    fun setSelectedNode(selectedNode: NodeInfo) {
+    fun setSelectedNodeInit(selectedNode: NodeInfo) {
         mInitiallyExpandedNodes.clear()
         val parents = Stack<NodeInfo?>()
         LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
@@ -236,7 +236,7 @@ open class LayoutHierarchyView : MultiLevelListView {
     }
 
     
-    fun ozobiSetSelectedNode(selectedNode: NodeInfo){
+    fun setSelectedNodeTouch(selectedNode: NodeInfo){
         mClickedNodeInfo = selectedNode
         LayoutHierarchyFloatyWindow.curSelectedNodeChildren = mClickedNodeInfo!!.getChildren()
         LayoutHierarchyFloatyWindow.curSelectedNodeParents.clear()
@@ -253,14 +253,14 @@ open class LayoutHierarchyView : MultiLevelListView {
         }
         mAdapter!!.reloadData()
     }
-    fun getParentsList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo?>){
+    private fun getParentsList(nodeInfo:NodeInfo?, nodeList:MutableList<NodeInfo?>){
         if(nodeInfo == null){
             return
         }
         nodeList.add(nodeInfo)
         getParentsList(nodeInfo.parent, nodeList)
     }
-    fun getBrotherList(nodeInfo:NodeInfo?):List<NodeInfo>?{
+    private fun getBrotherList(nodeInfo:NodeInfo?):List<NodeInfo>?{
         if(nodeInfo?.parent != null){
             return nodeInfo.parent!!.getChildren()
         }
@@ -290,7 +290,7 @@ open class LayoutHierarchyView : MultiLevelListView {
         return found
     }
 
-    private inner class ViewHolder internal constructor(view: View) {
+    private inner class ViewHolder(view: View) {
         var nameView: TextView
         var infoView: TextView
         var arrowView: ImageView

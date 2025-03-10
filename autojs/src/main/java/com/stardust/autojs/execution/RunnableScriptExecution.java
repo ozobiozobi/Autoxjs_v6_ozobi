@@ -8,8 +8,6 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.autojs.script.ScriptSource;
 import com.stardust.lang.ThreadCompat;
 
-import org.mozilla.javascript.ContinuationPending;
-
 /**
  * Created by Stardust on 2017/5/1.
  */

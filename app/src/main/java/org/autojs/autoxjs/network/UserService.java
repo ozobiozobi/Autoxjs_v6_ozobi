@@ -1,13 +1,13 @@
 package org.autojs.autoxjs.network;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.HttpException;
+import com.stardust.util.Objects;
+import com.tencent.bugly.crashreport.CrashReport;
+
 import org.autojs.autoxjs.network.api.UserApi;
 import org.autojs.autoxjs.network.entity.notification.Notification;
 import org.autojs.autoxjs.network.entity.notification.NotificationResponse;
 import org.autojs.autoxjs.network.entity.user.User;
-import com.stardust.util.Objects;
-import com.tencent.bugly.crashreport.CrashReport;
-
 import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;

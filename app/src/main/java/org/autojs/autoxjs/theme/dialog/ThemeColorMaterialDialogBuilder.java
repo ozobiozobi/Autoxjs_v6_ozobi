@@ -1,6 +1,7 @@
 package org.autojs.autoxjs.theme.dialog;
 
 import android.content.Context;
+
 import androidx.annotation.NonNull;
 
 import com.afollestad.materialdialogs.MaterialDialog;

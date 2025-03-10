@@ -4,9 +4,10 @@ import android.content.Intent;
 import android.os.Build;
 import android.service.quicksettings.Tile;
 import android.service.quicksettings.TileService;
-import androidx.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.Toast;
+
+import androidx.annotation.RequiresApi;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.view.accessibility.AccessibilityService;

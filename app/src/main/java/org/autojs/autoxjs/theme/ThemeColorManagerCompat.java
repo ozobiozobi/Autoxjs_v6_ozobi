@@ -2,16 +2,16 @@ package org.autojs.autoxjs.theme;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import androidx.core.content.ContextCompat;
+
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.core.content.ContextCompat;
 import androidx.preference.PreferenceManager;
 
 import com.stardust.app.GlobalAppContext;
-
-import org.autojs.autoxjs.R;
-
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorManager;
+
+import org.autojs.autoxjs.R;
 
 /**
  * Created by Stardust on 2017/3/12.

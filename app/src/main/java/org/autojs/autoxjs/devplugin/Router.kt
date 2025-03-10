@@ -2,7 +2,6 @@ package org.autojs.autoxjs.devplugin
 
 import android.util.Log
 import com.google.gson.JsonObject
-import java.util.HashMap
 
 /**
  * Created by Stardust on 2017/5/11.

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Toast;
 
-import org.autojs.autoxjs.model.script.PathChecker;
 import org.autojs.autoxjs.external.ScriptIntents;
+import org.autojs.autoxjs.model.script.PathChecker;
 import org.autojs.autoxjs.model.script.ScriptFile;
 import org.autojs.autoxjs.model.script.Scripts;
 

@@ -11,14 +11,35 @@ import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 import com.stardust.autojs.engine.ScriptEngine;
 import com.stardust.autojs.engine.ScriptEngineManager;
 
-import org.mozilla.javascript.*;
-import org.mozilla.javascript.debug.*;
-import org.mozilla.javascript.tools.debugger.*;
+import org.mozilla.javascript.Callable;
+import org.mozilla.javascript.Context;
+import org.mozilla.javascript.ContextAction;
+import org.mozilla.javascript.ContextFactory;
+import org.mozilla.javascript.ImporterTopLevel;
+import org.mozilla.javascript.Kit;
+import org.mozilla.javascript.NativeCall;
+import org.mozilla.javascript.ObjArray;
+import org.mozilla.javascript.ScriptRuntime;
+import org.mozilla.javascript.Scriptable;
+import org.mozilla.javascript.ScriptableObject;
+import org.mozilla.javascript.SecurityUtilities;
+import org.mozilla.javascript.Undefined;
+import org.mozilla.javascript.debug.DebugFrame;
+import org.mozilla.javascript.debug.DebuggableObject;
+import org.mozilla.javascript.debug.DebuggableScript;
 import org.mozilla.javascript.debug.Debugger;
+import org.mozilla.javascript.tools.debugger.ScopeProvider;
+import org.mozilla.javascript.tools.debugger.SourceProvider;
 
-import java.util.*;
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Dim or Debugger Implementation for Rhino.

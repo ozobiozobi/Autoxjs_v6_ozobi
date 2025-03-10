@@ -2,8 +2,9 @@ package com.stardust.autojs.rhino.debug;
 
 import android.os.Handler;
 import android.os.Looper;
-import androidx.annotation.Nullable;
 import android.util.Log;
+
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.ScriptEngineService;
 import com.stardust.autojs.engine.RhinoJavaScriptEngine;

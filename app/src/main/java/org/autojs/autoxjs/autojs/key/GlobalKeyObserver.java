@@ -7,10 +7,11 @@ import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.inputevent.InputEventObserver;
 import com.stardust.autojs.core.inputevent.ShellKeyObserver;
 import com.stardust.event.EventDispatcher;
-import org.autojs.autoxjs.Pref;
-import org.autojs.autoxjs.autojs.AutoJs;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.OnKeyListener;
+
+import org.autojs.autoxjs.Pref;
+import org.autojs.autoxjs.autojs.AutoJs;
 
 /**
  * Created by Stardust on 2017/8/14.

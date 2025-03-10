@@ -2,7 +2,6 @@ package com.stardust.autojs.rhino;
 
 import org.mozilla.javascript.EvaluatorException;
 import org.mozilla.javascript.NativeJavaClass;
-import org.mozilla.javascript.NativeObject;
 import org.mozilla.javascript.Scriptable;
 
 import java.util.concurrent.ConcurrentHashMap;

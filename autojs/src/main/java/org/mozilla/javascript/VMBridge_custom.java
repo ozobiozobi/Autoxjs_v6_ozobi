@@ -3,7 +3,6 @@ package org.mozilla.javascript;
 import android.os.Looper;
 import android.util.Log;
 
-import com.stardust.autojs.engine.RhinoJavaScriptEngine;
 import com.stardust.autojs.rhino.AutoJsContext;
 
 import org.mozilla.javascript.jdk18.VMBridge_jdk18;

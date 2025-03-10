@@ -1,12 +1,12 @@
 package org.autojs.autoxjs.tool;
 
+import static android.content.Context.WIFI_SERVICE;
+
 import android.content.Context;
 import android.net.DhcpInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.text.format.Formatter;
-
-import static android.content.Context.WIFI_SERVICE;
 
 /**
  * Created by Stardust on 2017/5/11.

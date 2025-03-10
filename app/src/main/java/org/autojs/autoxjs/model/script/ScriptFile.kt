@@ -1,9 +1,9 @@
 package org.autojs.autoxjs.model.script
 
-import com.stardust.pio.PFile
-import com.stardust.autojs.script.ScriptSource
-import com.stardust.autojs.script.JavaScriptFileSource
 import com.stardust.autojs.script.AutoFileSource
+import com.stardust.autojs.script.JavaScriptFileSource
+import com.stardust.autojs.script.ScriptSource
+import com.stardust.pio.PFile
 import java.io.File
 
 /**

@@ -22,8 +22,7 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException;
 import com.stardust.view.accessibility.AccessibilityService;
 import com.stardust.view.accessibility.LayoutInspector;
 import com.stardust.view.accessibility.NodeInfo;
-// Annotated by ibozo - 2024/10/31 >
-//import org.autojs.autoxjs.BuildConfig;// <
+
 import org.autojs.autoxjs.Pref;
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.devplugin.DevPlugin;

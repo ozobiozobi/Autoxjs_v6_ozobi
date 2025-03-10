@@ -1,5 +1,8 @@
 package org.autojs.autoxjs.model.script;
 
+import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
+import static android.content.pm.PackageManager.PERMISSION_GRANTED;
+
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
@@ -7,9 +10,6 @@ import android.text.TextUtils;
 import android.widget.Toast;
 
 import java.io.File;
-
-import static android.Manifest.permission.READ_EXTERNAL_STORAGE;
-import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 
 /**
  * Created by Stardust on 2017/4/1.

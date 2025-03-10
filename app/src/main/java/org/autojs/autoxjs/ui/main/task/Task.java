@@ -4,11 +4,8 @@ import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_
 
 import android.util.Log;
 
-import androidx.annotation.NonNull;
-
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.engine.ScriptEngine;
-import com.stardust.autojs.engine.ScriptEngineManager;
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.AutoFileSource;
 import com.stardust.autojs.script.JavaScriptSource;
@@ -23,11 +20,6 @@ import org.autojs.autoxjs.timing.TimedTaskManager;
 import org.joda.time.format.DateTimeFormat;
 
 import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
-
-import kotlinx.coroutines.GlobalScope;
 
 /**
  * Created by Stardust on 2017/11/28.
@@ -160,14 +152,14 @@ public abstract class Task {
         @Override
         public void cancel() {
             ScriptEngine engine = mScriptExecution.getEngine();
-            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "exit();");
+            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "threads.start(()=>{exit()}");
             if (engine != null) {
                 try{
                     engine.forceStop();
                     engine.execute(exit);
                     engine.uncaughtException(new Exception("app 停止脚本"));
                 }catch(Exception e){
-                    Log.d("ozobiLog",e.toString());
+                    Log.d("ozobiLog","Task: cancel: e: "+e);
                 }
             }
         }

@@ -12,12 +12,12 @@ import com.stardust.autojs.core.record.inputevent.InputEventRecorder;
 import com.stardust.autojs.core.record.inputevent.InputEventToAutoFileRecorder;
 import com.stardust.autojs.core.record.inputevent.InputEventToRootAutomatorRecorder;
 import com.stardust.autojs.core.record.inputevent.TouchRecorder;
-import org.autojs.autoxjs.Pref;
-import org.autojs.autoxjs.R;
-import org.autojs.autoxjs.ui.common.ScriptOperations;
-import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import com.stardust.util.ClipboardUtil;
 
+import org.autojs.autoxjs.Pref;
+import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
+import org.autojs.autoxjs.ui.common.ScriptOperations;
 
 import java.util.concurrent.CopyOnWriteArrayList;
 

@@ -28,12 +28,12 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import okio.ByteString.Companion.toByteString
+import org.autojs.autoxjs.BuildConfig
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.devplugin.message.Hello
 import org.autojs.autoxjs.devplugin.message.HelloResponse
 import org.autojs.autoxjs.devplugin.message.LogData
 import org.autojs.autoxjs.devplugin.message.Message
-import org.autojs.autoxjs.BuildConfig
-import org.autojs.autoxjs.R
 import java.io.File
 import java.net.SocketTimeoutException
 

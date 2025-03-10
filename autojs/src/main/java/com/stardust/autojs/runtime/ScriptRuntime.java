@@ -294,7 +294,6 @@ public class ScriptRuntime {
 //
 //        }
         AdbIME.packageName = getApplicationContext().getPackageName();
-        // <
     }
     public Thread getmThread(){
         return mThread;

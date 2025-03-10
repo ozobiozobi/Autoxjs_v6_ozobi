@@ -1,15 +1,16 @@
 package org.autojs.autoxjs.accessibility;
 
-import android.util.SparseArray;
-import android.view.accessibility.AccessibilityEvent;
-
-import org.autojs.autoxjs.R;
-import com.stardust.util.SparseArrayEntries;
-
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_LONG_CLICKED;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_SCROLLED;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_TEXT_CHANGED;
+
+import android.util.SparseArray;
+import android.view.accessibility.AccessibilityEvent;
+
+import com.stardust.util.SparseArrayEntries;
+
+import org.autojs.autoxjs.R;
 
 /**
  * Created by Stardust on 2017/3/16.

@@ -1,7 +1,5 @@
 package com.stardust.autojs.engine;
 
-import android.util.Log;
-
 import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;

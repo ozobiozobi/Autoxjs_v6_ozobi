@@ -11,13 +11,12 @@ import android.os.Looper;
 import android.util.Log;
 
 import com.stardust.app.GlobalAppContext;
-
-import org.autojs.autoxjs.BuildConfig;
-import org.mozilla.javascript.RhinoException;
-
 import com.stardust.view.accessibility.AccessibilityService;
 import com.tencent.bugly.crashreport.BuglyLog;
 import com.tencent.bugly.crashreport.CrashReport;
+
+import org.autojs.autoxjs.BuildConfig;
+import org.mozilla.javascript.RhinoException;
 
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.Map;

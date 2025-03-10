@@ -5,12 +5,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.stardust.app.GlobalAppContext;
-import org.autojs.autoxjs.Pref;
-import org.autojs.autoxjs.R;
-
 import com.stardust.autojs.core.accessibility.AccessibilityService;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
+
+import org.autojs.autoxjs.Pref;
+import org.autojs.autoxjs.R;
 
 import java.util.Locale;
 

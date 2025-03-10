@@ -9,11 +9,10 @@ import org.autojs.autoxjs.App
 import org.autojs.autoxjs.Pref
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.external.ScriptIntents
-import org.autojs.autoxjs.timing.work.WorkProvider
-import org.autojs.autoxjs.timing.work.WorkManagerProvider
-import org.autojs.autoxjs.timing.work.AndroidJobProvider
 import org.autojs.autoxjs.timing.work.AlarmManagerProvider
-import java.lang.Exception
+import org.autojs.autoxjs.timing.work.AndroidJobProvider
+import org.autojs.autoxjs.timing.work.WorkManagerProvider
+import org.autojs.autoxjs.timing.work.WorkProvider
 import java.util.concurrent.TimeUnit
 
 /**

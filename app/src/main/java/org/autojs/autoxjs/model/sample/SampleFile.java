@@ -1,6 +1,7 @@
 package org.autojs.autoxjs.model.sample;
 
 import android.content.res.AssetManager;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -8,6 +9,7 @@ import com.stardust.autojs.script.JavaScriptSource;
 import com.stardust.autojs.script.ScriptSource;
 import com.stardust.pio.PFiles;
 import com.stardust.pio.UncheckedIOException;
+
 import org.autojs.autoxjs.model.script.ScriptFile;
 
 import java.io.File;

@@ -1,6 +1,5 @@
 package org.autojs.autoxjs.network.api;
 
-import org.autojs.autoxjs.BuildConfig;
 import org.autojs.autoxjs.network.entity.VersionInfo;
 
 import io.reactivex.Observable;

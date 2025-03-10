@@ -3,13 +3,13 @@ package org.autojs.autoxjs.network.entity.topic;
 
 import android.text.Html;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.google.gson.Gson;
 import com.google.gson.annotations.SerializedName;
 
 import org.autojs.autoxjs.network.entity.user.User;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings("unused")
 public class Topic {

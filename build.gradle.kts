@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.plugin.statistics.ReportStatisticsToElasticSearch.url
-
 initVersions(file("project-versions.json"))
 
 // Top-level build file where you can add configuration options common to all sub-projects/modules.

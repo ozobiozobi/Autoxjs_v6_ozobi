@@ -1,9 +1,5 @@
 package com.stardust.autojs.util;
 
-import android.util.Log;
-
-import com.stardust.autojs.core.util.ProcessShell;
-
 import java.lang.reflect.Field;
 
 /**

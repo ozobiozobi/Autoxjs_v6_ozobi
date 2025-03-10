@@ -21,6 +21,7 @@ import com.stardust.autojs.core.ui.inflater.util.Drawables
 import com.stardust.theme.ThemeColor
 import com.tencent.bugly.Bugly
 import com.tencent.bugly.crashreport.CrashReport
+import org.autojs.autoxjs.BuildConfig
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.autojs.key.GlobalKeyObserver
 import org.autojs.autoxjs.external.receiver.DynamicBroadcastReceivers
@@ -29,7 +30,6 @@ import org.autojs.autoxjs.timing.TimedTaskManager
 import org.autojs.autoxjs.timing.TimedTaskScheduler
 import org.autojs.autoxjs.tool.CrashHandler
 import org.autojs.autoxjs.ui.error.ErrorReportActivity
-import org.autojs.autoxjs.BuildConfig
 import java.lang.ref.WeakReference
 
 /**

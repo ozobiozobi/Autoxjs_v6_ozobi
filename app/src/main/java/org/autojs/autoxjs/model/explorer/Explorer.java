@@ -1,7 +1,13 @@
 package org.autojs.autoxjs.model.explorer;
 
-import androidx.annotation.Nullable;
+import static org.autojs.autoxjs.model.explorer.ExplorerChangeEvent.CHANGE;
+import static org.autojs.autoxjs.model.explorer.ExplorerChangeEvent.CHILDREN_CHANGE;
+import static org.autojs.autoxjs.model.explorer.ExplorerChangeEvent.CREATE;
+import static org.autojs.autoxjs.model.explorer.ExplorerChangeEvent.REMOVE;
+
 import android.util.LruCache;
+
+import androidx.annotation.Nullable;
 
 import com.stardust.pio.PFile;
 
@@ -9,8 +15,6 @@ import org.greenrobot.eventbus.EventBus;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static org.autojs.autoxjs.model.explorer.ExplorerChangeEvent.*;
 
 
 public class Explorer {

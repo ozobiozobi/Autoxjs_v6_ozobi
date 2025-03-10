@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 
 import com.stardust.app.OnActivityResultDelegate;
+
 import org.autojs.autoxjs.R;
 
 /**

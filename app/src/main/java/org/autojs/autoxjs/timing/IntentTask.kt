@@ -1,8 +1,8 @@
 package org.autojs.autoxjs.timing
 
-import org.autojs.autoxjs.storage.database.BaseModel
 import android.content.IntentFilter
 import android.content.IntentFilter.MalformedMimeTypeException
+import org.autojs.autoxjs.storage.database.BaseModel
 
 class IntentTask : BaseModel() {
     var scriptPath: String? = null

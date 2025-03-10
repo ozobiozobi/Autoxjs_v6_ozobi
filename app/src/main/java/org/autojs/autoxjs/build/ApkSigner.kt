@@ -1,19 +1,16 @@
 package org.autojs.autoxjs.build
 
-import android.util.Log
-import org.autojs.autoxjs.build.apksigner.KeyStoreFileManager
-import org.autojs.autoxjs.build.apksigner.ZipSigner
-import org.autojs.autoxjs.build.apksigner.CertCreator.DistinguishedNameValues
-import org.autojs.autoxjs.build.apksigner.CertCreator
 import com.stardust.pio.PFile
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.build.apksigner.CertCreator
+import org.autojs.autoxjs.build.apksigner.CertCreator.DistinguishedNameValues
+import org.autojs.autoxjs.build.apksigner.KeyStoreFileManager
+import org.autojs.autoxjs.build.apksigner.ZipSigner
 import java.io.File
 import java.io.FileNotFoundException
-import java.lang.Exception
 import java.security.PrivateKey
 import java.security.UnrecoverableKeyException
 import java.security.cert.X509Certificate
-import java.util.ArrayList
 
 /**
  * Created by Cc on 2021/04/15

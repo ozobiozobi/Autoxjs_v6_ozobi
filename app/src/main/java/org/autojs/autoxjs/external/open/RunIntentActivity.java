@@ -4,13 +4,15 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import androidx.annotation.Nullable;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 
 import com.stardust.autojs.script.StringScriptSource;
 import com.stardust.pio.PFiles;
-import org.autojs.autoxjs.external.ScriptIntents;
+
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.external.ScriptIntents;
 import org.autojs.autoxjs.model.script.Scripts;
 
 import java.io.FileNotFoundException;

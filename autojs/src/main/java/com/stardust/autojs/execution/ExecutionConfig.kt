@@ -3,7 +3,6 @@ package com.stardust.autojs.execution
 import android.os.Parcel
 import android.os.Parcelable
 import com.stardust.autojs.project.ScriptConfig
-import java.util.*
 
 /**
  * Created by Stardust on 2017/2/1.

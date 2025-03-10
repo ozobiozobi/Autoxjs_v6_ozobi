@@ -1,7 +1,6 @@
 package org.autojs.autoxjs.devplugin
 
 import android.annotation.SuppressLint
-import android.util.Log
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.stardust.app.GlobalAppContext.toast
@@ -22,13 +21,10 @@ import org.autojs.autoxjs.Pref
 import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.model.script.Scripts.run
-import org.joda.time.DateTime
-import pxb.android.axml.R.attr.content
 import java.io.ByteArrayInputStream
 import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
-import java.util.Date
 
 /**
  * Created by Stardust on 2017/5/11.

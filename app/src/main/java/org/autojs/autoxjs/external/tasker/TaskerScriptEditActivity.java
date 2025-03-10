@@ -1,26 +1,25 @@
 package org.autojs.autoxjs.external.tasker;
 
+import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_CONTENT;
+import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_NAME;
+import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_RUN_ENABLED;
+import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_SAVE_ENABLED;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.widget.Toast;
 
+import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.timing.TaskReceiver;
 import org.autojs.autoxjs.tool.Observers;
 import org.autojs.autoxjs.ui.BaseActivity;
 import org.autojs.autoxjs.ui.edit.EditorView;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.ViewById;
-
 import io.reactivex.android.schedulers.AndroidSchedulers;
-
-import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_CONTENT;
-import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_NAME;
-import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_RUN_ENABLED;
-import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_SAVE_ENABLED;
 
 /**
  * Created by Stardust on 2017/4/5.

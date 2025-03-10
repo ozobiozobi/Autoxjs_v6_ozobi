@@ -3,11 +3,8 @@ package com.stardust.autojs.runtime.api;
 import android.content.Context;
 import android.text.TextUtils;
 
-import androidx.annotation.NonNull;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.engine.RootAutomatorEngine;
 import com.stardust.util.ScreenMetrics;
 

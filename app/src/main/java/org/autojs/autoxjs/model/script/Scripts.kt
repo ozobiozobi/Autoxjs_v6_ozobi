@@ -13,12 +13,12 @@ import com.stardust.autojs.runtime.exception.ScriptInterruptedException
 import com.stardust.autojs.script.ScriptSource
 import com.stardust.util.IntentUtil
 import org.autojs.autoxjs.Pref
+import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.external.ScriptIntents
 import org.autojs.autoxjs.external.fileprovider.AppFileProvider
 import org.autojs.autoxjs.external.shortcut.Shortcut
 import org.autojs.autoxjs.external.shortcut.ShortcutActivity
-import org.autojs.autoxjs.R
 import org.mozilla.javascript.RhinoException
 import java.io.File
 import java.io.FileFilter

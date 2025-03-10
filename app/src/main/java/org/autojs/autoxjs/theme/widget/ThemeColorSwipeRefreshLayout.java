@@ -1,8 +1,9 @@
 package org.autojs.autoxjs.theme.widget;
 
 import android.content.Context;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import android.util.AttributeSet;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.stardust.theme.ThemeColor;
 import com.stardust.theme.ThemeColorManager;

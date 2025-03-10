@@ -4,14 +4,23 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.util.Log
-import androidx.work.*
+import androidx.work.Data
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.ExistingWorkPolicy
+import androidx.work.OneTimeWorkRequest
+import androidx.work.PeriodicWorkRequest
+import androidx.work.WorkInfo
+import androidx.work.WorkManager
+import androidx.work.Worker
+import androidx.work.WorkerParameters
 import org.autojs.autoxjs.App
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.timing.TimedTask
 import org.autojs.autoxjs.timing.TimedTaskManager
 import org.autojs.autoxjs.timing.TimedTaskScheduler
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 import java.util.concurrent.TimeUnit
 
 /**

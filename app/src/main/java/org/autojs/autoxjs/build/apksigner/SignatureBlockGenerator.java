@@ -1,7 +1,11 @@
 package org.autojs.autoxjs.build.apksigner;
 
 import org.spongycastle.cert.jcajce.JcaCertStore;
-import org.spongycastle.cms.*;
+import org.spongycastle.cms.CMSProcessableByteArray;
+import org.spongycastle.cms.CMSSignedData;
+import org.spongycastle.cms.CMSSignedDataGenerator;
+import org.spongycastle.cms.CMSTypedData;
+import org.spongycastle.cms.SignerInfoGenerator;
 import org.spongycastle.cms.jcajce.JcaSignerInfoGeneratorBuilder;
 import org.spongycastle.operator.ContentSigner;
 import org.spongycastle.operator.DigestCalculatorProvider;

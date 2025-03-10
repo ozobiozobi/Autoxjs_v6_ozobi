@@ -520,7 +520,6 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
         mLayoutHierarchyView!!.setShowClickedNodeBounds(true)
         mLayoutHierarchyView!!.boundsPaint?.strokeWidth = 3f
         mLayoutHierarchyView!!.boundsPaint?.color = -0x2cd0d1
-        // Added by ibozo - 2024/11/04 >
         mLayoutHierarchyView!!.setOnItemClickListener(object : OnItemClickListener,
             pl.openrnd.multilevellistview.OnItemClickListener {
                 override fun onItemClicked(
@@ -532,7 +531,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                 val nodeInfo = item as NodeInfo
                 setSelectedNode(nodeInfo)
                 if (view != null) {
-                    mLayoutHierarchyView!!.ozobiSetSelectedNode(nodeInfo)
+                    mLayoutHierarchyView!!.setSelectedNodeTouch(nodeInfo)
                 }
             }
 
@@ -545,7 +544,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                 val nodeInfo = item as NodeInfo
                 setSelectedNode(nodeInfo)
                 if (view != null) {
-                    mLayoutHierarchyView!!.ozobiSetSelectedNode(nodeInfo)
+                    mLayoutHierarchyView!!.setSelectedNodeTouch(nodeInfo)
                 }
             }
             override fun onItemClick(parent: RecyclerView?, item: View?, position: Int) {
@@ -564,7 +563,7 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
             )
         }
         mLayoutHierarchyView!!.setRootNode(mRootNode)
-        mSelectedNode?.let { mLayoutHierarchyView!!.setSelectedNode(it) }
+        mSelectedNode?.let { mLayoutHierarchyView!!.setSelectedNodeInit(it) }
     }
 
     private fun ensureOperationPopMenu() {
@@ -600,11 +599,9 @@ open class LayoutHierarchyFloatyWindow(private val mRootNode: NodeInfo) : FullSc
                 .build()
         )
     }
-    // Added by ibozo - 2024/11/04 >
     private fun expandAll() {
         mLayoutHierarchyView!!.expand()
     }
-    // <
     private fun showLayoutBounds() {
         close()
         val window = LayoutBoundsFloatyWindow(mRootNode)

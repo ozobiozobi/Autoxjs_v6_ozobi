@@ -1,13 +1,16 @@
 package org.autojs.autoxjs.external.tasker;
 
+import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_CONTENT;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.twofortyfouram.locale.sdk.client.ui.activity.AbstractAppCompatPluginActivity;
 
@@ -20,8 +23,6 @@ import org.autojs.autoxjs.model.explorer.ExplorerDirPage;
 import org.autojs.autoxjs.model.explorer.Explorers;
 import org.autojs.autoxjs.ui.BaseActivity;
 import org.autojs.autoxjs.ui.explorer.ExplorerViewKt;
-
-import static org.autojs.autoxjs.ui.edit.EditorView.EXTRA_CONTENT;
 
 
 /**

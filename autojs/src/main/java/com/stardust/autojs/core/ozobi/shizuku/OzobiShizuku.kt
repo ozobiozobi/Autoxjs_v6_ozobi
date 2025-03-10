@@ -1,13 +1,10 @@
 package com.stardust.autojs.core.ozobi.shizuku
 
-import android.content.ComponentName
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.IBinder
 import android.widget.Toast
-import com.stardust.autojs.BuildConfig
 import rikka.shizuku.Shizuku
-import rikka.shizuku.Shizuku.UserServiceArgs
 
 
 class OzobiShizuku {

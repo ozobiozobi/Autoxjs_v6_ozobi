@@ -1,9 +1,7 @@
 package com.stardust.autojs;
 
 import com.stardust.autojs.engine.ScriptEngineManager;
-import com.stardust.autojs.runtime.ScriptRuntime;
 import com.stardust.autojs.runtime.api.Console;
-import com.stardust.util.Supplier;
 import com.stardust.util.UiHandler;
 
 /**

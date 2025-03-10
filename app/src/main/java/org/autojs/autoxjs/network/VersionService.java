@@ -5,12 +5,11 @@ import android.content.SharedPreferences;
 
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+import com.stardust.util.NetworkUtils;
 
 import org.autojs.autoxjs.network.api.UpdateCheckApi;
 import org.autojs.autoxjs.network.entity.VersionInfo;
 import org.autojs.autoxjs.tool.SimpleObserver;
-
-import com.stardust.util.NetworkUtils;
 
 import java.util.Date;
 

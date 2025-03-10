@@ -1,5 +1,10 @@
 package org.autojs.autoxjs.build.apksigner;
 
+import org.spongycastle.asn1.ASN1ObjectIdentifier;
+import org.spongycastle.asn1.x500.style.BCStyle;
+import org.spongycastle.jce.X509Principal;
+import org.spongycastle.x509.X509V3CertificateGenerator;
+
 import java.io.File;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -11,11 +16,6 @@ import java.security.cert.X509Certificate;
 import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Vector;
-
-import org.spongycastle.asn1.ASN1ObjectIdentifier;
-import org.spongycastle.asn1.x500.style.BCStyle;
-import org.spongycastle.jce.X509Principal;
-import org.spongycastle.x509.X509V3CertificateGenerator;
 
 /** All methods create self-signed certificates. */
 public class CertCreator {

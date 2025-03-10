@@ -125,7 +125,6 @@ import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.settings.SettingsActivity
 import org.joda.time.DateTimeZone
 import org.joda.time.Instant
-import org.joda.time.Minutes
 
 
 private const val TAG = "DrawerPage"
@@ -135,8 +134,8 @@ private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_oz
 //private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
 private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
-private const val DONATION_PAGE_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi_some_info"
-private const val COMMUNITY_ADDRESS = "http://zh.bmxwz.top"
+private const val DONATION_PAGE_ADDRESS = "https://ozobiozobi.github.io/Autoxjs_v6_ozobi_some_info/"
+private const val V1_DOC_COMMUNITY_ADDRESS = "http://bmxwzsq.kesug.com/v1"
 private const val OZOBI_SUBFIX = "_ozobi"
 private const val DOCS_SERVICE_PORT = "16868"
 private const val MODIFICATION_SINCE = "2024-10-01"
@@ -238,7 +237,7 @@ fun CommunityWebsite(context:Context){
     TextButton(onClick = {
         IntentUtil.browse(
             context,
-            COMMUNITY_ADDRESS
+            V1_DOC_COMMUNITY_ADDRESS
         )
     }) {
         Text(text = stringResource(R.string.bmx_text_community_website))
@@ -275,7 +274,7 @@ fun DonationDialog(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Text(
-                        text = "能走多远，且看诸位",
+                        text = "$MODIFICATION_SINCE - 能走多远，且看诸位",
                         style = TextStyle(color = Color(R.color.primary))
                     )
                     Spacer(modifier = Modifier.height(3.dp))
@@ -1658,7 +1657,7 @@ fun detailsDialog(context: Context){
                     "> let ts = dateToTimestamp(dateStr, pattern)\n"+
                     "> dateStr: 时间字符串(2025-01-20)\n"+
                     "> pattern: 时间字符串对应的模式(yyyy-MM-dd)\n\n"+
-            "添加: 社区(由 BMX 提供)\n\n"+
+            "添加: v1在线文档、社区(由 BMX 提供)\n\n"+
             "修复(65811): app 停止脚本后打开日志页面返回闪退\n\n"+
             "添加: 魔改充电\n\n"+
             "修复(65810): app 无法停止脚本(这回应该没问题了)\n\n"+

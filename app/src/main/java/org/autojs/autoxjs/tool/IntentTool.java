@@ -3,8 +3,9 @@ package org.autojs.autoxjs.tool;
 import android.content.Context;
 import android.widget.Toast;
 
-import org.autojs.autoxjs.R;
 import com.stardust.util.IntentUtil;
+
+import org.autojs.autoxjs.R;
 
 /**
  * Created by Stardust on 2017/4/12.

@@ -1,7 +1,5 @@
 package com.stardust.autojs.runtime.api;
 
-import android.graphics.Color;
-
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.annotation.ScriptInterface;
