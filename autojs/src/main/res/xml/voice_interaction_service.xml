@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<voice-interaction-service xmlns:android="http://schemas.android.com/apk/res/android"
+    android:settingsActivity="org.autojs.autoxjs.ui.voiceassistant.SettingsActivity"
+    android:supportsAssist="true"
+    android:sessionService="com.stardust.autojs.core.ozobi.voiceassistant.OzobiAssistInteractionService"
+    android:recognitionService="com.stardust.autojs.core.ozobi.voiceassistant.OzobiRecognitionService"
+    android:supportsLaunchVoiceAssistFromKeyguard="true"
+    android:supportsLocalInteraction="true"/>

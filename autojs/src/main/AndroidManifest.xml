@@ -1,0 +1,112 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission
+        android:name="android.permission.READ_PRIVILEGED_PHONE_STATE"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <!--  termux  -->
+    <uses-permission android:name="com.termux.permission.RUN_COMMAND"/>
+    <uses-permission
+        android:name="android.permission.WRITE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <uses-permission
+        android:name="android.permission.WRITE_SECURE_SETTINGS"
+        tools:ignore="ProtectedPermissions" />
+    <!--读取联系人的权限-->
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <!--写联系人的权限-->
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <!--管理摄像机设备权限-->
+    <uses-permission android:name="android.permission.MANAGE_DEVICE_POLICY_CAMERA" />
+<!--    系统警告窗口权限-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+<!--    //-->
+    <application>
+        <activity
+            android:name=".execution.ScriptExecuteActivity"
+            android:configChanges="fontScale|keyboard|keyboardHidden|locale|navigation|orientation|screenLayout|screenSize|uiMode"
+            android:theme="@style/ScriptTheme" />
+
+
+        <activity
+            android:name="com.stardust.autojs.core.permission.PermissionRequestActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.stardust.autojs.runtime.api.image.ScreenCaptureRequestActivity"
+            android:theme="@style/ScriptTheme.Transparent" />
+
+        <activity
+            android:name="com.stardust.autojs.core.image.capture.ScreenCaptureRequestActivity"
+            android:excludeFromRecents="true"
+            android:taskAffinity="com.stardust.autojs.runtime.api.image.ScreenCaptureRequestActivity"
+            android:theme="@style/ScriptTheme.Transparent" />
+
+        <service
+            android:name="com.stardust.autojs.core.accessibility.AccessibilityService"
+            android:exported="false"
+            android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
+            <intent-filter>
+                <action android:name="android.accessibilityservice.AccessibilityService" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accessibilityservice"
+                android:resource="@xml/accessibility_service_config" />
+        </service>
+        <service
+            android:name="com.stardust.autojs.core.image.capture.CaptureForegroundService"
+            android:exported="false"
+            android:foregroundServiceType="mediaProjection" />
+
+        <receiver android:name=".core.ozobi.deviceadmin.OzobiDeviceAdminReceiver"
+            android:exported="true"
+            android:permission="android.permission.BIND_DEVICE_ADMIN">
+            <meta-data android:name="android.app.device_admin"
+                android:resource="@xml/device_admin" />
+            <intent-filter>
+                <action android:name="android.app.action.DEVICE_ADMIN_ENABLED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLE_REQUESTED" />
+                <action android:name="android.app.action.DEVICE_ADMIN_DISABLED" />
+            </intent-filter>
+        </receiver>
+        <!--        // < -->
+        <provider
+            android:authorities="${applicationId}.shizuku"
+            android:multiprocess="false"
+            android:enabled="true"
+            android:exported="true"
+            android:name="rikka.shizuku.ShizukuProvider"
+            android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
+        <!--        // < -->
+        <service
+            android:name=".core.ozobi.voiceassistant.OzobiAssistInteractionService"
+            android:exported="true"
+            android:permission="android.permission.BIND_VOICE_INTERACTION">
+            <intent-filter>
+                <action android:name="android.service.voice.VoiceInteractionService"/>
+            </intent-filter>
+            <meta-data android:name="android.voice_interaction"
+                android:resource="@xml/voice_interaction_service"/>
+        </service>
+        <service
+            android:name=".core.ozobi.voiceassistant.OzobiAssistInteractionSessionService"
+            android:permission="android.permission.BIND_VOICE_INTERACTION"
+            android:exported="true" />
+
+        <service android:name=".core.ozobi.adbkeyboard.AdbIME"
+            android:exported="true"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/methods"/>
+        </service>
+        <service android:name=".core.ozobi.remoteadb.service.ShellService" />
+    </application>
+</manifest>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="45sp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="3sp">
+
+    <org.autojs.autoxjs.ui.widget.LevelBeamView
+        android:id="@+id/dataItemLevelBeam"
+        android:layout_width="wrap_content"
+        android:layout_height="45sp"
+        android:layout_alignParentStart="true"
+        android:backgroundTint="#ee0E151F"
+        android:background="@drawable/rounded_corners_background"/>
+
+    <ImageView
+        android:id="@+id/dataItemArrow"
+        android:layout_width="15sp"
+        android:layout_height="45sp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/dataItemLevelBeam"
+        android:src="@drawable/arrow_down"
+        android:backgroundTint="#000000"
+        android:layout_marginStart="1dp"
+        android:layout_marginEnd="1dp"
+        android:background="@drawable/rounded_corners_background"
+        app:tint="#ffffff"/>
+
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="45sp"
+        android:layout_centerVertical="true"
+        android:layout_toEndOf="@+id/dataItemArrow"
+        android:gravity="start|center_vertical"
+        android:orientation="vertical"
+        android:backgroundTint="#ee0E151F"
+        android:background="@drawable/rounded_corners_background">
+
+        <TextView
+            android:id="@+id/dataItemName"
+            android:layout_width="1000sp"
+            android:layout_height="match_parent"
+            android:maxLines="3"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:paddingStart="2sp"
+            android:gravity="start|bottom"
+            tools:text="TextView" />
+
+        <TextView
+            android:id="@+id/dataItemInfo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="1"
+            android:textColor="@android:color/black"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+    </LinearLayout>
+
+</RelativeLayout>

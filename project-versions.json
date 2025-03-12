@@ -1,0 +1,12 @@
+{
+  "appVersionCode": 65812,
+  "appVersionName": "6.5.8.12",
+  "devVersionCode": 65812,
+  "devVersionName": "6.5.8.12",
+  "target": 28,
+  "mini": 24,
+  "compile": 35,
+  "buildTool": "35.0.0",
+  "IDE": "Android Studio Koala Feature Drop | 2024.1.2",
+  "JDK": "17"
+}

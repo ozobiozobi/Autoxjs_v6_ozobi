@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/action_force_stop"
+        android:title="@string/text_force_stop"
+        app:showAsAction="never" />
+    <item
+    android:id="@+id/action_build_apk"
+    android:title="@string/text_build_apk"
+    app:showAsAction="never" />
+    <item
+        android:id="@+id/action_console"
+        android:title="@string/text_console"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_import_java_class"
+        android:title="@string/text_search_java_class"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_info"
+        android:title="@string/text_info"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_editor_text_size"
+        android:title="@string/text_text_size"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_editor_theme"
+        android:title="@string/text_editor_theme"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_open_by_other_apps"
+        android:title="@string/text_open_by_other_apps"
+        app:showAsAction="never" />
+</menu>

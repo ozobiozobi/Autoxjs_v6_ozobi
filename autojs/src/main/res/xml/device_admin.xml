@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<device-admin>
+<!--    Created by Ozobi - 2024/11/10-->
+    <uses-policies>
+        <!-- 设置密码规则 -->
+        <limit-password />
+
+        <!-- 监视屏幕解锁尝试次数 -->
+        <watch-login />
+
+        <!-- 更改解锁密码 -->
+        <reset-password />
+
+        <!-- 锁定屏幕 -->
+        <force-lock />
+
+        <!-- 清除数据, 恢复出厂模式, 在不发出警告的情况下 -->
+        <wipe-data />
+
+        <!-- 锁屏密码有效期 -->
+        <expire-password />
+
+        <!-- 对存储的应用数据加密 -->
+        <encrypted-storage />
+
+        <!-- 禁用锁屏信息 -->
+        <disable-keyguard-features />
+
+        <!-- 禁用摄像头 -->
+        <disable-camera />
+    </uses-policies>
+</device-admin>

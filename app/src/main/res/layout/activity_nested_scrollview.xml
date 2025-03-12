@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nested_scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- 动态添加的层级视图 -->
+        <LinearLayout
+            android:id="@+id/nested_scrollView_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:padding="8dp"
+            android:background="#f0f0f0">
+            <!-- 数据将动态添加到这里 -->
+        </LinearLayout>
+
+        <!-- 展开收起的层级视图 -->
+        <LinearLayout
+            android:id="@+id/nested_scrollView_hidden"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            android:padding="8dp"
+            android:background="#f0f0f0">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is the content inside the expandable section." />
+
+            <!-- 可以添加更多子视图 -->
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_gravity="bottom">
+            <Button
+                android:id="@+id/nested_scrollView_exit_btn"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:text="退出"
+                android:textSize="12sp" />
+            <Button
+                android:id="@+id/nested_scrollView_to_bounds_btn"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:text="边界"
+                android:textSize="12sp"/>
+            <Button
+                android:id="@+id/nested_scrollView_expand_btn"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:text="展开"
+                android:textSize="12sp"/>
+            <Button
+                android:id="@+id/nested_scrollView_hide_show_btn"
+                android:layout_width="60dp"
+                android:layout_height="36dp"
+                android:text="隐/显"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</androidx.core.widget.NestedScrollView>
