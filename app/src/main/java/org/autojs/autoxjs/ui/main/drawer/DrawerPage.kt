@@ -1638,7 +1638,8 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "添加: 打包后开机自启\n\n"+
+            "添加: app 开机自启(需要悬浮窗[自启动]权限)\n\n" +
+            "添加: 打包后开机自启(需要悬浮窗[自启动]权限)\n\n"+
             "(BMX)更新: v1 文档 ui 控件使用方法"
         )
         .item(

@@ -1,13 +1,11 @@
-package com.stardust.autojs.inrt.ozobi.bootstart
+package org.autojs.autoxjs.ozobi.bootstart
 
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.widget.Toast
-import com.stardust.autojs.inrt.SplashActivity
+import org.autojs.autoxjs.ui.splash.SplashActivity
 
-
-class BootBroadcastReceiver:BroadcastReceiver() {
+class BootBroadcastReceiver: BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
         if (Intent.ACTION_BOOT_COMPLETED == intent.action) {
             val startIntent = Intent(context, SplashActivity::class.java)
