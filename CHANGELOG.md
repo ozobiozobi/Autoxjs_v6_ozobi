@@ -1,635 +1,411 @@
 # Change Log
-autoxjs 整个项目的一些更新日志,双版本号为稳定版（内容以修复的bug为主），单版本号为激进版本、发布新内容。
-
-## [Unreleased](https://github.com/kkevsekk1/AutoX/compare/6.5.8...HEAD) 未发布
-
-## [6.5.8] - 2024-2-6
-@aiselp
-* 调试器优化，升级target SDK到28(android9.0)
-* bug修复,截图优化
-* 设置页面更新
-  @zwc456baby
-* 修复打出的包崩溃问题，release下不启用内存泄漏检测
-
-[6.5.8]:https://github.com/kkevsekk1/AutoX/compare/6.5.7...6.5.8
-
-## [6.5.7] - 2024-1-14
-@aiselp
-* 修复运行ui脚本存在的内存泄露
-* 截图逻辑优化，使截图权限在所有脚本共享
-* 添加离线文档选项
-@Lin
-* 浏览器打开改为直接下载安装
-* 修复"emit"报错 
-* 每次打开都是新任务，不受上一次打开文件内容的影响
-
-[6.5.7]:https://github.com/kkevsekk1/AutoX/compare/6.5.6...6.5.7
-
-## [6.5.6] - 2023-12-16
-@aiselp
-* 优化编辑器
-@Lin
-* 增加编辑器选择
-* 编辑器优化
-* 主页搜索优化
 
+## 6.5.8.12
 
-[6.5.6]:https://github.com/kkevsekk1/AutoX/compare/6.5.5...6.5.6
+添加: App 开机自启 (需要悬浮窗 `自启动` 权限)
 
-## [6.5.5] - 2023-11-10
-@aiselp
-* 移除了ci构建中模板签名，打包时会重新签名
-* 锁定androidx.core版本为1.8.0，高的版本会引起 6.5.4版本运行脚本会出错 修复bug #723
-* 修复打包时只勾选opencv缺少依赖的问题
-* 编辑器优化
-* 添加rxjs库
-* 最后，由于最近几个版本有加大升级，有bug很正常，大家积极提bug、有能力的可以适当修复
-* 每个人都共享力量，软件bug才能修复，少抱怨！
-
-[6.5.5]:https://github.com/kkevsekk1/AutoX/compare/6.5.4...6.5.5
-
-
-## [6.5.4] - 2023-11-10
-@aiselp
-* 换新编辑器
-
-[6.5.4]:https://github.com/kkevsekk1/AutoX/compare/6.5.3...6.5.4
-
-## [6.5.3] - 2023-10-24
-@aiselp
-* 修复 Tasker插件功能
-* 修复一处可能的内存泄露
-* 优化底部导航切换时，已打开的文件目录保持不变，添加文档页面‘回到主页’按钮
-* 修复模块exports导出null和undefined时报错，修复require('xxx')!==require('xxx.js')
-* 修复JsBridge在非ui模式工作异常
-* 修复setTimeout等函数传入仅一个额外参数且该参数为null时报错
+添加: 打包后开机自启 (需要悬浮窗 `自启动` 权限)
 
-  @xiao-maomi
- * 修复部分设备编辑界面顶栏按钮重叠
-   
-  @drgnchan
-* 修改错别字
+更新: v1 文档 ui 控件使用方法 (BMX)
 
-[6.5.3]:https://github.com/kkevsekk1/AutoX/compare/6.5.2...6.5.3
+## 6.5.8.11
 
+添加: 时间转时间戳
 
-## [6.5.2] - 2023-9-30
+```js
+// dateStr: 时间字符串 (如: 2025-01-20)
+// pattern: 时间字符串对应的模式 (如: yyyy-MM-dd)
+let ts = dateToTimestamp(dateStr, pattern)
+```
 
-此次升级全是 @aiselp 在此，社区特别感谢其贡献，希望更多人支持
-@aiselp
+添加: v1 在线文档、社区 (由 BMX 提供)
 
-* 移除旧版lodash避免加载冲突
-* 添加加密配置
-* 添加termux权限
-* 打包配置优化
-* 其他bug 修复
+修复(6.5.8.11): App 停止脚本后打开日志页面返回闪退
 
-[6.5.2]:https://github.com/kkevsekk1/AutoX/compare/6.4.3...6.5.1
+添加: 魔改充电
 
-## [6.5.1] - 2023-09-03
-此次改动较大，留意bug情况
+修复(6.5.8.10): App 无法停止脚本 (这回应该没问题了)
 
-@aiselp
+添加: Shizuku - 开关 (哈哈)
 
-* 修复7.0以下系统无法运行脚本，修复events模块存在的线程问题
-* 调整jsBridge回调执行在ui线程
-* 使axios支持设置timeout参数
-* 更新ScriptBridges使用原生代码实现
-* 更新构建工具
-* 修复编辑器格式化功能
-  
-@xiaomaomizjh
+## 6.5.8.10
 
-* 通过手势调整编辑器文本大小
-* 编辑界面右上角菜单部分选项移至顶栏，标题移至顶栏下方显示完整路径
-* 优化编辑界面顶栏
-  
-[6.5.1]:https://github.com/kkevsekk1/AutoX/compare/6.4.3...6.5.1
+优化: 布局层次分析页面
 
-## [6.4.3] - 2023-6-14
-@aiselp
-* 修复某些情况下timer工作不正常
-* 资源文件处理、bug修复
+```
+修复 compose 无法触发重组
+调整按钮大小和位置
+将标记箭头改为方框，并在拖动时跟随
+在隐显按钮和当前选中节点边界之间添加连接线
+```
 
-[6.4.3]:https://github.com/kkevsekk1/AutoX/compare/6.4.2...6.4.3
+移除(6.5.8): 新版编辑器
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.3/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.3/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.3/app-v6-universal-release-unsigned-signed.apk
+修复(6.5.8): App 无法停止脚本 ( 好像可以秒停 @.@ )
 
-## [6.4.2] - 2023-6-14
+添加: networkUtils
 
-@aiselp
-* 修复打包后无法加载加密模块
+```js
+networkUtils.isWifiAvailable()
+networkUtils.getWifiIPv4()
+networkUtils.getIPList()
+```
 
-[6.4.2]:https://github.com/kkevsekk1/AutoX/compare/6.4.1...6.4.2
+添加: 文档服务
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.2/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.2/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.2/app-v6-universal-release-unsigned-signed.apk
+```
+vscode, 启动!
+什么, 文档404了?
+没事, 还有后背隐藏能源
+```
 
+## 6.5.8.9
 
-## [6.4.1] - 2023-6-13
+优化(6.5.8): 还是布局层次分析页面
 
-@aiselp
-* Images.copy函数修复
-* 添加JsBridge
-* 添加node核心库buffer,events,stream,util
-* 悬浮窗bug修复
-* 新增异步http库：axios (实验性)
-* 新增npm模块cheerio，用于处理html
-* 提供java流的转换，buffer与java字节数组的转换
-* 新增bluebird-co模块
-* 定时器调用性能优化
-* 新增同步转异步任务执行器
+```
+就, 好看了一点吧 (也可能是我谦虚了
+```
 
-@Xiao-A-666  
-* 修复打包后访问资源文件出错的bug
-* 新增隐藏启动页功能 
+修复(6.5.8): 布局层次分析页面
 
-[6.4.1]:https://github.com/kkevsekk1/AutoX/compare/6.3.8...6.4.1
+```
+显示选中不唯一
+返回无法关闭页面
+```
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.1/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.1/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.4.1/app-v6-universal-release-unsigned-signed.apk
+添加: 布局层次分析页面:
 
+```
+(标记/施法)按钮
+    数数？为什么不用法术(@-@)
+    选择第一个节点之后点击标记
+    再选择第二个节点然后点击施法
+    生成从第一个节点到第二个节点的路径
+    例如：.parent().child(1)
 
+显示描述和文本
 
-## [6.3.8] - 2023-4-25
+显示当前选中节点的所有直系长辈 ( 大概就这个意思 -.- )
 
-@Xiao-A-666 
-修改加密解密bug、修改UI模式部分情况崩溃的问题、修改打包时没有替换资源文件的bug 
+显示当前选中节点的孩子
 
-[6.3.8]:https://github.com/kkevsekk1/AutoX/compare/6.3.7...6.3.8
+标记当前选中节点的兄弟
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.8/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.8/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.8/app-v6-universal-release-unsigned-signed.apk
+给当前选中节点周围添加标记
+    没有火眼金睛? 不要紧, 我来助你
 
+切换是否可以折叠 ( 化 bug 为功能:D )
 
+布局分析, 为所欲为 QwQ
+```
 
+## 6.5.8.8
 
-## [6.3.7] - 2023-4-9
+优化: 夜间模式
 
-@aiselp 引入documentfile支持，以便使用saf框架，更换Promise库为bluebird。支持更多特性
-@aiselp 使用kt重写悬浮窗并修复错误， 修复timers模块无法在其他java线程中使用
+优化: 布局层次分析页面:
 
-[6.3.7]:https://github.com/kkevsekk1/AutoX/compare/6.3.6...6.3.7
+```
+修复展开后不可收起
+隐藏按钮可拖动
+```
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.7/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.7/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.7/app-v6-universal-release-unsigned-signed.apk
+修复(6.5.8.7): 布局分析相关 bug
 
+更改(6.5.8): App 抽屉页面使用随机彩色图标
 
+修复(6.5.8.7): App 布局分析刷新显示不全
 
-## [6.3.6] - 2023-1-8
+```
+一般用不到刷新, 除非画面发生变动之后捕获结果没有改变
+(刷新会比等待捕获多花 2-3 倍的时间)
+```
 
-@gucong3000 调整如下内容
-1.将console打印Error对象时的行为，调整为与Chrome和Node.js等平台保持一致，打印堆栈信息。
+添加: App 布局分析等待捕获、延迟捕获开关
 
-[6.3.6]:https://github.com/kkevsekk1/AutoX/compare/6.3.5...6.3.6
+```
+布局分析, 随心所欲(~.-
+```
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.6/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.6/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.6/app-v6-universal-release-unsigned-signed.apk
+添加: 截图是否返回新的对象
+```js
+// 即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是一个对象
+// 反之如果不加参数 true, img1 === img2
+let img1 = images.captureScreen(true)
+let img2 = images.captureScreen(true)
+```
 
 
-## [6.3.5] - 2022-9-28
+## 6.5.8.7
 
-@wilinz  调整如下功能
+添加: 获取屏幕实时宽高
 
-1. 修复 PC端日志输出先后顺序有问题
-2. 其他js等实例脚本问题
+```js
+let curW = device.getCurWidth()
+let curH = device.getCurHeight()
+let size = device.getCurScreenSize()
+// size.x == curW
+// size.y == curH
+```
 
-[6.3.5]:https://github.com/kkevsekk1/AutoX/compare/6.3.4...6.3.5
+添加: 获取当前屏幕方向
 
- 下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.5/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.5/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.5/app-v6-universal-release-unsigned-signed.apk
+```js
+//竖屏: 1  横屏: 2
+let ori = getCurOrientation()
+```
 
-## [6.3.4] - 2022-9-4
+添加: 布局分析刷新开关
 
-1. [更新paddle api并向后兼容](https://github.com/wilinz/AutoX/commit/5fae0643a563b69c7691f55ee3e3ec2771a656e3)
-2. 添加Google ML kIT OCR API
-3. [修复toast bug](https://github.com/wilinz/AutoX/commit/ea1e7663af7069a3750b64cd838d0148a7dae9b9)
-4. [迁移到 kotlin build.gradle](https://github.com/wilinz/AutoX/commit/fc6d740afe1004bc4cd68dcb814afc52e5dba419)
-5. 修复打包BUG
+```
+有些情况刷新会出问题(比如某音极速版啥的)，
+可以关掉刷新，点开悬浮窗后，自己看情况等上一段时间再点分析
+```
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.4/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.4/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.4/app-v6-universal-release-unsigned-signed.apk 
+添加: 通过 setClip 复制的文本会发送到 vscode 的输出
 
-[6.3.4]:https://github.com/kkevsekk1/AutoX/compare/6.2.3...6.3.4
+```
+例如: 布局分析复制控件属性/生成代码后点击复制
+脚本使用 setClip
+(长按手动复制不会触发)
+```
 
+优化(6.5.8): 减少 App 悬浮窗点击响应时长(慢不了一点
 
-## [6.3.3] - 2022-8-25
+更改: App 抽屉页面
 
-*  apk 使用cdn加速,地址格式：http://autoxoss.autoxjs.com/autoxjs/{版本号}/xxx.apk 
-*  apk发布oss
-*  根据changelog自动发布release note
-*  增加版本之间的比较 点击版本号
-*  workflow 不好使 跳跃了基本版本
+添加: 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
 
-下载地址： \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.3/app-v6-arm64-v8a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.3/app-v6-armeabi-v7a-release-unsigned-signed.apk \
-  http://autoxoss.autoxjs.com/autoxjs/6.3.3/app-v6-universal-release-unsigned-signed.apk 
+添加: viewUtils
 
-[6.3.3]:https://github.com/kkevsekk1/AutoX/compare/6.2.9...6.3.3
+```js
+let v1 = viewUtils.findParentById(view,id)
+let sp = viewUtils.pxToSp(px)
+let px = viewUtils.dpToPx(dp)
+let dp = viewUtils.pxToDp(px)
+let px = viewUtils.spToPx(sp)
+```
 
+添加: 获取 raw 悬浮窗 contentView
 
-## [6.2.9] - 2022-8-22
+```jsx
+let fw = floaty.window(<frame id="content"></frame>)
+let contentView = fw.getContentView()
+// contentView === fw.content
+```
 
-@wilinz  调整如下功能
+## 6.5.8.6
 
+优化: 启动 App 自动连接不显示 toast
 
-1. [打包的APK日志页面增加 重新运行，停止运行，清除日志 3个按钮](https://github.com/wilinz/AutoX/commit/32541253d870d6b752b9c436ca6676f59638655d)
-2. [优化异步读取配置文件](https://github.com/wilinz/AutoX/commit/eca3c20ae32651fde526ef75f1cbd8c761999bd8)
-3. [连接电脑增加断线重连和心跳检测（需要更新VSCODE Autox 插件到 1.109.0 以上才会启用）](https://github.com/wilinz/AutoX/commit/a703977fcfdeda32b0d40424f7f3933f0a274a3c)
-4. [添加TessractOCR及例子](https://github.com/wilinz/AutoX/commit/1ab2345d01860b134b622d27cb3f8b7a9a14bbee)
-5. [远程项目临时文件夹改回MD5命名](https://github.com/wilinz/AutoX/commit/a654bdb727fb14997f6c696a077a8c094d3175ab)
-6. [修复 PFile.copyAssetDir() 空目录报错（打包后的APK闪退问题）](https://github.com/wilinz/AutoX/commit/0f6a7945729871fae160ad81d61c964ffb018e92) https://github.com/kkevsekk1/AutoX/issues/411
-7. [修复打包Bug & 优化](https://github.com/wilinz/AutoX/commit/81703d29b775ee11cbbe6e05a0fea2f85560f943)
+升级: SDK35、gradle-8.7、AGP-8.6.0
 
-[6.2.9]:https://github.com/kkevsekk1/AutoX/compare/6.2.8...6.2.9
+添加: 获取状态栏高度(px)
 
-## [6.2.8] - 2022-8-20
+```js
+let h = getStatusBarHeight()
+```
 
-@wilinz 调整如下功能
-1. [修复 “运行项目” 与 “保存项目” bug](https://github.com/wilinz/AutoX/commit/683d81eae440b53fbbd4ce57bccad1fb24124dd8)
-2. [修复打包完成之后某些ui样式失效 #397 ](https://github.com/wilinz/AutoX/commit/b118b11fd4d40bc477e0a35bf529ec0017b73964)
-3. [修复示例代码"表格控件-内置图标查看器"打包后不能正常运行BUG](https://github.com/wilinz/AutoX/commit/d72ef148cc6c258e33570125f54c756f5dfa1a3f)
-4. [修复打包的一些BUG（自定义签名BUG未修复，预计下版本修复）](https://github.com/wilinz/AutoX/commit/37762e5b4d9c6481d532094c1494c6960207b0a7)
-5. [优化ocr](https://github.com/wilinz/AutoX/commit/2724484a065d70a747653e3f1b4960e11319e239)
-6. [解决 Web注入 invoke 不指定回调方法就报错的bug](https://github.com/kkevsekk1/AutoX/commit/b7778cef2b5f0d0d875a4bf9c016092527668458)
-@xxxxue 修复示例中的一些问题
+添加: 获取当前存在的本地存储 名称[路径] 数组
 
-[6.2.8]:https://github.com/kkevsekk1/AutoX/compare/6.2.7...6.2.8
+```js
+let arr = storages.getExisting([returnPath])
+```
 
-## [6.2.7] - 2022-8-15
+添加: 布局分析截图开关
 
-@wilinz   调整如下功能：
+## 6.5.8.5
 
-1. [修改优化OCR示例](https://github.com/wilinz/AutoX/commit/b07aa38770e3d4a832223625886939d094c98980)
-2. [优化打包后的Apk自动使用root权限开启无障碍服务](https://github.com/wilinz/AutoX/commit/1ab37c9e8fd8e635cfa5464bd9f4af94248f0ba2)
-3. [修复OCR BUG](https://github.com/wilinz/AutoX/commit/58f763f061f121c3eb47505a70eb8ee0fd111ebb)
-4. [修复打包BUG，打包编辑框自动填充BUG](https://github.com/wilinz/AutoX/commit/8031a8e9cc0e4d70429e7f067f15876f1d789b7e)
+修复(6.5.8.2): 布局分析影响脚本截图服务
 
-[6.2.7]:https://github.com/kkevsekk1/AutoX/compare/6.2.6...6.2.7
+添加: 跟踪堆栈行号打印
 
-## [6.2.6] - 2022-8-14
+```js
+// 让 bug 无处可藏 >_>
+traceLog("嘿嘿"[,path(输出到文件)])
+```
 
-@wilinz 增加如下功能
-1. [修复](https://github.com/wilinz/AutoX/commit/3d04d498d4c5ebdae60a41c02abd3dd43c374040) https://github.com/kkevsekk1/AutoX/issues/392 [root权限直接打开无障碍](https://github.com/wilinz/AutoX/commit/3d04d498d4c5ebdae60a41c02abd3dd43c374040)
-2. [文档页面工具栏添加在浏览器打开按钮，侧滑菜单添加切换定时任务调度器按钮](https://github.com/wilinz/AutoX/commit/991de7fb687c561c0ad9064dae3ca192bb541c22) 
-3. [修复定时任务无效问题](https://github.com/wilinz/AutoX/commit/362a1f31bc8df682f138d9d86c0d9229c8fb241f)
-4. [修复打包BUG，以及打包后的App闪退的问题](https://github.com/wilinz/AutoX/commit/2a1e5c0edb2d70ce88a07cc5f5ba608c1e4e7b8c)
-5. [修复app.autojs.versionName和app.autojs.versionCode问题](https://github.com/wilinz/AutoX/commit/af54fd82996941752d3dd5d9888fd1f4d8df7416)
-6. [新增退出布局分析悬浮窗按钮](https://github.com/wilinz/AutoX/commit/8f5a5f886d8d1071ca6b6cb5a0d67c9fb7375fff)
-7. [优化topAppBar弹出菜单, 确保点击后关闭菜单](https://github.com/wilinz/AutoX/commit/3fdd4a239b12e1c5518c5893ff9b8d65060a20d2)
-8. 修复连接vscode URL解析BUG，增加扫码连接后记住扫码结果功能
+添加: 时间戳格式化
 
-[6.2.6]:https://github.com/kkevsekk1/AutoX/compare/6.2.5...6.2.6
+```js
+// ts: 时间戳, 默认为当前时间戳
+// format: 时间格式, 默认为 "yyyy-MM-dd HH:mm:ss.SSS"
+let fm = dateFormat([ts,format]);
+```
 
-## [6.2.5] -- 2022-8-13
+添加: 设置 http 代理(options)
 
-[6.2.5]:https://github.com/kkevsekk1/AutoX/compare/6.2.3...6.2.5
+```js
+// 设置代理: 
+http.get(url, {proxyHost:"192.168.1.10", proxyPort:7890})
+// 身份认证: 
+{userName:"ozobi", password:1014521824}
+```
 
-@wilinz 增加如下功能
+添加: 设置 http 尝试次数、单次尝试超时时间(options)
 
-1. [调整UI避免文件操作按钮被挡住](https://github.com/wilinz/AutoX/commit/b65fd14d9ed01601affd9822dfbab5c54b94ee19)
-2. [调整资源文件, 添加多语言支持](https://github.com/wilinz/AutoX/commit/b9e29c663288e1cd9458a73a0deb0a99b955c65a) by [Globalization Translator](https://github.com/wilinz/globalization-translator) 
-3. [添加英文Readme](https://github.com/wilinz/AutoX/commit/7941357d0fbee713b45c3454cd27a2b3c9b657b4)
-4. [修复打包后不显示 logo 和 底部splashText 的问题](https://github.com/wilinz/AutoX/commit/35e71046e98149d74bdeb150b6900e5edea61fab)
-5. [优化文件操作，确保正常关闭文件流](https://github.com/wilinz/AutoX/commit/1bb4a1fceb13c3e87c6cc600be1afdcd560b056c)
-6. [修复http模块response.close()错误](https://github.com/wilinz/AutoX/commit/3b2f58ff0ed10ee8243fbc8d7ccc4e0e47aa187e)
-7. [优化打包，新增打包abi过滤，支持保存打包配置文件，可保存为项目。](https://github.com/wilinz/AutoX/commit/8b6776cff8b0fca4be4a52719b7d7d07c0a058f3) 
-8. [修复打包的APK不支持armeabi-v7a的BUG，优化模板apk，与Autox.js共享二进制库和Assets, 以减少Autox.js Apk 大小](https://github.com/wilinz/AutoX/commit/8b6776cff8b0fca4be4a52719b7d7d07c0a058f3) 
-9. [修改包名使Autox.js可以和Auto.js共存](https://github.com/wilinz/AutoX/commit/8b6776cff8b0fca4be4a52719b7d7d07c0a058f3)
-10. [优化检查更新](https://github.com/wilinz/AutoX/commit/629e8d90317b12ac7109ea808689c8072dd8cd83)
-11. [修复crypto模块BUG](https://github.com/kkevsekk1/AutoX/pull/391/commits/28913396430f0189a3cd0334382f44178bba55de)
+```js
+// 一共尝试 3 次 ( 默认 3 ), 每次 5s ( 默认 10s ) 超时
+http.get(url, {maxTry:3, timeout: 5000})
+```
 
+修改(6.5.8): 将布局层次分析页面的彩色线条数量改为与 depth 相等
 
+优化(6.5.8.2): 布局分析不显示异常截图(宽高异常/全黑截图)
 
-## 5.7.6
-优化以下特性：
-*  回滚到 rhino-1.7.13
+## 6.5.8.4
 
-## 5.7.5
-优化以下特性：
-*   双指缩放代码编辑页
-*   感谢 [heham](https://github.com/heham)  修复
-*   进一步解决OCR内存泄漏问题
-*   Background拼写问题
+修复(6.5.8): 某些设备 RootAutomator 不生效
 
+修复(6.5.8.3): 找不到方法 runtime.adbConnect(string, number)
 
+修复(6.5.8.3): 布局分析时反复申请投影权限
 
-## 5.7.4
-优化以下特性：
-*   感谢 [syhyz](https://github.com/syhyz/)  ocr 结果排序问题
-*   空指针问题
+添加: Adb 输入法
 
-## 5.7.3
-优化以下特性：
-*  感谢 [heham](https://github.com/heham/)  修复屏幕宽带为0 的bug
-*  感谢 [syhyz](https://github.com/syhyz/)  rhino-1.7.14  升级
-*  修改一些文档,修复ocr内存泄露问题
-*  新年已开始，欢迎反馈bug，最近一个月会大力支持新功能
+```js
+let adbIMESC = runtime.adbIMEShellCommand;
+let command = adbIMESC.inputText("嘿嘿");
+// 执行命令: adb shell + command;
+// 将输出文本 嘿嘿 到当前光标所在位置(需要先启用然后设置为当前输入法)
 
+// 以下命令皆是 adbIMESC.xxx
+enableAdbIME() // 启用adb输入法
+setAdbIME() // 设置adb输入法为当前输入法
+resetIME() // 重置输入法
+clearAllText() // 清除所有文本
+inputTextB64(text) // 如果inputText没用试试这个
+inputKey(keyCode) // 输入按键
+inputCombKey(metaKey, keyCode) // 组合键
+inputCombKey(metaKey[], keyCode) // 多meta组合键
 
-## 5.7.2
-优化以下特性：
-*  感谢 [heham](https://github.com/heham/)  修复屏幕宽带为0 的bug
-*  感谢 [syhyz](https://github.com/syhyz/)  rhino-1.7.14  升级
-*  修改一些文档等
-*  新年已开始，欢迎反馈bug，最近一个月会大力支持新功能
+// meta 键对照:
+// SHIFT == 1
+// SHIFT_LEFT == 64
+// SHIFT_RIGHT == 128
+// CTRL == 4096
+// CTRL_LEFT == 8192
+// CTRL_RIGHT == 16384
+// ALT == 2
+// ALT_LEFT == 16
+// ALT_RIGHT == 32
 
+// 输入组合键: ctrl + shift + v:
+adb shell + runtime.adbIMEShellCommand.inputCombKey([4096,1], 50);
+```
 
-## 5.7.1
-优化以下特性：
-*  5.7.0默认发布为 64位版本，优化性能问题，需32位版本到github下载 5.7.0以前的版本。
-*  感谢 [Aioure](https://github.com/Aioure)  升级如下功能：
-*  修复64位版本中的一些bug
-*  修复字体大小设置无法保存问题
-*  其他一些bug
-*  欢迎反馈64位版本的bug
+增强: 调用 termux
 
+```
+安装 termux (版本需 0.95 以上)
+编辑 ~/.termux/termux.properties 文件, 将 allow-external-apps=true 面的注释#去掉, 保存退出
+安装 adb 工具
+pkg update
+pkg install android-tools
+adb 连接手机后授权 autoxjs (打包后的应用也需要授权)
+(如果有)手机需要开启 USB 调试 (安全设置)
+adb shell pm grant 包名 com.termux.permission.RUN_COMMAND
+调用: runtime.termux("adb shell input keyevent 3") 返回桌面
+这里默认后台执行, 若想使用自己构建的 intent 可以使用 runtimesendTermuxIntent(intent)
+```
 
-## 5.7.0
-优化以下特性：
-*  感谢 [Aioure](https://github.com/Aioure)  升级如下功能：
-*  5.7.0默认发布为 64位版本，优化性能问题，需32位版本到github下载。
-*  ocr相关bug
-*  其他一些bug
-*  欢迎提交bug，欢迎pr本项目，欢迎pr文档，欢迎给贡献代码的开发者点赞！
+## 6.5.8.3
 
+添加: 远程 AdbShell
 
-## 5.6.4
-优化以下特性：
-*  版本检查问题
-*  感谢 [Aioure](https://github.com/Aioure)  升级如下功能：
-*  ocr一些调整和完善，更多模型
-*  7zip一下完善，更多参数
-*  欢迎提交bug，欢迎pr本项目，欢迎pr文档，欢迎给贡献代码的开发者点赞！
+```js
+// (好像不支持远程配对, 手机需要设置监听 adb 端口)
+// 连接设备
+let adbShell = runtime.adbConnect(host,port)
+// 执行命令
+adbShell.exec("ls /") 
+// 断开连接
+adbShell.close() 
+// 获取当前连接主机名
+adbShell.connection.getHost() 
+// 获取当前连接端口
+adbShell.connection.getPost() 
+```
 
-## 5.6.3
-优化以下特性：
-*  感谢 [Aioure](https://github.com/Aioure)  升级如下功能：
-*  ocr一些调整和完善，更多模型
-*  7zip一下完善，更多参数
-*  欢迎提交bug，欢迎pr本项目，欢迎pr文档，欢迎给贡献代码的开发者点赞！
+修改(6.5.8): 将悬浮窗位置改为以屏幕左上角为原点
 
+```
+终于可以指哪打哪了>_<
+```
 
-## 5.6.2
-优化以下特性：
-*  升级了一下[文档](https://github.com/kkevsekk1/kkevsekk1.github.io)项目一些路径问题，删除了本地文档
-*  修改为在线文档，使用cdn加速github的文档
-*  删除不必要的用户检测
-*  [Aioure](https://github.com/Aioure)  升级如下功能：
-*  ocr一些调整和完善
-*  7zip一下完善
-*  欢迎提交bug，欢迎pr本项目，欢迎pr文档，欢迎给贡献代码的开发者点赞！
+修复(6.5.8.2): 脚本请求截图权限后再进行布局分析时打不开悬浮窗
 
+增强(6.5.8): 使用相对路径显示本地图片
 
-### 5.6.1
-优化以下特性：
-*  手动检测更新无法显示问题
-*  重新配置控件，升级androidx
-*  修复定时任务月份bug
-*  提示开启权限，后运行
-*  qq群号问题
-*  脚本目录修改bug
-*  IP地址不合法bug
-*  不兼容arm64 bug
-*  [Aioure](https://github.com/Aioure)  升级如下功能：
-*  编译兼容低版本的opencv
-*  集成PaddleOCR
-*  修复若干兼容问题
-*  此版本有重大升级变化，欢迎测试提交bug
+```js
+// ./ 等于 file://当前引擎的工作目录/
+<img src=./pic.png />
+```
 
+## 6.5.8.2
 
+优化(6.5.8): vscode 插件运行项目
 
-## 5.5.6
-优化以下特性：
-*  [Aioure](https://github.com/Aioure)  升级如下功能：
-*  opencv 到4.5.5版，修复上一版兼容问题
-*  最低版升级到21即android 5
-*  打包后的dex进行拆分
+```
+vscode 打开项目新建一个 project.json 文件,
+里面有 {} 就可以,
+再将主脚本文件命名为 main.js 即可
+```
 
-### 5.5.5
-优化以下特性：
-*  感谢 [Aioure](https://github.com/Aioure) 更新如下功能，次版本可能存在bug，欢迎反馈
-*  RhinoJS 升级版本到1.7.13版
-*  更新 opencv 到4.2.0版
-*  添加多媒体、Webview扩展与游戏编程两组示例等
-*  修复一些闪退问题，此版本有重大升级变化
+修复(6.5.8): 老版编辑器长按删除崩溃
 
-### 5.5.3
-优化以下特性：
-* 增加配置隐藏启动图标，只能通过adb等其他方式启动app
-* 感谢 [Aioure](https://github.com/Aioure) 增加7zip 相关api，在打包app中应用
-* 修复一些闪推问题
+添加: 添加 v2 本地、在线文档
 
+App 功能
 
+```
+添加连上为止
+软件启动时会尝试连接电脑一次
+打开之后会一直尝试连接电脑，直到连上为止，除非手动关闭
+被动和主动断开连接电脑，都会触发一直尝试连接，除非手动关闭(可能还是bug, 某些情况会连接多次
+```
 
-## 5.5.2
-优化以下特性：
-1.增加配置进行，音量上键是否停止脚本（需开启无障碍）
-2.增加配置关闭启动页，
-3.修复配置非ui模式，隐藏开启日志无效，ui模式下，应该从ui界面取去日志
-4.修复空文件夹不能删除
-5.升级androidx
-6.修改配置项设置效果，无效项仅保留，
-7.闪退问题，打包后app中，暂时屏蔽7zip
+App 布局分析
 
-### 5.5.1
-优化以下特性：
-*  恢复默认保活功能，删除上通知栏功能
-*  修复项目打包bug
-*  感谢 [Aioure](https://github.com/Aioure) 增加7zip 压缩，解压功能
-*  7zip的api文档需要进一步完善...
+```
+每次分析都会刷新页面节点信息，下拉状态栏可打断刷新，同时会大概率丢失面节点信息
+添加延迟选项。选择其中一个选项之后会延迟相应的时间之后进行布局分析，待期间无法再次打开布局分析对话框。
+添加显示上次节点信息选项。可重新分析上一次刷新的节点信息
+```
 
+App 布局范围分析
 
-### 5.4.0
-优化以下特性：
-*  删除默认保活功能和上通知栏功能
-*  按网友方法加入识别web元素功能，但是此api已经被标记过时
-*  [falcolee](https://github.com/falcolee) 修复项目名的bug
+```
+根据控件属性使用不同的颜色
+绿色：可点击
+紫色：有描述
+紫红色：有文本
+白色：上面三个都没有
+同一控件显示颜色优先级顺序同上
+如果两个控件bounds重叠，子控件的颜色会盖住父控件的
+```
 
+App 布局层次分析
 
-## 5.3.2
-优化以下特性：
-* 剔除登录和用户模块
-* 测试opencv 4 准备升级
+```
+将控件的 depth、是否可点击、是否有描述、是否有文本 显示在外面
+添加展开按钮(展开当前选中的控件的全部孩子控件)
+添加转到布局范围按钮
+这个层次分析页面还有待改进
+```
 
-## 5.3.1
-优化以下特性：
-*  新增无障碍服务描述配置
-* [CcSimple](https://github.com/CcSimple)  优化currentPackage及currentActivity获取方式(待测试实际效果!)
-* dev版本欢迎大家测试 currentPackage,currentActivity api并反馈效果
-* 配置通讯录读写权限，具体使用由脚本决定
-* 修复应用商店地址
-* 修复 jsapi bug
+App 布局分析属性
 
+```
+将控件的常用属性（个人认为）往前排
+```
 
-
-### 5.3.0
-优化以下特性：
-*  开发版
-*  新增无障碍服务描述配置
-* [CcSimple](https://github.com/CcSimple)  优化currentPackage及currentActivity获取方式(待测试实际效果!)
-* dev版本欢迎大家测试 currentPackage,currentActivity api并反馈效果
+代码布局分析
 
-
-## 5.2.0
-优化以下特性：
-*  模板app稳定模式
-*  打包页面新增主脚本名称、稳定模式、隐藏日志设置
-*  新增单文件打包清爽模式设置
-*  优化单文件打包(清爽模式/单文件.json配置)
-*  [CcSimple](https://github.com/CcSimple) 更新上述功能
-*  [listky]( https://github.com/listky) 完善文档
-*  邀请第三方上线 【AIX】独立apk，支持单独或批量运行授权应用
-*  第三方独立apk，AIX,知斗云等 支持vscode或商店服务器，websocket自动重连
-*I 重启后console无法使用的bug
-* autoxjs 上线：脚本（应用）商店
-* autoxjs 支持试运行商店中的脚本（应用）。
-* autoxjs 支持自助线授权脚本（应用）到第三方(AIX)中稳定运行，批量运行。
-* autoxjs 开发者发布脚本，可以授权给第三方使用。
-* autoxjs 上线推荐(码)奖励功能（分成比例，开发者70%，邀请20%[邀请人和开发者同一人90%]）
-* autoxjs 支持AIX,AUTOXJS下载，分享下载。
-* autoxjs 脚本备份，变成可配置，默认打开。
-* 上线web端开发者平台
-* 开发平台 可发布脚本（应用）到商店。
-* 开发平台 提供自助授权配置（免费，按量，包年包月）
-* 开发平台 提供授权币的购买，退货等
-* 帮助中心（少量内容）
-
-
-## 5.1.0
-优化以下特性：
-*  开发版
-*  模板app稳定模式
-*  打包页面新增主脚本名称、稳定模式、隐藏日志设置
-*  新增单文件打包清爽模式设置
-*  优化单文件打包(清爽模式/单文件.json配置)
-*  [CcSimple](https://github.com/CcSimple) 更新上述功能
-*  [listky]( https://github.com/listky) 完善文档
-*  5.1.0版本预购，本周末发布：应用商店，文件备份配置，自动重连等
-
-
-## 5.0.1
-优化以下特性：
-*  单文件打包bug，升级到最新版本
-
-## 4.2.19
-优化以下特性：
-*  修复华为权限bug
-
-## 4.2.18
-优化以下特性：
-*  自定义启动页配置等功能
-*  新增可指定签名文件功能
-*  优化打包流程
-*  增加项目默认配置
-*  欢迎更多开发者贡献代码，完善文档！
-
-## 4.2.17.dev
-优化以下特性：
-*  感谢 [CcSimple](https://github.com/CcSimple)  大神升级了，自定义启动页配置等功能
-*  修复一些bug
-*  优化打包流程
-*  开发版，有问题及时反馈！预计下次正式版可上线上述功能。
-*  欢迎更多开发者贡献代码，实现更好的功能！
-
-## 4.2.16
-优化以下特性：
-*  感谢 [CcSimple](https://github.com/CcSimple)  新增可指定签名文件功能
-*  修复一些bug
-*  发布开发版，两个版本并存，欢迎安装测试，有问题及时反馈！
-
-## 4.2.15
-优化以下特性：
-* 修复截图权限,造成崩溃
-
-## 4.2.14
-优化以下特性：
-* 调整应用配置页面:不缓存应用图标
-* 修复修改应用配置后,ExplorerChangeEvent UI更新问题
-* 打包应用页面支持修改应用配置信息
-* 调整整target及compile版本到29 ，可能出现兼容问题，有问题请反馈！
-* 感谢 CcSimple ，以上功能有 [CcSimple](https://github.com/CcSimple) 提交代码，欢迎点赞！
-
-## 4.2.13
-优化以下特性：
-* 修复打包后的app启动另一个独立ui脚本无法执行的bug
-* webpack-autox 项目支持可以输出多个文件，有需要请更新
-* 注意解决第一个bug 是之前修复另一bug引起的，但是现在不知道是哪个bug了，发现请反馈
-* 感谢大家支持
-
-### 4.2.12
-优化以下特性：
-* 修复打包软件常驻被杀死的bug
-* 修复长安函数无法加载文档的bug
-* 修改一些其他配置
-
-## 4.2.11
-优化以下特性：
-* 在线文档发布为国内版本
-* 感谢开发者 icesValley 对国内文档建议和技术支持
-
-## 4.2.10
-优化以下特性：
-* 稳定支持 websocket
-
-
-## 4.2.9
-优化以下特性：
-* 感谢 Wang Zijian 修复 floating window permission check on miui
-* console的自动隐藏改为参数控制
-* 打包apk启动后finish掉启动也
-* 升级apkbuild包,解决空文件夹问
-* 升级ci 项目
-
-## 4.2.8
-优化以下特性：
-* 调整模板app，添加常驻前台，现在是统一自动开启
-* 修复打包插件，无法识别空目录，导致无法重新打包识别
-* 统一模板app和autoxjs，不再采用插件形式打包
-* 修复了4.2.7 的遗留问题
-
-
-## 4.2.7
-优化以下特性：
-* 添加获取设备虚拟导航栏相关接口：是否有虚拟导航，虚拟导航高度
-* 去除打包插件机制，直接使用模板打包
-* 修复release发布，不能运行bug
-* 修复release模式下语言包找不到问题
-`注意`遗留一个问题这里面的模板不是最新,最新升级的接口，打包出来无法使用,在autoxjs中可以正常使用
-
-
-## 4.2.6
-优化以下特性：
-* 修复console 界面未创建，修改过程产生空指针问题
-* 默认可以不修改console 原标题
-* 关闭console的提示，修改为系统消息
-  
-
-
-## 4.2.5
-优化以下特性：
-* 添加应用商店需要的功能（商店端暂未上线）
-* 日志：标题字号，色彩，背景，文字大小，内容字号等可以设置和修改
-* 和vscode 插件链接问题闪退问题
-* TextView 导致小米手机闪退问题
-* 
-
-
+```
+给 UiSelector.find() 添加刷新参数
+例如：text('嘿嘿').find(true);
+将会先刷新页面节点信息，然后再返回刷新后的寻找结果
+怎么知道有用呢？可以拿某手国际版来开刀，试试刷新和不刷新的区别
+```
