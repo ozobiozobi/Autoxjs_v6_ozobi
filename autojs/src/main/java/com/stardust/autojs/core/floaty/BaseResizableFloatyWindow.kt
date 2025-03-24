@@ -3,12 +3,15 @@ package com.stardust.autojs.core.floaty
 //import com.stardust.lib.R.layout
 import android.annotation.SuppressLint
 import android.content.Context
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.FrameLayout
+import androidx.core.view.allViews
 import com.stardust.autojs.R
 import com.stardust.autojs.R.layout
+import com.stardust.autojs.core.ui.widget.JsEditText
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.enhancedfloaty.ResizableFloaty
@@ -18,8 +21,10 @@ import com.stardust.enhancedfloaty.WindowBridge.DefaultImpl
 import com.stardust.enhancedfloaty.gesture.DragGesture
 import com.stardust.enhancedfloaty.gesture.ResizeGesture
 import com.stardust.enhancedfloaty.util.WindowTypeCompat
+import kotlinx.coroutines.DelicateCoroutinesApi
 
 
+@OptIn(DelicateCoroutinesApi::class)
 class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : FloatyWindow() {
     interface ViewSupplier {
         fun inflate(context: Context?, parent: ViewGroup?): View
@@ -32,12 +37,13 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
     private val mFloaty: MyFloaty
     private var mCloseButton: View? = null
     private val mOffset: Int
+    var windowView:ViewGroup
 
     init {
         mFloaty = MyFloaty(context, viewSupplier)
         mOffset = context.resources.getDimensionPixelSize(R.dimen.floaty_window_offset)
         val layoutParams = createWindowLayoutParams()
-        val windowView =
+        windowView =
             View.inflate(context, layout.ef_floaty_container, null as ViewGroup?) as ViewGroup
         rootView = mFloaty.createView()
         mResizer = mFloaty.getResizerView(rootView)
@@ -53,6 +59,20 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
         
         val windowLayoutParams = windowLayoutParams
         windowLayoutParams.flags = windowLayoutParams.flags or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
+
+        rootView.allViews.forEach {
+            if(it.javaClass.name == JsEditText::class.java.name){
+                it.setOnClickListener{
+                    requestWindowFocus()
+                }
+                it.setOnKeyListener { _, _, event ->
+                    if(event.keyCode == KeyEvent.KEYCODE_BACK){
+                        disableWindowFocus()
+                    }
+                    return@setOnKeyListener false
+                }
+            }
+        }
         // <
     }
 
@@ -63,7 +83,6 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
         layoutParams.gravity = 8388659
         return layoutParams
     }
-
     override fun onViewCreated(view: View) {
         super.onViewCreated(view)
         initGesture()

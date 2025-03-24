@@ -152,7 +152,7 @@ public abstract class Task {
         @Override
         public void cancel() {
             ScriptEngine engine = mScriptExecution.getEngine();
-            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "threads.start(()=>{exit()}");
+            ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "threads.start(()=>{exit()})");
             if (engine != null) {
                 try{
                     engine.forceStop();

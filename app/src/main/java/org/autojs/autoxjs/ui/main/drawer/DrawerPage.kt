@@ -119,6 +119,7 @@ import org.autojs.autoxjs.tool.WifiTool
 import org.autojs.autoxjs.ui.build.MyTextField
 import org.autojs.autoxjs.ui.common.OperationDialogBuilder
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
+import org.autojs.autoxjs.ui.compose.util.getFitRandomColor
 import org.autojs.autoxjs.ui.compose.widget.MyAlertDialog1
 import org.autojs.autoxjs.ui.compose.widget.MyIcon
 import org.autojs.autoxjs.ui.compose.widget.MySwitch
@@ -252,6 +253,7 @@ fun DonationDialog(
     linkText: String,
     linkUrl: String
 ) {
+    val randomColor = Color(getFitRandomColor(isNightMode()))
     if (showDialog) {
         var timeDifference = calculateTimeDifference(modification_since_timestamp,System.currentTimeMillis())
         var elapseString by remember { mutableStateOf(timeDifference.toString()) }
@@ -273,12 +275,12 @@ fun DonationDialog(
                 ) {
                     Text(
                         text = "$MODIFICATION_SINCE ~ 能走多远，且看诸位",
-                        style = TextStyle(color = Color(R.color.primary))
+                        style = TextStyle(color = randomColor )
                     )
                     Spacer(modifier = Modifier.height(3.dp))
                     Text(
                         text = elapseString,
-                        style = TextStyle(color = Color(R.color.primary))
+                        style = TextStyle(color = randomColor )
                     )
                     Spacer(modifier = Modifier.height(3.dp))
                     // 显示图片
@@ -314,26 +316,20 @@ fun DonationDialog(
         }
     }
 }
-data class TimeDifference(val years: Int, val days: Int, val hours: Int,val minutes: Int, val seconds: Int){
+data class TimeDifference(val years: Int, val days: Int){
     override fun toString(): String {
-        return "$years 年 $days 天 $hours 时 $minutes 分 $seconds 秒"
+        return "$years 年 $days 天"
     }
 }
 
 fun calculateTimeDifference(from: Long,to: Long): TimeDifference {
     val difference = to - from
-    val seconds = (difference / 1000).toInt()
-    val minutes = seconds / 60
-    val hours = minutes / 60
-    val days = hours / 24
+    val days = difference / 24 / 60 / 60 /1000
     val years = days / 365
 
     return TimeDifference(
-        years = years,
-        days = days % 365,
-        hours = hours % 24,
-        minutes = minutes % 60,
-        seconds = seconds % 60
+        years = years.toInt(),
+        days = (days % 365).toInt()
     )
 }
 @Composable
@@ -1633,11 +1629,12 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 65811->65812 ===>"
+            "<=== 65812 ===>"
         )
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(658): 悬浮窗点击输入无法弹出输入法\n\n"+
             "添加: app 开机自启(需要后台弹出界面[自启动]权限)\n\n" +
             "添加: 打包后开机自启(需要后台弹出界面[自启动]权限)\n\n"+
             "(BMX)更新: v1 文档 ui 控件使用方法"
@@ -1645,7 +1642,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 65810->65811 ===>"
+            "<=== 65811 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1664,7 +1661,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6589->65810 ===>"
+            "<=== 65810 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1688,7 +1685,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6588->6589 ===>"
+            "<=== 6589 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1713,7 +1710,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6587->6588 ===>"
+            "<=== 6588 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1738,7 +1735,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6586->6587 ===>"
+            "<=== 6587 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1775,7 +1772,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6585->6586 ===>"
+            "<=== 6586 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1791,7 +1788,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6584->6585 ===>"
+            "<=== 6585 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1828,7 +1825,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6583->6584 ===>"
+            "<=== 6584 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1875,7 +1872,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 6582->6583 ===>"
+            "<=== 6583 ===>"
         )
         .item(
             R.id.modification_detail,
@@ -1896,7 +1893,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 658->6582 ===>"
+            "<=== 6582 ===>"
         )
         .item(
             R.id.modification_detail,

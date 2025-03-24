@@ -24,7 +24,6 @@ public class JsEditText extends EditText {
 
     public JsEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

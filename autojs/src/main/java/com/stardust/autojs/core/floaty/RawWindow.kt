@@ -3,10 +3,13 @@ package com.stardust.autojs.core.floaty
 import android.content.Context
 import android.graphics.PixelFormat
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import androidx.core.view.allViews
 import com.stardust.autojs.R
+import com.stardust.autojs.core.ui.widget.JsEditText
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.enhancedfloaty.util.WindowTypeCompat
@@ -30,6 +33,19 @@ class RawWindow(rawFloaty: RawFloaty, context: Context) : FloatyWindow() {
         super.setWindowLayoutParams(mWindowLayoutParams)
         super.setWindowBridge(super.onCreateWindowBridge(mWindowLayoutParams))
         println(super.getWindowManager())
+        mContentView.allViews.forEach {
+            if(it.javaClass.name == JsEditText::class.java.name){
+                it.setOnClickListener{
+                    requestWindowFocus()
+                }
+                it.setOnKeyListener { _, _, event ->
+                    if(event.keyCode == KeyEvent.KEYCODE_BACK){
+                        disableWindowFocus()
+                    }
+                    return@setOnKeyListener false
+                }
+            }
+        }
     }
 
 

@@ -25,8 +25,6 @@ android {
         }
     }
     namespace = "com.stardust.autojs.apkbuilder"
-
-
 }
 
 dependencies {
@@ -40,6 +38,7 @@ dependencies {
     api(files("libs/tiny-sign-0.9.jar"))
     api(libs.commons.io)
     implementation(libs.core.ktx)
+    implementation(kotlin("script-runtime"))
 }
 repositories {
     mavenCentral()

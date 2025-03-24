@@ -5,9 +5,11 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.util.Log
 import android.util.TypedValue
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnClickListener
+import android.view.View.OnKeyListener
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
@@ -102,6 +104,17 @@ class ConsoleView : FrameLayout, LogListener {
         }
         mEditText.setOnClickListener(listener)
         mInputContainer.setOnClickListener(listener)
+        mEditText.setOnKeyListener(OnKeyListener { _: View?, _: Int, event: KeyEvent ->
+            if (event.keyCode == KeyEvent.KEYCODE_BACK) {
+                if (mWindow != null) {
+                    mWindow!!.disableWindowFocus()
+                }
+                mEditText.clearFocus()
+                mInputContainer.clearFocus()
+                return@OnKeyListener true
+            }
+            false
+        })
     }
 
     fun setConsole(console: ConsoleImpl) {
