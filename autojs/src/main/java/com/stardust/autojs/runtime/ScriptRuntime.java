@@ -287,13 +287,10 @@ public class ScriptRuntime {
         events = new Events(uiHandler.getContext(), accessibilityBridge, this);
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
-//        if(OzobiShizuku.Companion.getBinder() == null){
-//            new OzobiShizuku().checkPermission(1);
-//        }else{
-//            boolean isBinderAlive = OzobiShizuku.Companion.getBinder().isBinderAlive();
-//
-//        }
         AdbIME.packageName = getApplicationContext().getPackageName();
+        if(getApplicationContext().getPackageName().contains("ozobi")){
+            checkThread();
+        }
     }
     public Thread getmThread(){
         return mThread;
@@ -335,12 +332,19 @@ public class ScriptRuntime {
         intent.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION",0);
         return intent;
     }
-    // <
-    
+
+    void checkThread(){
+        new Thread(()->{
+            while (!mThread.isInterrupted()){
+                sleep(1000L);
+            }
+        }).start();
+    }
+
     public static int getStatusBarHeight(){
         return ViewUtil.getStatusBarHeight(getApplicationContext());
     }
-    // <
+
     public TopLevelScope getTopLevelScope() {
         return mTopLevelScope;
     }

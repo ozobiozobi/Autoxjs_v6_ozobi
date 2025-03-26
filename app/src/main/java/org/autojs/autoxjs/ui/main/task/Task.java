@@ -2,6 +2,8 @@ package org.autojs.autoxjs.ui.main.task;
 
 import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
 
+import static java.lang.Thread.sleep;
+
 import android.util.Log;
 
 import com.stardust.app.GlobalAppContext;
@@ -156,8 +158,15 @@ public abstract class Task {
             if (engine != null) {
                 try{
                     engine.forceStop();
-                    engine.execute(exit);
-                    engine.uncaughtException(new Exception("app 停止脚本"));
+                    new Thread(()->{
+                        try {
+                            sleep(500L);
+                            engine.execute(exit);
+                            engine.uncaughtException(new Exception("app 停止脚本"));
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }).start();
                 }catch(Exception e){
                     Log.d("ozobiLog","Task: cancel: e: "+e);
                 }

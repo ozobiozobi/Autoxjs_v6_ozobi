@@ -1634,6 +1634,9 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(尽力局): app 无法停止脚本\n"+
+                    "> 这应该是最后一次修这个bug了，如果还是不行的话，只能靠你们自己的代码解决了(循环适当地休息一下)\n" +
+                    "> (脚本是一个线程，只能通过 thread.interrupt() 优雅地结束)\n\n"+
             "修复(658): 悬浮窗点击输入无法弹出输入法\n\n"+
             "添加: app 开机自启(需要后台弹出界面[自启动]权限)\n\n" +
             "添加: 打包后开机自启(需要后台弹出界面[自启动]权限)\n\n"+
