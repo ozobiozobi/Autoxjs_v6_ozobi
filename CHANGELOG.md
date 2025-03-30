@@ -4,6 +4,8 @@
 
 (L.)添加(vscode插件): goScoper
 
+https://github.com/ozobiozobi/Auto.js-VSCode-Extension/releases
+
 修复(尽力局): app 无法停止脚本
 
 ```

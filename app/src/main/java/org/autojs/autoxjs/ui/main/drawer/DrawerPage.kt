@@ -1656,7 +1656,8 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "(L.)添加(vscode插件): goScoper\n\n"+
+            "(L.)添加(vscode插件): goScoper\n"+
+                    "https://github.com/ozobiozobi/Auto.js-VSCode-Extension/releases\n\n"+
             "修复(尽力局): app 无法停止脚本\n"+
                     "> 这应该是最后一次修这个bug了，如果还是不行的话，只能靠你们自己的代码解决了(循环适当地休息一下)\n" +
                     "> (脚本是一个线程，只能通过 thread.interrupt() 优雅地结束)\n\n"+
