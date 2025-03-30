@@ -1,6 +1,7 @@
 package org.autojs.autoxjs.devplugin
 
 import android.annotation.SuppressLint
+import android.util.Log
 import com.google.gson.JsonNull
 import com.google.gson.JsonObject
 import com.stardust.app.GlobalAppContext.toast
@@ -42,6 +43,73 @@ class DevPluginResponseHandler(private val cacheDir: File) : Handler {
                 val name = getName(data) ?: ""
                 val id = data["id"].asString
                 runScript(id, name, script)
+                true
+            }
+            .handler("captureToGoScoper") { data: JsonObject ->
+                val script = """ 
+                function collectNodeInfo(node) {
+                    if (!node) return null;
+                    let nodeInfo = { text: node.text(), id: node.id(), desc: node.desc(), clz: node.className(), pkg: node.packageName(), bounds: node.bounds(), index: node.indexInParent(), depth: node.depth(), clickable: node.clickable(), longClickable: node.longClickable(), checkable: node.checkable(), checked: node.checked(), selected: node.selected(), enabled: node.enabled(), visibleToUser: node.visibleToUser(), row: node.row(), column: node.column(), rowSpan: node.rowSpan(), columnSpan: node.columnSpan(), rowCount: node.rowCount(), columnCount: node.columnCount(), drawingOrder: node.drawingOrder(), children: [] };
+                    let children = node.children();
+                    if (children && children.length > 0) {
+                        for (let i = 0; i < children.length; i++) {
+                            let childInfo = collectNodeInfo(children[i]);
+                            if (childInfo) {
+                                nodeInfo.children.push(childInfo);
+                            }
+                        }
+                    }
+                    return nodeInfo;
+                }
+                function removeOldFiles() {
+                    let list = files.listDir("/sdcard/", function (_name) {
+                        return _name.startsWith("nodeInfo_") || _name.startsWith("nodeScreen_");
+                    });
+                    list.forEach((file) => {
+                        files.remove("/sdcard/" + file);
+                    });
+                }
+                function saveNodeTree() {
+                    let rootNode = auto.root;
+                    let nodeTree = collectNodeInfo(rootNode);
+                    if (!nodeTree) {
+                        toastLog("获取节点信息失败");
+                        return;
+                    }
+                    let timestamp = new Date().getTime();
+                    let jsonPath = "/sdcard/nodeInfo_" + timestamp + ".json";
+                    let imgPath = "/sdcard/nodeScreen_" + timestamp + ".png";
+                    try {
+                        files.write(jsonPath, JSON.stringify(nodeTree, null, 2));
+                        captureScreen(imgPath);
+                        uploadFilesToAPI(imgPath, jsonPath);
+                    } catch (e) {}
+                }
+                function uploadFilesToAPI(screenshotPath, jsonPath) {
+                    try {
+                        let res = http.postMultipart(API_ENDPOINT, { screenshot: open(screenshotPath), nodeJson: open(jsonPath) });
+                        if (res.statusCode >= 200 && res.statusCode < 300) {
+                            toastLog("上传成功");
+                        }
+                    } catch (e) {}
+                }
+                if (!requestScreenCapture()) {
+                    exit();
+                }
+                removeOldFiles();
+                const API_ENDPOINT = "http://__ip__:8000/api/screenshots/upload";
+                saveNodeTree();
+                """
+                val name = getName(data) ?: ""
+                val id = data["id"].asString
+                val replaceScript = DevPlugin.serverAddress?.let {
+                    script.replace("__ip__", it)
+                }
+                if(replaceScript != null){
+                    runScript(id, name, replaceScript)
+                }else{
+                    Log.d("ozobiLog","ip 为空")
+                }
                 true
             }
             .handler("stop") { data: JsonObject ->

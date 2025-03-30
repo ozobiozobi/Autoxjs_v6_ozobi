@@ -11,6 +11,7 @@ import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -626,6 +627,7 @@ private fun ConnectComputerSwitch() {
                     val url = result.content.rawValue
                     if (url.matches(Regex("^(ws://|wss://).+$"))) {
                         Pref.saveServerAddress(url)
+                        getUrl(url)
                         connectServer(url)
                     } else {
                         Toast.makeText(
@@ -1014,17 +1016,37 @@ private fun ConnectComputerDialog(
 private fun connectServer(
     url: String,
 ) {
-    GlobalScope.launch { DevPlugin.connect(url) }
+    GlobalScope.launch {
+        DevPlugin.connect(url)
+    }
 }
 
 private fun getUrl(host: String): String {
     var url1 = host
+    var isHost = true
     if (!url1.matches(Regex("^(ws|wss)://.*"))) {
         url1 = "ws://${url1}"
+    }else{
+        isHost = false
     }
     if (!url1.matches(Regex("^.+://.+?:.+$"))) {
         url1 += ":${DevPlugin.SERVER_PORT}"
+    }else{
+        isHost = false
     }
+    if(isHost){
+        DevPlugin.serverAddress = host
+    }else{
+        var okHost = host
+        if(host.indexOf("//") != -1){
+            okHost = okHost.substring(okHost.indexOf("//")+2)
+        }
+        if(okHost.indexOf(":") != -1){
+            okHost = okHost.substring(0, okHost.indexOf(":"))
+        }
+        DevPlugin.serverAddress = okHost
+    }
+    Log.d("ozobiLog","DevPlugin.serverAddress: "+DevPlugin.serverAddress)
     return url1
 }
 
@@ -1634,6 +1656,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "(L.)添加(vscode插件): goScoper\n\n"+
             "修复(尽力局): app 无法停止脚本\n"+
                     "> 这应该是最后一次修这个bug了，如果还是不行的话，只能靠你们自己的代码解决了(循环适当地休息一下)\n" +
                     "> (脚本是一个线程，只能通过 thread.interrupt() 优雅地结束)\n\n"+

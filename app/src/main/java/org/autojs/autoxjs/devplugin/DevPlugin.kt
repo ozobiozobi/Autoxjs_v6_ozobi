@@ -52,6 +52,7 @@ object DevPlugin {
 
     
     var isFirstTime = false
+    var serverAddress:String? = null
     // <
 
     private val gson get() = Gson()
