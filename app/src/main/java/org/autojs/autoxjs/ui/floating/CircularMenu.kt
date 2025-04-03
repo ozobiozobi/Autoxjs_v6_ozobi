@@ -83,14 +83,12 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private var isStartCaptureCountDown = false
     private var isStartCapture = false
     private var screenCapture:ScreenCapture = ScreenCapture(mContext)
-    private var isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
-        .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
-    private var isRefresh = PreferenceManager.getDefaultSharedPreferences(mContext)
-        .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_refresh), false)
-    private var isWaitForCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-        .getBoolean(mContext.getString(R.string.ozobi_key_isWaitFor_capture), true)
-    private var isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-        .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
+    private var isCaptureScreenshot = false
+    private var isRefresh = false
+    private var isWaitForCapture = true
+    private var isDelayCapture = false
+    private var doneCaptureVibrate = true
+    private var doneCapturePlaySound = false
     private var captureCostTime = 0L
     private var captureStartTime = 0L
     private var isCapturing = false
@@ -123,7 +121,10 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                              .getBoolean(mContext.getString(R.string.ozobi_key_isWaitFor_capture), true)
                          isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
                              .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
-                         
+                         doneCaptureVibrate = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_doneCaptureVibrate), true)
+                         doneCapturePlaySound = PreferenceManager.getDefaultSharedPreferences(mContext)
+                             .getBoolean(mContext.getString(R.string.ozobi_key_doneCapturePlaySound), false)
                          if(isCaptureScreenshot){
                              if(!Images.availale){
                                  screenCapture.stopScreenCapturer()
@@ -132,7 +133,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                              GlobalScope.launch {
                                  if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
                                      screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
-
                                  }
                              }
                          }
@@ -275,7 +275,6 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                 mp.release()
             }
         }catch(e:Exception){
-            
             playNotificationSound(context)
         }
     }
@@ -541,12 +540,16 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         if(isFirstCapture){
             captureCostTime = System.currentTimeMillis() - captureStartTime
         }
-        Thread {
-            Looper.prepare()
-            mVibrator.vibrate(50)
-            Looper.loop()
-        }.start()
-        playDoneCapturingSound(mContext)
+        if(doneCaptureVibrate){
+            Thread {
+                Looper.prepare()
+                mVibrator.vibrate(50)
+                Looper.loop()
+            }.start()
+        }
+        if(doneCapturePlaySound){
+            playDoneCapturingSound(mContext)
+        }
         withContext(Dispatchers.Main){
             showInspectorDialog()
         }

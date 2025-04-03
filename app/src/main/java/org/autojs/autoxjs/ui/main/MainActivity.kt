@@ -388,16 +388,16 @@ private fun TopBar(
                         text = stringResource(id = R.string.app_name)
                     )
                 }
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    IconButton(onClick = {
-                        context.startActivity(Intent(context, EditActivity::class.java))
-                    }) {
-                        Icon(
-                            imageVector = Icons.Default.Edit,
-                            contentDescription = "editor"
-                        )
-                    }
-                }
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+//                    IconButton(onClick = {
+//                        context.startActivity(Intent(context, EditActivity::class.java))
+//                    }) {
+//                        Icon(
+//                            imageVector = Icons.Default.Edit,
+//                            contentDescription = "editor"
+//                        )
+//                    }
+//                }
                 if (currentPage == 0) {
                     IconButton(onClick = { isSearch = true }) {
                         Icon(

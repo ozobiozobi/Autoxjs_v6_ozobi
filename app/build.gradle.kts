@@ -235,8 +235,8 @@ dependencies {
     implementation("com.jakewharton:butterknife:10.2.1") {
         exclude(group = "com.android.support")
     }
-    annotationProcessor("com.jakewharton:butterknife-compiler:10.2.3")
-    kapt("com.jakewharton:butterknife-compiler:10.2.3")
+    annotationProcessor(libs.butterknife.compiler)
+    kapt(libs.butterknife.compiler)
     // Android supports
     implementation("androidx.preference:preference-ktx:1.2.0")
     implementation(libs.appcompat) //

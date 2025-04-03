@@ -34,11 +34,14 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Surface
@@ -196,12 +199,12 @@ fun DrawerPage() {
             VolumeDownControlSwitch()
 
 
-            SwitchClassifyTittle("连接")
+            SwitchClassifyTittle("连接",)
             ConnectComputerSwitch()
             AlwaysTryToConnect()
             USBDebugSwitch()
-            
-            SwitchClassifyTittle("布局分析")
+
+            setDoneCaptureNotify()
             layoutInsWaitForCaptureSwitch()
             layoutInsDelayCaptureSwitch()
             layoutInsScreenshotSwitch()
@@ -1521,10 +1524,106 @@ private fun layoutInsWaitForCaptureSwitch() {
     )
 }
 // <
-
+@Composable
+private fun setDoneCaptureNotify(){
+    var isShowDialog by remember { mutableStateOf(false) }
+    var color = Color.Black
+    if(isNightMode()){
+        color = Color.White
+    }
+    TextButton(
+        onClick = {
+            isShowDialog = !isShowDialog
+        }
+    ) {
+        Text(text= "布局分析(点击设置)", style = TextStyle(color= color, fontStyle = FontStyle.Italic), fontWeight = FontWeight.Bold, modifier = Modifier.padding(0.dp,15.dp,0.dp,0.dp), fontSize = 16.sp)
+    }
+    if(isShowDialog){
+        showSetDoneCaptureNotifyDialog{isShowDialog = false}
+    }
+}
+@Composable
+private fun showSetDoneCaptureNotifyDialog(onDismiss:()->Unit){
+    val context = LocalContext.current
+    var showDialog by remember { mutableStateOf(true) }
+    var isVibrate by remember { mutableStateOf(PreferenceManager.getDefaultSharedPreferences(context)
+        .getBoolean(context.getString(R.string.ozobi_key_doneCaptureVibrate), true)) }
+    var isPlaySound  by remember { mutableStateOf(PreferenceManager.getDefaultSharedPreferences(context)
+        .getBoolean(context.getString(R.string.ozobi_key_doneCapturePlaySound), false)) }
+    if (showDialog) {
+        AlertDialog(
+            onDismissRequest = {
+                onDismiss()
+                showDialog = false
+            },
+            title = { Text(text = "捕获完成之后") },
+            text = {
+                Column{
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                isVibrate = !isVibrate
+                            }
+                            .padding(8.dp)
+                    ) {
+                        Checkbox(
+                            checked = isVibrate,
+                            onCheckedChange = {
+                                isVibrate = it
+                            }
+                        )
+                        Text(text = "振动", modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically))
+                    }
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .clickable {
+                                isPlaySound = !isPlaySound
+                            }
+                            .padding(8.dp)
+                    ) {
+                        Checkbox(
+                            checked = isPlaySound,
+                            onCheckedChange = {
+                                isPlaySound = it
+                            }
+                        )
+                        Text(text = "提示音", modifier = Modifier.padding(start = 8.dp).align(Alignment.CenterVertically))
+                    }
+                }
+            },
+            confirmButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    onDismiss()
+                    PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit()
+                        .putBoolean(context.getString(R.string.ozobi_key_doneCaptureVibrate),isVibrate)
+                        .apply()
+                    PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit()
+                        .putBoolean(context.getString(R.string.ozobi_key_doneCapturePlaySound),isPlaySound)
+                        .apply()
+                }) {
+                    Text(text = "确认")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = {
+                    showDialog = false
+                    onDismiss()
+                }) {
+                    Text(text = "取消")
+                }
+            }
+        )
+    }
+}
 @Composable
 private fun layoutInsDelayCaptureSwitch() {
     val context = LocalContext.current
+
     var isCaptureScreenshot by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
             .getBoolean(context.getString(R.string.ozobi_key_isDelay_capture), false)
@@ -1647,6 +1746,16 @@ fun detailsDialog(context: Context){
             R.id.qq_communication_group,
             R.drawable.ic_group_black_48dp,
             "QQ交流群: "+context.resources.getString(R.string.qq_communication_group)
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65813 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "添加: 设置布局分析捕获完成提示"
         )
         .item(
             R.id.modification_detail,
