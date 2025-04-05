@@ -39,6 +39,11 @@ public class Floaty {
         mLayoutInflater = ui.getLayoutInflater();
     }
 
+    public void keepScreenOn(){
+        RawWindow.Companion.setKeepScreenOn(true);
+        BaseResizableFloatyWindow.Companion.setKeepScreenOn(true);
+    }
+
     public JsResizableWindow window(BaseResizableFloatyWindow.ViewSupplier supplier) {
         try {
             FloatingPermission.waitForPermissionGranted(mContext);

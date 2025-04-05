@@ -30,6 +30,10 @@ module.exports = function(runtime, global){
         return window;
     }
 
+    floaty.keepScreenOn = function(){
+        runtime.floaty.keepScreenOn(true);
+    };
+
     function wrap(window){
         var proxyObject = new com.stardust.autojs.rhino.ProxyJavaObject(global, window, window.getClass());
         var viewCache = {};

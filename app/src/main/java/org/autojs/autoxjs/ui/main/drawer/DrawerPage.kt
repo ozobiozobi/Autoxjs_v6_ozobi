@@ -1755,6 +1755,9 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 悬浮窗保持屏幕常亮\n"+
+                    "> floaty.keepScreenOn()\n" +
+                    "> (之后创建的<第一个>悬浮窗将会使屏幕保持常亮)\n\n"+
             "添加: 设置布局分析捕获完成提示"
         )
         .item(

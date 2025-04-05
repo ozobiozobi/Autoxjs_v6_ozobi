@@ -19,7 +19,9 @@ class RawWindow(rawFloaty: RawFloaty, context: Context) : FloatyWindow() {
     interface RawFloaty {
         fun inflateWindowView(context: Context, parent: ViewGroup): View
     }
-
+    companion object{
+        var keepScreenOn = false
+    }
     private val mRawFloaty: RawFloaty = rawFloaty
     private var mContentView: View
 
@@ -64,6 +66,11 @@ class RawWindow(rawFloaty: RawFloaty, context: Context) : FloatyWindow() {
                 or WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE
                 or WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS
                 or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN)
+        if(keepScreenOn){
+            flags = flags or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            keepScreenOn = false
+            BaseResizableFloatyWindow.keepScreenOn = false
+        }
         val layoutParams = WindowManager.LayoutParams(
             WindowManager.LayoutParams.WRAP_CONTENT,
             WindowManager.LayoutParams.WRAP_CONTENT,

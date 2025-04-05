@@ -29,7 +29,9 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
     interface ViewSupplier {
         fun inflate(context: Context?, parent: ViewGroup?): View
     }
-
+    companion object{
+        var keepScreenOn = false
+    }
     var rootView: View
         private set
     private var mResizer: View? = null
@@ -59,7 +61,11 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
         
         val windowLayoutParams = windowLayoutParams
         windowLayoutParams.flags = windowLayoutParams.flags or WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN
-
+        if(keepScreenOn){
+            windowLayoutParams.flags = windowLayoutParams.flags or WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON
+            keepScreenOn = false
+            RawWindow.keepScreenOn = false
+        }
         rootView.allViews.forEach {
             if(it.javaClass.name == JsEditText::class.java.name){
                 it.setOnClickListener{
