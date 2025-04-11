@@ -40,7 +40,7 @@ class KtorDocsService: Service() {
     override fun onCreate() {
         super.onCreate()
         createNotificationChannel()
-        targetDir = File(applicationContext.filesDir, "docs/v2")
+        targetDir = File(applicationContext.filesDir, "docs/v1")
     }
 
     private fun createNotificationChannel() {
@@ -151,17 +151,17 @@ class KtorDocsService: Service() {
             Log.d("ozobiLog","KtorServer: getDocs")
             val assetManager = context.assets // 获取 AssetManager
             // 定义目标目录
-            val targetDir = File(context.filesDir, "docs/v2/")
+            val targetDir = File(context.filesDir, "docs/v1/")
 
             if (!targetDir.exists()) {
                 targetDir.mkdirs()
             }
 
             // 从 docs 中提取文件
-            val files = assetManager.list("docs/v2") ?: emptyArray()
+            val files = assetManager.list("docs/v1") ?: emptyArray()
 
             for (file in files) {
-                copyFileFromAssets(assetManager,"docs/v2/$file",targetDir.path+"/"+file)
+                copyFileFromAssets(assetManager,"docs/v1/$file",targetDir.path+"/"+file)
             }
         }
     }

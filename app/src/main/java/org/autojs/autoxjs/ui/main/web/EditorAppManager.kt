@@ -46,12 +46,12 @@ class EditorAppManager : Fragment() {
 
         fun loadHomeDocument(webView: WebView) {
             val saveStatus = getSaveStatus(webView.context)
-            val name = saveStatus.getString(DocumentSourceKEY, DocumentSource.DOC_V2_LOCAL.name)
+            val name = saveStatus.getString(DocumentSourceKEY, DocumentSource.DOC_V1_LOCAL.name)
             switchDocument(
                 webView, try {
                     DocumentSource.valueOf(name!!)
                 } catch (e: Exception) {
-                    DocumentSource.DOC_V2_LOCAL
+                    DocumentSource.DOC_V1_LOCAL
                 }
             )
         }

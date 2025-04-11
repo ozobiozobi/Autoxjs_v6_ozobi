@@ -1,5 +1,6 @@
 import com.android.build.gradle.internal.tasks.factory.dependsOn
 import okhttp3.Request
+import java.nio.charset.Charset
 import java.util.Properties
 import java.util.zip.ZipEntry
 import java.util.zip.ZipInputStream
@@ -386,7 +387,7 @@ tasks.register("installationDocumentation") {
             .use { response ->
                 check(response.isSuccessful) { "installationDocumentation failed" }
                 val body = response.body!!
-                ZipInputStream(body.byteStream()).use { zip ->
+                ZipInputStream(body.byteStream(),Charset.forName("GBK")).use { zip ->
                     var zipEntry: ZipEntry?;
                     while (true) {
                         zipEntry = zip.nextEntry ?: break
@@ -405,6 +406,5 @@ tasks.register("installationDocumentation") {
     }
 }
 tasks.named("clean").configure {
-//    doFirst { delete(docsDir) }
-    delete(layout.buildDirectory.get().asFile)
+    doFirst { delete(docsDir) }
 }

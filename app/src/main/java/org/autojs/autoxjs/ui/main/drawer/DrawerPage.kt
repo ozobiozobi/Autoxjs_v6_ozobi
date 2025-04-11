@@ -34,8 +34,6 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsBottomHeight
 import androidx.compose.foundation.layout.windowInsetsTopHeight
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
@@ -116,8 +114,8 @@ import org.autojs.autoxjs.R
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.devplugin.DevPlugin
 import org.autojs.autoxjs.external.foreground.ForegroundService
-import org.autojs.autoxjs.network.ozobi.KtorDocsService
 import org.autojs.autoxjs.network.ozobi.DocsServiceAddress
+import org.autojs.autoxjs.network.ozobi.KtorDocsService
 import org.autojs.autoxjs.tool.AccessibilityServiceTool
 import org.autojs.autoxjs.tool.WifiTool
 import org.autojs.autoxjs.ui.build.MyTextField
@@ -140,7 +138,7 @@ private const val PROJECT_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_oz
 //private const val DOWNLOAD_ADDRESS = "https://github.com/aiselp/AutoX/releases"
 private const val DOWNLOAD_ADDRESS = "https://github.com/ozobiozobi/Autoxjs_v6_ozobi/releases"
 private const val FEEDBACK_ADDRESS = "https://github.com/aiselp/AutoX/issues"
-private const val DONATION_PAGE_ADDRESS = "https://ozobiozobi.github.io/Autoxjs_v6_ozobi_some_info/"
+private const val DONATION_PAGE_ADDRESS = "https://ozobiozobi.github.io/Autox_ozobi_Docs/doc/overview.html"
 private const val V1_DOC_COMMUNITY_ADDRESS = "http://bmxwzsq.kesug.com/v1"
 private const val OZOBI_SUBFIX = "_ozobi"
 private const val MODIFICATION_SINCE = "2024-10-01"
@@ -1755,6 +1753,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修改: app 文档服务和 v1 本地文档改为新版 v1 文档\n\n"+
             "添加: 悬浮窗保持屏幕常亮\n"+
                     "> floaty.keepScreenOn()\n" +
                     "> (之后创建的<第一个>悬浮窗将会使屏幕保持常亮)\n\n"+

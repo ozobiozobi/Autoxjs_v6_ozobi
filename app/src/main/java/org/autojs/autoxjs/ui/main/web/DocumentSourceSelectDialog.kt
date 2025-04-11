@@ -17,7 +17,7 @@ class DocumentSourceSelectDialog(private val webView: WebView) {
 
     init {
         val name = EditorAppManager.getSaveStatus(webView.context)
-            .getString(EditorAppManager.DocumentSourceKEY, DocumentSource.DOC_V2_LOCAL.name)!!
+            .getString(EditorAppManager.DocumentSourceKEY, DocumentSource.DOC_V1_LOCAL.name)!!
         val documentSource = DocumentSource.valueOf(name)
         val i = documentSources.lastIndexOf(documentSource)
         dialogBuilder.itemsCallbackSingleChoice(if (i == -1) 0 else i) { _, _, position, _ ->
