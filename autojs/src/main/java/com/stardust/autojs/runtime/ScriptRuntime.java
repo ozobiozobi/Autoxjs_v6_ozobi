@@ -334,11 +334,11 @@ public class ScriptRuntime {
     }
 
     void checkThread(){
-        new Thread(()->{
+        threads.start(()->{
             while (!mThread.isInterrupted()){
-                sleep(1000L);
+                sleep(6000L);
             }
-        }).start();
+        });
     }
 
     public static int getStatusBarHeight(){
@@ -517,6 +517,7 @@ public class ScriptRuntime {
         } catch (Throwable e) {
             console.error("exception on exit: ", e);
         }
+        ignoresException(()->adbIMEShellCommand = null);
         ignoresException(threads::shutDownAll);
         ignoresException(events::recycle);
         ignoresException(media::recycle);

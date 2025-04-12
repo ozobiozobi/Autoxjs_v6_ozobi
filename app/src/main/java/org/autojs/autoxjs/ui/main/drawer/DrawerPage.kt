@@ -1753,6 +1753,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复(魔改): 两个内存泄露\n\n"+
             "修改: app 文档服务和 v1 本地文档改为新版 v1 文档\n\n"+
             "添加: 悬浮窗保持屏幕常亮\n"+
                     "> floaty.keepScreenOn()\n" +
