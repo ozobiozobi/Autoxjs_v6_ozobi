@@ -132,7 +132,7 @@ public class EditorMenu {
             case R.id.action_info:
                 showInfo();
                 return true;
-            
+
             case R.id.action_build_apk:
                 startBuildApkActivity();
                 return true;
@@ -194,8 +194,8 @@ public class EditorMenu {
 
     private boolean onEditOptionsSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_find_or_replace:
-                findOrReplace();
+            case R.id.action_paste:
+                paste();
                 return true;
             case R.id.action_copy_all:
                 copyAll();
@@ -211,6 +211,9 @@ public class EditorMenu {
                 return true;
             case R.id.action_beautify:
                 beautifyCode();
+                return true;
+            case R.id.action_find_or_replace:
+                findOrReplace();
                 return true;
         }
         return false;
@@ -261,7 +264,6 @@ public class EditorMenu {
     private void copyLine() {
         mEditor.copyLine();
     }
-
 
     private void deleteLine() {
         mEditor.deleteLine();

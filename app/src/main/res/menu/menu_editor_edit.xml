@@ -2,6 +2,10 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
+        android:id="@+id/action_paste"
+        android:title="@string/text_paste"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_find_or_replace"
         android:title="@string/text_find_or_replace"
         app:showAsAction="never" />

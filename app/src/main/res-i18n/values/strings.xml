@@ -256,6 +256,7 @@
     <string name="text_jump_to_line">跳转到行</string>
     <string name="text_info">信息</string>
     <string name="text_find_or_replace">查找/替换</string>
+    <string name="text_paste">粘贴</string>
     <string name="text_copy_all">复制全部</string>
     <string name="text_copy_line">复制行</string>
     <string name="text_delete_line">删除行</string>
