@@ -242,7 +242,6 @@ public class ScriptRuntime {
     private Thread mThread;
     private TopLevelScope mTopLevelScope;
     private final String logTag = "ozobiLog";
-    private Thread checkThread = null;
 
 
     protected ScriptRuntime(Builder builder) {
@@ -288,9 +287,6 @@ public class ScriptRuntime {
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
         AdbIME.packageName = getApplicationContext().getPackageName();
-        if(getApplicationContext().getPackageName().contains("ozobi")){
-            checkThread();
-        }
     }
     public Thread getmThread(){
         return mThread;
@@ -331,14 +327,6 @@ public class ScriptRuntime {
         intent.putExtra("com.termux.RUN_COMMAND_BACKGROUND",true);
         intent.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION",0);
         return intent;
-    }
-
-    void checkThread(){
-        threads.start(()->{
-            while (!mThread.isInterrupted()){
-                sleep(6000L);
-            }
-        });
     }
 
     public static int getStatusBarHeight(){

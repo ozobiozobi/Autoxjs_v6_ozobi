@@ -5,7 +5,7 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.stardust.app.GlobalAppContext;
-import com.stardust.autojs.core.accessibility.AccessibilityService;
+import com.google.android.accessibility;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
 
@@ -20,7 +20,7 @@ import java.util.Locale;
 
 public class AccessibilityServiceTool {
 
-    private static final Class<AccessibilityService> sAccessibilityServiceClass = AccessibilityService.class;
+    private static final Class<accessibility> sAccessibilityServiceClass = accessibility.class;
 
     public static void enableAccessibilityService() {
         if (Pref.shouldEnableAccessibilityServiceByRoot()) {
@@ -66,13 +66,13 @@ public class AccessibilityServiceTool {
 
     public static boolean enableAccessibilityServiceByRootAndWaitFor(long timeOut) {
         if (enableAccessibilityServiceByRoot(sAccessibilityServiceClass)) {
-            return AccessibilityService.Companion.waitForEnabled(timeOut);
+            return accessibility.Companion.waitForEnabled(timeOut);
         }
         return false;
     }
 
     public static void enableAccessibilityServiceByRootIfNeeded() {
-        if (AccessibilityService.Companion.getInstance() == null)
+        if (accessibility.Companion.getInstance() == null)
             if (Pref.shouldEnableAccessibilityServiceByRoot()) {
                 AccessibilityServiceTool.enableAccessibilityServiceByRoot(sAccessibilityServiceClass);
             }

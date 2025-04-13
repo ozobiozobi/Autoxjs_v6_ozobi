@@ -163,7 +163,7 @@ public class Events extends EventEmitter implements OnKeyListener, TouchObserver
         mScriptRuntime.ensureAccessibilityServiceEnabled();
         AccessibilityService service = mAccessibilityBridge.getService();
         if (service == null)
-            throw new ScriptException("AccessibilityService = null");
+            throw new ScriptException("accessibility = null");
         return service;
     }
 

@@ -1753,6 +1753,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修改(658): 无障碍服务类名\n\n"+
             "添加: 一些编辑器提示栏符号\n\n"+
             "添加: 编辑器编辑菜单粘贴\n\n"+
             "修复(魔改): 两个内存泄露\n\n"+

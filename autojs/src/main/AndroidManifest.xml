@@ -48,7 +48,7 @@
             android:theme="@style/ScriptTheme.Transparent" />
 
         <service
-            android:name="com.stardust.autojs.core.accessibility.AccessibilityService"
+            android:name="com.google.android.accessibility"
             android:exported="false"
             android:permission="android.permission.BIND_ACCESSIBILITY_SERVICE">
             <intent-filter>
