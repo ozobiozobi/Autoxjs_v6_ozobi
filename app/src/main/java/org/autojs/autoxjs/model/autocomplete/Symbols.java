@@ -9,8 +9,8 @@ import java.util.Arrays;
 public class Symbols {
 
     private static CodeCompletions sSymbols = CodeCompletions.just(Arrays.asList(
-            "\"", "(", ")", "=", ";", "/", "{", "}", "!", "|", "&", "-",
-            "[", "]", "+", "-", "<", ">", "\\", "*", "?"));
+            "\"", "(", ")", "'", "=", ";", "/", "`", "{", "}", "!", "|", "&", "_",
+            "[", "]", "+", "-", "<", ">", "\\", "~", ",", ".", "@", "#", "$", "%", "^", ":", "*", "?"));
 
     public static CodeCompletions getSymbols() {
         return sSymbols;
