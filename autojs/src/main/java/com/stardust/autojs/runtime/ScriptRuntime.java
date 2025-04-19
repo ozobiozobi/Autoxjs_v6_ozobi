@@ -20,8 +20,6 @@ import com.stardust.autojs.core.image.Colors;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
 import com.stardust.autojs.core.looper.Loopers;
 import com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME;
-import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseHelper;
-import com.stardust.autojs.core.ozobi.database.AddInfoDatabaseManager;
 import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
 import com.stardust.autojs.core.permission.Permissions;
 import com.stardust.autojs.core.util.ProcessShell;
@@ -83,7 +81,6 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ScriptRuntime {
 
     private static final String TAG = "ScriptRuntime";
-
 
     public static class Builder {
         private UiHandler mUiHandler;
@@ -173,18 +170,11 @@ public class ScriptRuntime {
     @ScriptVariable
     public Device device;
 
-    
     @ScriptVariable
     public DeviceAdminReceiverMsg deviceAdminReceiverMsg;
 
     @ScriptVariable
     public DevicePolicyManager devicePolicyManager;
-
-    @ScriptVariable
-    public AddInfoDatabaseHelper dbHelper;
-
-    @ScriptVariable
-    public AddInfoDatabaseManager dbManager;
 
     @ScriptVariable
     public AdbIME adbIMEShellCommand;
@@ -243,7 +233,6 @@ public class ScriptRuntime {
     private TopLevelScope mTopLevelScope;
     private final String logTag = "ozobiLog";
 
-
     protected ScriptRuntime(Builder builder) {
         uiHandler = builder.mUiHandler;
         Context context = uiHandler.getContext();
@@ -262,8 +251,6 @@ public class ScriptRuntime {
         
         deviceAdminReceiverMsg = DeviceAdminReceiverMsg.INSTANCE;
         devicePolicyManager = DevicePolicyManager.INSTANCE;
-        dbHelper = new AddInfoDatabaseHelper(context);
-        dbManager = new AddInfoDatabaseManager(dbHelper);
         viewUtils = new ViewUtils();
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
@@ -496,7 +483,6 @@ public class ScriptRuntime {
         //悬浮窗需要第一时间关闭以免出现恶意脚本全屏悬浮窗屏蔽屏幕并且在exit中写死循环的问题
         ignoresException(floaty::closeAll);
         try {
-
             events.emit("exit");
             if (console.isAutoHide()) {
                 console.log("系统消息：任务结束,3秒后该窗口关闭");
@@ -505,7 +491,6 @@ public class ScriptRuntime {
         } catch (Throwable e) {
             console.error("exception on exit: ", e);
         }
-        ignoresException(()->adbIMEShellCommand = null);
         ignoresException(threads::shutDownAll);
         ignoresException(events::recycle);
         ignoresException(media::recycle);
@@ -514,6 +499,10 @@ public class ScriptRuntime {
             if (mRootShell != null) mRootShell.exit();
             mRootShell = null;
             mShellSupplier = null;
+            adbIMEShellCommand = null;
+            viewUtils = null;
+            deviceAdminReceiverMsg = null;
+            devicePolicyManager = null;
         });
         ignoresException(images::releaseScreenCapturer);
         ignoresException(sensors::unregisterAll);

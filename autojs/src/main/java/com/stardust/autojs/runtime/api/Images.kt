@@ -190,7 +190,7 @@ class Images(
     }
 
     fun releaseScreenCapturer() {
-        stopScreenCapturer()
+//        stopScreenCapturer()
     }
 
     @JvmOverloads

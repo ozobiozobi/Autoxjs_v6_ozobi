@@ -10,6 +10,8 @@ import com.stardust.autojs.script.ScriptSource;
 
 import org.mozilla.javascript.ContinuationPending;
 
+import java.util.Objects;
+
 /**
  * Created by Stardust on 2017/7/28.
  */
@@ -50,8 +52,6 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
                     callback.onException(e);
                 }
             }
-
-
         };
         mHandler.post(r);
         if (!mLooping && Looper.myLooper() != Looper.getMainLooper()) {
@@ -81,7 +81,22 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
 
     @Override
     public synchronized void destroy() {
+        release();
         super.destroy();
+    }
+
+    private void release() {
+        // 清理 Handler 的回调和消息
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+            mHandler = null;
+        }
+
+        // 停止 Looper
+        if (mLooping) {
+            Objects.requireNonNull(Looper.myLooper()).quit();
+            mLooping = false;
+        }
     }
 
     @Override
@@ -90,6 +105,4 @@ public class LoopBasedJavaScriptEngine extends RhinoJavaScriptEngine {
         mHandler = new Handler();
         super.init();
     }
-
-
 }

@@ -83,7 +83,7 @@ android {
         create("common") {
             buildConfigField("boolean", "isMarket", "false")
             manifestPlaceholders.putAll(mapOf("appName" to "inrt"))
-            ndk.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a"))
+            ndk.abiFilters.addAll(listOf("armeabi-v7a", "arm64-v8a", "x86_64"))
         }
         create("template") {
             manifestPlaceholders.putAll(mapOf("appName" to "template"))
@@ -154,6 +154,9 @@ tasks.register("cp2APPDebug") {
 
 
 dependencies {
+    debugImplementation(libs.leakcanary.android)
+    implementation(libs.leakcanary.`object`.watcher.android)
+
     implementation(libs.androidx.activity.ktx)
     implementation(libs.appcompat)
     implementation(libs.material)

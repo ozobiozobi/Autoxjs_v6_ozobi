@@ -57,7 +57,30 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
     @Override
     public synchronized void destroy() {
         mRuntime.onExit();
+        release();
         super.destroy();
+    }
+
+    private void release() {
+        // 清理 ScriptRuntime 引用
+        if (mRuntime != null) {
+            mRuntime.onExit();
+            mRuntime = null;
+        }
+
+        // 清理执行参数
+        if (mExecArgv != null) {
+            mExecArgv = null;
+        }
+
+        // 清理其他资源
+        clearTags();
+    }
+
+    private void clearTags() {
+        // 清理所有标签
+        put("runtime", null);
+        put(TAG_SOURCE, null);
     }
 
     @Override

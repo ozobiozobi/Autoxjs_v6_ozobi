@@ -9,21 +9,23 @@ import com.stardust.autojs.script.JavaScriptSource;
 /**
  * Created by Stardust on 2017/10/27.
  */
-
 public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
 
     public LoopedBasedJavaScriptExecution(ScriptEngineManager manager, ScriptExecutionTask task) {
         super(manager, task);
     }
 
-
+    @Override
     protected Object doExecution(final ScriptEngine engine) {
         engine.setTag(ScriptEngine.TAG_SOURCE, getSource());
         getListener().onStart(this);
         long delay = getConfig().getDelay();
         sleep(delay);
+
         final LoopBasedJavaScriptEngine javaScriptEngine = (LoopBasedJavaScriptEngine) engine;
         final long interval = getConfig().getInterval();
+
+        // 设置主循环退出处理器
         javaScriptEngine.getRuntime().loopers.setMainLooperQuitHandler(new Loopers.LooperQuitHandler() {
             long times = getConfig().getLoopTimes() == 0 ? Integer.MAX_VALUE : getConfig().getLoopTimes();
 
@@ -35,10 +37,13 @@ public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
                     javaScriptEngine.execute(getSource());
                     return false;
                 }
+
+                // 清理资源
                 javaScriptEngine.getRuntime().loopers.setMainLooperQuitHandler(null);
                 return true;
             }
         });
+
         javaScriptEngine.execute(getSource());
         return null;
     }
@@ -47,5 +52,4 @@ public class LoopedBasedJavaScriptExecution extends RunnableScriptExecution {
     public JavaScriptSource getSource() {
         return (JavaScriptSource) super.getSource();
     }
-
 }
