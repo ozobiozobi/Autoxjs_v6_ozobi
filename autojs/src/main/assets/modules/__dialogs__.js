@@ -222,7 +222,7 @@ module.exports = function(__runtime__, scope){
 
     function toJsArray(object, adapter){
         var jsArray = [];
-        var len = javaArray.length;
+        var len = object.length;
         for (var i = 0;i < len;i++){
             jsArray.push(adapter(object, i));
         }
