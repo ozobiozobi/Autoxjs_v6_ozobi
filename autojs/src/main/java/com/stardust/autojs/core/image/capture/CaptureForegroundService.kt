@@ -6,6 +6,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
 import android.content.Intent
+import android.content.pm.ServiceInfo
 import android.media.projection.MediaProjection
 import android.os.Build
 import android.os.Handler
@@ -27,13 +28,13 @@ class CaptureForegroundService : Service() {
         }
     }
 
-    override fun onBind(intent: Intent): IBinder? {
+    override fun onBind(intent: Intent?): IBinder? {
         return null
     }
 
-    override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        if (intent.action == (STOP)) {
+        if (intent?.action == (STOP)) {
             Log.i(TAG, "stopSelf")
             stopSelf()
         }
@@ -41,18 +42,22 @@ class CaptureForegroundService : Service() {
         return START_NOT_STICKY
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreate() {
         super.onCreate()
-        startForeground(NOTIFICATION_ID, buildNotification())
+        val notification = buildNotification()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            startForeground(NOTIFICATION_ID, notification, ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PROJECTION)
+        } else {
+            startForeground(NOTIFICATION_ID, notification)
+        }
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun buildNotification(): Notification {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            createNotificationChannel()
-        }
-        val flags =
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) PendingIntent.FLAG_IMMUTABLE else 0
+        createNotificationChannel()
+        val flags = PendingIntent.FLAG_IMMUTABLE
         val contentIntent = PendingIntent.getActivity(
             this, 0,
             Intent(this, ScreenCaptureRequestActivity::class.java), flags
@@ -68,7 +73,7 @@ class CaptureForegroundService : Service() {
             .build()
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel() {
         val manager = (getSystemService(NOTIFICATION_SERVICE) as NotificationManager)
         val channel = NotificationChannel(
@@ -111,7 +116,7 @@ class CaptureForegroundService : Service() {
         var mediaProjection: MediaProjection? = null
         private const val TAG = "CaptureService"
         private const val STOP = "STOP_SERVICE"
-        private const val NOTIFICATION_ID = 2
+        private const val NOTIFICATION_ID = 26
         private val CHANNEL_ID = CaptureForegroundService::class.java.name + ".foreground"
         private const val NOTIFICATION_TITLE = "前台截图服务运行中"
     }
