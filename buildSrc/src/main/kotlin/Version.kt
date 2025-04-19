@@ -35,5 +35,5 @@ data class Versions(
     @SerializedName("mini")
     val mini: Int = 24,
     @SerializedName("target")
-    val target: Int = 28
+    val target: Int = 35
 )
