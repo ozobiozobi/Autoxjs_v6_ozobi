@@ -425,11 +425,11 @@ class ApkBuilder(
             }
         }
     }
-
     companion object {
         private const val NO_SIGN_APK_SUFFIX = "_no-sign.apk"
         private val stripPattern = Pattern.compile("^META-INF/(.*)[.](SF|RSA|DSA|MF)$")
         private const val TAG: String = "ApkBuilder"
+
 
         private fun doDir(
             prefix: String,
@@ -442,6 +442,9 @@ class ApkBuilder(
             val files = dir.listFiles() ?: return
             for (f in files) {
                 if (f.isFile) {
+                    if(f.name.contains(".arsc")){
+                        doFile(prefix + f.name, f, zos, dos)
+                    }
                     doFile(prefix + f.name, f, zos, dos)
                 } else {
                     doDir(prefix + f.name + "/", f, zos, dos)
@@ -456,6 +459,7 @@ class ApkBuilder(
 
             // 如果是 resources.arsc 文件，设置压缩方法为 STORED
             if (name.endsWith(".arsc")) {
+                Log.d("ozobiLog","arsc 文件")
                 entry.method = ZipEntry.STORED
                 entry.size = f.length()
                 entry.crc = calculateCrc(f)

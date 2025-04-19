@@ -75,6 +75,7 @@ class Images(
     fun stopScreenCapturer(){
         availale = false
         mScreenCaptureRequester.recycle()
+        ozobiScreenCaptureRequester.recycle()
     }
 
     @Synchronized
@@ -189,7 +190,7 @@ class Images(
     }
 
     fun releaseScreenCapturer() {
-        //mScreenCapturer?.release()
+        stopScreenCapturer()
     }
 
     @JvmOverloads

@@ -19,6 +19,7 @@ accompanist-version = "0.24.13-rc"
 room-runtime = "2.6.1"
 text-recognition = "16.0.0-beta6"
 text-recognition-chinese = "16.0.0"
+leakcanary-android-core-version = "2.13"
 
 [libraries]
 
@@ -90,6 +91,7 @@ text-recognition-chinese = { module = "com.google.mlkit:text-recognition-chinese
 text-recognition-korean = { module = "com.google.mlkit:text-recognition-korean", version.ref = "text-recognition" }
 text-recognition-japanese = { module = "com.google.mlkit:text-recognition-japanese", version.ref = "text-recognition" }
 text-recognition-devanagari = { module = "com.google.mlkit:text-recognition-devanagari", version.ref = "text-recognition" }
+leakcanary-android-core = { group = "com.squareup.leakcanary", name = "leakcanary-android-core", version.ref = "leakcanary-android-core-version" }
 [plugins]
 
 [bundles]

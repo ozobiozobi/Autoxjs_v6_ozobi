@@ -28,6 +28,7 @@ import com.stardust.autojs.inrt.pluginclient.AutoXKeepLiveService
 import com.stardust.autojs.core.ui.inflater.ImageLoader
 import com.stardust.autojs.core.ui.inflater.util.Drawables
 import com.stardust.autojs.execution.ScriptExecuteActivity
+import leakcanary.AppWatcher
 import org.autojs.autoxjs.inrt.BuildConfig
 import org.autojs.autoxjs.inrt.R
 
@@ -41,6 +42,9 @@ class App : Application() {
     var TAG = "inrt.application";
     override fun onCreate() {
         super.onCreate()
+        if(BuildConfig.DEBUG){
+            AppWatcher.manualInstall(this)
+        }
         GlobalAppContext.set(
             this, com.stardust.app.BuildConfig.generate(BuildConfig::class.java)
         )

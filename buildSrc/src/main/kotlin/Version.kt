@@ -17,17 +17,17 @@ fun initVersions(file: File) {
 
 data class Versions(
     @SerializedName("appVersionCode")
-    val appVersionCode: Int = 6586,
+    val appVersionCode: Int = 65814,
     @SerializedName("appVersionName")
-    val appVersionName: String = "6.5.8.6",
+    val appVersionName: String = "6.5.8.14",
     @SerializedName("buildTool")
     val buildTool: String = "35.0.0",
     @SerializedName("compile")
     val compile: Int = 35,
     @SerializedName("devVersionCode")
-    val devVersionCode: Int = 6586,
+    val devVersionCode: Int = 65814,
     @SerializedName("devVersionName")
-    val devVersionName: String = "6.5.8.6",
+    val devVersionName: String = "6.5.8.14",
     @SerializedName("IDE")
     val ide: String = "Android Studio Koala Feature Drop | 2024.1.2",
     @SerializedName("JDK")

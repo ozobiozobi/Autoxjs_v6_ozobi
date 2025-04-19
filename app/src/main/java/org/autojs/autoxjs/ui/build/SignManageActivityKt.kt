@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -262,11 +263,12 @@ private fun showKeyCreateDialog(context: Context, onCreated: (path: String) -> U
         .show()
 }
 
-private fun showPasswordInputDialog(
+fun showPasswordInputDialog(
     context: Context,
     apkKeyStore: ApkKeyStore,
     onIsVerifiedChange: (isVerified: Boolean) -> Unit
 ) {
+    Log.d("ozobiLog","验证签名密码")
     DialogUtils.showDialog(ThemeColorMaterialDialogBuilder(context).title(R.string.text_sign_password)
         .inputType(InputType.TYPE_TEXT_VARIATION_PASSWORD)
         .autoDismiss(false)

@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import androidx.core.content.res.ResourcesCompat.FontCallback.getHandler
 import com.stardust.app.OnActivityResultDelegate
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester.ActivityScreenCaptureRequester
 import com.stardust.util.IntentExtras
@@ -53,6 +54,14 @@ class ScreenCaptureRequestActivity : Activity() {
         super.onDestroy()
         IntentExtras.fromIdAndRelease(extraId)
         mCallback = null
+        if (isFinishing) {
+            // 清理 ViewRootImpl 的引用
+            if (window != null) {
+                window.decorView.setOnTouchListener(null)
+                window.decorView.setOnClickListener(null)
+                window.decorView.setOnKeyListener(null)
+            }
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

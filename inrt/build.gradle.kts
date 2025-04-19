@@ -20,8 +20,8 @@ android {
         applicationId = "org.autojs.autoxjs.inrt"
         minSdk = versions.mini
         targetSdk = versions.target
-        versionCode = 6582
-        versionName = "6.5.8.2"
+        versionCode = 65814
+        versionName = "6.5.8.14"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
 //        buildConfigField("boolean","isMarket","true") // 这是有注册码的版本

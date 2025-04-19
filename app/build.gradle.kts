@@ -34,8 +34,8 @@ android {
         applicationId = "org.autojs.autoxjs"
         minSdk = versions.mini
         targetSdk = versions.target
-        versionCode = 65811
-        versionName = "6.5.8.11"
+        versionCode = 65814
+        versionName = "6.5.8.14"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
         buildConfigField("boolean", "isMarket", "false")
@@ -349,7 +349,13 @@ fun copyTemplateToAPP(isDebug: Boolean, to: File) {
 
 val assetsDir = File(projectDir, "src/main/assets")
 if (!File(assetsDir, "template.apk").isFile) {
-    tasks.named("preBuild").dependsOn("buildTemplateApp")
+    val isReleaseBuild = gradle.startParameter.taskNames.any { it.contains("Release", ignoreCase = true) }
+    val isDebugBuild = gradle.startParameter.taskNames.any { it.contains("Debug", ignoreCase = true) }
+    if (isReleaseBuild) {
+        tasks.named("preBuild").dependsOn("buildTemplateApp")
+    } else if (isDebugBuild) {
+        tasks.named("preBuild").dependsOn("buildDebugTemplateApp")
+    }
 }
 
 tasks.register("buildTemplateApp") {
