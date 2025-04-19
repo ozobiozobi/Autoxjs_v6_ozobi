@@ -344,7 +344,7 @@ fun ShowDonationDialog(onDismiss:()->Unit){
             showDialog = false},
         imageResId = R.drawable.qrcode,
         contentText = "为魔改充电(需要加入QQ群)\n备注可以指定充电的开发者、版本或功能\n(没有备注则默认充电时的最新版)",
-        linkText = "github充电记录页面",
+        linkText = "github 船员名单",
         linkUrl = DONATION_PAGE_ADDRESS
     )
 }
@@ -1744,6 +1744,17 @@ fun detailsDialog(context: Context){
             R.id.qq_communication_group,
             R.drawable.ic_group_black_48dp,
             "QQ交流群: "+context.resources.getString(R.string.qq_communication_group)
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65814 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复(魔改): looper 初始化之前创建 AdbIME 对象导致报错闪退\n\n"+
+            "修复(658): 多选对话框无法使用"
         )
         .item(
             R.id.modification_detail,

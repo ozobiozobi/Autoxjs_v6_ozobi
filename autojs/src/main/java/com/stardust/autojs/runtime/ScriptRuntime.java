@@ -264,7 +264,6 @@ public class ScriptRuntime {
         devicePolicyManager = DevicePolicyManager.INSTANCE;
         dbHelper = new AddInfoDatabaseHelper(context);
         dbManager = new AddInfoDatabaseManager(dbHelper);
-        adbIMEShellCommand = new AdbIME();
         viewUtils = new ViewUtils();
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
@@ -287,6 +286,7 @@ public class ScriptRuntime {
         mThread = Thread.currentThread();
         sensors = new Sensors(uiHandler.getContext(), this);
         AdbIME.packageName = getApplicationContext().getPackageName();
+        adbIMEShellCommand = new AdbIME();
     }
     public Thread getmThread(){
         return mThread;

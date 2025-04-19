@@ -5,7 +5,6 @@ import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.os.Looper
 import android.widget.Toast
@@ -48,7 +47,6 @@ import org.autojs.autoxjs.ui.common.ScriptOperations
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autoxjs.ui.compose.widget.MyIcon
 import org.autojs.autoxjs.ui.compose.widget.SearchBox2
-import org.autojs.autoxjs.ui.edit.EditActivity
 import org.autojs.autoxjs.ui.explorer.ExplorerViewKt
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
 import org.autojs.autoxjs.ui.main.components.DocumentPageMenuButton
@@ -77,6 +75,7 @@ class MainActivity : FragmentActivity() {
     private var drawerState: DrawerState? = null
     private val viewPager: ViewPager2 by lazy { ViewPager2(this) }
     private var scope: CoroutineScope? = null
+    private lateinit var serviceConnection:MessengerServiceConnection
 
     @OptIn(ExperimentalPermissionsApi::class)
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -92,8 +91,7 @@ class MainActivity : FragmentActivity() {
             else Pref.setFloatingMenuShown(false)
         }
         
-        val serviceConnection =
-            MessengerServiceConnection(Looper.getMainLooper())
+        serviceConnection = MessengerServiceConnection(Looper.getMainLooper())
         val intent = Intent("com.stardust.autojs.messengerAction")
         intent.setPackage(this.packageName)
         bindService(intent, serviceConnection, BIND_AUTO_CREATE)
@@ -149,6 +147,11 @@ class MainActivity : FragmentActivity() {
             }
         }
         return false
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unbindService(serviceConnection)
     }
 
     override fun onResume() {
