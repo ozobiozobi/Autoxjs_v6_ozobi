@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import com.stardust.util.StoragePermissionUtils
 import org.autojs.autoxjs.inrt.R
 
 
@@ -19,6 +20,11 @@ class SettingsActivity : AppCompatActivity() {
     override fun onCreate(@Nullable savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupViews()
+        // 检查是否拥有管理所有文件的权限
+        if (!StoragePermissionUtils.hasManageAllFilesPermission()) {
+            // 如果没有权限，跳转到授权页面
+            StoragePermissionUtils.requestManageAllFilesPermission(this)
+        }
     }
 
     private fun setupViews() {

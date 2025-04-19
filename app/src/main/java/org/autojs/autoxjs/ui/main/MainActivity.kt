@@ -32,6 +32,7 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stardust.app.permission.DrawOverlaysPermission
+import com.stardust.util.StoragePermissionUtils
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.autojs.autoxjs.Pref
@@ -83,6 +84,12 @@ class MainActivity : FragmentActivity() {
         super.onCreate(savedInstanceState)
         WindowCompat.setDecorFitsSystemWindows(window, false)
 
+        // 检查是否拥有管理所有文件的权限
+        if (!StoragePermissionUtils.hasManageAllFilesPermission()) {
+            // 如果没有权限，跳转到授权页面
+            StoragePermissionUtils.requestManageAllFilesPermission(this)
+        }
+
         if (Pref.isForegroundServiceEnabled()) ForegroundService.start(this)
         else ForegroundService.stop(this)
 
@@ -102,16 +109,7 @@ class MainActivity : FragmentActivity() {
             .edit()
             .putBoolean(applicationContext.getString(R.string.ozobi_key_docs_service), isDocsServiceRunning)
             .apply()
-//        getDocs(this)
-//        GlobalScope.launch(Dispatchers.IO) {
-//            delay(1000L)
-//            startServer(this@MainActivity,8888)
-//            withContext(Dispatchers.Main) {
-//                Toast.makeText(this@MainActivity, "Server started on port 8888", Toast.LENGTH_SHORT).show()
-//            }
-//        }
 
-        // >
         setContent {
             scope = rememberCoroutineScope()
             AutoXJsTheme{
