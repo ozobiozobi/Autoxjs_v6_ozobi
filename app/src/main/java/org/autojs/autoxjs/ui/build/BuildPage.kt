@@ -75,6 +75,7 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
+import com.flurry.sdk.it
 import com.stardust.app.DialogUtils
 import com.stardust.pio.PFile
 import com.stardust.pio.PFiles
@@ -806,7 +807,7 @@ fun showPasswordInputDialog(
             val password = dialog.inputEditText!!
                 .text.toString()
             if (ApkSigner.checkKeyStore(keyStore.path, password)) {
-//                Pref.setKeyStorePassWord(PFiles.getName(keyStore.path), password)
+                Pref.setKeyStorePassWord(keyStore.path?.let { PFiles.getName(it) }, password)
                 dialog.dismiss()
                 chooseDialog?.dismiss()
                 keyStore.isVerified = true
@@ -831,7 +832,7 @@ fun SuccessDialog(
             onDismissRequest = onDismissRequest,
             title = { Text(text = stringResource(id = R.string.text_build_successfully)) },
             text = {
-                Text(text = stringResource(id = R.string.format_build_successfully, outApkPath))
+                Text(text = stringResource(id = R.string.format_build_successfully, outApkPath)+"\n若无法安装, 可自行使用MT管理器等重新签名")
             },
             confirmButton = {
                 TextButton(onClick = {

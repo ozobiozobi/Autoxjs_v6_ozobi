@@ -187,7 +187,7 @@ public class Pref {
     }
 
     public static String getKeyStorePath() {
-        return getScriptDirPath().concat("/.keyStore/");
+        return getScriptDirPath().concat("/.jks/");
     }
 
     public static String getKeyStorePassWord(String keyName) {

@@ -13,10 +13,13 @@ import com.stardust.autojs.script.JavaScriptFileSource
 import com.stardust.pio.PFiles
 import com.stardust.util.AdvancedEncryptionStandard
 import com.stardust.util.MD5
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
-import org.apache.commons.io.FileUtils
+import kotlinx.coroutines.withContext
 import org.apache.commons.io.IOUtils
+import org.autojs.autoxjs.ozobi.apksigner.Signer
 import org.autojs.autoxjs.tool.addAllIfNotExist
 import org.autojs.autoxjs.tool.copyTo
 import org.autojs.autoxjs.tool.parseUriOrNull
@@ -32,7 +35,6 @@ import java.security.MessageDigest
 import java.util.regex.Pattern
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
-
 
 
 /**
@@ -241,7 +243,7 @@ class ApkBuilder(
     }
 
     private fun copyLibraries(config: ProjectConfig) {
-        
+
         config.libs.addAllIfNotExist(Constant.Libraries.TERMINAL_EMULATOR)
         config.abis.forEach { abi ->
             config.libs.forEach { name ->
@@ -271,7 +273,7 @@ class ApkBuilder(
         val projectFile = File(workspacePath, "assets/project/project.json")
         projectFile.parentFile?.let { if (!it.exists()) it.mkdirs() }
         projectFile.writeText(config.toJson())
-        
+
         encryptKey =
             MD5.ozobiMD5(config.packageName + config.versionName + config.mainScript)
         encryptInitVector =
@@ -283,7 +285,9 @@ class ApkBuilder(
     suspend fun build(): ApkBuilder {
         _progressState.emit(BuildState.BUILD)
         manifestEditor?.commit()
-        manifestEditor?.writeTo(FileOutputStream(manifestFile))
+        manifestEditor?.writeTo(withContext(Dispatchers.IO) {
+            FileOutputStream(manifestFile)
+        })
         val dir = projectConfig!!.projectDirectory
         buildArsc(
             onReplaceIcon = { key, path ->
@@ -307,14 +311,21 @@ class ApkBuilder(
 
     suspend fun sign(keyStorePath: String?, keyPassword: String?): ApkBuilder {
         _progressState.emit(BuildState.SIGN)
-        if (!keyPassword.isNullOrEmpty() && !keyStorePath.isNullOrEmpty()) {
-            val waitSignApk = File(waitSignApk1)
+        val waitSignApk = File(waitSignApk1)
+        delay(500L)
+        withContext(Dispatchers.IO) {
             ZipOutputStream(FileOutputStream(waitSignApk)).use { inZip(File(workspacePath), it) }
-            ApkSigner.sign(keyStorePath, keyPassword, waitSignApk, outApkFile)
-        } else {
-            FileOutputStream(outApkFile).use {
-                DefaultSign.sign(File(workspacePath), it)
-            }
+        }
+        delay(500L)
+        val signer = Signer(waitSignApk.path, outApkFile.path, keyStorePath, keyPassword)
+        if(keyStorePath.isNullOrEmpty() || keyPassword.isNullOrEmpty()){
+            signer.signDebug()
+        }else{
+            signer.signApkWithJks()
+        }
+        val idsig = File(outApkFile.path+".idsig")
+        if(idsig.exists()){
+            delete(idsig)
         }
         return this
     }
@@ -404,7 +415,11 @@ class ApkBuilder(
             } else if (!projectConfig!!.launchConfig.displaySplash && splashThemeId != 0 && attr.value == splashThemeId) {
                 attr.value = noDisplayThemeId
             } else if ("authorities" == attr.name.data && attr.value is StringItem) {
-                (attr.value as StringItem).data = projectConfig!!.packageName + ".fileprovider"
+                if(attr.value.toString().contains("shizuku")){
+                    (attr.value as StringItem).data = projectConfig!!.packageName + ".shizuku"
+                }else{
+                    (attr.value as StringItem).data = projectConfig!!.packageName + ".fileprovider"
+                }
             } else {
                 super.onAttr(attr)
             }
@@ -435,11 +450,37 @@ class ApkBuilder(
         }
 
         private fun doFile(name: String, f: File, zos: ZipOutputStream, dos: DigestOutputStream) {
-            zos.putNextEntry(ZipEntry(name))
-            val fis = FileUtils.openInputStream(f)
-            IOUtils.copy(fis, dos)
-            IOUtils.closeQuietly(fis)
+
+            val entry = ZipEntry(name)
+            entry.time = f.lastModified()
+
+            // 如果是 resources.arsc 文件，设置压缩方法为 STORED
+            if (name.endsWith(".arsc")) {
+                entry.method = ZipEntry.STORED
+                entry.size = f.length()
+                entry.crc = calculateCrc(f)
+            }
+
+            zos.putNextEntry(entry)
+
+            // 写入文件内容
+            f.inputStream().use { fis ->
+                IOUtils.copy(fis, dos)
+            }
+
             zos.closeEntry()
+        }
+
+        private fun calculateCrc(file: File): Long {
+            val crc = java.util.zip.CRC32()
+            FileInputStream(file).use { input ->
+                val buffer = ByteArray(8192)
+                var bytesRead: Int
+                while (input.read(buffer).also { bytesRead = it } != -1) {
+                    crc.update(buffer, 0, bytesRead)
+                }
+            }
+            return crc.value
         }
     }
 

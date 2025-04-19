@@ -12,6 +12,8 @@ import androidx.annotation.StringRes;
 import androidx.appcompat.widget.AppCompatEditText;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.mcal.apksigner.CertCreator;
+import com.mcal.apksigner.utils.DistinguishedNameValues;
 import com.stardust.autojs.core.image.Colors;
 import com.stardust.pio.PFile;
 import com.stardust.pio.PFiles;
@@ -20,6 +22,8 @@ import org.autojs.autoxjs.Pref;
 import org.autojs.autoxjs.R;
 import org.autojs.autoxjs.build.ApkSigner;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
+
+import java.io.File;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +42,8 @@ public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder 
     AppCompatEditText mAlias;
     @BindView(R.id.ed_sign_key_password)
     AppCompatEditText mPassword;
-    @BindView(R.id.ed_sign_key_year)
-    AppCompatEditText mYear;
+    //    @BindView(R.id.ed_sign_key_year)
+//    AppCompatEditText mYear;
     @BindView(R.id.ed_sign_key_country)
     AppCompatEditText mCountry;
     @BindView(R.id.ed_sign_key_name)
@@ -52,6 +56,8 @@ public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder 
     AppCompatEditText mProvince;
     @BindView(R.id.ed_sign_key_city)
     AppCompatEditText mCity;
+    @BindView(R.id.ed_sign_key_street)
+    AppCompatEditText mStreet;
 
     private String mKeySavePath;
     private String mKeyStoreDir;
@@ -85,7 +91,7 @@ public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder 
     private void setDefaultValue() {
         String keyPath = PFiles.getSimplifiedPath(mKeyStoreDir);
         mPathTip.setHint(getString(R.string.text_sign_hint_key_path).concat("(" + keyPath + ")"));
-        mPath.setText("AutoX.keystore");
+        mPath.setText("AutoX.jks");
     }
 
     public SignKeyCreateDialogBuilder whenCreated(SignKeyCreatedCallback callback) {
@@ -106,14 +112,25 @@ public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder 
         }
         String alias = mAlias.getText().toString();
         String password = mPassword.getText().toString();
-        int year = Integer.parseInt(mYear.getText().toString());
+//        int year = Integer.parseInt(mYear.getText().toString());
         String country = mCountry.getText().toString();
         String name = mName.getText().toString();
         String org = mOrg.getText().toString();
         String unit = mUnit.getText().toString();
         String province = mProvince.getText().toString();
         String city = mCity.getText().toString();
-        boolean success = ApkSigner.createKeyStore(mKeySavePath, alias, password, year, country, name, org, unit, province, city);
+        String street = mStreet.getText().toString();
+//        boolean success = ApkSigner.createKeyStore(mKeySavePath, alias, password, year, country, name, org, unit, province, city);
+        CertCreator.createKeystoreAndKey(new File(mKeySavePath),password.toCharArray(),alias, new DistinguishedNameValues() {{
+            setCountry(country);
+            setState(province);
+            setLocality(city);
+            setStreet(street);
+            setOrganization(org);
+            setOrganizationalUnit(unit);
+            setCommonName(name);
+        }});
+        boolean success = new File(mKeySavePath).isFile();
         if (success) {
             Toast.makeText(context, getString(R.string.text_sign_create_success), Toast.LENGTH_SHORT).show();
             Pref.setKeyStorePassWord(PFiles.getName(mKeySavePath), password);
@@ -133,7 +150,7 @@ public class SignKeyCreateDialogBuilder extends ThemeColorMaterialDialogBuilder 
         inputValid &= checkNotEmpty(mPath);
         inputValid &= checkNotEmpty(mAlias);
         inputValid &= checkNotEmpty(mPassword);
-        inputValid &= checkNotEmpty(mYear);
+//        inputValid &= checkNotEmpty(mYear);
         inputValid &= checkNotEmpty(mCountry);
         return inputValid;
     }

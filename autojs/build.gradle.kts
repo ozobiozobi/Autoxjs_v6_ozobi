@@ -37,6 +37,9 @@ android {
 }
 
 dependencies {
+    implementation("com.madgag.spongycastle:core:1.58.0.0")
+    implementation("com.madgag.spongycastle:prov:1.58.0.0")
+
     // Added by ozobi - 2025/03/07 > 添加 shizuku 依赖
     implementation(libs.api)
     implementation(libs.provider)

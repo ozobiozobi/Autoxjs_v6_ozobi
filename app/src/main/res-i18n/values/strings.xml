@@ -336,6 +336,7 @@
     <string name="text_sign_hint_key_org_unit">组织单位</string>
     <string name="text_sign_hint_key_province">省份</string>
     <string name="text_sign_hint_key_city">城市</string>
+    <string name="text_sign_hint_key_street">街道</string>
     <string name="text_sign_create_success">创建成功</string>
     <string name="text_sign_create_fail">创建失败</string>
     <string name="text_build_successfully">打包成功</string>
