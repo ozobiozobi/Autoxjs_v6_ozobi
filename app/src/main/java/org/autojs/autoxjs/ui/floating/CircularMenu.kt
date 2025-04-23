@@ -180,6 +180,9 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                                 }
                             }
                         }
+                        if(!isSelectWindow){
+                            LayoutInspector.curWindow = null
+                        }
                     }
                     mLayoutInspector.setRefresh(isRefresh)
                     mCaptureDeferred = DeferredObject()

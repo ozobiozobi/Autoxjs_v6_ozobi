@@ -1779,6 +1779,23 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: JsSwitch 开关控件\n"+
+            "<switch id=\"switch\"></switch>\n" +
+            "// 以下用 xxx 代替 thumb(滑块) 或 track(轨道)\n" +
+            "// 色调: xxxTint=\"#ff00ff\" | xxxTint=\"#cfcfcf|#ff00ff\"\n" +
+            "// 大小|形状: xxxShape=\"168|88\" | xxxShape=\"168|88,88,36,36\"\n" +
+            "// 注: \"宽[高](dp) | (圆角半径)左上水平,左上垂直, 右上水平,右上垂直, 右下水平,右下垂直, 左下水平,左下垂直\"\n" +
+            "// 背景: xxxBg=\"file:///sdcard/logo.png\"\n" +
+            "------\n" +
+            "let Switch = ui.switch;\n" +
+            "Switch.setThumbTint(\"#ff00ff\");// 设置滑块色调\n" +
+            "Switch.setTrackTint(\"#ff00ff\");// 设置轨道色调\n" +
+            "Switch.setThumbShape(\"168|88\");// 设置滑块大小形状\n" +
+            "Switch.setTrackShape(\"168|88\");// 设置轨道大小形状\n" +
+            "Switch.setThumbBackground(\"file:///sdcard/logo.png\");// 设置滑块背景\n" +
+            "Switch.setTrackBackground(\"file:///sdcard/logo.png\");// 设置轨道背景\n"+
+            "// 如果需要设置多项, 推荐的顺序为: bg -> shape -> tint \n" +
+            "// 若出现不符合预期效果, 那应该是冲突了\n\n"+
             "添加: 布局分析窗口选择开关\n\n"+
             "添加: 布局分析窗口选择(开启延迟捕获无法使用)\n\n"+
             "添加: MQTT(来自前人的智慧)"

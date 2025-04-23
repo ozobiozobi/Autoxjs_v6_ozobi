@@ -2,6 +2,27 @@
 
 ## 6.5.8.15
 
+添加: JsSwitch 开关控件
+
+```js
+<switch id="switch"></switch>
+// 以下用 xxx 代替 thumb(滑块) 或 track(轨道)
+// 色调: xxxTint="#ff00ff" | xxxTint="#cfcfcf|#ff00ff"
+// 大小|形状: xxxShape="168|88" | xxxShape="168|88,88,36,36"
+// 注: "宽[高](dp) | (圆角半径)左上水平,左上垂直, 右上水平,右上垂直, 右下水平,右下垂直, 左下水平,左下垂直"
+// 背景: xxxBg="file:///sdcard/logo.png"
+------
+let Switch = ui.switch;
+Switch.setThumbTint("#ff00ff")// 设置滑块色调
+Switch.setTrackTint("#ff00ff")// 设置轨道色调
+Switch.setThumbShape("168|88")// 设置滑块大小形状
+Switch.setTrackShape("168|88")// 设置轨道大小形状
+Switch.setThumbBackground("file:///sdcard/logo.png")// 设置滑块背景
+Switch.setTrackBackground("file:///sdcard/logo.png")// 设置轨道背景
+// 如果需要设置多项, 推荐的顺序为: bg -> shape -> tint
+// 若出现不符合预期效果, 那应该是冲突了
+```
+
 添加: 布局分析窗口选择开关
 
 添加: 布局分析窗口选择(开启延迟捕获无法使用)
@@ -11,6 +32,7 @@
 ## 6.5.8.14
 
 修复(一半): 打包后无法安装
+
 ```
 偶尔可能出现无法直接安装，自己用MT管理器签名即可
 ```
@@ -20,11 +42,12 @@
 添加: 授予管理所有文件权限
 
 升级: 将 targetSdk 改为 35(安卓 15)
+
 ```
 有可能会出现一些未知的 bug
-``` 
+```
 
-修复(658): app打包签名报毒(升级到安卓15之后又变成了另一个bug @_@)
+修复(658): app 打包签名报毒(升级到安卓 15 之后又变成了另一个 bug @\_@)
 
 修复(魔改): looper 初始化之前创建 AdbIME 对象导致报错闪退
 
@@ -53,7 +76,7 @@ floaty.keepScreenOn();
 
 ## 6.5.8.12
 
-(L.)添加(vscode插件): goScoper
+(L.)添加(vscode 插件): goScoper
 
 https://github.com/ozobiozobi/Auto.js-VSCode-Extension/releases
 
@@ -79,7 +102,7 @@ https://github.com/ozobiozobi/Auto.js-VSCode-Extension/releases
 ```js
 // dateStr: 时间字符串 (如: 2025-01-20)
 // pattern: 时间字符串对应的模式 (如: yyyy-MM-dd)
-let ts = dateToTimestamp(dateStr, pattern)
+let ts = dateToTimestamp(dateStr, pattern);
 ```
 
 添加: v1 在线文档、社区 (由 BMX 提供)
@@ -110,9 +133,9 @@ let ts = dateToTimestamp(dateStr, pattern)
 添加: networkUtils
 
 ```js
-networkUtils.isWifiAvailable()
-networkUtils.getWifiIPv4()
-networkUtils.getIPList()
+networkUtils.isWifiAvailable();
+networkUtils.getWifiIPv4();
+networkUtils.getIPList();
 ```
 
 添加: 文档服务
@@ -193,22 +216,22 @@ vscode, 启动!
 ```
 
 添加: 截图是否返回新的对象
+
 ```js
 // 即使一直使用同一张缓存图像(屏幕没有发生变化), img1 和 img2 都不会是一个对象
 // 反之如果不加参数 true, img1 === img2
-let img1 = images.captureScreen(true)
-let img2 = images.captureScreen(true)
+let img1 = images.captureScreen(true);
+let img2 = images.captureScreen(true);
 ```
-
 
 ## 6.5.8.7
 
 添加: 获取屏幕实时宽高
 
 ```js
-let curW = device.getCurWidth()
-let curH = device.getCurHeight()
-let size = device.getCurScreenSize()
+let curW = device.getCurWidth();
+let curH = device.getCurHeight();
+let size = device.getCurScreenSize();
 // size.x == curW
 // size.y == curH
 ```
@@ -217,7 +240,7 @@ let size = device.getCurScreenSize()
 
 ```js
 //竖屏: 1  横屏: 2
-let ori = getCurOrientation()
+let ori = getCurOrientation();
 ```
 
 添加: 布局分析刷新开关
@@ -244,18 +267,18 @@ let ori = getCurOrientation()
 添加: viewUtils
 
 ```js
-let v1 = viewUtils.findParentById(view,id)
-let sp = viewUtils.pxToSp(px)
-let px = viewUtils.dpToPx(dp)
-let dp = viewUtils.pxToDp(px)
-let px = viewUtils.spToPx(sp)
+let v1 = viewUtils.findParentById(view, id);
+let sp = viewUtils.pxToSp(px);
+let px = viewUtils.dpToPx(dp);
+let dp = viewUtils.pxToDp(px);
+let px = viewUtils.spToPx(sp);
 ```
 
 添加: 获取 raw 悬浮窗 contentView
 
 ```jsx
-let fw = floaty.window(<frame id="content"></frame>)
-let contentView = fw.getContentView()
+let fw = floaty.window(<frame id="content"></frame>);
+let contentView = fw.getContentView();
 // contentView === fw.content
 ```
 
@@ -268,13 +291,13 @@ let contentView = fw.getContentView()
 添加: 获取状态栏高度(px)
 
 ```js
-let h = getStatusBarHeight()
+let h = getStatusBarHeight();
 ```
 
 添加: 获取当前存在的本地存储 名称[路径] 数组
 
 ```js
-let arr = storages.getExisting([returnPath])
+let arr = storages.getExisting([returnPath]);
 ```
 
 添加: 布局分析截图开关
@@ -295,15 +318,15 @@ traceLog("嘿嘿"[,path(输出到文件)])
 ```js
 // ts: 时间戳, 默认为当前时间戳
 // format: 时间格式, 默认为 "yyyy-MM-dd HH:mm:ss.SSS"
-let fm = dateFormat([ts,format]);
+let fm = dateFormat([ts, format]);
 ```
 
 添加: 设置 http 代理(options)
 
 ```js
-// 设置代理: 
+// 设置代理:
 http.get(url, {proxyHost:"192.168.1.10", proxyPort:7890})
-// 身份认证: 
+// 身份认证:
 {userName:"ozobi", password:1014521824}
 ```
 
@@ -311,7 +334,7 @@ http.get(url, {proxyHost:"192.168.1.10", proxyPort:7890})
 
 ```js
 // 一共尝试 3 次 ( 默认 3 ), 每次 5s ( 默认 10s ) 超时
-http.get(url, {maxTry:3, timeout: 5000})
+http.get(url, { maxTry: 3, timeout: 5000 });
 ```
 
 修改(6.5.8): 将布局层次分析页面的彩色线条数量改为与 depth 相等
@@ -381,15 +404,15 @@ adb shell pm grant 包名 com.termux.permission.RUN_COMMAND
 ```js
 // (好像不支持远程配对, 手机需要设置监听 adb 端口)
 // 连接设备
-let adbShell = runtime.adbConnect(host,port)
+let adbShell = runtime.adbConnect(host, port);
 // 执行命令
-adbShell.exec("ls /") 
+adbShell.exec("ls /");
 // 断开连接
-adbShell.close() 
+adbShell.close();
 // 获取当前连接主机名
-adbShell.connection.getHost() 
+adbShell.connection.getHost();
 // 获取当前连接端口
-adbShell.connection.getPost() 
+adbShell.connection.getPost();
 ```
 
 修改(6.5.8): 将悬浮窗位置改为以屏幕左上角为原点
