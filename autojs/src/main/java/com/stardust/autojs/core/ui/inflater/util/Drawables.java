@@ -5,12 +5,20 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.StateListDrawable;
+import android.graphics.drawable.shapes.OvalShape;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
+import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -18,11 +26,13 @@ import androidx.core.content.ContextCompat;
 
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.ui.inflater.ImageLoader;
+import com.stardust.util.ViewUtils;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.Arrays;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -56,9 +66,121 @@ public class Drawables {
             return loadAttrResources(context, value);
         }
         if (value.startsWith("file://")) {
-            return decodeImage(value.substring(7));
+            return decodeImage(context, value.substring(7));
         }
         return loadDrawableResources(context, value);
+    }
+
+    public StateListDrawable parseStateListDrawable(Context context, String value) {
+        // 创建 StateListDrawable
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        String[] valueArr = new String[]{value, value};
+        Drawable[] drawableArr = new Drawable[2];
+        if (value.contains("|")) {
+            valueArr[0] = value.substring(0, value.indexOf("|"));
+            valueArr[1] = value.substring(value.indexOf("|") + 1);
+        }
+        for (int index = 0; index < valueArr.length; index++) {
+            if (valueArr[index].startsWith("@color/") || valueArr[index].startsWith("@android:color/") || valueArr[index].startsWith("#")) {
+                drawableArr[index] = new ColorDrawable(Colors.parse(context, valueArr[index]));
+            } else if (valueArr[index].startsWith("?")) {
+                drawableArr[index] = loadAttrResources(context, valueArr[index]);
+            } else if (valueArr[index].startsWith("file://")) {
+                // 创建 ScaleDrawable
+                ScaleDrawable scaleDrawable = new ScaleDrawable(parse(context, valueArr[index]), Gravity.CENTER, 1.0f, 1.0f);
+                // 设置缩放级别 0: 不缩放  10000: 完全缩放
+                scaleDrawable.setLevel(10000);
+                // 加载图片
+                drawableArr[index] = scaleDrawable;
+            }
+        }
+        stateListDrawable.addState(new int[]{android.R.attr.state_checked}, drawableArr[1]);
+        stateListDrawable.addState(new int[]{}, drawableArr[0]);
+        return stateListDrawable;
+    }
+
+    public Drawable parseDrawable(Context context, String value) {
+        if (value.startsWith("@color/") || value.startsWith("@android:color/") || value.startsWith("#")) {
+            return new ColorDrawable(Colors.parse(context, value));
+        } else if (value.startsWith("?")) {
+            return loadAttrResources(context, value);
+        } else if (value.startsWith("file://")) {
+            // 创建 ScaleDrawable
+            ScaleDrawable scaleDrawable = new ScaleDrawable(parse(context, value), Gravity.CENTER, 1.0f, 1.0f);
+            // 设置缩放级别 0: 不缩放  10000: 完全缩放
+            scaleDrawable.setLevel(10000);
+            // 加载图片
+            return scaleDrawable;
+        }
+        return new ColorDrawable(Colors.parse(context, value));
+    }
+
+    int toDp(Context context, String value) {
+        if(value.isEmpty()){
+            return -1;
+        }
+        if (value.endsWith("px")) {
+            return ViewUtils.pxToDp(context, Integer.parseInt(value.substring(0, value.length() - 2)));
+        } else if (value.endsWith("sp")) {
+            float px = ViewUtils.spToPx(context, Integer.parseInt(value.substring(0, value.length() - 2)));
+            return ViewUtils.pxToDp(context, (int) px);
+        } else if (value.endsWith("dp")) {
+            return Integer.parseInt(value.substring(0, value.length() - 2));
+        }
+        return Integer.parseInt(value);
+    }
+
+    public Drawable parseCircleShapeDrawable(Context context, String value) {
+        ShapeDrawable thumbDrawable = new ShapeDrawable(new OvalShape());
+        String[] valueArr = new String[]{value, value};
+        int[] sizeArr = new int[2];
+        if (value.contains("|")) {
+            valueArr[0] = value.substring(0, value.indexOf("|"));
+            valueArr[1] = value.substring(value.indexOf("|") + 1);
+        }
+        for (int index = 0; index < valueArr.length; index++) {
+            sizeArr[index] = toDp(context, valueArr[index]);
+        }
+        thumbDrawable.setIntrinsicWidth(sizeArr[0]); // 设置宽度
+        thumbDrawable.setIntrinsicHeight(sizeArr[1]); // 设置高度
+        return thumbDrawable;
+    }
+
+    public Drawable parseEllipseShapeDrawable(Context context, String value) {
+        int[] sizeArr = new int[]{0, 0};
+        String sizeStr = value;
+        String outerRadiiStr = "10000";
+        if (value.contains("|")) {
+            sizeStr = value.substring(0, value.indexOf("|"));
+            outerRadiiStr = value.substring(value.indexOf("|") + 1);
+        }
+        String[] sizeSplitArr = sizeStr.split(",");
+        sizeArr[0] = toDp(context, sizeSplitArr[0]);
+        String[] outStrArr = outerRadiiStr.split(",");
+        int[] outIntArr = new int[outStrArr.length];
+        for (int index = 0; index < outStrArr.length; index++) {
+            if (!outStrArr[index].isEmpty()) {
+                outIntArr[index] = toDp(context, outStrArr[index]);
+            }
+        }
+        float[] outerRadii = new float[8];
+        for (int index = 0; index < outerRadii.length; index++) {
+            if (outIntArr.length <= 1) {
+                outerRadii[index] = outIntArr[0];
+            } else if (outIntArr.length < 8) {
+                outerRadii[index] = outIntArr[(index + 1) / 2];
+                outerRadii[index + 1] = outIntArr[(index + 1) / 2];
+                index++;
+            } else {
+                outerRadii[index] = outIntArr[index];
+            }
+        }
+        ShapeDrawable trackDrawable = new ShapeDrawable(new RoundRectShape(outerRadii, null, null));
+        if (sizeArr[0] > 0) {
+            trackDrawable.setIntrinsicWidth(sizeArr[0]);
+            trackDrawable.setIntrinsicHeight(sizeArr[0]);
+        }
+        return trackDrawable;
     }
 
     public Drawable loadDrawableResources(Context context, String value) {
@@ -66,7 +188,7 @@ public class Drawables {
                 GlobalAppContext.getAutojsPackageName());
         if (resId == 0)
             throw new Resources.NotFoundException("drawable not found: " + value);
-        return ContextCompat.getDrawable(context,resId);
+        return ContextCompat.getDrawable(context, resId);
     }
 
     public Drawable loadAttrResources(Context context, String value) {
@@ -80,6 +202,10 @@ public class Drawables {
 
     public Drawable decodeImage(String path) {
         return new BitmapDrawable(BitmapFactory.decodeFile(path));
+    }
+
+    public Drawable decodeImage(Context context, String path) {
+        return new BitmapDrawable(context.getResources(), BitmapFactory.decodeFile(path));
     }
 
     public Drawable parse(View view, String name) {

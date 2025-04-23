@@ -24,6 +24,7 @@ import com.stardust.autojs.core.ui.widget.JsLinearLayout;
 import com.stardust.autojs.core.ui.widget.JsListView;
 import com.stardust.autojs.core.ui.widget.JsRelativeLayout;
 import com.stardust.autojs.core.ui.widget.JsSpinner;
+import com.stardust.autojs.core.ui.widget.JsSwitch;
 import com.stardust.autojs.core.ui.widget.JsTabLayout;
 import com.stardust.autojs.core.ui.widget.JsTextView;
 import com.stardust.autojs.core.ui.widget.JsToolbar;
@@ -67,6 +68,7 @@ public class XmlConverter {
                     .map("progressbar", ProgressBar.class.getName())
                     .map("seekbar", SeekBar.class.getName())
                     .map("spinner", JsSpinner.class.getName())
+                    .map("switch", JsSwitch.class.getName())
                     .map("radio", RadioButton.class.getName())
                     .map("radiogroup", RadioGroup.class.getName())
                     .map("checkbox", CheckBox.class.getName())
@@ -92,11 +94,14 @@ public class XmlConverter {
             .handler("margin", new AttributeHandler.DimenHandler("layout_margin"))
             .handler("padding", new AttributeHandler.DimenHandler("padding"))
             .handler("marginLeft", new AttributeHandler.DimenHandler("layout_marginLeft"))
+            .handler("marginStart", new AttributeHandler.DimenHandler("layout_marginStart"))
             .handler("marginRight", new AttributeHandler.DimenHandler("layout_marginRight"))
+            .handler("marginEnd", new AttributeHandler.DimenHandler("layout_marginEnd"))
             .handler("marginTop", new AttributeHandler.DimenHandler("layout_marginTop"))
             .handler("marginBottom", new AttributeHandler.DimenHandler("layout_marginBottom"))
             .handler("paddingLeft", new AttributeHandler.DimenHandler("paddingLeft"))
-            .handler("paddingRight", new AttributeHandler.DimenHandler("paddingRight"))
+            .handler("paddingStart", new AttributeHandler.DimenHandler("paddingStart"))
+            .handler("paddingEnd", new AttributeHandler.DimenHandler("paddingEnd"))
             .handler("paddingTop", new AttributeHandler.DimenHandler("paddingTop"))
             .handler("paddingBottom", new AttributeHandler.DimenHandler("paddingBottom"))
             .defaultHandler(new AttributeHandler.MappedAttributeHandler()
