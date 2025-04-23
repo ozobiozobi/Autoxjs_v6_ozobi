@@ -10,10 +10,10 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import androidx.core.view.iterator
-import com.stardust.autojs.inrt.autojs.AutoJs
-import com.stardust.autojs.inrt.launch.GlobalProjectLauncher
 import com.stardust.autojs.core.console.ConsoleImpl
 import com.stardust.autojs.core.console.ConsoleView
+import com.stardust.autojs.inrt.autojs.AutoJs
+import com.stardust.autojs.inrt.launch.GlobalProjectLauncher
 import org.autojs.autoxjs.inrt.R
 
 

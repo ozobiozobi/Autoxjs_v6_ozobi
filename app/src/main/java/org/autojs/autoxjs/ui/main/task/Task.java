@@ -1,7 +1,6 @@
 package org.autojs.autoxjs.ui.main.task;
 
 import static org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity.ACTION_DESC_MAP;
-
 import static java.lang.Thread.sleep;
 
 import android.util.Log;

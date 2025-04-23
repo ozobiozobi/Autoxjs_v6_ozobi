@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import androidx.core.content.res.ResourcesCompat.FontCallback.getHandler
 import com.stardust.app.OnActivityResultDelegate
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester.ActivityScreenCaptureRequester
 import com.stardust.util.IntentExtras

@@ -3,8 +3,8 @@ package com.stardust.autojs.inrt.autojs;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.stardust.app.GlobalAppContext;
 import com.google.android.accessibility;
+import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
 

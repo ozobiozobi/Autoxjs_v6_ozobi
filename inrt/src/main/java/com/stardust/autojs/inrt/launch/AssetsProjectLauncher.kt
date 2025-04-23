@@ -7,12 +7,12 @@ import android.os.Handler
 import android.os.Looper
 import android.text.TextUtils
 import android.util.Log
-import com.stardust.autojs.inrt.LogActivity
-import com.stardust.autojs.inrt.Pref
-import com.stardust.autojs.inrt.autojs.AutoJs
 import com.stardust.autojs.engine.encryption.ScriptEncryption
 import com.stardust.autojs.execution.ExecutionConfig
 import com.stardust.autojs.execution.ScriptExecution
+import com.stardust.autojs.inrt.LogActivity
+import com.stardust.autojs.inrt.Pref
+import com.stardust.autojs.inrt.autojs.AutoJs
 import com.stardust.autojs.project.ProjectConfig
 import com.stardust.autojs.script.JavaScriptFileSource
 import com.stardust.autojs.script.JavaScriptSource

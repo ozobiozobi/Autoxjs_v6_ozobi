@@ -4,11 +4,11 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import com.stardust.app.GlobalAppContext
+import com.stardust.autojs.core.console.GlobalConsole
 import com.stardust.autojs.inrt.LogActivity
 import com.stardust.autojs.inrt.Pref
 import com.stardust.autojs.inrt.SettingsActivity
 import com.stardust.autojs.inrt.pluginclient.DevPluginService
-import com.stardust.autojs.core.console.GlobalConsole
 import com.stardust.autojs.runtime.ScriptRuntime
 import com.stardust.autojs.runtime.api.AppUtils
 import com.stardust.autojs.runtime.exception.ScriptException

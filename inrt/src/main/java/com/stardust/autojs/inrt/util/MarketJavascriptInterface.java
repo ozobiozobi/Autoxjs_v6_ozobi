@@ -8,10 +8,10 @@ import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 
-import com.stardust.autojs.inrt.Pref;
-import com.stardust.autojs.inrt.autojs.AutoJs;
 import com.stardust.autojs.execution.ExecutionConfig;
 import com.stardust.autojs.execution.ScriptExecution;
+import com.stardust.autojs.inrt.Pref;
+import com.stardust.autojs.inrt.autojs.AutoJs;
 import com.stardust.autojs.script.StringScriptSource;
 
 public class MarketJavascriptInterface {

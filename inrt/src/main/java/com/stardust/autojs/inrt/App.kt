@@ -22,12 +22,12 @@ import com.fanjun.keeplive.config.ForegroundNotification
 import com.google.mlkit.common.MlKit
 import com.linsh.utilseverywhere.Utils
 import com.stardust.app.GlobalAppContext
-import com.stardust.autojs.inrt.autojs.AutoJs
-import com.stardust.autojs.inrt.autojs.GlobalKeyObserver
-import com.stardust.autojs.inrt.pluginclient.AutoXKeepLiveService
 import com.stardust.autojs.core.ui.inflater.ImageLoader
 import com.stardust.autojs.core.ui.inflater.util.Drawables
 import com.stardust.autojs.execution.ScriptExecuteActivity
+import com.stardust.autojs.inrt.autojs.AutoJs
+import com.stardust.autojs.inrt.autojs.GlobalKeyObserver
+import com.stardust.autojs.inrt.pluginclient.AutoXKeepLiveService
 import leakcanary.AppWatcher
 import org.autojs.autoxjs.inrt.BuildConfig
 import org.autojs.autoxjs.inrt.R

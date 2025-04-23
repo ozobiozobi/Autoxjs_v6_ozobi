@@ -75,7 +75,6 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import coil.compose.rememberAsyncImagePainter
 import com.afollestad.materialdialogs.DialogAction
 import com.afollestad.materialdialogs.MaterialDialog
-import com.flurry.sdk.it
 import com.stardust.app.DialogUtils
 import com.stardust.pio.PFile
 import com.stardust.pio.PFiles

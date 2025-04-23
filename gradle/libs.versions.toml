@@ -20,9 +20,12 @@ room-runtime = "2.6.1"
 text-recognition = "16.0.0-beta6"
 text-recognition-chinese = "16.0.0"
 leakcanary-android-core-version = "2.13"
+org-eclipse-paho-android-service-version = "1.1.1"
+org-eclipse-paho-client-mqttv3-version = "1.2.5"
 
 [libraries]
-
+org-eclipse-paho-android-service = { module = "org.eclipse.paho:org.eclipse.paho.android.service", version.ref = "org-eclipse-paho-android-service-version" }
+org-eclipse-paho-client-mqttv3 = { module = "org.eclipse.paho:org.eclipse.paho.client.mqttv3", version.ref = "org-eclipse-paho-client-mqttv3-version" }
 androidx-annotation = "androidx.annotation:annotation:1.4.0"
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 # androidx compose
@@ -85,7 +88,7 @@ appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "a
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 andserver-processor = { module = "com.yanzhenjie.andserver:processor", version.ref = "andserver" }
 andserver-api = { module = "com.yanzhenjie.andserver:api", version.ref = "andserver" }
-androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" } 
+androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version = "2.1.4" }
 text-recognition = { module = "com.google.mlkit:text-recognition", version.ref = "text-recognition" }
 text-recognition-chinese = { module = "com.google.mlkit:text-recognition-chinese", version.ref = "text-recognition-chinese" }
 text-recognition-korean = { module = "com.google.mlkit:text-recognition-korean", version.ref = "text-recognition" }

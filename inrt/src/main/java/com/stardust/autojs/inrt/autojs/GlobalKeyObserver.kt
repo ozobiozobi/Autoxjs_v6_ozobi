@@ -2,9 +2,9 @@ package com.stardust.autojs.inrt.autojs
 
 import android.view.KeyEvent
 import com.stardust.app.GlobalAppContext
-import com.stardust.autojs.inrt.Pref
 import com.stardust.autojs.core.inputevent.InputEventObserver
 import com.stardust.autojs.core.inputevent.ShellKeyObserver
+import com.stardust.autojs.inrt.Pref
 import com.stardust.view.accessibility.AccessibilityService
 import com.stardust.view.accessibility.OnKeyListener
 

@@ -20,7 +20,6 @@ import com.stardust.pio.PFiles;
 
 import org.autojs.autoxjs.Pref;
 import org.autojs.autoxjs.R;
-import org.autojs.autoxjs.build.ApkSigner;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 
 import java.io.File;

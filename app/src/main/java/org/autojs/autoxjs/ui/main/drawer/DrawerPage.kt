@@ -1748,12 +1748,21 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 65815 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "添加: MQTT(来自前人的智慧)"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 65814 ===>"
         )
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复(658): 内存泄露(ScriptRuntime、ScreenCaptureRequestActivity)\n\n"+
             "修复(一半): 打包后无法安装\n" +
             "> 偶尔可能出现无法直接安装，自己用MT管理器签名即可\n\n"+
             "修复: 申请截图权限失败\n\n" +
