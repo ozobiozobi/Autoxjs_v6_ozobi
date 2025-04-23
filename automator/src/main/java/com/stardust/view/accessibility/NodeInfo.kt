@@ -143,20 +143,20 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
     companion object {
 
         fun boundsToString(rect: Rect): String {
-            
-            return rect.toString().replace(" - ",", ").substring(4)
-//            return rect.toString().replace('-', ',').replace(" ", "").substring(4)
+            return rect.toString().replace(" - ", ", ").substring(4)
         }
 
-        
         var isRefresh = false
         var nodeCount = 0
-        // <
 
-        internal fun capture(resourcesCache: HashMap<String, Resources>, context: Context, uiObject: UiObject, parent: NodeInfo?): NodeInfo {
-            
+        internal fun capture(
+            resourcesCache: HashMap<String, Resources>,
+            context: Context,
+            uiObject: UiObject,
+            parent: NodeInfo?
+        ): NodeInfo {
             var resources: Resources? = null
-            if(isRefresh){
+            if (!isRefresh) {
                 val pkg = uiObject.packageName()
                 if (pkg != null) {
                     resources = resourcesCache[pkg]
@@ -170,15 +170,12 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
                     }
                 }
             }
-            // <
             val nodeInfo = NodeInfo(resources, uiObject, parent)
-            if(isDoneCapture){
+            if (isDoneCapture) {
                 return nodeInfo
             }
             val childCount = uiObject.childCount
-            
-            nodeCount ++
-            //
+            nodeCount++
             for (i in 0 until childCount) {
                 val child = uiObject.child(i)
                 if (child != null) {
@@ -186,20 +183,17 @@ class NodeInfo(resources: Resources?, node: UiObject, var parent: NodeInfo?) {
                     nodeInfo.children.add(capture(resourcesCache, context, child, nodeInfo))
                 }
             }
-
             return nodeInfo
         }
+
         var isDoneCapture = false
         fun capture(context: Context, root: AccessibilityNodeInfo): NodeInfo {
-            
             nodeCount = 0
             isDoneCapture = false
-            //
             val r = UiObject.createRoot(root)
             val resourcesCache = HashMap<String, Resources>()
             val node = capture(resourcesCache, context, r, null)
             isDoneCapture = true
-
             return node
         }
     }

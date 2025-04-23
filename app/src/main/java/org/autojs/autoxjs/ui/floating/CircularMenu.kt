@@ -1,20 +1,33 @@
 package org.autojs.autoxjs.ui.floating
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Rect
 import android.media.MediaPlayer
 import android.media.Ringtone
 import android.media.RingtoneManager
 import android.net.Uri
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
 import android.os.Vibrator
 import android.text.TextUtils
+import android.util.Log
 import android.view.ContextThemeWrapper
 import android.view.MotionEvent
 import android.view.View
+import android.view.WindowManager
+import android.view.accessibility.AccessibilityWindowInfo
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_ACCESSIBILITY_OVERLAY
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_APPLICATION
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_INPUT_METHOD
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_MAGNIFICATION_OVERLAY
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_SPLIT_SCREEN_DIVIDER
+import android.view.accessibility.AccessibilityWindowInfo.TYPE_SYSTEM
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.preference.PreferenceManager
 import butterknife.ButterKnife
 import butterknife.OnClick
@@ -22,6 +35,7 @@ import butterknife.Optional
 import com.afollestad.materialdialogs.MaterialDialog
 import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
+import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.core.ozobi.capture.ScreenCapture
 import com.stardust.autojs.core.record.Recorder
 import com.stardust.autojs.runtime.api.Images
@@ -30,6 +44,7 @@ import com.stardust.enhancedfloaty.FloatyWindow
 import com.stardust.util.ClipboardUtil
 import com.stardust.util.Ozobi
 import com.stardust.view.accessibility.AccessibilityService.Companion.instance
+import com.stardust.view.accessibility.LayoutInspector
 import com.stardust.view.accessibility.LayoutInspector.CaptureAvailableListener
 import com.stardust.view.accessibility.NodeInfo
 import kotlinx.coroutines.DelicateCoroutinesApi
@@ -73,20 +88,23 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private val mRecorder: GlobalActionRecorder
     private var mSettingsDialog: MaterialDialog? = null
     private var mLayoutInspectDialog: MaterialDialog? = null
+
     // Added by ibozo - 2024/11/02 >
     private var mLastLayoutInspectDialog: MaterialDialog? = null
     private var mCaptureDelayDialog: MaterialDialog? = null
-    private val mVibrator:Vibrator = mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
-    private var mLastCapture:NodeInfo? = null
+    private val mVibrator: Vibrator =
+        mContext.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    private var mLastCapture: NodeInfo? = null
     private val mLayoutInspector = AutoJs.getInstance().layoutInspector
     private var mIsmCaptureDelayDialogDisappeared = true
     private var isStartCaptureCountDown = false
     private var isStartCapture = false
-    private var screenCapture:ScreenCapture = ScreenCapture(mContext)
+    private var screenCapture: ScreenCapture = ScreenCapture(mContext)
     private var isCaptureScreenshot = false
     private var isRefresh = false
     private var isWaitForCapture = true
     private var isDelayCapture = false
+    private var isSelectWindow = true
     private var doneCaptureVibrate = true
     private var doneCapturePlaySound = false
     private var captureCostTime = 0L
@@ -94,6 +112,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private var isCapturing = false
     private var available = true
     private var isAuth = false
+
     // <
     private var mRunningPackage: String? = null
     private var mRunningActivity: String? = null
@@ -102,69 +121,169 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     @OptIn(DelicateCoroutinesApi::class)
     private fun setupListeners() {
         mWindow?.setOnActionViewTouchListener { v, event ->
-             if(event.action == MotionEvent.ACTION_UP){
-                 LayoutHierarchyFloatyWindow.firstTagNodeInfo = null
-                 LayoutHierarchyFloatyWindow.secondTagNodeInfo = null
-                 v.performClick()
-                 if (mState == STATE_RECORDING) {
-                     stopRecord()
-                 } else if (mWindow?.isExpanded == true) {
+            if (event.action == MotionEvent.ACTION_UP) {
+                LayoutHierarchyFloatyWindow.firstTagNodeInfo = null
+                LayoutHierarchyFloatyWindow.secondTagNodeInfo = null
+                v.performClick()
+                if (mState == STATE_RECORDING) {
+                    stopRecord()
+                } else if (mWindow?.isExpanded == true) {
                     mWindow?.collapse()
-                 } else {
-                     mWindow?.expand()
-                     if(isAuth){
-                         isCaptureScreenshot = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_Screenshot), false)
-                         isRefresh = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_isCapture_refresh), false)
-                         isWaitForCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_isWaitFor_capture), true)
-                         isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_isDelay_capture), false)
-                         doneCaptureVibrate = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_doneCaptureVibrate), true)
-                         doneCapturePlaySound = PreferenceManager.getDefaultSharedPreferences(mContext)
-                             .getBoolean(mContext.getString(R.string.ozobi_key_doneCapturePlaySound), false)
-                         if(isCaptureScreenshot){
-                             if(!Images.availale){
-                                 screenCapture.stopScreenCapturer()
-                                 stopCapture()
-                             }
-                             GlobalScope.launch {
-                                 if(!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation){
-                                     screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
-                                 }
-                             }
-                         }
-                     }
-                     if(isRefresh || isWaitForCapture){
-                         NodeInfo.isDoneCapture = false
-                     }
-                     mLayoutInspector.setRefresh(isRefresh)
-                     mCaptureDeferred = DeferredObject()
-                     if(!isRefresh && !isStartCapture && !isCapturing && !isDelayCapture){
-                         captureStartTime = System.currentTimeMillis()
-                         available = mLayoutInspector.captureCurrentWindow()
-                         if(available){
-                             isCapturing = true
-                             checkIsCaptureDone()
-                         }
-                     }else{
-                         if(NodeInfo.isDoneCapture || ((isDelayCapture||isRefresh) && !isStartCapture)){
-                             mWindow?.setAlpha(1f)
-                         }else{
-                             mWindow?.setAlpha(0.7f)
-                         }
-                     }
-                     // <
-                 }
+                } else {
+                    mWindow?.expand()
+                    if (isAuth) {
+                        isCaptureScreenshot =
+                            PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .getBoolean(
+                                    mContext.getString(R.string.ozobi_key_isCapture_Screenshot),
+                                    false
+                                )
+                        isRefresh = PreferenceManager.getDefaultSharedPreferences(mContext)
+                            .getBoolean(
+                                mContext.getString(R.string.ozobi_key_isCapture_refresh),
+                                false
+                            )
+                        isWaitForCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
+                            .getBoolean(
+                                mContext.getString(R.string.ozobi_key_isWaitFor_capture),
+                                true
+                            )
+                        isDelayCapture = PreferenceManager.getDefaultSharedPreferences(mContext)
+                            .getBoolean(
+                                mContext.getString(R.string.ozobi_key_isDelay_capture),
+                                false
+                            )
+                        isSelectWindow = PreferenceManager.getDefaultSharedPreferences(mContext)
+                            .getBoolean(
+                                mContext.getString(R.string.ozobi_key_isSelect_window),
+                                true
+                            )
+                        doneCaptureVibrate = PreferenceManager.getDefaultSharedPreferences(mContext)
+                            .getBoolean(
+                                mContext.getString(R.string.ozobi_key_doneCaptureVibrate),
+                                true
+                            )
+                        doneCapturePlaySound =
+                            PreferenceManager.getDefaultSharedPreferences(mContext)
+                                .getBoolean(
+                                    mContext.getString(R.string.ozobi_key_doneCapturePlaySound),
+                                    false
+                                )
+                        if (isCaptureScreenshot) {
+                            if (!Images.availale) {
+                                screenCapture.stopScreenCapturer()
+                                stopCapture()
+                            }
+                            GlobalScope.launch {
+                                if (!Images.availale || ScreenCapture.curOrientation != mContext.resources.configuration.orientation) {
+                                    screenCapture.requestScreenCapture(mContext.resources.configuration.orientation)
+                                }
+                            }
+                        }
+                    }
+                    mLayoutInspector.setRefresh(isRefresh)
+                    mCaptureDeferred = DeferredObject()
+                }
             }
             return@setOnActionViewTouchListener true
         }
-        
+
         mWindow?.setOnActionViewClickListener {
 
         }
+    }
+    @RequiresApi(Build.VERSION_CODES.O)
+    @OptIn(DelicateCoroutinesApi::class)
+    private fun selectWindow() {
+        // 动态选项列表
+        val optionsList = mutableListOf<String?>("默认(default)")
+        windowSelectionList.clear()
+        instance?.windows?.forEach {
+            windowSelectionList.add(it)
+            val str = StringBuilder()
+            var isActiveOrFocused = false
+            if (it.isActive) {
+                str.append(">active  ")
+                isActiveOrFocused = true
+            }
+            if (it.isFocused) {
+                str.append("focused<")
+                isActiveOrFocused = true
+            }
+            if (isActiveOrFocused) {
+                str.append("\n")
+            }
+            if (it.title != null) {
+                str.append("title: ")
+                str.append(it.title)
+                str.append("\n")
+            }
+            str.append("type: ")
+            if (it.type == TYPE_APPLICATION) {
+                str.append("(应用)TYPE_APPLICATION")
+            } else if (it.type == TYPE_INPUT_METHOD) {
+                str.append("(输入法)TYPE_INPUT_METHOD")
+            } else if (it.type == TYPE_SYSTEM) {
+                str.append("(系统)TYPE_SYSTEM")
+            } else if (it.type == TYPE_ACCESSIBILITY_OVERLAY) {
+                str.append("(无障碍)TYPE_ACCESSIBILITY_OVERLAY")
+            } else if (it.type == TYPE_SPLIT_SCREEN_DIVIDER) {
+                str.append("(分屏)TYPE_SPLIT_SCREEN_DIVIDER")
+            } else if (it.type == TYPE_MAGNIFICATION_OVERLAY) {
+                str.append("(放大镜)TYPE_MAGNIFICATION_OVERLAY")
+            } else {
+                str.append(it.type)
+            }
+            str.append("\n")
+            val rect = Rect()
+            it.getBoundsInScreen(rect)
+            str.append(rect.toString())
+            optionsList.add(str.toString() + "\n")
+        }
+        if (optionsList.isEmpty()) {
+            GlobalScope.launch {
+                delay(200L)
+                inspectLayout()
+            }
+        }
+        val options = optionsList.toTypedArray()
+        var selectedOptionIndex = windowSelectionList.indexOf(LayoutInspector.curWindow)
+        if (selectedOptionIndex == -1) {
+            selectedOptionIndex = 0
+        } else {
+            selectedOptionIndex++
+        }
+        // 创建 AlertDialog.Builder
+        val builder = AlertDialog.Builder(mContext)
+        builder.setTitle("请选择窗口")
+
+        // 设置单选选项
+        builder.setSingleChoiceItems(options, selectedOptionIndex) { dialog, which ->
+            selectedOptionIndex = which
+        }
+
+        // 设置确认按钮
+        builder.setPositiveButton("确认") { dialog, _ ->
+            if (selectedOptionIndex != -1) {
+                if (selectedOptionIndex == 0) {
+                    LayoutInspector.curWindow = null
+                } else {
+                    LayoutInspector.curWindow = windowSelectionList[selectedOptionIndex - 1]
+                }
+                GlobalScope.launch {
+                    delay(200L)
+                    inspectLayout()
+                }
+            }
+            dialog.dismiss()
+        }
+        // 设置取消按钮
+        builder.setNegativeButton("取消") { dialog, _ ->
+            dialog.dismiss()
+        }
+        val dialog = builder.create()
+        dialog.window?.setType(WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY) // 设置为悬浮窗
+        dialog.show()
     }
 
     private fun initFloaty() {
@@ -253,6 +372,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     private fun stopRecord() {
         mRecorder.stop()
     }
+
     // Added by ibozo - 2024/11/02 >
     private fun playNotificationSound(context: Context) {
         val notificationUri: Uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION)
@@ -267,21 +387,24 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             }, 2000)
         }
     }
+
     private fun playDoneCapturingSound(context: Context) {
-        try{
+        try {
             val mediaPlayer = MediaPlayer.create(context, R.raw.ozobi_done_capturing_ringtone)
             mediaPlayer.start()
             mediaPlayer.setOnCompletionListener { mp ->
                 mp.release()
             }
-        }catch(e:Exception){
+        } catch (e: Exception) {
+
             playNotificationSound(context)
         }
     }
+
     @OptIn(DelicateCoroutinesApi::class)
     @Optional
-    fun showDelayCaptureOption(){
-        if(isStartCapture){
+    fun showDelayCaptureOption() {
+        if (isStartCapture) {
             Thread {
                 Looper.prepare()
                 mVibrator.vibrate(50)
@@ -294,16 +417,12 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
                     mVibrator.vibrate(30)
                     Looper.loop()
                 }.start()
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"正在捕获",Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mContext, "正在捕获", Toast.LENGTH_SHORT).show()
                 }
             }
             return
         }
-//        if(!isRefresh){
-//            startRightNow()
-//            return
-//        }
         mCaptureDelayDialog = OperationDialogBuilder(mContext)
             .item(
                 R.id.capture_delay_0s,
@@ -342,94 +461,105 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     }
 
     @OptIn(DelicateCoroutinesApi::class)
+    @RequiresApi(Build.VERSION_CODES.O)
     @Optional
     @OnClick(R.id.layout_inspect)
-    fun captureWindow(){
+    fun captureWindow() {
         mWindow?.collapse()
-        if(!available){
+        if (!available) {
             goToAccePage()
             return
         }
-        if(mLayoutInspector.isAvailable() != null){
-            if(isDelayCapture){
+        if (mLayoutInspector.isAvailable() != null) {
+            if (isDelayCapture) {
                 showDelayCaptureOption()
-            }else{
-                GlobalScope.launch {
-                    inspectLayout()
+            } else {
+                if(isSelectWindow){
+                    selectWindow()
+                }else{
+                    GlobalScope.launch {
+                        inspectLayout()
+                    }
                 }
             }
-        }else{
+        } else {
             goToAccePage()
         }
     }
-    @OptIn(DelicateCoroutinesApi::class)
-    fun checkIsCaptureDone(){
-        val start = System.currentTimeMillis()
-        mWindow?.setAlpha(0.7f)
-        GlobalScope.launch {
-            while(!NodeInfo.isDoneCapture && System.currentTimeMillis() - start < 60000){
-                delay(100L)
 
+    @OptIn(DelicateCoroutinesApi::class)
+    suspend fun checkIsCaptureDone() {
+        val start = System.currentTimeMillis()
+        GlobalScope.launch {
+            while (!NodeInfo.isDoneCapture && System.currentTimeMillis() - start < 60000) {
+                delay(100L)
                 isCapturing = false
                 captureCostTime = System.currentTimeMillis() - captureStartTime
             }
-            mWindow?.setAlpha(1f)
         }
     }
+
     @Optional
     @OnClick(R.id.capture_delay_0s)
-    fun startRightNow(){
+    fun startRightNow() {
         delayCapture(200L)
     }
+
     @Optional
     @OnClick(R.id.capture_delay_2s)
-    fun delayTwoSeconds(){
+    fun delayTwoSeconds() {
         delayCapture(2000L)
     }
+
     @Optional
     @OnClick(R.id.capture_delay_4s)
-    fun delayFourSeconds(){
+    fun delayFourSeconds() {
         delayCapture(4000L)
     }
+
     @Optional
     @OnClick(R.id.capture_delay_8s)
-    fun delayEightSeconds(){
+    fun delayEightSeconds() {
         delayCapture(8000L)
     }
+
     @OptIn(DelicateCoroutinesApi::class)
-    fun delayCapture(delay:Long){
-        if(!isStartCaptureCountDown){
+    fun delayCapture(delay: Long) {
+        if (!isStartCaptureCountDown) {
             startCaptureCountDown()
             GlobalScope.launch {
                 delay(delay)
                 inspectLayout()
             }
-        }else{
+        } else {
             GlobalScope.launch {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"倒计时中...",Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mContext, "倒计时中...", Toast.LENGTH_SHORT).show()
                 }
             }
         }
     }
+
     @OptIn(DelicateCoroutinesApi::class)
     @Optional
     @OnClick(R.id.capture_use_last_record)
-    fun showLastRecord(){
+    fun showLastRecord() {
         mLastCapture = mLayoutInspector.capture
         GlobalScope.launch {
-            withContext(Dispatchers.Main){
+            withContext(Dispatchers.Main) {
                 showLastInspectorDialog()
             }
         }
     }
-    private fun startCaptureCountDown(){
+
+    private fun startCaptureCountDown() {
         isStartCaptureCountDown = true
         mCaptureDelayDialog?.dismiss()
         mCaptureDelayDialog = null
         mWindow?.collapse()
     }
-    private fun showLastInspectorDialog(){
+
+    private fun showLastInspectorDialog() {
         mWindow?.collapse()
         mLastLayoutInspectDialog = OperationDialogBuilder(mContext)
             .item(
@@ -448,7 +578,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         DialogUtils.showDialog(mLastLayoutInspectDialog)
     }
 
-    private fun showInspectorDialog(){
+    private fun showInspectorDialog() {
         mLayoutInspectDialog = OperationDialogBuilder(mContext)
             .item(
                 R.id.layout_bounds,
@@ -470,94 +600,89 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
             .build()
         DialogUtils.showDialog(mLayoutInspectDialog)
     }
+
     // <
     // Modified by ibozo - 2024/11/02 >
     //    @OnClick(R.id.layout_inspect)
     //    @Optional
     @OptIn(DelicateCoroutinesApi::class)
     private suspend fun inspectLayout() {
-        if(isStartCapture){
+        if (isStartCapture) {
             Thread {
                 Looper.prepare()
                 mVibrator.vibrate(90)
                 Looper.loop()
             }.start()
             GlobalScope.launch {
-                withContext(Dispatchers.Main){
-                    Toast.makeText(mContext,"正在捕获",Toast.LENGTH_SHORT).show()
+                withContext(Dispatchers.Main) {
+                    Toast.makeText(mContext, "正在捕获", Toast.LENGTH_SHORT).show()
                 }
             }
             return
         }
+        NodeInfo.isDoneCapture = false
+        captureStartTime = System.currentTimeMillis()
         isStartCapture = true
         isStartCaptureCountDown = false
-        if(isRefresh || isCaptureScreenshot){
-            while (!mIsmCaptureDelayDialogDisappeared || mWindow?.isExpanded == true){
+        if (isRefresh || isCaptureScreenshot) {
+            while (!mIsmCaptureDelayDialogDisappeared || mWindow?.isExpanded == true) {
                 delay(100L)
                 mCaptureDelayDialog?.dismiss()
                 mCaptureDelayDialog = null
             }
         }
-        if(isCaptureScreenshot && Images.availale){
+        if (isCaptureScreenshot && Images.availale) {
             GlobalScope.launch {
-                
-                try{
+                try {
                     screenCapture.captureScreen(true)
-
-                }catch (e:Exception){
-                    
+                } catch (e: Exception) {
                     ScreenCapture.cleanCurImg()
                     ScreenCapture.cleanCurImgBitmap()
                     Images.availale = false
                 }
-                // <
             }
-        }else{
+        } else {
             ScreenCapture.isDoneVerity = true
             ScreenCapture.cleanCurImg()
             ScreenCapture.cleanCurImgBitmap()
         }
-        val isFirstCapture = isRefresh || isCaptureScreenshot || isDelayCapture
-        val hasToWait = isFirstCapture || isWaitForCapture
-        if(isFirstCapture){
-            captureStartTime = System.currentTimeMillis()
-            available = mLayoutInspector.captureCurrentWindow()
-            if(!available){
-                goToAccePage()
-                return
-            }
+        val hasToWait = isRefresh || isCaptureScreenshot || isDelayCapture || isWaitForCapture
+        available = mLayoutInspector.captureCurrentWindow()
+        if (!available) {
+            goToAccePage()
+            return
         }
-        if(isAuth && hasToWait){
+        if (isAuth && hasToWait) {
             var waitCount = 0
-            while(true){
-                if((NodeInfo.isDoneCapture && ScreenCapture.isDoneVerity) || waitCount > 600){
+            while (true) {
+                if ((NodeInfo.isDoneCapture && ScreenCapture.isDoneVerity) || waitCount > 600) {
                     break
                 }
+                Log.d("ozobiLog", "NodeInfo.isDoneCapture: " + NodeInfo.isDoneCapture)
                 delay(100)
                 waitCount++
             }
         }
-        if(isFirstCapture){
-            captureCostTime = System.currentTimeMillis() - captureStartTime
-        }
-        if(doneCaptureVibrate){
+        captureCostTime = System.currentTimeMillis() - captureStartTime
+        if (doneCaptureVibrate) {
             Thread {
                 Looper.prepare()
                 mVibrator.vibrate(50)
                 Looper.loop()
             }.start()
         }
-        if(doneCapturePlaySound){
+        if (doneCapturePlaySound) {
             playDoneCapturingSound(mContext)
         }
-        withContext(Dispatchers.Main){
+        withContext(Dispatchers.Main) {
             showInspectorDialog()
         }
         delay(200L)
         stopCapture()
         return
     }
-    private fun goToAccePage(){
+
+    private fun goToAccePage() {
         stopCapture()
         Toast.makeText(
             mContext,
@@ -566,24 +691,27 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         ).show()
         AccessibilityServiceTool.goToAccessibilitySetting()
     }
-    private fun stopCapture(){
+
+    private fun stopCapture() {
         NodeInfo.isDoneCapture = true
         isStartCapture = false
-        isCapturing = false
         isStartCaptureCountDown = false
-        mWindow?.setAlpha(1f)
         mWindow?.collapse()
+        Log.d("ozobiLog", "stopCapture()")
     }
+
     @Optional
     @OnClick(R.id.last_layout_bounds)
-    fun showLastLayoutBounds(){
+    fun showLastLayoutBounds() {
         inspectLastLayout { rootNode -> rootNode?.let { LayoutBoundsFloatyWindow(it) } }
     }
+
     @Optional
     @OnClick(R.id.last_layout_hierarchy)
-    fun showLastLayoutHierarchy(){
+    fun showLastLayoutHierarchy() {
         inspectLastLayout { rootNode -> rootNode?.let { LayoutHierarchyFloatyWindow(it) } }
     }
+
     private fun inspectLastLayout(windowCreator: (NodeInfo?) -> FloatyWindow?) {
         mCaptureDelayDialog?.dismiss()
         mLastLayoutInspectDialog?.dismiss()
@@ -596,6 +724,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     fun showLayoutBounds() {
         inspectLayout { rootNode -> rootNode?.let { LayoutBoundsFloatyWindow(it) } }
     }
+
     @Optional
     @OnClick(R.id.layout_hierarchy)
     fun showLayoutHierarchy() {
@@ -611,7 +740,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         }
         // Modified by ibozo - 2024/11/04 >
 //        if(isRefresh){
-            windowCreator.invoke(mLayoutInspector.capture)?.let { FloatyService.addWindow(it) }
+        windowCreator.invoke(mLayoutInspector.capture)?.let { FloatyService.addWindow(it) }
 //        }else{
 //            val progress = DialogUtils.showDialog(
 //                ThemeColorMaterialDialogBuilder(mContext)
@@ -760,6 +889,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
         const val STATE_NORMAL = 0
         const val STATE_RECORDING = 1
         private const val IC_ACTION_VIEW = R.drawable.ic_android_eat_js
+        var windowSelectionList = mutableListOf<AccessibilityWindowInfo?>()
     }
 
     init {

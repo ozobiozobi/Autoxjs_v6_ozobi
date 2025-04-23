@@ -7,6 +7,7 @@ import android.util.DisplayMetrics
 import android.util.Log
 import android.view.WindowManager
 import android.view.accessibility.AccessibilityNodeInfo
+import android.view.accessibility.AccessibilityWindowInfo
 import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.Executors
 
@@ -86,13 +87,13 @@ class LayoutInspector(private val mContext: Context) {
     // <
 
     fun captureCurrentWindow() :Boolean{
-        val root = isAvailable()
+        var root = isAvailable()
         if(isAvailable() == null){
             return false
         }
-        /*
-        * Added by Ozobi - 2024/10/06
-        * */
+        if(curWindow != null){
+            root = curWindow!!.root
+        }
         if(width == 0 || height == 0){
             getScreenDimensions()
         }
@@ -108,11 +109,6 @@ class LayoutInspector(private val mContext: Context) {
             for (l in mCaptureAvailableListeners) {
                 l.onCaptureAvailable(capture)
             }
-//            Thread {
-//                Looper.prepare()
-//                mVibrator.vibrate(90)
-//                Looper.loop()
-//            }.start()
         }
         return true
     }
@@ -143,16 +139,13 @@ class LayoutInspector(private val mContext: Context) {
 //        }
         return
     }
-    // <
-
     fun clearCapture() {
         capture = null
     }
 
     companion object {
-        
         var isRefresh = true
-        // <
         private val LOG_TAG = LayoutInspector::class.java.simpleName
+        var curWindow: AccessibilityWindowInfo? = null
     }
 }

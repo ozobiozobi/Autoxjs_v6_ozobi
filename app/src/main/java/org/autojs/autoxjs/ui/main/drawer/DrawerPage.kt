@@ -1646,7 +1646,33 @@ private fun layoutInsDelayCaptureSwitch() {
         }
     )
 }
-// <
+@Composable
+private fun layoutInsSelectWindowSwitch() {
+    val context = LocalContext.current
+    var isSelectWindow by remember {
+        val default = PreferenceManager.getDefaultSharedPreferences(context)
+            .getBoolean(context.getString(R.string.ozobi_key_isSelect_window), true)
+        mutableStateOf(default)
+    }
+    SwitchItem(
+        icon = {
+            MyIcon(
+                painterResource(id = R.drawable.ic_window),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp),nightMode=isNightMode()
+            )
+        },
+        text = { Text(text = stringResource(id = R.string.ozobi_text_isSelect_window)) },
+        checked = isSelectWindow,
+        onCheckedChange = {
+            PreferenceManager.getDefaultSharedPreferences(context)
+                .edit()
+                .putBoolean(context.getString(R.string.ozobi_key_isSelect_window), it)
+                .apply()
+            isSelectWindow = it
+        }
+    )
+}
 @Composable
 private fun docsServiceSwitch() {
     val context = LocalContext.current
@@ -1753,6 +1779,8 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "添加: 布局分析窗口选择开关\n\n"+
+            "添加: 布局分析窗口选择(开启延迟捕获无法使用)\n\n"+
             "添加: MQTT(来自前人的智慧)"
         )
         .item(

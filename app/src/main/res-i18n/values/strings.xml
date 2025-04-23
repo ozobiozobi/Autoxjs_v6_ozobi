@@ -36,6 +36,8 @@
     <string name="ozobi_key_isCapture_Screenshot" translatable="false">布局分析截图开关</string>
     <string name="ozobi_key_isCapture_refresh" translatable="false">布局分析刷新开关</string>
     <string name="ozobi_key_isWaitFor_capture" translatable="false">布局分析等待捕获开关</string>
+    <string name="ozobi_key_isSelect_window" translatable="false">布局分析窗口选择开关</string>
+    <string name="ozobi_text_isSelect_window" translatable="false">窗口选择_ozobi</string>
     <string name="ozobi_key_doneCaptureVibrate" translatable="false">振动</string>
     <string name="ozobi_key_doneCapturePlaySound" translatable="false">音效</string>
     <string name="ozobi_key_isDelay_capture" translatable="false">布局分析延迟捕获开关</string>
