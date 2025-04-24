@@ -294,11 +294,12 @@
         tools:replace="android:label, android:allowBackup"
         tools:targetApi="m">
         <activity
+            android:exported="false"
             android:name="com.stardust.autojs.inrt.LoginActivity"
             android:label="@string/title_activity_login" />
 
-        <activity android:name="com.stardust.autojs.inrt.LogActivity" />
-        <activity android:name="com.stardust.autojs.inrt.FeatureActivity" />
+        <activity android:exported="false" android:name="com.stardust.autojs.inrt.LogActivity" />
+        <activity android:exported="false" android:name="com.stardust.autojs.inrt.FeatureActivity" />
 
         <activity
             android:name="com.stardust.autojs.inrt.SplashActivity"
@@ -311,7 +312,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="com.stardust.autojs.inrt.SettingsActivity" />
+        <activity android:exported="false" android:name="com.stardust.autojs.inrt.SettingsActivity" />
 
         <service
             android:name="com.stardust.notification.NotificationListenerService"
@@ -340,6 +341,7 @@
                 android:resource="@xml/provider_paths" />
         </provider>
         <provider
+            android:exported="false"
             android:name="com.google.mlkit.common.internal.MlKitInitProvider"
             android:authorities="${applicationId}.mlkitinitprovider"
             tools:node="remove" />

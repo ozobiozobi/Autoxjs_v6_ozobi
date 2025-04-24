@@ -1,12 +1,16 @@
 package org.autojs.autoxjs
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import androidx.multidex.MultiDexApplication
@@ -25,12 +29,14 @@ import org.autojs.autoxjs.BuildConfig
 import org.autojs.autoxjs.autojs.AutoJs
 import org.autojs.autoxjs.autojs.key.GlobalKeyObserver
 import org.autojs.autoxjs.external.receiver.DynamicBroadcastReceivers
+import org.autojs.autoxjs.ozobi.bootstart.BootBroadcastReceiver
 import org.autojs.autoxjs.theme.ThemeColorManagerCompat
 import org.autojs.autoxjs.timing.TimedTaskManager
 import org.autojs.autoxjs.timing.TimedTaskScheduler
 import org.autojs.autoxjs.tool.CrashHandler
 import org.autojs.autoxjs.ui.error.ErrorReportActivity
 import java.lang.ref.WeakReference
+
 
 /**
  * Created by Stardust on 2017/1/27.
@@ -42,6 +48,11 @@ class App : MultiDexApplication(), Configuration.Provider {
 
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val filter = IntentFilter(Intent.ACTION_BOOT_COMPLETED)
+            val receiver = BootBroadcastReceiver()
+            registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED)
+        }
         GlobalAppContext.set(
             this, com.stardust.app.BuildConfig.generate(BuildConfig::class.java)
         )

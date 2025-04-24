@@ -6,12 +6,15 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
+import android.os.Build
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.preference.PreferenceManager
 import com.bumptech.glide.Glide
@@ -27,6 +30,7 @@ import com.stardust.autojs.core.ui.inflater.util.Drawables
 import com.stardust.autojs.execution.ScriptExecuteActivity
 import com.stardust.autojs.inrt.autojs.AutoJs
 import com.stardust.autojs.inrt.autojs.GlobalKeyObserver
+import com.stardust.autojs.inrt.ozobi.bootstart.BootBroadcastReceiver
 import com.stardust.autojs.inrt.pluginclient.AutoXKeepLiveService
 import leakcanary.AppWatcher
 import org.autojs.autoxjs.inrt.BuildConfig
@@ -39,9 +43,14 @@ import org.autojs.autoxjs.inrt.R
 
 class App : Application() {
 
-    var TAG = "inrt.application";
+    var TAG = "inrt.application"
     override fun onCreate() {
         super.onCreate()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val filter = IntentFilter(Intent.ACTION_BOOT_COMPLETED)
+            val receiver = BootBroadcastReceiver()
+            registerReceiver(receiver, filter, Context.RECEIVER_EXPORTED)
+        }
         if(BuildConfig.DEBUG){
             AppWatcher.manualInstall(this)
         }

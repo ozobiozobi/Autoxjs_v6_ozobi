@@ -448,6 +448,7 @@
         </provider>
 
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.edit.EditActivity_"
             android:configChanges="orientation|screenSize|uiMode"
             android:launchMode="standard"
@@ -456,29 +457,35 @@
             android:theme="@style/EditorTheme" />
         <activity android:name="org.autojs.autoxjs.ui.settings.AboutActivity_" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.settings.SettingsActivity"
             android:theme="@style/AppTheme.Settings" />
         <activity android:name="org.autojs.autoxjs.ui.error.ErrorReportActivity" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.external.tasker.TaskerScriptEditActivity_"
             android:configChanges="orientation|screenSize" />
         <activity android:name="org.autojs.autoxjs.ui.edit.ViewSampleActivity" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.user.LoginActivity_"
             android:windowSoftInputMode="adjustResize" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.user.RegisterActivity_"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name="org.autojs.autoxjs.ui.user.WebActivity_" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.build.BuildActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name="org.autojs.autoxjs.ui.build.SignManageActivityKt" />
-        <activity android:name="org.autojs.autoxjs.ui.build.ProjectConfigActivity_" />
-        <activity android:name="org.autojs.autoxjs.ui.log.LogActivityKt" />
-        <activity android:name="org.autojs.autoxjs.ui.shortcut.ShortcutIconSelectActivity_" />
-        <activity android:name="org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity_" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.build.SignManageActivityKt" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.build.ProjectConfigActivity_" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.log.LogActivityKt" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.shortcut.ShortcutIconSelectActivity_" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity_" />
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.shortcut.ShortcutCreateActivity"
             android:theme="@style/AppTheme.Transparent" />
         <activity
@@ -494,14 +501,15 @@
             </intent-filter>
         </activity>
         <activity
+            android:exported="false"
             android:name="org.autojs.autoxjs.ui.error.IssueReporterActivity"
             android:theme="@style/IssueReporterTheme" />
 
-        <service android:name="org.autojs.autoxjs.external.foreground.ForegroundService" />
-        <service android:name="org.autojs.autoxjs.external.ScriptExecutionIntentService" />
+        <service android:exported="false" android:name="org.autojs.autoxjs.external.foreground.ForegroundService" />
+        <service android:exported="false" android:name="org.autojs.autoxjs.external.ScriptExecutionIntentService" />
 
-        <activity android:name="org.autojs.autoxjs.external.tasker.TaskPrefEditActivity_" />
-        <activity android:name="org.autojs.autoxjs.ui.log.LogActivity_"/>
+        <activity android:exported="false" android:name="org.autojs.autoxjs.external.tasker.TaskPrefEditActivity_" />
+        <activity android:exported="false" android:name="org.autojs.autoxjs.ui.log.LogActivity_"/>
         <activity-alias
             android:name=".external.tasker.PluginActivity"
             android:exported="true"
@@ -706,7 +714,7 @@
                 tools:node="remove" />
         </provider>
 
-        <service android:name=".network.ozobi.KtorDocsService"/>
+        <service android:exported="false" android:name=".network.ozobi.KtorDocsService"/>
 
     </application>
 

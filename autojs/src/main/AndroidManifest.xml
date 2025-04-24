@@ -30,18 +30,21 @@
 <!--    //-->
     <application>
         <activity
+            android:exported="false"
             android:name=".execution.ScriptExecuteActivity"
             android:configChanges="fontScale|keyboard|keyboardHidden|locale|navigation|orientation|screenLayout|screenSize|uiMode"
             android:theme="@style/ScriptTheme" />
 
 
         <activity
+            android:exported="false"
             android:name="com.stardust.autojs.core.permission.PermissionRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="com.stardust.autojs.runtime.api.image.ScreenCaptureRequestActivity"
             android:theme="@style/ScriptTheme.Transparent" />
 
         <activity
+            android:exported="false"
             android:name="com.stardust.autojs.core.image.capture.ScreenCaptureRequestActivity"
             android:excludeFromRecents="true"
             android:taskAffinity="com.stardust.autojs.runtime.api.image.ScreenCaptureRequestActivity"
@@ -107,6 +110,6 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/methods"/>
         </service>
-        <service android:name=".core.ozobi.remoteadb.service.ShellService" />
+        <service android:exported="false" android:name=".core.ozobi.remoteadb.service.ShellService" />
     </application>
 </manifest>

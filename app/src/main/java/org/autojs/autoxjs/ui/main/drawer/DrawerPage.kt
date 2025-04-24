@@ -1779,6 +1779,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: 安卓 13 之后闪退或打不开app\n\n"+
             "添加: JsSwitch 开关控件\n"+
             "<switch id=\"switch\"></switch>\n" +
             "// 以下用 xxx 代替 thumb(滑块) 或 track(轨道)\n" +
