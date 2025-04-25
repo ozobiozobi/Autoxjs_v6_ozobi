@@ -12,7 +12,6 @@ import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
-import android.widget.TextView;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.util.Colors;
@@ -21,6 +20,7 @@ import com.stardust.autojs.core.ui.inflater.util.Gravities;
 import com.stardust.autojs.core.ui.inflater.util.Res;
 import com.stardust.autojs.core.ui.inflater.util.Strings;
 import com.stardust.autojs.core.ui.inflater.util.ValueMapper;
+import com.stardust.autojs.core.ui.widget.JsEditText;
 
 import java.util.Map;
 
@@ -28,7 +28,7 @@ import java.util.Map;
  * Created by Stardust on 2017/11/3.
  */
 
-public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
+public class JsEditTextInflater<V extends JsEditText> extends BaseViewInflater<V> {
 
     private static final int LEFT = 0;
     private static final int TOP = 1;
@@ -128,7 +128,7 @@ public class TextViewInflater<V extends TextView> extends BaseViewInflater<V> {
     private Integer mTextStyle;
     private String mTypeface;
 
-    public TextViewInflater(ResourceParser resourceParser) {
+    public JsEditTextInflater(ResourceParser resourceParser) {
         super(resourceParser);
     }
 

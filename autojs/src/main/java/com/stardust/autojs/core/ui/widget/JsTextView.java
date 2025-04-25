@@ -1,9 +1,7 @@
 package com.stardust.autojs.core.ui.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
@@ -11,8 +9,7 @@ import androidx.annotation.Nullable;
  * Created by Stardust on 2017/5/15.
  */
 
-@SuppressLint("AppCompatCustomView")
-public class JsTextView extends TextView {
+public class JsTextView extends androidx.appcompat.widget.AppCompatTextView {
 
     public JsTextView(Context context) {
         super(context);

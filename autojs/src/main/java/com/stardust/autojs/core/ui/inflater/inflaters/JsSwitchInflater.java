@@ -7,7 +7,6 @@ import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.ViewCreator;
-import com.stardust.autojs.core.ui.inflater.util.Colors;
 import com.stardust.autojs.core.ui.inflater.util.Drawables;
 import com.stardust.autojs.core.ui.widget.JsSwitch;
 
@@ -17,10 +16,10 @@ import java.util.Map;
  * Created by ozobi - 2025/04/21
  */
 
-public class SwitchInflater extends BaseViewInflater<JsSwitch> {
+public class JsSwitchInflater extends BaseViewInflater<JsSwitch> {
     private final Drawables mDrawable = new Drawables();
 
-    public SwitchInflater(ResourceParser resourceParser) {
+    public JsSwitchInflater(ResourceParser resourceParser) {
         super(resourceParser);
     }
 
@@ -28,10 +27,10 @@ public class SwitchInflater extends BaseViewInflater<JsSwitch> {
     public boolean setAttr(JsSwitch view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
             case "thumbTint":
-                view.setThumbTintList(Colors.parseColorStateList(view, value));
+                view.setThumbTint(value);
                 break;
             case "trackTint":
-                view.setTrackTintList(Colors.parseColorStateList(view, value));
+                view.setTrackTint(value);
                 break;
             default:
                 return super.setAttr(view, attr, value, parent, attrs);

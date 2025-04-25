@@ -1,19 +1,17 @@
 package com.stardust.autojs.core.ui.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.os.Build;
 import android.util.AttributeSet;
-import android.widget.Button;
 
-import androidx.annotation.RequiresApi;
+import com.stardust.autojs.core.ui.inflater.util.Drawables;
 
 /**
  * Created by Stardust on 2017/5/15.
  */
 
-@SuppressLint("AppCompatCustomView")
-public class JsButton extends Button {
+//@SuppressLint("AppCompatCustomView")
+public class JsButton extends androidx.appcompat.widget.AppCompatButton {
+    private final Drawables mDrawables = new Drawables();
     public JsButton(Context context) {
         super(context);
     }
@@ -26,10 +24,10 @@ public class JsButton extends Button {
         super(context, attrs, defStyleAttr);
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    public JsButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-        super(context, attrs, defStyleAttr, defStyleRes);
-    }
+//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+//    public JsButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+//        super(context, attrs, defStyleAttr, defStyleRes);
+//    }
 
     public String text() {
         return getText().toString();
@@ -37,5 +35,9 @@ public class JsButton extends Button {
 
     public void text(CharSequence text) {
         setText(text);
+    }
+
+    public void setBackgroundGradient(String value){
+        setBackgroundDrawable(mDrawables.parseGradientDrawable(this.getContext(), value));
     }
 }

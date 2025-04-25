@@ -244,6 +244,7 @@ public class BaseViewInflater<V extends View> implements ViewInflater<V> {
                     }
                 }
                 break;
+            case "layout_marginStart":
             case "layout_marginLeft":
                 if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();
@@ -256,6 +257,7 @@ public class BaseViewInflater<V extends View> implements ViewInflater<V> {
                     params.topMargin = Dimensions.parseToIntPixel(value, view);
                 }
                 break;
+            case "layout_marginEnd":
             case "layout_marginRight":
                 if (view.getLayoutParams() instanceof ViewGroup.MarginLayoutParams) {
                     ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) view.getLayoutParams();

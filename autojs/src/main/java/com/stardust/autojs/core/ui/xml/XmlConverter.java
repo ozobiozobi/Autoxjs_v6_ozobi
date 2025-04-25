@@ -3,7 +3,6 @@ package com.stardust.autojs.core.ui.xml;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
@@ -22,6 +21,7 @@ import com.stardust.autojs.core.ui.widget.JsGridView;
 import com.stardust.autojs.core.ui.widget.JsImageView;
 import com.stardust.autojs.core.ui.widget.JsLinearLayout;
 import com.stardust.autojs.core.ui.widget.JsListView;
+import com.stardust.autojs.core.ui.widget.JsRadioButton;
 import com.stardust.autojs.core.ui.widget.JsRelativeLayout;
 import com.stardust.autojs.core.ui.widget.JsSpinner;
 import com.stardust.autojs.core.ui.widget.JsSwitch;
@@ -69,7 +69,7 @@ public class XmlConverter {
                     .map("seekbar", SeekBar.class.getName())
                     .map("spinner", JsSpinner.class.getName())
                     .map("switch", JsSwitch.class.getName())
-                    .map("radio", RadioButton.class.getName())
+                    .map("radio", JsRadioButton.class.getName())
                     .map("radiogroup", RadioGroup.class.getName())
                     .map("checkbox", CheckBox.class.getName())
                     .map("scroll", ScrollView.class.getName())

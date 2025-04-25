@@ -19,13 +19,13 @@ import java.util.Map;
  * Created by Stardust on 2017/11/29.
  */
 
-public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
+public class JsSpinnerInflater extends BaseViewInflater<JsSpinner> {
 
     protected static final ValueMapper<Integer> SPINNER_MODES = new ValueMapper<Integer>("spinnerMode")
             .map("dialog", Spinner.MODE_DIALOG)
             .map("dropdown", Spinner.MODE_DROPDOWN);
 
-    public SpinnerInflater(ResourceParser resourceParser) {
+    public JsSpinnerInflater(ResourceParser resourceParser) {
         super(resourceParser);
     }
 
@@ -55,7 +55,7 @@ public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
                         android.R.layout.simple_spinner_dropdown_item, value.split("[|]")));
                 break;
             case "textStyle":
-                view.setTextStyle(TextViewInflater.TEXT_STYLES.split(value));
+                view.setTextStyle(JsTextViewInflater.TEXT_STYLES.split(value));
                 break;
             case "textColor":
                 view.setTextColor(Colors.parse(view.getContext(), value));
@@ -64,7 +64,7 @@ public class SpinnerInflater extends BaseViewInflater<JsSpinner> {
                 view.setTextSize(Dimensions.parseToPixel(value, view));
                 break;
             case "entryTextStyle":
-                view.setEntryTextStyle(TextViewInflater.TEXT_STYLES.split(value));
+                view.setEntryTextStyle(JsTextViewInflater.TEXT_STYLES.split(value));
                 break;
             case "entryTextColor":
                 view.setEntryTextColor(Colors.parse(view.getContext(), value));

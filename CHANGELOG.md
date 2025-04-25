@@ -1,5 +1,31 @@
 # Change Log
 
+## 6.5.8.16
+
+添加：设置 button 渐变背景
+
+```js
+<button id="btn" w="88" h="88" gradient="shape=oval|colors=#ff00ff,#584EF0|ori=bottom_top|type=linear">
+ui.btn.setBackgroundGradient("shape=rect|corner=88");
+参数：shape: rect(方形-默认)、line(线)、ring(圆环)、oval(椭圆)
+     colors: 渐变颜色数组
+     ori: 渐变方向 top_bottom、bottom_top、left_right、right_left、tl_br、br_tl、tr_bl、bl_tr
+     type: 渐变类型 linear(线性-默认) radial(辐射) sweep(扫描)
+     center: 渐变中心 0.5,0.5  默认(x:0.5, y:0.5)
+     corner: 圆角 默认16
+有些可能不符合预期，暂时不深入研究 *.*
+```
+
+添加: 设置 radio 色调
+
+```js
+<radio id="radio" tint="#ff0000|#00ff00" />
+ui.radio.setTint("#00ff00|#ff0000")
+注：未选中|选中 （只有一个颜色则一样）
+```
+
+修改：button、input、spinner、radio、text、toolbar 控件为 androidx 的控件
+
 ## 6.5.8.15
 
 修复: 安卓 13 之后闪退或打不开app

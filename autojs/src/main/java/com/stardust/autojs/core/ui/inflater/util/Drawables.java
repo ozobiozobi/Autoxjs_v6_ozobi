@@ -5,10 +5,10 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.ScaleDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -32,7 +32,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -115,8 +117,8 @@ public class Drawables {
         return new ColorDrawable(Colors.parse(context, value));
     }
 
-    int toDp(Context context, String value) {
-        if(value.isEmpty()){
+    public int toDp(Context context, String value) {
+        if (value.isEmpty()) {
             return -1;
         }
         if (value.endsWith("px")) {
@@ -144,6 +146,92 @@ public class Drawables {
         thumbDrawable.setIntrinsicWidth(sizeArr[0]); // 设置宽度
         thumbDrawable.setIntrinsicHeight(sizeArr[1]); // 设置高度
         return thumbDrawable;
+    }
+
+    public Drawable parseGradientDrawable(Context context, String value) {
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        String[] valueArr = value.split("\\|");
+        Log.d("ozobiLog", "valueArr: " + Arrays.toString(valueArr));
+        float corner = 16f;
+        int shape = GradientDrawable.RECTANGLE;
+        List<Integer> colorList = new ArrayList<>();
+        float centerX = 0.5f;
+        float centerY = 0.5f;
+        GradientDrawable.Orientation ori = GradientDrawable.Orientation.TOP_BOTTOM;
+        int type = GradientDrawable.LINEAR_GRADIENT;
+        for (String v : valueArr) {
+            String trim = v.trim();
+            String key = trim.substring(0, trim.indexOf("="));
+            String val = trim.substring(trim.lastIndexOf("=") + 1);
+            switch (key) {
+                case "shape":
+                    if (val.startsWith("oval")) {
+                        shape = GradientDrawable.OVAL;
+                    } else if (val.startsWith("ring")) {
+                        shape = GradientDrawable.RING;
+                    } else if (val.startsWith("line")) {
+                        shape = GradientDrawable.LINE;
+                    }
+                    break;
+                case "color":
+                case "colors":
+                    String[] colorStrArr = val.split(",");
+                    for (String s : colorStrArr) {
+                        if (!s.isEmpty()) {
+                            colorList.add(Colors.parse(context, s));
+                        }
+                    }
+                    break;
+                case "corner":
+                    corner = toDp(context, val);
+                    break;
+                case "center":
+                    centerX = Float.parseFloat(val.substring(0, val.indexOf(",")));
+                    centerY = Float.parseFloat(val.substring(val.indexOf(",") + 1));
+                    break;
+                case "type":
+                    if (val.startsWith("radial")) {
+                        type = GradientDrawable.RADIAL_GRADIENT;
+                    } else if (val.startsWith("sweep")) {
+                        type = GradientDrawable.SWEEP_GRADIENT;
+                    }
+                    break;
+                case "ori":
+                    if (val.equals("top_bottom")) {
+                        ori = GradientDrawable.Orientation.TOP_BOTTOM;
+                    } else if (val.equals("bottom_top")) {
+                        ori = GradientDrawable.Orientation.BOTTOM_TOP;
+                    } else if (val.equals("left_right")) {
+                        ori = GradientDrawable.Orientation.LEFT_RIGHT;
+                    } else if (val.equals("right_left")) {
+                        ori = GradientDrawable.Orientation.RIGHT_LEFT;
+                    } else if (val.equals("tl_br")) {
+                        ori = GradientDrawable.Orientation.TL_BR;
+                    } else if (val.equals("br_tl")) {
+                        ori = GradientDrawable.Orientation.BR_TL;
+                    } else if (val.equals("tr_bl")) {
+                        ori = GradientDrawable.Orientation.TR_BL;
+                    } else if (val.equals("bl_tr")) {
+                        ori = GradientDrawable.Orientation.BL_TR;
+                    }
+                    break;
+            }
+        }
+        gradientDrawable.setShape(shape);
+        gradientDrawable.setCornerRadius(corner);
+        if (colorList.isEmpty()) {
+            colorList.add(Colors.parse(context, "#D9D6FA"));
+            colorList.add(Colors.parse(context, "#CECBED"));
+        }
+        int[] colorArr = new int[colorList.size()];
+        for (int i = 0; i < colorArr.length; i++) {
+            colorArr[i] = colorList.get(i);
+        }
+        gradientDrawable.setColors(colorArr);
+        gradientDrawable.setOrientation(ori);
+        gradientDrawable.setGradientType(type);
+        gradientDrawable.setGradientCenter(centerX, centerY);
+        return gradientDrawable;
     }
 
     public Drawable parseEllipseShapeDrawable(Context context, String value) {

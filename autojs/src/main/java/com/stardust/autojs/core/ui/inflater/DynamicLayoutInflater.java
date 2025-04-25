@@ -7,13 +7,11 @@ import android.view.InflateException;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
@@ -25,20 +23,27 @@ import com.stardust.autojs.core.ui.inflater.inflaters.BaseViewInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.DatePickerInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.FrameLayoutInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.ImageViewInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsButtonInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsEditTextInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsRadioButtonInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsSpinnerInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsSwitchInflater;
+import com.stardust.autojs.core.ui.inflater.inflaters.JsTextViewInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.LinearLayoutInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.ProgressBarInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.RadioGroupInflater;
-import com.stardust.autojs.core.ui.inflater.inflaters.SpinnerInflater;
-import com.stardust.autojs.core.ui.inflater.inflaters.SwitchInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.TabLayoutInflater;
-import com.stardust.autojs.core.ui.inflater.inflaters.TextViewInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.TimePickerInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.ToolbarInflater;
 import com.stardust.autojs.core.ui.inflater.inflaters.ViewGroupInflater;
 import com.stardust.autojs.core.ui.inflater.util.Res;
+import com.stardust.autojs.core.ui.widget.JsButton;
+import com.stardust.autojs.core.ui.widget.JsEditText;
+import com.stardust.autojs.core.ui.widget.JsRadioButton;
 import com.stardust.autojs.core.ui.widget.JsSpinner;
 import com.stardust.autojs.core.ui.widget.JsSwitch;
 import com.stardust.autojs.core.ui.widget.JsTabLayout;
+import com.stardust.autojs.core.ui.widget.JsTextView;
 import com.stardust.autojs.core.ui.widget.JsToolbar;
 import com.stardust.autojs.core.ui.xml.XmlConverter;
 
@@ -116,8 +121,8 @@ public class DynamicLayoutInflater {
     }
 
     protected void registerViewAttrSetters() {
-        registerViewAttrSetter(TextView.class.getName(), new TextViewInflater<>(mResourceParser));
-        registerViewAttrSetter(EditText.class.getName(), new TextViewInflater<>(mResourceParser));
+        registerViewAttrSetter(JsTextView.class.getName(), new JsTextViewInflater<>(mResourceParser));
+        registerViewAttrSetter(JsEditText.class.getName(), new JsEditTextInflater<>(mResourceParser));
         registerViewAttrSetter(ImageView.class.getName(), new ImageViewInflater<>(mResourceParser));
         registerViewAttrSetter(LinearLayout.class.getName(), new LinearLayoutInflater<>(mResourceParser));
         registerViewAttrSetter(FrameLayout.class.getName(), new FrameLayoutInflater<>(mResourceParser));
@@ -125,9 +130,11 @@ public class DynamicLayoutInflater {
         registerViewAttrSetter(JsToolbar.class.getName(), new ToolbarInflater<>(mResourceParser));
         registerViewAttrSetter(DatePicker.class.getName(), new DatePickerInflater(mResourceParser));
         registerViewAttrSetter(RadioGroup.class.getName(), new RadioGroupInflater<>(mResourceParser));
+        registerViewAttrSetter(JsRadioButton.class.getName(), new JsRadioButtonInflater(mResourceParser));
         registerViewAttrSetter(ProgressBar.class.getName(), new ProgressBarInflater<>(mResourceParser));
-        registerViewAttrSetter(JsSpinner.class.getName(), new SpinnerInflater(mResourceParser));
-        registerViewAttrSetter(JsSwitch.class.getName(), new SwitchInflater(mResourceParser));
+        registerViewAttrSetter(JsSpinner.class.getName(), new JsSpinnerInflater(mResourceParser));
+        registerViewAttrSetter(JsSwitch.class.getName(), new JsSwitchInflater(mResourceParser));
+        registerViewAttrSetter(JsButton.class.getName(), new JsButtonInflater(mResourceParser));
         registerViewAttrSetter(TimePicker.class.getName(), new TimePickerInflater(mResourceParser));
         registerViewAttrSetter(AppBarLayout.class.getName(), new AppBarInflater<>(mResourceParser));
         registerViewAttrSetter(JsTabLayout.class.getName(), new TabLayoutInflater<>(mResourceParser));
