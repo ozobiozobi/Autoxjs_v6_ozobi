@@ -157,15 +157,7 @@ public abstract class Task {
             if (engine != null) {
                 try{
                     engine.forceStop();
-                    new Thread(()->{
-                        try {
-                            sleep(500L);
-                            engine.execute(exit);
-                            engine.uncaughtException(new Exception("app 停止脚本"));
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }).start();
+                    engine.execute(exit);
                 }catch(Exception e){
                     Log.d("ozobiLog","Task: cancel: e: "+e);
                 }

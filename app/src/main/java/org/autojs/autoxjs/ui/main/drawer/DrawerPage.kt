@@ -207,6 +207,7 @@ fun DrawerPage() {
             layoutInsDelayCaptureSwitch()
             layoutInsScreenshotSwitch()
             layoutInsRefreshSwitch()
+            layoutInsSelectWindowSwitch()
 
             // <
 //            nightModeSwitch()
@@ -1779,6 +1780,7 @@ fun detailsDialog(context: Context){
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修改(658): 悬浮窗停止脚本(与app一样)\n\n"+
             "添加: 设置 input 色调\n"+
                 "~ <input id=\"input\" tint=\"#ff0000|#00ff00\" />\n" +
                 "~ ui.input.setTint(\"#00ff00|#ff0000\")\n\n"+

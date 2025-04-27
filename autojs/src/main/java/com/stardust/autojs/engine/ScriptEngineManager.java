@@ -1,14 +1,17 @@
 package com.stardust.autojs.engine;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.stardust.autojs.execution.ScriptExecution;
 import com.stardust.autojs.script.ScriptSource;
+import com.stardust.autojs.script.StringScriptSource;
 import com.stardust.util.Supplier;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -80,6 +83,12 @@ public class ScriptEngineManager {
             int n = mEngines.size();
             for (ScriptEngine engine : mEngines) {
                 engine.forceStop();
+                ScriptSource exit = new StringScriptSource(new Date().getTime()+"", "threads.start(()=>{exit()})");
+                try {
+                    engine.execute(exit);
+                } catch (Exception e) {
+                    Log.d("ozobiLog", "Task: cancel: e: " + e);
+                }
             }
             return n;
         }
