@@ -30,7 +30,7 @@ public class JsRadioButtonInflater extends BaseViewInflater<JsRadioButton> {
                 view.setTextColor(Colors.parse(view, value));
                 break;
             case "tint":
-                view.setButtonTintList(Colors.parseColorStateList(view, value));
+                view.setButtonTintList(Colors.parseCheckColorStateList(view, value));
                 break;
             default:
                 return super.setAttr(view, attr, value, parent, attrs);

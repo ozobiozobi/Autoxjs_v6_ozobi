@@ -22,10 +22,10 @@ public class JsSwitch extends androidx.appcompat.widget.SwitchCompat{
         super(context, attrs, defStyleAttr);
     }
     public void setThumbTint(String value){
-        setThumbTintList(Colors.parseColorStateList(this, value));
+        setThumbTintList(Colors.parseCheckColorStateList(this, value));
     }
     public void setTrackTint(String value){
-        setTrackTintList(Colors.parseColorStateList(this, value));
+        setTrackTintList(Colors.parseCheckColorStateList(this, value));
     }
     public void setThumbShape(String value){
         setThumbDrawable(mDrawable.parseEllipseShapeDrawable(this.getContext(), value));

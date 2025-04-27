@@ -1,6 +1,5 @@
 package com.stardust.autojs.core.ui.xml;
 
-import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.ProgressBar;
 import android.widget.RadioGroup;
@@ -15,6 +14,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.stardust.autojs.core.graphics.ScriptCanvasView;
 import com.stardust.autojs.core.ui.widget.JsButton;
+import com.stardust.autojs.core.ui.widget.JsCheckBox;
 import com.stardust.autojs.core.ui.widget.JsEditText;
 import com.stardust.autojs.core.ui.widget.JsFrameLayout;
 import com.stardust.autojs.core.ui.widget.JsGridView;
@@ -71,7 +71,7 @@ public class XmlConverter {
                     .map("switch", JsSwitch.class.getName())
                     .map("radio", JsRadioButton.class.getName())
                     .map("radiogroup", RadioGroup.class.getName())
-                    .map("checkbox", CheckBox.class.getName())
+                    .map("checkbox", JsCheckBox.class.getName())
                     .map("scroll", ScrollView.class.getName())
                     .map("toolbar", JsToolbar.class.getName())
                     .map("canvas", ScriptCanvasView.class.getName())

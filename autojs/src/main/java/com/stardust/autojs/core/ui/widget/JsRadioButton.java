@@ -34,6 +34,6 @@ public class JsRadioButton extends androidx.appcompat.widget.AppCompatRadioButto
     }
 
     public void setTint(String value) {
-        setButtonTintList(Colors.parseColorStateList(this, value));
+        setButtonTintList(Colors.parseCheckColorStateList(this, value));
     }
 }

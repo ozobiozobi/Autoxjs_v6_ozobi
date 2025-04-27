@@ -24,11 +24,6 @@ public class JsButton extends androidx.appcompat.widget.AppCompatButton {
         super(context, attrs, defStyleAttr);
     }
 
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    public JsButton(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
-
     public String text() {
         return getText().toString();
     }

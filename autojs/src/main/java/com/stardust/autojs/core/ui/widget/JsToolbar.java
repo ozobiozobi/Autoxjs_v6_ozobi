@@ -7,12 +7,11 @@ import android.util.AttributeSet;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
-import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.stardust.autojs.R;
 
-public class JsToolbar extends Toolbar {
+public class JsToolbar extends androidx.appcompat.widget.Toolbar {
 
     public JsToolbar(Context context) {
         super(context);

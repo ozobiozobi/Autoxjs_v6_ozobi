@@ -2,6 +2,22 @@
 
 ## 6.5.8.16
 
+添加: 设置 input 色调
+
+```js
+<input id="input" tint="#ff0000|#00ff00" />
+ui.input.setTint("#00ff00|#ff0000")
+```
+
+添加: 设置 checkbox 色调
+
+```js
+<checkbox id="checkbox" tint="#ff0000|#00ff00" />
+ui.checkbox.setTint("#00ff00|#ff0000")
+```
+
+修改: checkbox 控件为 androidx 控件
+
 添加：设置 button 渐变背景
 
 ```js
@@ -28,7 +44,7 @@ ui.radio.setTint("#00ff00|#ff0000")
 
 ## 6.5.8.15
 
-修复: 安卓 13 之后闪退或打不开app
+修复: 闪退或打不开 app
 
 添加: JsSwitch 开关控件
 

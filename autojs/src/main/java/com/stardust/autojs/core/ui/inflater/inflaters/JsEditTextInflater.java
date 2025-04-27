@@ -138,6 +138,9 @@ public class JsEditTextInflater<V extends JsEditText> extends BaseViewInflater<V
             return true;
         }
         switch (attrName) {
+            case "tint":
+                view.setTint(value);
+                break;
             case "autoLink":
                 view.setAutoLinkMask(AUTO_LINK_MASKS.get(value));
                 break;

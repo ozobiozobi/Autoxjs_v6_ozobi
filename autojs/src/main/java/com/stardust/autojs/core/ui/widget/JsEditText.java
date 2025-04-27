@@ -1,14 +1,14 @@
 package com.stardust.autojs.core.ui.widget;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
+
+import com.stardust.autojs.core.ui.inflater.util.Colors;
 
 /**
  * Created by Stardust on 2017/5/15.
  */
 
-@SuppressLint("AppCompatCustomView")
 public class JsEditText extends androidx.appcompat.widget.AppCompatEditText {
     public JsEditText(Context context) {
         super(context);
@@ -20,13 +20,7 @@ public class JsEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     public JsEditText(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
     }
-
-//    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-//    public JsEditText(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-//        super(context, attrs, defStyleAttr, defStyleRes);
-//    }
 
     public String text() {
         return getText().toString();
@@ -34,6 +28,10 @@ public class JsEditText extends androidx.appcompat.widget.AppCompatEditText {
 
     public void text(CharSequence text) {
         setText(text);
+    }
+
+    public void setTint(String value){
+        setBackgroundTintList(Colors.parseFocusColorStateList(this,value));
     }
 
 }

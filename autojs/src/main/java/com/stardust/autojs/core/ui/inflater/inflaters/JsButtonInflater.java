@@ -1,6 +1,5 @@
 package com.stardust.autojs.core.ui.inflater.inflaters;
 
-import android.util.Log;
 import android.view.ViewGroup;
 
 import androidx.annotation.Nullable;
@@ -43,7 +42,6 @@ public class JsButtonInflater extends BaseViewInflater<JsButton> {
     public ViewCreator<JsButton> getCreator() {
         return (context, attrs) -> {
             JsButton jsButton = new JsButton(context);
-            Log.d("ozobiLog", "JsButton: " + attrs);
             String text = attrs.remove("android:text");
             if (text != null) {
                 jsButton.setText(text);
@@ -51,6 +49,8 @@ public class JsButtonInflater extends BaseViewInflater<JsButton> {
             String gradient = attrs.remove("android:gradient");
             if (gradient != null) {
                 jsButton.setBackgroundDrawable(mDrawable.parseGradientDrawable(context, gradient));
+            }else{
+                jsButton.setBackgroundDrawable(mDrawable.parseGradientDrawable(context, "shape=rect"));
             }
             return jsButton;
         };

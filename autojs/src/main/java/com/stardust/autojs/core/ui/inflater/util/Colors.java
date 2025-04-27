@@ -29,7 +29,14 @@ public class Colors {
         return parse(view.getContext(), color);
     }
 
-    public static ColorStateList parseColorStateList(Context context, String value) {
+    public static ColorStateList getColorStateList(int[][] states, int[] colors) {
+        return new ColorStateList(
+                states,
+                colors
+        );
+    }
+
+    private static int[] getColorArr(Context context, String value) {
         Resources resources = context.getResources();
         String[] valueArr = new String[]{value, value};
         int[] colorArr = new int[]{0, 0};
@@ -49,19 +56,45 @@ public class Colors {
                 colorArr[index] = Color.parseColor(valueArr[index]);
             }
         }
-        return new ColorStateList(
-                new int[][]{
-                        new int[]{-android.R.attr.state_checked}, // 关闭状态
-                        new int[]{android.R.attr.state_checked}, // 开启状态
-                },
-                new int[]{
-                        colorArr[0], // 关闭状态的颜色
-                        colorArr[1], // 开启状态的颜色
-                }
-        );
+        return colorArr;
     }
 
-    public static ColorStateList parseColorStateList(View view, String color) {
-        return parseColorStateList(view.getContext(), color);
+    public static ColorStateList parseCheckColorStateList(Context context, String value) {
+        int[] colorArr = getColorArr(context, value);
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_checked},
+                new int[]{android.R.attr.state_checked}
+        };
+        return getColorStateList(states, colorArr);
+    }
+
+    public static ColorStateList parseCheckColorStateList(View view, String color) {
+        return parseCheckColorStateList(view.getContext(), color);
+    }
+
+    public static ColorStateList parseSelectColorStateList(Context context, String value) {
+        int[] colorArr = getColorArr(context, value);
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_selected},
+                new int[]{android.R.attr.state_selected}
+        };
+        return getColorStateList(states, colorArr);
+    }
+
+    public static ColorStateList parseSelectColorStateList(View view, String color) {
+        return parseSelectColorStateList(view.getContext(), color);
+    }
+
+    public static ColorStateList parseFocusColorStateList(Context context, String value) {
+        int[] colorArr = getColorArr(context, value);
+        int[][] states = new int[][]{
+                new int[]{-android.R.attr.state_focused},
+                new int[]{android.R.attr.state_focused}
+        };
+        return getColorStateList(states, colorArr);
+    }
+
+    public static ColorStateList parseFocusColorStateList(View view, String color) {
+        return parseFocusColorStateList(view.getContext(), color);
     }
 }

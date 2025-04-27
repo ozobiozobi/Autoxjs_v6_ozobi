@@ -151,7 +151,6 @@ public class Drawables {
     public Drawable parseGradientDrawable(Context context, String value) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         String[] valueArr = value.split("\\|");
-        Log.d("ozobiLog", "valueArr: " + Arrays.toString(valueArr));
         float corner = 16f;
         int shape = GradientDrawable.RECTANGLE;
         List<Integer> colorList = new ArrayList<>();
@@ -183,7 +182,7 @@ public class Drawables {
                     }
                     break;
                 case "corner":
-                    corner = toDp(context, val);
+                    corner = (float) ViewUtils.dpToPx(context, toDp(context, val));
                     break;
                 case "center":
                     centerX = Float.parseFloat(val.substring(0, val.indexOf(",")));
@@ -197,22 +196,31 @@ public class Drawables {
                     }
                     break;
                 case "ori":
-                    if (val.equals("top_bottom")) {
-                        ori = GradientDrawable.Orientation.TOP_BOTTOM;
-                    } else if (val.equals("bottom_top")) {
-                        ori = GradientDrawable.Orientation.BOTTOM_TOP;
-                    } else if (val.equals("left_right")) {
-                        ori = GradientDrawable.Orientation.LEFT_RIGHT;
-                    } else if (val.equals("right_left")) {
-                        ori = GradientDrawable.Orientation.RIGHT_LEFT;
-                    } else if (val.equals("tl_br")) {
-                        ori = GradientDrawable.Orientation.TL_BR;
-                    } else if (val.equals("br_tl")) {
-                        ori = GradientDrawable.Orientation.BR_TL;
-                    } else if (val.equals("tr_bl")) {
-                        ori = GradientDrawable.Orientation.TR_BL;
-                    } else if (val.equals("bl_tr")) {
-                        ori = GradientDrawable.Orientation.BL_TR;
+                    switch (val){
+                        case "top_bottom":
+                            ori = GradientDrawable.Orientation.TOP_BOTTOM;
+                            break;
+                        case "bottom_top":
+                            ori = GradientDrawable.Orientation.BOTTOM_TOP;
+                            break;
+                        case "left_right":
+                            ori = GradientDrawable.Orientation.LEFT_RIGHT;
+                            break;
+                        case "right_left":
+                            ori = GradientDrawable.Orientation.RIGHT_LEFT;
+                            break;
+                        case "tl_br":
+                            ori = GradientDrawable.Orientation.TL_BR;
+                            break;
+                        case "br_tl":
+                            ori = GradientDrawable.Orientation.BR_TL;
+                            break;
+                        case "tr_bl":
+                            ori = GradientDrawable.Orientation.TR_BL;
+                            break;
+                        case "bl_tr":
+                            ori = GradientDrawable.Orientation.BL_TR;
+                            break;
                     }
                     break;
             }
