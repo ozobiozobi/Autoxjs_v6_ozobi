@@ -1,5 +1,6 @@
 package org.autojs.autoxjs.ui.main.drawer
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.AppOpsManager
@@ -7,6 +8,7 @@ import android.app.admin.DevicePolicyManager
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.net.Uri
 import android.os.Build
@@ -16,6 +18,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -77,6 +80,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.window.Dialog
+import androidx.core.app.NotificationManagerCompat
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -1229,6 +1234,15 @@ private fun UsageStatsPermissionSwitch() {
         )
     }
 }
+@RequiresApi(Build.VERSION_CODES.TIRAMISU)
+fun hasNotificationPermission(context: Context): Boolean {
+    if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+        return NotificationManagerCompat.from(context).areNotificationsEnabled()
+    return ContextCompat.checkSelfPermission(
+        context,
+        Manifest.permission.POST_NOTIFICATIONS
+    ) == PackageManager.PERMISSION_GRANTED
+}
 
 @Composable
 private fun ForegroundServiceSwitch() {
@@ -1249,6 +1263,12 @@ private fun ForegroundServiceSwitch() {
         checked = isOpenForegroundServices,
         onCheckedChange = {
             if (it) {
+                if(!hasNotificationPermission(context)){
+                    Toast.makeText(context,"请打开通知权限",Toast.LENGTH_SHORT).show()
+                    val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
+                    intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
+                    context.startActivity(intent)
+                }
                 ForegroundService.start(context)
             } else {
                 ForegroundService.stop(context)
@@ -1851,6 +1871,7 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: app 前台服务无法使用\n\n"+
             "修复: 打包后权限判断问题\n\n"+
             "添加: 通知权限\n\n" +
             "添加: 打包后授予全部文件访问权限\n\n" +
