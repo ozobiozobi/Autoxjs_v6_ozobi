@@ -33,6 +33,8 @@ import com.stardust.app.permission.DrawOverlaysPermission
 import com.stardust.app.permission.DrawOverlaysPermission.launchCanDrawOverlaysSettings
 import com.stardust.app.permission.Permissions
 import com.stardust.app.permission.PermissionsSettingsUtil.launchAppPermissionsSettings
+import com.stardust.autojs.core.permission.StoragePermissionUtils.getMediaPermissionList
+import com.stardust.autojs.core.permission.StoragePermissionUtils.requestManageAllFilesPermission
 import com.stardust.autojs.inrt.autojs.AccessibilityServiceTool
 import com.stardust.autojs.inrt.autojs.AccessibilityServiceTool1
 import com.stardust.autojs.inrt.autojs.AutoJs
@@ -101,7 +103,7 @@ class SplashActivity : ComponentActivity() {
                 checkSpecialPermissions()
             } else {
                 GlobalAppContext.toast(getString(R.string.text_please_enable_permissions_before_running))
-                requestExternalStoragePermission()
+                requestExternalStoragePermission(applicationContext)
             }
         }
 
@@ -146,6 +148,10 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         requestBootCompletedPermission(this)
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            requestManageAllFilesPermission(this)
+        }
+        requestExternalStoragePermission(this)
         lifecycleScope.launch {
             projectConfig = withContext(Dispatchers.IO) {
                     ProjectConfig.fromAssets(
@@ -175,7 +181,6 @@ class SplashActivity : ComponentActivity() {
                 delay(1000)
             }
             readSpecialPermissionConfiguration()
-            requestExternalStoragePermission()
         }
     }
 
@@ -218,12 +223,10 @@ class SplashActivity : ComponentActivity() {
         }
     }
 
-    private fun requestExternalStoragePermission() {
+    private fun requestExternalStoragePermission(context: Context) {
+        val permissionsToRequest = getMediaPermissionList(context)
         storagePermissionLauncher.launch(
-            arrayOf(
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE
-            )
+            permissionsToRequest.toTypedArray()
         )
     }
 

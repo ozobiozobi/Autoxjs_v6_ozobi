@@ -53,23 +53,23 @@ module.exports = function (runtime, global) {
     // Added by ozobi - 2025/02/14 > 添加: viewUtils
     global.viewUtils = {
         findParentById:function(view,id){
-            return runtime.viewUtils.findParentById(view, id)
+            return com.stardust.util.ViewUtils.findParentById(view, id)
         },
         pxToSp:function(_px) {
             let px = _px * 1.0;
-            return runtime.viewUtils.pxToSp(context, px);
+            return com.stardust.util.ViewUtils.pxToSp(context, px);
         },
         dpToPx:function(_dp) {
             let dp = Math.floor(_dp);
-            return runtime.viewUtils.dpToPx(context, dp);
+            return com.stardust.util.ViewUtils.dpToPx(context, dp);
         },
         pxToDp:function(_px) {
             let px = Math.floor(_px);
-            return runtime.viewUtils.pxToDp(context, px);
+            return com.stardust.util.ViewUtils.pxToDp(context, px);
         },
         spToPx:function(_sp) {
             let sp = _sp * 1.0;
-            return runtime.viewUtils.spToPx(context, sp);
+            return com.stardust.util.ViewUtils.spToPx(context, sp);
         }
     };
     // <

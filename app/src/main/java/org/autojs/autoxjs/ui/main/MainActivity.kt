@@ -1,6 +1,5 @@
 package org.autojs.autoxjs.ui.main
 
-//import com.aiselp.autojs.codeeditor.EditActivity
 import android.Manifest
 import android.app.ActivityManager
 import android.content.Context
@@ -32,7 +31,8 @@ import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import com.stardust.app.permission.DrawOverlaysPermission
-import com.stardust.util.StoragePermissionUtils
+import com.stardust.autojs.core.permission.StoragePermissionUtils
+import com.stardust.autojs.core.permission.StoragePermissionUtils.getMediaPermissionList
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.autojs.autoxjs.Pref
@@ -114,7 +114,7 @@ class MainActivity : FragmentActivity() {
             scope = rememberCoroutineScope()
             AutoXJsTheme{
                 Surface(color = MaterialTheme.colors.background) {
-                    val permission = rememberExternalStoragePermissionsState {
+                    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
                         if (it) {
                             scriptListFragment.explorerView.onRefresh()
                         }
@@ -281,12 +281,9 @@ fun showExternalStoragePermissionToast(context: Context) {
 
 @OptIn(ExperimentalPermissionsApi::class)
 @Composable
-fun rememberExternalStoragePermissionsState(onPermissionsResult: (allAllow: Boolean) -> Unit) =
+fun rememberExternalStoragePermissionsState(context:Context, onPermissionsResult: (allAllow: Boolean) -> Unit) =
     rememberMultiplePermissionsState(
-        permissions = listOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        ),
+        permissions = getMediaPermissionList(context),
         onPermissionsResult = { map ->
             onPermissionsResult(map.all { it.value })
         })
@@ -509,7 +506,7 @@ private fun NewDirectory(
     scriptListFragment: ScriptListFragment,
     onDismissRequest: () -> Unit
 ) {
-    val permission = rememberExternalStoragePermissionsState {
+    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
         if (it) getScriptOperations(
             context,
             scriptListFragment.explorerView
@@ -536,7 +533,7 @@ private fun NewFile(
     scriptListFragment: ScriptListFragment,
     onDismissRequest: () -> Unit
 ) {
-    val permission = rememberExternalStoragePermissionsState {
+    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
         if (it) getScriptOperations(
             context,
             scriptListFragment.explorerView
@@ -563,7 +560,7 @@ private fun ImportFile(
     scriptListFragment: ScriptListFragment,
     onDismissRequest: () -> Unit
 ) {
-    val permission = rememberExternalStoragePermissionsState {
+    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
         if (it) getScriptOperations(
             context,
             scriptListFragment.explorerView

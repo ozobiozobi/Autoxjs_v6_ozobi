@@ -57,7 +57,6 @@ import com.stardust.util.SdkVersionUtil;
 import com.stardust.util.Supplier;
 import com.stardust.util.UiHandler;
 import com.stardust.util.ViewUtil;
-import com.stardust.util.ViewUtils;
 
 import org.mozilla.javascript.ContextFactory;
 import org.mozilla.javascript.RhinoException;
@@ -179,8 +178,6 @@ public class ScriptRuntime {
     @ScriptVariable
     public AdbIME adbIMEShellCommand;
 
-    @ScriptVariable
-    public ViewUtils viewUtils;
 //    @ScriptVariable
 //    public SendEventCommand sendeventCommand;
     // <
@@ -251,7 +248,6 @@ public class ScriptRuntime {
         
         deviceAdminReceiverMsg = DeviceAdminReceiverMsg.INSTANCE;
         devicePolicyManager = DevicePolicyManager.INSTANCE;
-        viewUtils = new ViewUtils();
 //        sendeventCommand = new SendEventCommand(getApplicationContext());
         // <
         floaty = new Floaty(uiHandler, ui, this);
@@ -500,7 +496,6 @@ public class ScriptRuntime {
             mRootShell = null;
             mShellSupplier = null;
             adbIMEShellCommand = null;
-            viewUtils = null;
             deviceAdminReceiverMsg = null;
             devicePolicyManager = null;
         });

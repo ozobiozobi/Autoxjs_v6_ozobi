@@ -10,12 +10,14 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,6 +33,8 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 import org.autojs.autoxjs.R;
+import org.autojs.autoxjs.model.script.ScriptFile;
+import org.autojs.autoxjs.model.script.Scripts;
 import org.autojs.autoxjs.storage.file.TmpScriptFiles;
 import org.autojs.autoxjs.theme.dialog.ThemeColorMaterialDialogBuilder;
 import org.autojs.autoxjs.tool.Observers;
@@ -39,6 +43,9 @@ import org.autojs.autoxjs.ui.main.MainActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -52,7 +59,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     private OnActivityResultDelegate.Mediator mMediator = new OnActivityResultDelegate.Mediator();
     private static final String LOG_TAG = "EditActivity";
-
+    private ScriptExecution floatyExecution = null;
     @ViewById(R.id.editor_view)
     EditorView mEditorView;
 
@@ -132,8 +139,21 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
 
     private void setUpToolbar() {
 //        BaseActivity.setToolbarAsBack(this, R.id.toolbar, "" );
-        TextView filePath= findViewById(R.id.file_path);
-        filePath.setText(mEditorView.getUri().getPath());
+        TextView filePath = findViewById(R.id.file_path);
+        String scriptFloatyFilePath = mEditorView.getUri().getPath();
+        filePath.setText(scriptFloatyFilePath);
+        String scriptString = "let scriptFw = floaty.window( <horizontal id=\"root\" padding=\"0\"><frame id=\"toggle\" padding=\"5\" bg=\"#80000000\" gravity=\"center\"><img id=\"collapsedIcon\" src=\"@drawable/ic_keyboard_arrow_up_black_48dp\" tint=\"#ffffff\" w=\"24dp\" h=\"24dp\" /><img id=\"expandedIcon\" src=\"@drawable/ic_keyboard_arrow_down_black_48dp\" tint=\"#ffffff\" w=\"24dp\" h=\"24dp\" /> </frame> <vertical id=\"expanded\" padding=\"5\" bg=\"#80000000\"> <horizontal gravity=\"left\" margin=\"0\" padding=\"0\"> <text id=\"scriptName\" text=\"TTS.js\" textColor=\"#ffffff\" textSize=\"10sp\" /> </horizontal> <horizontal gravity=\"center\" margin=\"0\"> <img id=\"start\" src=\"@drawable/ic_play_arrow_black_48dp\" tint=\"#ffffff\" w=\"24dp\" h=\"24dp\" marginLeft=\"8\" /> <img id=\"stop\" src=\"@drawable/ic_stop_black_48dp\" tint=\"#ffffff\" w=\"24dp\" h=\"24dp\" marginLeft=\"8\" /> <img id=\"log\" src=\"@drawable/ic_assignment_black_48dp\" tint=\"#ffffff\" w=\"22dp\" h=\"22dp\" marginLeft=\"8\" /> <img id=\"exit\" src=\"@android:drawable/ic_menu_close_clear_cancel\" tint=\"#ffffff\" w=\"24dp\" h=\"24dp\" marginLeft=\"8\" /> </horizontal> </vertical> </horizontal>);let isExpanded = true;let isMoving = false;let x, y;let downX, downY;let windowWidth, isStickToRight, toggleWidth;let checkMoveInterval;let scriptFilePath = files.path(\""+ scriptFloatyFilePath +"\");scriptFw.setPosition(0, device.getCurHeight() / 3);setTimeout(() => {ui.run(() => {scriptFw.collapsedIcon.visibility = 8;scriptFw.expandedIcon.visibility = 0;scriptFw.expanded.visibility = 0;scriptFw.setSize(-2, -2);scriptFw.scriptName.setText(scriptFilePath.slice(scriptFilePath.lastIndexOf(\"/\") + 1))})}, 200);setTimeout(() => {ui.run(() => {let layoutParams = scriptFw.toggle.getLayoutParams();layoutParams.height = scriptFw.getContentView().getHeight();scriptFw.toggle.setLayoutParams(layoutParams)});windowWidth = scriptFw.getContentView().getWidth()}, 600);scriptFw.toggle.click(() => {});scriptFw.toggle.addListener(\"touch\", (e) => {if (e.action == 2) {if (isMoving) {scriptFw.setPosition(x + (e.getRawX() - downX), y + (e.getRawY() - downY))}} else if (e.action == 1) {if (isMoving) {isMoving = false} else {if (isExpanded) {scriptFw.collapsedIcon.visibility = 0;scriptFw.expandedIcon.visibility = 8;scriptFw.expanded.visibility = 8;scriptFw.setSize(-2, -2);if (toggleWidth == undefined) {setTimeout(() => {toggleWidth = scriptFw.getContentView().getWidth();moveToSide()}, 500)} else {moveToSide()}} else {scriptFw.collapsedIcon.visibility = 8;scriptFw.expandedIcon.visibility = 0;scriptFw.expanded.visibility = 0;scriptFw.setSize(-2, -2);if (isStickToRight) {scriptFw.setPosition(device.getCurWidth() - windowWidth, scriptFw.getY())}};isExpanded = !isExpanded};if (checkMoveInterval) {clearInterval(checkMoveInterval);checkMoveInterval = null};if (!isExpanded && toggleWidth) {moveToSide()}} else if (e.action == 0) {x = scriptFw.getX();y = scriptFw.getY();downX = e.getRawX();downY = e.getRawY();checkMoveInterval = setInterval(() => {if (Math.abs(e.getRawX() - downX) > 20 || Math.abs(e.getRawY() - downY) > 20) {isMoving = true;clearInterval(checkMoveInterval);checkMoveInterval = null}}, 50)}});scriptFw.root.setOnTouchListener(function (view, event) {switch (event.getAction()) {case event.ACTION_DOWN:;isMoving = false;x = scriptFw.getX();y = scriptFw.getY();downX = event.getRawX();downY = event.getRawY();return true;case event.ACTION_MOVE:;if (Math.abs(event.getRawX() - downX) > 20 || Math.abs(event.getRawY() - downY) > 20) {isMoving = true};if (isMoving) {scriptFw.setPosition(x + (event.getRawX() - downX), y + (event.getRawY() - downY))};return true;case event.ACTION_UP:;isMoving = false;return false};return false});function moveToSide() {if (scriptFw.getX() < device.getCurWidth() / 2) {isStickToRight = false;scriptFw.setPosition(0, scriptFw.getY())} else {isStickToRight = true;scriptFw.setPosition(device.getCurWidth() - toggleWidth, scriptFw.getY())}};function 停止当前脚本() {engines.all().forEach((ScriptEngine) => {if (engines.myEngine().toString() == ScriptEngine.toString()) {ScriptEngine.forceStop();log(\"停止脚本引擎: \" + engines.myEngine().source)}})};scriptFw.start.click(function () {toast(\"启动脚本\");engines.execScriptFile(scriptFilePath)});scriptFw.stop.click(function () {toast(\"停止脚本\");engines.all().forEach((ScriptEngine) => {if (engines.myEngine().toString() != ScriptEngine.toString()) {ScriptEngine.forceStop();log(\"停止脚本引擎: \" + engines.myEngine().source)}})});scriptFw.log.click(() => {toast(\"日志\");app.startActivity(\"console\")});scriptFw.exit.click(() => {toast(\"退出悬浮窗\");scriptFw.close();停止当前脚本()});events.on(\"exit\", () => {console.log(\"脚本已退出\");scriptFw.close()});setInterval(() => {}, 3000);";
+        File ScriptFile = new File(this.getFilesDir(),"__scriptControlFloaty.js");
+        try{
+            // 将字符串写入文件
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                Files.write(Paths.get(ScriptFile.getPath()), scriptString.getBytes(StandardCharsets.UTF_8));
+                floatyExecution = Scripts.INSTANCE.run(new ScriptFile(ScriptFile));
+                Toast.makeText(this,"悬浮窗运行不会保存",Toast.LENGTH_SHORT).show();
+            }
+        }catch(Exception e){
+            Log.d("ozobiLog","e: "+e);
+        }
     }
 
     @Override
@@ -234,6 +254,11 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     protected void onDestroy() {
         mEditorView.destroy();
         super.onDestroy();
+        try {
+            floatyExecution.getEngine().forceStop();
+        } catch (Exception e) {
+            Log.d("ozobiLog", "e: " + e);
+        }
     }
 
     @NonNull

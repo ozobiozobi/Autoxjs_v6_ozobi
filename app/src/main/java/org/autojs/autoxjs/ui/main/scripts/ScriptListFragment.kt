@@ -154,7 +154,7 @@ class ScriptListFragment : Fragment() {
     )
     @Composable
     private fun ImportFile(context: Context) {
-        val permission = rememberExternalStoragePermissionsState {
+        val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
             if (it) getScriptOperations(
                 context,
                 this@ScriptListFragment
@@ -180,7 +180,7 @@ class ScriptListFragment : Fragment() {
     )
     @Composable
     private fun NewFile(context: Context) {
-        val permission = rememberExternalStoragePermissionsState {
+        val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
             if (it) getScriptOperations(
                 context,
                 this@ScriptListFragment
@@ -203,7 +203,7 @@ class ScriptListFragment : Fragment() {
     @OptIn(ExperimentalPermissionsApi::class, ExperimentalMaterialApi::class)
     @Composable
     private fun NewDirectory(context: Context) {
-        val permission = rememberExternalStoragePermissionsState {
+        val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
             if (it) getScriptOperations(
                 context,
                 this@ScriptListFragment

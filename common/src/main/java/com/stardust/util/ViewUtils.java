@@ -24,16 +24,15 @@ public class ViewUtils {
     }
 
     public static float pxToSp(Context context, float px) {
-        float scaledDensity = context.getResources().getDisplayMetrics().scaledDensity;
-        return px / scaledDensity;
+        return px / context.getResources().getDisplayMetrics().scaledDensity;
     }
 
     public static int dpToPx(Context context, int dp) {
-        return dp * (context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return (int) (dp * context.getResources().getDisplayMetrics().density);
     }
 
     public static int pxToDp(Context context, int px) {
-        return px / (context.getResources().getDisplayMetrics().densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return (int) (px / context.getResources().getDisplayMetrics().density);
     }
 
     public static float spToPx(Context context, float sp) {
