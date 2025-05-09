@@ -1,6 +1,7 @@
 package com.stardust.autojs.inrt
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -17,7 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.annotation.Nullable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -46,11 +46,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.autojs.autoxjs.inrt.R
 
+
 /**
  * Created by Stardust on 2018/2/2.
  * Modified by wilinz on 2022/5/23
  */
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : ComponentActivity() {
 
     companion object {
@@ -103,7 +105,7 @@ class SplashActivity : ComponentActivity() {
                 checkSpecialPermissions()
             } else {
                 GlobalAppContext.toast(getString(R.string.text_please_enable_permissions_before_running))
-                requestExternalStoragePermission(applicationContext)
+                requestExternalStoragePermission(this)
             }
         }
 
@@ -139,12 +141,10 @@ class SplashActivity : ComponentActivity() {
     private fun requestBootCompletedPermission(context: Context) {
         if (ContextCompat.checkSelfPermission(context, Manifest.permission.RECEIVE_BOOT_COMPLETED) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions((context as Activity), arrayOf(Manifest.permission.RECEIVE_BOOT_COMPLETED), REQUEST_CODE_BOOT_COMPLETED_PERMISSION)
-        }else{
-            Log.d("ozobiLog","开机自启权限已授予")
         }
     }
 
-    override fun onCreate(@Nullable savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         requestBootCompletedPermission(this)
@@ -154,11 +154,11 @@ class SplashActivity : ComponentActivity() {
         requestExternalStoragePermission(this)
         lifecycleScope.launch {
             projectConfig = withContext(Dispatchers.IO) {
-                    ProjectConfig.fromAssets(
-                        this@SplashActivity,
-                        ProjectConfig.configFileOfDir("project")
-                    )!!
-                }
+                ProjectConfig.fromAssets(
+                    this@SplashActivity,
+                    ProjectConfig.configFileOfDir("project")
+                )!!
+            }
             if (projectConfig.launchConfig.displaySplash) {
                 val frame = findViewById<FrameLayout>(R.id.frame)
                 frame.visibility = View.VISIBLE
@@ -181,6 +181,18 @@ class SplashActivity : ComponentActivity() {
                 delay(1000)
             }
             readSpecialPermissionConfiguration()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (isFinishing) {
+            // 清理 ViewRootImpl 的引用
+            if (window != null) {
+                window.decorView.setOnTouchListener(null)
+                window.decorView.setOnClickListener(null)
+                window.decorView.setOnKeyListener(null)
+            }
         }
     }
 

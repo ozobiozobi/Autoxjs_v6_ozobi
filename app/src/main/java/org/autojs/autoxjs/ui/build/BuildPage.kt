@@ -831,7 +831,7 @@ fun SuccessDialog(
             onDismissRequest = onDismissRequest,
             title = { Text(text = stringResource(id = R.string.text_build_successfully)) },
             text = {
-                Text(text = stringResource(id = R.string.format_build_successfully, outApkPath)+"\n若无法安装, 可自行使用MT管理器等重新签名")
+                Text(text = stringResource(id = R.string.format_build_successfully, outApkPath)+"\n若无法安装, 可自行使用MT管理器签名\n还是不行的话，再进行优化(选性能优先)")
             },
             confirmButton = {
                 TextButton(onClick = {

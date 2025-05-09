@@ -1851,6 +1851,7 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: 打包后权限判断问题\n\n"+
             "添加: 通知权限\n\n" +
             "添加: 打包后授予全部文件访问权限\n\n" +
             "修复: 安卓 15 存储权限问题\n\n" +
