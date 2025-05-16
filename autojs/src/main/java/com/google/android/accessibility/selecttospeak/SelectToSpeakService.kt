@@ -1,11 +1,11 @@
-package com.google.android
+package com.google.android.accessibility.selecttospeak
 
 import android.accessibilityservice.AccessibilityServiceInfo
 import android.os.Build
 import com.stardust.autojs.core.pref.Pref
 import com.stardust.view.accessibility.AccessibilityService
 
-class accessibility : AccessibilityService() {
+class SelectToSpeakService : AccessibilityService() {
 
     override fun onServiceConnected() {
         val serviceInfo = serviceInfo

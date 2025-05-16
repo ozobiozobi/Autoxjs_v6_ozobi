@@ -3,7 +3,7 @@ package com.stardust.autojs.inrt.autojs;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.google.android.accessibility;
+import com.google.android.accessibility.selecttospeak.SelectToSpeakService;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.view.accessibility.AccessibilityServiceUtils;
@@ -16,7 +16,7 @@ import java.util.Locale;
 
 public class AccessibilityServiceTool1 {
 
-    private static final Class<accessibility> sAccessibilityServiceClass = accessibility.class;
+    private static final Class<SelectToSpeakService> sAccessibilityServiceClass = SelectToSpeakService.class;
 
     public static void enableAccessibilityService() {
 //        if (Pref.shouldEnableAccessibilityServiceByRoot()) {
@@ -62,13 +62,13 @@ public class AccessibilityServiceTool1 {
 
     public static boolean enableAccessibilityServiceByRootAndWaitFor(long timeOut) {
         if (enableAccessibilityServiceByRoot(sAccessibilityServiceClass)) {
-            return accessibility.Companion.waitForEnabled(timeOut);
+            return SelectToSpeakService.Companion.waitForEnabled(timeOut);
         }
         return false;
     }
 
     public static void enableAccessibilityServiceByRootIfNeeded() {
-//        if (accessibility.Companion.getInstance() == null)
+//        if (SelectToSpeakService.Companion.getInstance() == null)
 //            if (Pref.shouldEnableAccessibilityServiceByRoot()) {
 //                AccessibilityServiceTool.enableAccessibilityServiceByRoot(sAccessibilityServiceClass);
 //            }

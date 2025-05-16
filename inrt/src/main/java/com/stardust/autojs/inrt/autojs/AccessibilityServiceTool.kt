@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.text.TextUtils
+import com.google.android.accessibility.selecttospeak.SelectToSpeakService
 import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.core.util.ProcessShell
 import com.stardust.view.accessibility.AccessibilityServiceUtils.isAccessibilityServiceEnabled
@@ -50,7 +51,7 @@ object AccessibilityServiceTool {
     }
 
     fun isAccessibilityServiceEnabled(context: Context): Boolean {
-        return isAccessibilityServiceEnabled(context, com.google.android.accessibility::class.java)
+        return isAccessibilityServiceEnabled(context, SelectToSpeakService::class.java)
     }
 
 }

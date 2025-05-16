@@ -235,7 +235,7 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
     @ScriptInterface
 //    @RequiresApi(Build.VERSION_CODES.Tiramisu)
     fun dpadUp(): Boolean {
-//        return performGlobalAction(accessibility.GLOBAL_ACTION_DPAD_UP)
+//        return performGlobalAction(SelectToSpeakService.GLOBAL_ACTION_DPAD_UP)
         // TODO: 待适配Api Tiramisu
         return false
     }
@@ -246,7 +246,7 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
     @ScriptInterface
 //    @RequiresApi(Build.VERSION_CODES.Tiramisu)
     fun dpadDown(): Boolean {
-//        return performGlobalAction(accessibility.GLOBAL_ACTION_DPAD_DOWN)
+//        return performGlobalAction(SelectToSpeakService.GLOBAL_ACTION_DPAD_DOWN)
         // TODO: 待适配Api Tiramisu
         return false
     }
@@ -257,7 +257,7 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
     @ScriptInterface
 //    @RequiresApi(Build.VERSION_CODES.Tiramisu)
     fun dpadRight(): Boolean {
-//        return performGlobalAction(accessibility.GLOBAL_ACTION_DPAD_RIGHT)
+//        return performGlobalAction(SelectToSpeakService.GLOBAL_ACTION_DPAD_RIGHT)
         // TODO: 待适配Api Tiramisu
         return false
     }
@@ -268,7 +268,7 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
     @ScriptInterface
 //    @RequiresApi(Build.VERSION_CODES.Tiramisu)
     fun dpadLeft(): Boolean {
-//        return performGlobalAction(accessibility.GLOBAL_ACTION_DPAD_LEFT)
+//        return performGlobalAction(SelectToSpeakService.GLOBAL_ACTION_DPAD_LEFT)
         // TODO: 待适配Api Tiramisu
         return false
     }
@@ -279,7 +279,7 @@ class SimpleActionAutomator(private val mAccessibilityBridge: AccessibilityBridg
     @ScriptInterface
 //    @RequiresApi(Build.VERSION_CODES.Tiramisu)
     fun dpadCenter(): Boolean {
-//        return performGlobalAction(accessibility.GLOBAL_ACTION_DPAD_CENTER)
+//        return performGlobalAction(SelectToSpeakService.GLOBAL_ACTION_DPAD_CENTER)
         // TODO: 待适配Api Tiramisu
         return false
     }

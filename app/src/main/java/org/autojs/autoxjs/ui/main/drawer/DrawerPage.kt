@@ -1866,6 +1866,17 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
+            "<=== 65818 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "增强: 解决微信控件混乱问题\n" +
+                    "~ 如果还是不行的话，估计是环境异常了"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
             "<=== 65817 ===>"
         )
         .item(
