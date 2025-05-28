@@ -94,7 +94,7 @@ android {
             include("armeabi-v7a", "arm64-v8a", "x86_64")
 
             // Specifies that we do not want to also generate a universal APK that includes all ABIs.
-//            isUniversalApk = true
+            isUniversalApk = true
         }
     }
     buildTypes {

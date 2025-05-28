@@ -43,6 +43,8 @@
     <string name="ozobi_key_isDelay_capture" translatable="false">布局分析延迟捕获开关</string>
     <string name="ozobi_key_docs_service" translatable="false">文档服务开关</string>
     <string name="ozobi_key_isNightMode" translatable="false">夜间模式开关</string>
+    <string name="ozobi_key_show_edit_floaty" translatable="false">代码编辑悬浮窗开关</string>
+    <string name="ozobi_text_edit_floaty" translatable="false">代码编辑悬浮窗</string>
 <!--    //-->
     <string name="email" translatable="false">chengshulun@live.com</string>
     <string name="default_main_file_name" translatable="false">main.js</string>

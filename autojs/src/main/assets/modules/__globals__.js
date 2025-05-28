@@ -75,9 +75,70 @@ module.exports = function (runtime, global) {
     // <
     // Added by ozobi - 2025/02/14 > 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
     global.adbConnect = runtime.adbConnect;
-    global.termux = runtime.termux;
+    global.stringArray = runtime.stringArray;
+    global.termux = function(command, options){
+        try {
+            let outputPath = options.outputPath === undefined ? files.cwd() + "/" + Date.now() + "termux_output" : options.outputPath;
+            let callback = options.callback;
+            let runBackground = options.runBackground === undefined ? true : options.runBackground;
+            let sessionAction = options.sessionAction === undefined ? 0 : options.sessionAction;
+            let top = options.top === undefined ? true : options.top;
+            let clean = options.clean === undefined ? true : options.clean;
+            files.createWithDirs(outputPath);
+            files.write(outputPath, "");
+            // 包裹命令，加输出重定向
+            if (outputPath) {
+                command += " > " + outputPath + " 2>&1";
+                if (callback) {
+                    command += ";echo '##termuxDoneExec##' >> " + outputPath;
+                }
+            }
+            runtime.termux(command, runBackground, sessionAction, top);
+            console.log("termux 执行命令: ", command);
+            if (!files.exists(outputPath)) {
+                log("+++输出文件不存在, 无法获取返回结果");
+                return;
+            }
+            let checkGap = options.checkGap === undefined ? 100 : options.checkGap;
+            let checkCount = options.checkCount === undefined ? 600 : options.checkCount;
+            let total = (checkGap * checkCount) / 1000;
+            let checkInterval = setInterval(() => {
+                let result, isDone;
+                if (files.exists(outputPath)) {
+                    result = files.read(outputPath);
+                    let index = result.indexOf("##termuxDoneExec##");
+                    if (index != -1) {
+                        isDone = true;
+                        result = result.slice(0, index);
+                        if (!clean) {
+                            files.write(outputPath, result);
+                        }
+                    }
+                }
+                if (isDone) {
+                    if (callback) {
+                        callback(result ? result.trim() : "执行失败, Termux未运行或命令出错");
+                    }
+                    if (clean) {
+                        files.remove(outputPath); // 清理文件
+                    }
+                    clearInterval(checkInterval);
+                    checkInterval = null;
+                    return;
+                } else if (checkCount-- <= 0) {
+                    clearInterval(checkInterval);
+                    checkInterval = null;
+                    throw `timeout(${total}s) - 执行超时`;
+                }
+            }, checkGap); // 可按命令执行速度调节时间
+        } catch (e) {
+            toast("执行失败: " + e);
+            log("termuxRun 错误: " + e);
+        }
+    }
     global.adbIMEShellCommand = runtime.adbIMEShellCommand;
     global.sendTermuxIntent = runtime.sendTermuxIntent;
+    global.getTermuxCommandIntent = runtime.getTermuxCommandIntent;
     // <
     // Added by ozobi - 2025/02/16 > 添加: 获取当前屏幕方向
     global.getCurOrientation = function(){

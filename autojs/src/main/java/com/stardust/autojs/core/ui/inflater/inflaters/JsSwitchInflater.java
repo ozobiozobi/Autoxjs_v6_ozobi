@@ -7,6 +7,7 @@ import androidx.annotation.Nullable;
 
 import com.stardust.autojs.core.ui.inflater.ResourceParser;
 import com.stardust.autojs.core.ui.inflater.ViewCreator;
+import com.stardust.autojs.core.ui.inflater.util.Colors;
 import com.stardust.autojs.core.ui.inflater.util.Drawables;
 import com.stardust.autojs.core.ui.widget.JsSwitch;
 
@@ -26,6 +27,10 @@ public class JsSwitchInflater extends BaseViewInflater<JsSwitch> {
     @Override
     public boolean setAttr(JsSwitch view, String attr, String value, ViewGroup parent, Map<String, String> attrs) {
         switch (attr) {
+            case "textColor":
+                view.setTextColor(Colors.parse(view, value));
+            case "text":
+                view.setText(value);
             case "thumbTint":
                 view.setThumbTint(value);
                 break;
@@ -43,6 +48,17 @@ public class JsSwitchInflater extends BaseViewInflater<JsSwitch> {
     public ViewCreator<JsSwitch> getCreator() {
         return (context, attrs) -> {
             JsSwitch jsSwitch = new JsSwitch(context);
+
+            String text = attrs.remove("android:text");
+            if (text != null) {
+                jsSwitch.setText(text);
+            }
+
+            String textColor = attrs.remove("android:textColor");
+            if (textColor != null) {
+                jsSwitch.setTextColor(Colors.parse(context, textColor));
+            }
+
             String thumbShape = attrs.remove("android:thumbShape");
             if (thumbShape != null) {
                 Drawable thumbDrawable = mDrawable.parseEllipseShapeDrawable(context, thumbShape);

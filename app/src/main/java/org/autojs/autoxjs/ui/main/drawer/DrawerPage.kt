@@ -202,10 +202,10 @@ fun DrawerPage() {
             UsageStatsPermissionSwitch()
             docsServiceSwitch()
 
-            SwitchClassifyTittle(text = stringResource(id = R.string.text_script_record))
+            SwitchClassifyTittle("功能")
             FloatingWindowSwitch()
             VolumeDownControlSwitch()
-
+            EditFloatySwitch()
 
             SwitchClassifyTittle("连接")
             ConnectComputerSwitch()
@@ -1815,29 +1815,29 @@ private fun docsServiceSwitch() {
 }
 
 @Composable
-private fun nightModeSwitch() {
+private fun EditFloatySwitch() {
     val context = LocalContext.current
-    var isCaptureScreenshot by remember {
+    var showFloaty by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(context.getString(R.string.ozobi_key_isNightMode), false)
+            .getBoolean(context.getString(R.string.ozobi_key_show_edit_floaty), true)
         mutableStateOf(default)
     }
     SwitchItem(
         icon = {
             MyIcon(
-                painterResource(id = R.drawable.ic_night_mode),
+                painterResource(id = R.drawable.ic_featured_video_black_48dp),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp), nightMode = isNightMode()
+                modifier = Modifier.size(24.dp),nightMode=isNightMode()
             )
         },
-        text = { Text(text = stringResource(id = R.string.ozobi_text_isNightMode)) },
-        checked = isCaptureScreenshot,
+        text = { Text(text = stringResource(id = R.string.ozobi_text_edit_floaty) + OZOBI_SUBFIX) },
+        checked = showFloaty,
         onCheckedChange = {
             PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(context.getString(R.string.ozobi_key_isNightMode), it)
+                .putBoolean(context.getString(R.string.ozobi_key_show_edit_floaty), it)
                 .apply()
-            isCaptureScreenshot = it
+            showFloaty = it
         }
     )
 }
@@ -1871,6 +1871,15 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: switch、button 控件设置字体颜色不生效\n\n"+
+            "添加: termux 执行参数: options( outputPath、callback、runBackground、top、sessionAction、clean、checkGap、checkCount)\n\n"+
+            "添加: 全局方法 getTermuxCommandIntent、stringArray\n\n"+
+            "添加: termux 示例代码\n\n"+
+            "添加: app 代码编辑器悬浮窗开关\n\n"+
+            "优化: termux 执行命令(zryyoung)\n\n"+
+            "修复: switch 控件不显示文本\n\n"+
+            "修复: 通过 app 代码编辑器悬浮窗运行时 cwd 不是脚本所在路径\n\n"+
+            "高版本 bug 太多，sdk 改回 28\n\n"+
             "增强: 解决微信控件混乱问题\n" +
                     "~ 如果还是不行的话，估计是环境异常了"
         )

@@ -2,6 +2,24 @@
 
 ## 6.5.8.18
 
+修复: switch、button 控件设置字体颜色不生效
+
+添加: termux 执行参数: options( outputPath、callback、runBackground、top、sessionAction、clean、checkGap、checkCount)
+
+添加: 全局方法 getTermuxCommandIntent、stringArray
+
+添加: termux 示例代码
+
+添加: app 代码编辑器悬浮窗开关
+
+优化: termux 执行命令(zryyoung)
+
+修复: switch 控件不显示文本
+
+修复: 通过 app 代码编辑器悬浮窗运行时 cwd 不是脚本所在路径
+
+高版本 bug 太多，sdk 改回 28
+
 增强: 解决微信控件混乱问题
 
 ```

@@ -1,5 +1,7 @@
 package com.stardust.autojs.runtime;
 
+import static com.stardust.autojs.util.StringTools.createStringArray;
+
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
@@ -280,36 +282,35 @@ public class ScriptRuntime {
     public static AdbShell adbConnect(String host,int port){
         return new AdbShell(getApplicationContext(),host,port);
     }
-    // 2025/01/26
-    public static void termux(String command){
-        if(command == null || command.isEmpty()){
+    public static void termux(String command, Boolean runBackground, int sessionAction, Boolean top) {
+        if (command == null || command.isEmpty()) {
             return;
         }
-        int spaceIndex = command.indexOf(" ");
-        String execBinName = null;
-        String[] args = new String[]{};
-        if(spaceIndex != -1){
-            execBinName = command.substring(0,spaceIndex);
-            args = command.substring(spaceIndex+1).split(" ");
-        }else{
-            execBinName = command;
-        }
-        Intent intent = getTermuxCommandIntent(execBinName, args);
+        Intent intent = getTermuxCommandIntent(command, runBackground, sessionAction, top);
         sendTermuxIntent(intent);
     }
-    public static void sendTermuxIntent(Intent intent){
+
+    public static void sendTermuxIntent(Intent intent) {
         getApplicationContext().startService(intent);
     }
-    private static @NonNull Intent getTermuxCommandIntent(String execBinName, String[] args) {
+
+    public static @NonNull Intent getTermuxCommandIntent(String command, Boolean runBackground, int sessionAction, Boolean top) {
         Intent intent = new Intent();
-        intent.setClassName("com.termux","com.termux.app.RunCommandService");
+        intent.setClassName("com.termux", "com.termux.app.RunCommandService");
         intent.setAction("com.termux.RUN_COMMAND");
-        intent.putExtra("com.termux.RUN_COMMAND_PATH","/data/data/com.termux/files/usr/bin/"+execBinName);
-        intent.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", args);
-        intent.putExtra("com.termux.RUN_COMMAND_WORKDIR","/data/data/com.termux/files/home");
-        intent.putExtra("com.termux.RUN_COMMAND_BACKGROUND",true);
-        intent.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION",0);
+        intent.putExtra("com.termux.RUN_COMMAND_PATH", "/data/data/com.termux/files/usr/bin/bash");
+        intent.putExtra("com.termux.RUN_COMMAND_ARGUMENTS", new String[]{"-c", command});
+        intent.putExtra("com.termux.RUN_COMMAND_WORKDIR", "/data/data/com.termux/files/home");
+        intent.putExtra("com.termux.RUN_COMMAND_BACKGROUND", runBackground);
+        intent.putExtra("com.termux.RUN_COMMAND_SESSION_ACTION", sessionAction);
+        if(top){
+            intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        }
         return intent;
+    }
+
+    public static String[] stringArray(String... strings){
+        return createStringArray(strings);
     }
 
     public static int getStatusBarHeight(){
