@@ -6,6 +6,7 @@ import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_SLOT;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TOUCH_MAJOR;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_TRACKING_ID;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.ABS_MT_WIDTH_MAJOR;
+import static com.stardust.autojs.core.inputevent.InputEventCodes.BTN_TOOL_FINGER;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.BTN_TOUCH;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.DOWN;
 import static com.stardust.autojs.core.inputevent.InputEventCodes.EV_ABS;
@@ -203,12 +204,13 @@ public class RootAutomator implements Shell.Callback {
         sendEvent(EV_ABS, ABS_MT_WIDTH_MAJOR, 5);
         sendEvent(EV_SYN, SYN_REPORT, 0);
     }
-    
+
     private void touchDown0(int x, int y, int id) throws IOException {
-        mSlotIdMap.put(id, 0);
+        mSlotIdMap.put(id, mDefaultId);
+        sendEvent(EV_ABS, ABS_MT_SLOT, mDefaultId);
         sendEvent(EV_ABS, ABS_MT_TRACKING_ID, mTracingId.getAndIncrement());
         sendEvent(EV_KEY, BTN_TOUCH, DOWN);
-        //sendEvent(EV_KEY, BTN_TOOL_FINGER, 0x00000001);
+        sendEvent(EV_KEY, BTN_TOOL_FINGER, DOWN);
         sendEvent(EV_ABS, ABS_MT_POSITION_X, scaleX(x));
         sendEvent(EV_ABS, ABS_MT_POSITION_Y, scaleY(y));
         //sendEvent(EV_ABS, ABS_MT_PRESSURE, 200);
@@ -234,7 +236,7 @@ public class RootAutomator implements Shell.Callback {
         sendEvent(EV_ABS, ABS_MT_TRACKING_ID, 0xffffffff);
         if (mSlotIdMap.size() == 0) {
             sendEvent(EV_KEY, BTN_TOUCH, UP);
-            //sendEvent(EV_KEY, BTN_TOOL_FINGER, 0x00000000);
+            sendEvent(EV_KEY, BTN_TOOL_FINGER, UP);
         }
         sendEvent(EV_SYN, SYN_REPORT, 0x00000000);
     }
@@ -244,7 +246,7 @@ public class RootAutomator implements Shell.Callback {
     }
 
     public void touchMove(int x, int y, int id) throws IOException {
-        int slotId = mSlotIdMap.get(id, 0);
+        int slotId = mSlotIdMap.get(id, mDefaultId);
         sendEvent(EV_ABS, ABS_MT_SLOT, slotId);
         sendEvent(EV_ABS, ABS_MT_TOUCH_MAJOR, 5);
         sendEvent(EV_ABS, ABS_MT_POSITION_X, scaleX(x));
@@ -301,7 +303,7 @@ public class RootAutomator implements Shell.Callback {
     @Override
     public void onInitialized() {
         String path = RootAutomatorEngine.getExecutablePath(mContext);
-        
+
         String deviceNameOrPath = "'" + RootAutomatorEngine.getDeviceNameOrPath(mContext, InputDevices.getTouchDeviceName()) + "'";
         // <
         Log.d(LOG_TAG, "deviceNameOrPath: " + deviceNameOrPath);
