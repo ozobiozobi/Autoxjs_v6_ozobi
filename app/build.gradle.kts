@@ -29,13 +29,13 @@ if (propFile.exists()) {
 //    }
 //}
 android {
-    compileSdk = versions.compile
+    compileSdk = Dependencies.compile
     defaultConfig {
         applicationId = "org.autojs.autoxjs"
-        minSdk = versions.mini
-        targetSdk = versions.target
-        versionCode = 65814
-        versionName = "6.5.8.14"
+        minSdk = Dependencies.mini
+        targetSdk = Dependencies.target
+        versionCode = Dependencies.appVersionCode
+        versionName = Dependencies.appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
         buildConfigField("boolean", "isMarket", "false")
@@ -64,7 +64,7 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = compose_version
+        kotlinCompilerExtensionVersion = Dependencies.compose_version
     }
     signingConfigs {
         if (propFile.exists()) {
@@ -129,16 +129,16 @@ android {
     flavorDimensions.add("channel")
     productFlavors {
         create("common") {
-            versionCode = 6589
-            versionName = versions.appVersionName
+            versionCode = Dependencies.appVersionCode
+            versionName = Dependencies.appVersionName
             buildConfigField("String", "CHANNEL", "\"common\"")
 //            buildConfigField("String", "APPID", "\"?id=21\"")
             manifestPlaceholders.putAll(mapOf("appName" to "@string/app_name"))
         }
         create("v6") {
             applicationIdSuffix = ".v6"
-            versionCode = versions.devVersionCode
-            versionName = versions.devVersionName
+            versionCode = Dependencies.devVersionCode
+            versionName = Dependencies.devVersionName
             buildConfigField("String", "CHANNEL", "\"v6\"")
 //            buildConfigField("String", "APPID", "\"?id=23\"")
             manifestPlaceholders.putAll(mapOf("appName" to "Autox.js v6_ozobi"))

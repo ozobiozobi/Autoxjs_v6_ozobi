@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    compileSdk = versions.compile
+    compileSdk = Dependencies.compile
 
     defaultConfig {
-        minSdk = versions.mini
+        minSdk = Dependencies.mini
         testInstrumentationRunner = "android.support.test.runner.AndroidJUnitRunner"
     }
     buildFeatures{

@@ -1866,7 +1866,17 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_edit_black_48dp,
-            "<=== 65818 ===>"
+            "<=== 65819 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复: 打包前后 autojs 版本不一致"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65819 ===>"
         )
         .item(
             R.id.modification_detail,
