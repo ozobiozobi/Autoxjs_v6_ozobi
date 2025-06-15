@@ -5,7 +5,10 @@ import android.content.Context;
 import android.text.InputType;
 import android.text.TextUtils;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AlertDialog;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.material.snackbar.Snackbar;
@@ -23,6 +26,9 @@ import org.autojs.autoxjs.ui.common.NotAskAgainDialog;
 import org.autojs.autoxjs.ui.edit.editor.CodeEditor;
 import org.autojs.autoxjs.ui.log.LogActivityKt;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Locale;
 
 import io.reactivex.Observable;
@@ -188,12 +194,15 @@ public class EditorMenu {
     }
 
     private void startBuildApkActivity() {
-        BuildActivity.Companion.start(mContext,mEditorView.getUri().getPath());
+        BuildActivity.Companion.start(mContext, mEditorView.getUri().getPath());
     }
 
 
     private boolean onEditOptionsSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_save_as:
+                showSaveAsDialog();
+                return true;
             case R.id.action_paste:
                 paste();
                 return true;
@@ -271,6 +280,74 @@ public class EditorMenu {
 
     private void paste() {
         mEditor.insert(ClipboardUtil.getClip(mContext).toString());
+    }
+
+    private void showSaveAsDialog() {
+
+        // 创建一个 AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
+        builder.setTitle("保存路径");
+
+        // 创建一个输入框
+        final EditText input = new EditText(mContext);
+        input.setText(mEditorView.getUri().getPath());
+        builder.setView(input);
+
+        // 设置确认按钮
+        builder.setPositiveButton("确认", (dialog, which) -> {
+            // 获取输入框的内容
+            String inputText = input.getText().toString();
+            // 在这里处理输入的内容
+            File newFile = new File(inputText);
+            if (newFile.isDirectory()) {
+                Toast.makeText(mContext, "路径无效", Toast.LENGTH_SHORT).show();
+            } else {
+                if (newFile.exists()) {
+                    AlertDialog.Builder overWriteBuilder = new AlertDialog.Builder(mContext);
+                    overWriteBuilder.setTitle("文件已存在, 确认覆盖?");
+                    overWriteBuilder.setPositiveButton("确认", (overWriteDialog, overWriteWhich) -> {
+                        try {
+                            FileWriter fileWriter = new FileWriter(newFile);
+                            fileWriter.write(mEditor.getText());
+                            fileWriter.close();
+                            Toast.makeText(mContext, "覆盖文件: " + inputText, Toast.LENGTH_SHORT).show();
+                        } catch (IOException e) {
+                            throw new RuntimeException(e);
+                        }
+                    });
+                    // 设置取消按钮
+                    overWriteBuilder.setNegativeButton("取消", (overWriteDialog, overWriteWhich) -> {
+                        overWriteDialog.cancel();
+                        Toast.makeText(mContext, "取消保存", Toast.LENGTH_SHORT).show();
+                    });
+                    overWriteBuilder.show();
+                } else {
+                    try {
+                        newFile.createNewFile();
+                        if (newFile.exists()) {
+                            FileWriter fileWriter = new FileWriter(newFile);
+                            fileWriter.write(mEditor.getText());
+                            fileWriter.close();
+                            Toast.makeText(mContext, "另存为: " + inputText, Toast.LENGTH_SHORT).show();
+                        } else {
+                            Toast.makeText(mContext, "创建文件失败\n请检查文件名称", Toast.LENGTH_SHORT).show();
+                        }
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
+        });
+
+        // 设置取消按钮
+        builder.setNegativeButton("取消", (dialog, which) -> {
+            dialog.cancel();
+            Toast.makeText(mContext, "取消保存", Toast.LENGTH_SHORT).show();
+        });
+
+        // 显示对话框
+        builder.show();
+
     }
 
     private void findOrReplace() {

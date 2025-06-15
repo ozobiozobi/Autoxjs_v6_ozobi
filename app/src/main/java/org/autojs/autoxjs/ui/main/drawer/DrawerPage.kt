@@ -191,33 +191,34 @@ fun DrawerPage() {
                     modifier = Modifier.size(120.dp),
                 )
             }
-            SwitchClassifyTittle(text = stringResource(id = R.string.text_service))
+            SwitchClassifyTittle("权限")
             ShizukuSwitch()
+            NotificationUsageRightSwitch()
+            UsageStatsPermissionSwitch()
 //            DeviceManagerSwitch()
 //            VoiceAssistantSwitch()
+//            StableModeSwitch()
+            SwitchClassifyTittle(text = stringResource(id = R.string.text_service))
             AccessibilityServiceSwitch()
-            StableModeSwitch()
-            NotificationUsageRightSwitch()
             ForegroundServiceSwitch()
-            UsageStatsPermissionSwitch()
-            docsServiceSwitch()
-
-            SwitchClassifyTittle("功能")
-            FloatingWindowSwitch()
-            VolumeDownControlSwitch()
-            EditFloatySwitch()
+            DocsServiceSwitch()
 
             SwitchClassifyTittle("连接")
             ConnectComputerSwitch()
             AlwaysTryToConnect()
             USBDebugSwitch()
 
-            setDoneCaptureNotify()
-            layoutInsWaitForCaptureSwitch()
-            layoutInsDelayCaptureSwitch()
-            layoutInsScreenshotSwitch()
-            layoutInsRefreshSwitch()
-            layoutInsSelectWindowSwitch()
+            SwitchClassifyTittle("功能")
+            FloatingWindowSwitch()
+            VolumeDownControlSwitch()
+            EditFloatySwitch()
+
+            SetDoneCaptureNotify()
+            LayoutInsWaitForCaptureSwitch()
+            LayoutInsDelayCaptureSwitch()
+            LayoutInsScreenshotSwitch()
+            LayoutInsRefreshSwitch()
+            LayoutInsSelectWindowSwitch()
 
             // <
 //            nightModeSwitch()
@@ -1197,8 +1198,8 @@ private fun UsageStatsPermissionSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                Icons.Default.Settings,
-                null, nightMode = isNightMode()
+                painterResource(R.drawable.ic_chrome_reader_mode_black_48dp),modifier = Modifier.size(24.dp),
+                contentDescription = null, nightMode = isNightMode()
             )
         },
         text = { Text(text = stringResource(id = R.string.text_usage_stats_permission)) },
@@ -1255,7 +1256,7 @@ private fun ForegroundServiceSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                Icons.Default.Settings,
+                painterResource(R.drawable.ic_info_black_48dp), modifier = Modifier.size(24.dp),
                 contentDescription = null, nightMode = isNightMode()
             )
         },
@@ -1403,7 +1404,7 @@ private fun AccessibilityServiceSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                Icons.Default.Settings,
+                painterResource(R.drawable.ic_accessibility_black_48dp), modifier = Modifier.size(24.dp),
                 contentDescription = null, nightMode = isNightMode()
             )
         },
@@ -1491,7 +1492,7 @@ fun SwitchTimedTaskScheduler() {
 
 
 @Composable
-private fun layoutInsScreenshotSwitch() {
+private fun LayoutInsScreenshotSwitch() {
     val context = LocalContext.current
     var isCaptureScreenshot by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
@@ -1520,7 +1521,7 @@ private fun layoutInsScreenshotSwitch() {
 // <
 
 @Composable
-private fun layoutInsRefreshSwitch() {
+private fun LayoutInsRefreshSwitch() {
     val context = LocalContext.current
     var isCaptureScreenshot by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
@@ -1548,11 +1549,11 @@ private fun layoutInsRefreshSwitch() {
 }
 
 @Composable
-private fun layoutInsWaitForCaptureSwitch() {
+private fun LayoutInsWaitForCaptureSwitch() {
     val context = LocalContext.current
     var isCaptureScreenshot by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(context.getString(R.string.ozobi_key_isWaitFor_capture), false)
+            .getBoolean(context.getString(R.string.ozobi_key_isWaitFor_capture), true)
         mutableStateOf(default)
     }
     SwitchItem(
@@ -1577,7 +1578,7 @@ private fun layoutInsWaitForCaptureSwitch() {
 
 // <
 @Composable
-private fun setDoneCaptureNotify() {
+private fun SetDoneCaptureNotify() {
     var isShowDialog by remember { mutableStateOf(false) }
     var color = Color.Black
     if (isNightMode()) {
@@ -1705,7 +1706,7 @@ private fun showSetDoneCaptureNotifyDialog(onDismiss: () -> Unit) {
 }
 
 @Composable
-private fun layoutInsDelayCaptureSwitch() {
+private fun LayoutInsDelayCaptureSwitch() {
     val context = LocalContext.current
 
     var isCaptureScreenshot by remember {
@@ -1734,7 +1735,7 @@ private fun layoutInsDelayCaptureSwitch() {
 }
 
 @Composable
-private fun layoutInsSelectWindowSwitch() {
+private fun LayoutInsSelectWindowSwitch() {
     val context = LocalContext.current
     var isSelectWindow by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
@@ -1762,7 +1763,7 @@ private fun layoutInsSelectWindowSwitch() {
 }
 
 @Composable
-private fun docsServiceSwitch() {
+private fun DocsServiceSwitch() {
     val context = LocalContext.current
     var isDocsServiceRunning by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
@@ -1871,6 +1872,8 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "调整: 抽屉页面和脚本例表控件按钮\n\n"+
+            "添加: 代码编辑器编辑菜单(另存为)\n\n"+
             "修复: 某些设备 RootAutomator 滑动无效\n\n"+
             "修复: 打包后每次打开都会跳转到所有文件访问权限页面\n\n"+
             "修复: 打包前后 autojs 版本不一致"

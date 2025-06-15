@@ -191,6 +191,7 @@
     <string name="text_download_failed">下载失败</string>
     <string name="text_do_not_ask_again_for_this_version">此版本不再提示</string>
     <string name="text_code_beautify">格式化代码</string>
+    <string name="text_save_as">另存为</string>
     <string name="text_processing">处理中</string>
     <string name="text_guard_mode">保护模式</string>
     <string name="summary_guard_mode">在本软件界面无法运行自动操作命令以免误触</string>

@@ -29,4 +29,8 @@
         android:id="@+id/action_beautify"
         android:title="@string/text_code_beautify"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_save_as"
+        android:title="@string/text_save_as"
+        app:showAsAction="never" />
 </menu>
