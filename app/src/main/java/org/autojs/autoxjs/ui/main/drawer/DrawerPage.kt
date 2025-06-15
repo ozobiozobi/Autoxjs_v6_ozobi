@@ -1871,6 +1871,7 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: 打包后每次打开都会跳转到所有文件访问权限页面\n\n"+
             "修复: 打包前后 autojs 版本不一致"
         )
         .item(

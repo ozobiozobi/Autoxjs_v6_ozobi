@@ -34,6 +34,7 @@ import com.stardust.app.permission.DrawOverlaysPermission.launchCanDrawOverlaysS
 import com.stardust.app.permission.Permissions
 import com.stardust.app.permission.PermissionsSettingsUtil.launchAppPermissionsSettings
 import com.stardust.autojs.core.permission.StoragePermissionUtils.getMediaPermissionList
+import com.stardust.autojs.core.permission.StoragePermissionUtils.hasManageAllFilesPermission
 import com.stardust.autojs.core.permission.StoragePermissionUtils.requestManageAllFilesPermission
 import com.stardust.autojs.inrt.autojs.AccessibilityServiceTool
 import com.stardust.autojs.inrt.autojs.AccessibilityServiceTool1
@@ -148,7 +149,7 @@ class SplashActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
         requestBootCompletedPermission(this)
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && !hasManageAllFilesPermission()){
             requestManageAllFilesPermission(this)
         }
         requestExternalStoragePermission(this)
