@@ -1872,6 +1872,7 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
+            "修复: 脚本退出时触发两次 onExit\n\n"+
             "调整: 抽屉页面和脚本例表控件按钮\n\n"+
             "添加: 代码编辑器编辑菜单(另存为)\n\n"+
             "修复: 某些设备 RootAutomator 滑动无效\n\n"+

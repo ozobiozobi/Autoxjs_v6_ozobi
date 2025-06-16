@@ -64,7 +64,6 @@ public abstract class JavaScriptEngine extends ScriptEngine.AbstractScriptEngine
     private void release() {
         // 清理 ScriptRuntime 引用
         if (mRuntime != null) {
-            mRuntime.onExit();
             mRuntime = null;
         }
 
