@@ -1,6 +1,5 @@
 package com.stardust.autojs.inrt.autojs
 
-import android.accessibilityservice.AccessibilityService
 import android.content.Context
 import android.content.Intent
 import android.provider.Settings
@@ -9,6 +8,7 @@ import com.google.android.accessibility.selecttospeak.SelectToSpeakService
 import com.stardust.app.GlobalAppContext
 import com.stardust.autojs.core.util.ProcessShell
 import com.stardust.view.accessibility.AccessibilityServiceUtils.isAccessibilityServiceEnabled
+import com.stardust.view.accessibility.AccessibilityService
 import java.util.Locale
 
 /**
@@ -39,8 +39,8 @@ object AccessibilityServiceTool {
     }
 
     fun enableAccessibilityServiceByRootAndWaitFor(context: Context, timeOut: Long): Boolean {
-        if (enableAccessibilityServiceByRoot(context, com.stardust.view.accessibility.AccessibilityService::class.java)) {
-            com.stardust.view.accessibility.AccessibilityService.waitForEnabled(timeOut)
+        if (enableAccessibilityServiceByRoot(context, AccessibilityService::class.java)) {
+            AccessibilityService.waitForEnabled(timeOut)
             return true
         }
         return false

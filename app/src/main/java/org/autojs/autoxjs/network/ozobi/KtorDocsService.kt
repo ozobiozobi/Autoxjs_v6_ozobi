@@ -118,7 +118,7 @@ class KtorDocsService: Service() {
     }
 
     companion object{
-        private fun copyFileFromAssets(assetManager: AssetManager, from:String, to:String){
+        fun copyFileFromAssets(assetManager: AssetManager, from:String, to:String){
             //    Log.d("ozobiLog","copyFile: from: $from")
             //    Log.d("ozobiLog","copyFile: to: $to")
             val targetFile = File(to)

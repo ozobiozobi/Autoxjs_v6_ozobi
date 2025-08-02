@@ -29,11 +29,11 @@ public class Pref {
     private static final String KEY_DOCUMENTATION_SOURCE = "KEY_DOCUMENTATION_SOURCE";
 
 
-//    public static boolean getEditor() {
+    //    public static boolean getEditor() {
 //        return def().getBoolean(KEY_EDITOR_NEW, false);
 //    }
-    public static void setCurDocumentationSource(DocumentSource source){
-        if(!source.isLocal()){
+    public static void setCurDocumentationSource(DocumentSource source) {
+        if (!source.isLocal()) {
             def().edit().putString(KEY_DOCUMENTATION_SOURCE, source.getUri()).apply();
         }
     }
@@ -178,6 +178,22 @@ public class Pref {
 
     public static int getEditorTextSize(int defValue) {
         return def().getInt(KEY_EDITOR_TEXT_SIZE, defValue);
+    }
+
+    public static int getExplorerCurSortBy() {
+        return def().getInt(getString(R.string.key_curSortBy), 0);
+    }
+
+    public static void setExplorerCurSortBy(int sortBy) {
+        def().edit().putInt(getString(R.string.key_curSortBy),sortBy).apply();
+    }
+
+    public static boolean getExplorerIsDesSort() {
+        return def().getBoolean(getString(R.string.key_isDes_sort), false);
+    }
+
+    public static void setExplorerIsDesSort(boolean isDes) {
+        def().edit().putBoolean(getString(R.string.key_isDes_sort),isDes).apply();
     }
 
     public static String getScriptDirPath() {

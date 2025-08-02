@@ -11,6 +11,7 @@
   <string name="explain_accessibility_permission">The software needs to open \"Accessibility Services\" to run, please open \"Settings->Accessibility Services\" or \"Settings->Accessibility Services->More Downloaded Services\", find this application, and enable Accessibility Services \n It can also be set later in the drop-down menu.</string>
   <string name="explain_accessibility_permission2">The software needs to open \"Accessibility Services\" to run, please open \"Settings->Accessibility Services\" or \"Settings->Accessibility Services->More Downloaded Services\", find this application, and enable Accessibility Services</string>
   <string name="text_cancel">Cancel</string>
+  <string name="text_confirm">Confirm</string>
   <string name="text_path_is_empty">Path is empty</string>
   <string name="text_file_not_exists">File does not exist</string>
   <string name="text_no_file_rw_permission">No file read and write permissions</string>

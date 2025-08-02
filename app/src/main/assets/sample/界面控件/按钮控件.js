@@ -1,20 +1,34 @@
 "ui";
 
 ui.layout(
-    <vertical padding="16">
-        <button text="普通按钮" w="auto"/>
-        <button text="带颜色按钮" style="Widget.AppCompat.Button.Colored" w="auto"/>
-        <button text="无边框按钮" style="Widget.AppCompat.Button.Borderless" w="auto"/>
-        <button text="无边框有颜色按钮" style="Widget.AppCompat.Button.Borderless.Colored" w="auto"/>
-        <button text="长长的按钮" w="*"/>
-        <button id="click_me" text="点我" w="auto"/>
+    <vertical gravity="center">
+        <button id="rect" marginTop="10" gravity="center" w="200" h="50" textColor="#ffffff">
+            方形
+        </button>
+        <button id="capsule" marginTop="10" gravity="center" w="200" h="50" textColor="#ffffff" gradient="corner=50">
+            胶囊
+        </button>
+        <button id="circle" marginTop="10" gravity="center" w="88" h="88" gradient="colors=#ff66FF,#ccccFF|corner=168|ori=tl_br">
+            圆形
+        </button>
     </vertical>
 );
 
-ui.click_me.on("click", ()=>{
+ui.rect.on("click", () => {
     toast("我被点啦");
 });
 
-ui.click_me.on("long_click", ()=>{
+ui.capsule.on("long_click", () => {
     toast("我被长按啦");
+});
+
+// 通过触摸事件动态改变渐变颜色方向
+ui.circle.addListener("touch", (event) => {
+    if (event.getAction() == 0) {
+        toast("按下");
+        ui.circle.setBackgroundGradient("colors=#ff66FF,#ccccFF|corner=150|ori=br_tl");
+    } else if (event.getAction() == 1) {
+        toast("抬起");
+        ui.circle.setBackgroundGradient("colors=#ff66FF,#ccccFF|corner=150|ori=tl_br");
+    }
 });

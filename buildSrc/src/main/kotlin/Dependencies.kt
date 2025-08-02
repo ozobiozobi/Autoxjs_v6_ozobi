@@ -1,5 +1,5 @@
 object Dependencies {
-    val appVersionName: String = "6.5.8.19"
+    val appVersionName: String = "6.5.8.20"
     val appVersionCode: Int = appVersionName.replace(".","").toInt()
 
     val devVersionCode: Int = appVersionCode
@@ -16,7 +16,5 @@ object Dependencies {
 
     val ide: String = "Android Studio Koala Feature Drop | 2024.1.2"
     val jdk: String = "17"
-
-    val leakcanary_object_watcher_android_core = "2.13"
 
 }

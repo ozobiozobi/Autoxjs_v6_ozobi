@@ -105,7 +105,7 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
         super.onCreate(savedInstanceState);
         mNewTask = (getIntent().getFlags() & Intent.FLAG_ACTIVITY_NEW_TASK) != 0;
         showEditFloaty = PreferenceManager.getDefaultSharedPreferences(this)
-                .getBoolean(this.getString(R.string.ozobi_key_show_edit_floaty), true);
+                .getBoolean(this.getString(R.string.ozobi_key_show_edit_floaty), false);
     }
 
     @SuppressLint("CheckResult")

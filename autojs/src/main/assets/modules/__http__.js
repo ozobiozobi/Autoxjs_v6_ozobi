@@ -57,31 +57,8 @@ module.exports = function (runtime, scope) {
             cont = continuation.create();
         }
         var call = http.client().build().newCall(http.buildRequest(url, options));// Modified by ozobi > 添加: 设置代理
-        let result;
-        let packageName = context.getPackageName().toString();
-        let timeoutErr;
         if (!callback && !cont) {
-            if(packageName.indexOf("ozobi") != -1 && packageName.indexOf("autoxjs") != -1){
-                let thread = threads.start(()=>{
-                    try{
-                        result = wrapResponse(call.execute());
-                    }catch(e){
-                        timeoutErr = e;
-                    }
-                })
-                while(thread.isAlive() && result === undefined && !runtime.getmThread().isInterrupted()){
-                   sleep(10);
-                }
-                if(runtime.getmThread().isInterrupted()){
-                   throw "停止脚本";
-                }
-                if(timeoutErr != undefined){
-                    throw timeoutErr;
-                }
-                return result;
-            }else{
                 return wrapResponse(call.execute());
-            }
         }
         call.enqueue(new Callback({
             onResponse: function (call, res) {
@@ -95,27 +72,7 @@ module.exports = function (runtime, scope) {
             }
         }));
         if (cont) {
-            if(packageName.indexOf("ozobi") != -1 && packageName.indexOf("autoxjs") != -1){
-                let thread = threads.start(()=>{
-                   try{
-                       result = cont.await();
-                   }catch(e){
-                       timeoutErr = e;
-                   }
-                })
-                while(thread.isAlive() && result === undefined && !runtime.getmThread().isInterrupted()){
-                   sleep(10);
-                }
-                if(runtime.getmThread().isInterrupted()){
-                   throw "停止脚本";
-                }
-                if(timeoutErr != undefined){
-                    throw timeoutErr;
-                }
-                return result;
-            }else{
                 return cont.await();
-            }
         }
     }
 

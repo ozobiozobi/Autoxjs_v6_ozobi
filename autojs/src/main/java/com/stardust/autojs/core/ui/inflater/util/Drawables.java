@@ -17,7 +17,6 @@ import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
@@ -33,7 +32,6 @@ import org.slf4j.LoggerFactory;
 
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -228,8 +226,8 @@ public class Drawables {
         gradientDrawable.setShape(shape);
         gradientDrawable.setCornerRadius(corner);
         if (colorList.isEmpty()) {
-            colorList.add(Colors.parse(context, "#D9D6FA"));
-            colorList.add(Colors.parse(context, "#CECBED"));
+            colorList.add(Colors.parse(context, "#46BDFF"));
+            colorList.add(Colors.parse(context, "#4C9AFF"));
         }
         int[] colorArr = new int[colorList.size()];
         for (int i = 0; i < colorArr.length; i++) {

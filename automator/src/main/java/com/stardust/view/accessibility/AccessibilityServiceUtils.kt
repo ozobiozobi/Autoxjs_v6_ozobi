@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.provider.Settings
 import android.text.TextUtils
+import android.util.Log
 
 
 /**
@@ -22,7 +23,7 @@ object AccessibilityServiceUtils {
         val expectedComponentName = ComponentName(context, accessibilityService)
 
         val enabledServicesSetting = Settings.Secure.getString(context.contentResolver, Settings.Secure.ENABLED_ACCESSIBILITY_SERVICES)
-                ?: return false
+            ?: return false
 
         val colonSplitter = TextUtils.SimpleStringSplitter(':')
         colonSplitter.setString(enabledServicesSetting)
@@ -30,7 +31,6 @@ object AccessibilityServiceUtils {
         while (colonSplitter.hasNext()) {
             val componentNameString = colonSplitter.next()
             val enabledService = ComponentName.unflattenFromString(componentNameString)
-
             if (enabledService != null && enabledService == expectedComponentName)
                 return true
         }

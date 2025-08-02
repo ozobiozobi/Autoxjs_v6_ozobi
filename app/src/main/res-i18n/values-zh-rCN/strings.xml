@@ -2,6 +2,28 @@
 
 <!--Automatically translated by Globalization Translator (https://github.com/wilinz/globalization-translator)-->
 <resources>
+  <string name="text_hide">隐藏</string>
+  <string name="text_deleting">正在删除</string>
+  <string name="text_rename_failed">重命名失败</string>
+  <string name="text_no_more">没啦</string>
+  <string name="text_folder">文件夹</string>
+  <string name="text_multi_select">多选</string>
+  <string name="text_selected">选中</string>
+  <string name="text_unselected">未选中</string>
+  <string name="text_scripts_file_path">脚本路径</string>
+  <string name="text_share">分享</string>
+  <string name="text_loop_run">循环运行</string>
+  <string name="text_crontab">定时任务</string>
+  <string name="text_open_by">用…打开</string>
+  <string name="text_decompress">解压</string>
+  <string name="text_select_inverse">反选</string>
+  <string name="text_select_all">全选</string>
+  <string name="text_include">包括</string>
+  <string name="text_jump_to">跳转到</string>
+  <string name="text_target_not_exist">目标不存在</string>
+  <string name="text_failed">失败</string>
+  <string name="text_adjust_arrow">调整箭头</string>
+  <string name="text_restore">恢复</string>
   <string name="text_accessibility_service_description">使脚本自动操作(点击、长按、滑动等)所需，若关闭则只能执行不涉及自动操作的脚本。</string>
   <string name="text_new_file">新建文件</string>
   <string name="text_create_fail">创建失败</string>
@@ -217,7 +239,23 @@
   <string name="text_show_last_record">显示上次的节点信息</string>
 <!--  // <-->
   <!--    // Modified by Ozobi - 2024/11/04 > 退出悬浮窗 -> 退出-->
+  <string name="text_sort">排序</string>
+  <string name="text_last_modify_time">上次修改时间</string>
+  <string name="text_descent">降序</string>
+  <string name="text_ascent">升序</string>
+  <string name="text_suffix">后缀</string>
+  <string name="text_stop_all">全部停止</string>
+  <string name="text_loop_config">循环参数</string>
+  <string name="text_cancel_all">全部取消</string>
+  <string name="text_create">创建</string>
+  <string name="text_name_existed">名称已存在</string>
+  <string name="text_functions">功能</string>
+  <string name="text_connection">连接</string>
+  <string name="text_permission">权限</string>
+  <string name="text_invalid">无效</string>
+  <string name="text_trigger_task">触发任务</string>
   <string name="text_exit_floating_window">退出</string>
+  <string name="text_back">返回</string>
   <string name="text_select_save_path">保存到</string>
   <string name="text_cancel_download">取消下载</string>
   <string name="text_download">下载</string>

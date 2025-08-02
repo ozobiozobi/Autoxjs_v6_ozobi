@@ -121,6 +121,7 @@ import org.autojs.autoxjs.devplugin.DevPlugin
 import org.autojs.autoxjs.external.foreground.ForegroundService
 import org.autojs.autoxjs.network.ozobi.DocsServiceAddress
 import org.autojs.autoxjs.network.ozobi.KtorDocsService
+import org.autojs.autoxjs.ozobi.ui.LoopingVerticalMove
 import org.autojs.autoxjs.tool.AccessibilityServiceTool
 import org.autojs.autoxjs.tool.WifiTool
 import org.autojs.autoxjs.ui.build.MyTextField
@@ -178,71 +179,80 @@ fun DrawerPage() {
             modifier = Modifier
                 .windowInsetsTopHeight(WindowInsets.statusBars)
         )
-        Column(
-            Modifier
-                .weight(1f)
-                .verticalScroll(rememberScrollState())
-                .padding(8.dp)
-        ) {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+        Box(Modifier.weight(1f)) {
+            Column(Modifier.padding(top = 100.dp)) {
+                Column(
+                    Modifier
+                        .weight(1f)
+                        .verticalScroll(rememberScrollState())
+                        .padding(8.dp)
+                ) {
+                    SwitchClassifyTittle("权限")
+                    ShizukuSwitch()
+                    NotificationUsageRightSwitch()
+                    UsageStatsPermissionSwitch()
+//            DeviceManagerSwitch()
+//            VoiceAssistantSwitch()
+//            StableModeSwitch()
+                    SwitchClassifyTittle(text = stringResource(id = R.string.text_service))
+                    AccessibilityServiceSwitch()
+                    ForegroundServiceSwitch()
+                    DocsServiceSwitch()
+
+                    SwitchClassifyTittle("连接")
+                    ConnectComputerSwitch()
+                    AlwaysTryToConnect()
+                    USBDebugSwitch()
+
+                    SwitchClassifyTittle("功能")
+                    FloatingWindowSwitch()
+                    VolumeDownControlSwitch()
+                    EditFloatySwitch()
+
+                    SetDoneCaptureNotify()
+                    LayoutInsWaitForCaptureSwitch()
+                    LayoutInsDelayCaptureSwitch()
+                    LayoutInsScreenshotSwitch()
+                    LayoutInsRefreshSwitch()
+                    LayoutInsSelectWindowSwitch()
+
+                    // <
+//            nightModeSwitch()
+                    showModificationDetailsButton()
+                    DonationPage(context)
+                    CommunityWebsite(context)
+                    ProjectAddress(context)
+                    DownloadLink(context)
+
+
+                    SwitchTimedTaskScheduler()
+                    AppDetailsSettings(context)
+                }
+                Spacer(
+                    modifier = Modifier
+                        .height(1.dp)
+                        .fillMaxWidth()
+                        .background(AutoXJsTheme.colors.divider)
+                )
+                BottomButtons()
+                Spacer(
+                    modifier = Modifier
+                        .windowInsetsBottomHeight(WindowInsets.navigationBars)
+                )
+            }
+            LoopingVerticalMove(
+                modifier = Modifier.fillMaxWidth(),
+                targetValue = 30f,
+                duration = 2300
+            ) {
                 Image(
                     painter = rememberAsyncImagePainter(R.drawable.autojs_logo1),
                     contentDescription = null,
                     modifier = Modifier.size(120.dp),
                 )
             }
-            SwitchClassifyTittle("权限")
-            ShizukuSwitch()
-            NotificationUsageRightSwitch()
-            UsageStatsPermissionSwitch()
-//            DeviceManagerSwitch()
-//            VoiceAssistantSwitch()
-//            StableModeSwitch()
-            SwitchClassifyTittle(text = stringResource(id = R.string.text_service))
-            AccessibilityServiceSwitch()
-            ForegroundServiceSwitch()
-            DocsServiceSwitch()
-
-            SwitchClassifyTittle("连接")
-            ConnectComputerSwitch()
-            AlwaysTryToConnect()
-            USBDebugSwitch()
-
-            SwitchClassifyTittle("功能")
-            FloatingWindowSwitch()
-            VolumeDownControlSwitch()
-            EditFloatySwitch()
-
-            SetDoneCaptureNotify()
-            LayoutInsWaitForCaptureSwitch()
-            LayoutInsDelayCaptureSwitch()
-            LayoutInsScreenshotSwitch()
-            LayoutInsRefreshSwitch()
-            LayoutInsSelectWindowSwitch()
-
-            // <
-//            nightModeSwitch()
-            showModificationDetailsButton()
-            DonationPage(context)
-            CommunityWebsite(context)
-            ProjectAddress(context)
-            DownloadLink(context)
-
-
-            SwitchTimedTaskScheduler()
-            AppDetailsSettings(context)
         }
-        Spacer(
-            modifier = Modifier
-                .height(1.dp)
-                .fillMaxWidth()
-                .background(AutoXJsTheme.colors.divider)
-        )
-        BottomButtons()
-        Spacer(
-            modifier = Modifier
-                .windowInsetsBottomHeight(WindowInsets.navigationBars)
-        )
+
     }
 }
 
@@ -274,7 +284,7 @@ fun DonationDialog(
         var elapseString by remember { mutableStateOf(timeDifference.toString()) }
         LaunchedEffect(Unit) {
             while (true) {
-                delay(1000) // 每秒更新一次
+                delay(10000)
                 timeDifference = calculateTimeDifference(
                     modification_since_timestamp,
                     System.currentTimeMillis()
@@ -361,7 +371,7 @@ fun ShowDonationDialog(onDismiss: () -> Unit) {
             onDismiss()
             showDialog = false
         },
-        imageResId = R.drawable.qrcode,
+        imageResId = R.drawable.qrcode_924401464,
         contentText = "为魔改充电(需要加入QQ群)\n备注可以指定充电的开发者、版本或功能\n(没有备注则默认充电时的最新版)",
         linkText = "github 船员名单",
         linkUrl = DONATION_PAGE_ADDRESS
@@ -760,7 +770,7 @@ private fun ShizukuSwitch() {
             Text(
                 text = stringResource(
                     id = R.string.text_Shizuku
-                )
+                ) + "(目前只是开关)"
             )
         },
         checked = isShizukuActive
@@ -1198,8 +1208,10 @@ private fun UsageStatsPermissionSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                painterResource(R.drawable.ic_chrome_reader_mode_black_48dp),modifier = Modifier.size(24.dp),
-                contentDescription = null, nightMode = isNightMode()
+                painterResource(R.drawable.ic_chrome_reader_mode_black_48dp),
+                modifier = Modifier.size(24.dp),
+                contentDescription = null,
+                nightMode = isNightMode()
             )
         },
         text = { Text(text = stringResource(id = R.string.text_usage_stats_permission)) },
@@ -1235,9 +1247,10 @@ private fun UsageStatsPermissionSwitch() {
         )
     }
 }
+
 @RequiresApi(Build.VERSION_CODES.TIRAMISU)
 fun hasNotificationPermission(context: Context): Boolean {
-    if(Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
+    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU)
         return NotificationManagerCompat.from(context).areNotificationsEnabled()
     return ContextCompat.checkSelfPermission(
         context,
@@ -1264,8 +1277,8 @@ private fun ForegroundServiceSwitch() {
         checked = isOpenForegroundServices,
         onCheckedChange = {
             if (it) {
-                if(!hasNotificationPermission(context)){
-                    Toast.makeText(context,"请打开通知权限",Toast.LENGTH_SHORT).show()
+                if (!hasNotificationPermission(context)) {
+                    Toast.makeText(context, "请打开通知权限", Toast.LENGTH_SHORT).show()
                     val intent = Intent(Settings.ACTION_APP_NOTIFICATION_SETTINGS)
                     intent.putExtra(Settings.EXTRA_APP_PACKAGE, context.packageName)
                     context.startActivity(intent)
@@ -1404,8 +1417,10 @@ private fun AccessibilityServiceSwitch() {
     SwitchItem(
         icon = {
             MyIcon(
-                painterResource(R.drawable.ic_accessibility_black_48dp), modifier = Modifier.size(24.dp),
-                contentDescription = null, nightMode = isNightMode()
+                painterResource(R.drawable.ic_accessibility_black_48dp),
+                modifier = Modifier.size(24.dp),
+                contentDescription = null,
+                nightMode = isNightMode()
             )
         },
         text = { Text(text = stringResource(id = R.string.text_accessibility_service)) },
@@ -1820,7 +1835,7 @@ private fun EditFloatySwitch() {
     val context = LocalContext.current
     var showFloaty by remember {
         val default = PreferenceManager.getDefaultSharedPreferences(context)
-            .getBoolean(context.getString(R.string.ozobi_key_show_edit_floaty), true)
+            .getBoolean(context.getString(R.string.ozobi_key_show_edit_floaty), false)
         mutableStateOf(default)
     }
     SwitchItem(
@@ -1828,10 +1843,10 @@ private fun EditFloatySwitch() {
             MyIcon(
                 painterResource(id = R.drawable.ic_featured_video_black_48dp),
                 contentDescription = null,
-                modifier = Modifier.size(24.dp),nightMode=isNightMode()
+                modifier = Modifier.size(24.dp), nightMode = isNightMode()
             )
         },
-        text = { Text(text = stringResource(id = R.string.ozobi_text_edit_floaty) + OZOBI_SUBFIX) },
+        text = { Text(text = stringResource(id = R.string.ozobi_text_edit_floaty)) },
         checked = showFloaty,
         onCheckedChange = {
             PreferenceManager.getDefaultSharedPreferences(context)
@@ -1862,7 +1877,26 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.qq_communication_group,
             R.drawable.ic_group_black_48dp,
-            "QQ交流群: " + context.resources.getString(R.string.qq_communication_group)
+            "QQ交流群2: " + context.resources.getString(R.string.qq_communication_group_2)
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65820 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复: 名称降序排序闪退\n\n" +
+                    "添加: 管理页面排序\n\n" +
+                    "添加: 管理页面文件卡片显示上次修改时间和大小\n\n" +
+                    "添加: 管理页面刷新按钮\n\n" +
+                    "修复: 脚本在 app 关闭页面时结束运行无法移除运行记录\n\n" +
+                    "修改: 搜索时忽略大小写\n\n" +
+                    "修复: 搜索时无法操作正确的文件\n\n" +
+                    "修改: http\n\n" +
+                    "重写: 使用 Compose 重写 app 首页和管理页面\n\n" +
+                    "修复: 打包后无障碍服务判断问题"
         )
         .item(
             R.id.modification_detail,
@@ -1872,12 +1906,12 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复: 脚本退出时触发两次 onExit\n\n"+
-            "调整: 抽屉页面和脚本例表控件按钮\n\n"+
-            "添加: 代码编辑器编辑菜单(另存为)\n\n"+
-            "修复: 某些设备 RootAutomator 滑动无效\n\n"+
-            "修复: 打包后每次打开都会跳转到所有文件访问权限页面\n\n"+
-            "修复: 打包前后 autojs 版本不一致"
+            "修复: 脚本退出时触发两次 onExit\n\n" +
+                    "调整: 抽屉页面和脚本例表控件按钮\n\n" +
+                    "添加: 代码编辑器编辑菜单(另存为)\n\n" +
+                    "修复: 某些设备 RootAutomator 滑动无效\n\n" +
+                    "修复: 打包后每次打开都会跳转到所有文件访问权限页面\n\n" +
+                    "修复: 打包前后 autojs 版本不一致"
         )
         .item(
             R.id.modification_detail,
@@ -1887,16 +1921,16 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复: switch、button 控件设置字体颜色不生效\n\n"+
-            "添加: termux 执行参数: options( outputPath、callback、runBackground、top、sessionAction、clean、checkGap、checkCount)\n\n"+
-            "添加: 全局方法 getTermuxCommandIntent、stringArray\n\n"+
-            "添加: termux 示例代码\n\n"+
-            "添加: app 代码编辑器悬浮窗开关\n\n"+
-            "优化: termux 执行命令(zryyoung)\n\n"+
-            "修复: switch 控件不显示文本\n\n"+
-            "修复: 通过 app 代码编辑器悬浮窗运行时 cwd 不是脚本所在路径\n\n"+
-            "高版本 bug 太多，sdk 改回 28\n\n"+
-            "增强: 解决微信控件混乱问题\n" +
+            "修复: switch、button 控件设置字体颜色不生效\n\n" +
+                    "添加: termux 执行参数: options( outputPath、callback、runBackground、top、sessionAction、clean、checkGap、checkCount)\n\n" +
+                    "添加: 全局方法 getTermuxCommandIntent、stringArray\n\n" +
+                    "添加: termux 示例代码\n\n" +
+                    "添加: app 代码编辑器悬浮窗开关\n\n" +
+                    "优化: termux 执行命令(zryyoung)\n\n" +
+                    "修复: switch 控件不显示文本\n\n" +
+                    "修复: 通过 app 代码编辑器悬浮窗运行时 cwd 不是脚本所在路径\n\n" +
+                    "高版本 bug 太多，sdk 改回 28\n\n" +
+                    "增强: 解决微信控件混乱问题\n" +
                     "~ 如果还是不行的话，估计是环境异常了"
         )
         .item(
@@ -1907,12 +1941,12 @@ fun detailsDialog(context: Context) {
         .item(
             R.id.modification_detail,
             R.drawable.ic_ali_log,
-            "修复: app 前台服务无法使用\n\n"+
-            "修复: 打包后权限判断问题\n\n"+
-            "添加: 通知权限\n\n" +
-            "添加: 打包后授予全部文件访问权限\n\n" +
-            "修复: 安卓 15 存储权限问题\n\n" +
-            "添加: app 编辑脚本时的控制悬浮窗(zryyoung)"
+            "修复: app 前台服务无法使用\n\n" +
+                    "修复: 打包后权限判断问题\n\n" +
+                    "添加: 通知权限\n\n" +
+                    "添加: 打包后授予全部文件访问权限\n\n" +
+                    "修复: 安卓 15 存储权限问题\n\n" +
+                    "添加: app 编辑脚本时的控制悬浮窗(zryyoung)"
         )
         .item(
             R.id.modification_detail,
@@ -2194,7 +2228,7 @@ fun detailsDialog(context: Context) {
                     "> format: 时间格式, 默认为 \"yyyy-MM-dd HH:mm:ss.SSS\"\n\n" +
                     "添加: 设置 http 代理(options)\n" +
                     "> 设置代理: http.get(url, {proxyHost:\"192.168.1.10\", proxyPort:7890})\n" +
-                    "> 身份认证: {userName:\"Ozobi\", password:" + context.resources.getString(R.string.qq_communication_group) + "}\n\n" +
+                    "> 身份认证: {userName:\"Ozobi\", password:" + context.resources.getString(R.string.qq_communication_group_2) + "}\n\n" +
                     "添加: 设置 http 尝试次数、单次尝试超时时间(options)\n" +
                     "> 例如: http.get(url, {maxTry:3, timeout: 5000})\n" +
                     "> 一共尝试 3 次(默认3), 每次 5s (默认10s)超时\n\n" +
@@ -2324,7 +2358,7 @@ fun detailsDialog(context: Context) {
         .title("魔改内容")
         .build()
     DialogUtils.showDialog(detailsDialog)
-    val qq = context.resources.getString(R.string.qq_communication_group)
+    val qq = context.resources.getString(R.string.qq_communication_group_2)
     ClipboardUtil.setClip(context, qq)
     Toast.makeText(context, R.string.text_qq_already_copy_to_clip, Toast.LENGTH_SHORT).show()
 }

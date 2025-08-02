@@ -28,6 +28,7 @@ import org.autojs.autoxjs.ui.log.LogActivityKt
 import org.autojs.autoxjs.ui.main.web.DocumentSourceSelectDialog
 import org.autojs.autoxjs.ui.main.web.EditorAppManager.Companion.loadHomeDocument
 
+
 //主界面日志按钮
 @Composable
 fun LogButton() {
@@ -42,7 +43,7 @@ fun LogButton() {
 
 //文档界面菜单按钮
 @Composable
-fun DocumentPageMenuButton(getWebView: () -> WebView) {
+fun DocumentPageMenuButton(getWebView: () -> WebView?) {
     val context = LocalContext.current
     Box {
         var expanded by remember { mutableStateOf(false) }
@@ -57,14 +58,14 @@ fun DocumentPageMenuButton(getWebView: () -> WebView) {
             onDismissRequest = { expanded = false }) {
             DropdownMenuItem(onClick = {
                 dismissMenu()
-                loadHomeDocument(getWebView())
+                getWebView()?.let { loadHomeDocument(it) }
             }) {
                 Icon(Icons.Default.Home, contentDescription = null)
                 Text(text = "回到主页")
             }
             DropdownMenuItem(onClick = {
                 dismissMenu()
-                getWebView().url?.let {
+                getWebView()?.url?.let {
                     IntentUtil.browse(context, it)
                 }
             }) {
@@ -76,15 +77,15 @@ fun DocumentPageMenuButton(getWebView: () -> WebView) {
             }
             DropdownMenuItem(onClick = {
                 dismissMenu()
-                getWebView().clearCache(false)
-                getWebView().reload()
+                getWebView()?.clearCache(false)
+                getWebView()?.reload()
             }) {
                 Icon(Icons.Default.Refresh, contentDescription = null)
                 Text(text = "刷新")
             }
             DropdownMenuItem(onClick = {
                 dismissMenu()
-                DocumentSourceSelectDialog(getWebView()).show()
+                getWebView()?.let { DocumentSourceSelectDialog(it).show() }
             }) {
                 Box(Modifier.width(20.dp)) {
                     Icon(
