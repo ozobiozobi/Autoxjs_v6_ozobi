@@ -26,4 +26,27 @@
     <img src="https://img.shields.io/github/repo-size/ozobiozobi/Autoxjs_v6_ozobi?style=plastic"/>
 </p>
 
+<h4>
+    新版本预览（QQ群获取）
+</h4>
+
+<p>
+
+    >>> 65822 <<<
+
+    修复: 脚本运行结束后资源没有回收导致的内存泄露
+
+    添加: 脚本文件卡片创建快捷方式选项(有些手机可能不起作用, 快捷方式也可以通过安卓小部件创建)
+    
+    修改: 通过 runtime.loadDex 或 runtime.loadJar 加载dex或包时返回 DexClassLoader
+    
+    ```
+    let dexClassLoader = runtime.loadDex("./test.dex")
+    ```
+    
+    修复: ppocrv5 内存泄露
+    
+    修复: 模拟器编辑代码 ctrl + s 会使 app 崩溃
+</p>
+
 <br />
