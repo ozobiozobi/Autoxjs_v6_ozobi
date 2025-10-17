@@ -162,6 +162,7 @@ class BaseResizableFloatyWindow(context: Context, viewSupplier: ViewSupplier) : 
             windowLayoutParams.flags and WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE.inv()
         updateWindowLayoutParams(windowLayoutParams)
         windowView.requestLayout()
+        
     }
 
     private class MyFloaty(

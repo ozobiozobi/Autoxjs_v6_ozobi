@@ -3,6 +3,9 @@ package com.stardust.autojs.core.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.Map;
+import java.util.Set;
+
 /**
  * Created by Stardust on 2017/12/3.
  */
@@ -14,6 +17,18 @@ public class LocalStorage {
 
     public LocalStorage(Context context, String name) {
         mSharedPreferences = context.getSharedPreferences(NAME_PREFIX + name, Context.MODE_PRIVATE);
+    }
+
+    public Set<String> getAllKeys(){
+        return mSharedPreferences.getAll().keySet();
+    }
+
+    public Map<String, ?>getAll(){
+        return mSharedPreferences.getAll();
+    }
+
+    public SharedPreferences getPref(){
+        return mSharedPreferences;
     }
 
     public LocalStorage put(String key, String value) {

@@ -395,25 +395,25 @@ necessary to make it enforceable. Any law or regulation which provides
 that the language of a contract shall be construed against the drafter
 shall not be used to construe this License against a Contributor.
 
-10. Dependencies of the License
+10. Versions of the License
 
 ---
 
-10.1. New Dependencies
+10.1. New Versions
 
 Mozilla Foundation is the license steward. Except as provided in Section
 10.3, no one other than the license steward has the right to modify or
 publish new versions of this License. Each version will be given a
 distinguishing version number.
 
-10.2. Effect of New Dependencies
+10.2. Effect of New Versions
 
 You may distribute the Covered Software under the terms of the version
 of the License under which You originally received the Covered Software,
 or under the terms of any subsequent version published by the license
 steward.
 
-10.3. Modified Dependencies
+10.3. Modified Versions
 
 If you create software not governed by this License, and you want to
 create a new license for such software, you may create and use a

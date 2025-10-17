@@ -75,7 +75,7 @@ object DevPlugin {
     private val bytesMap = HashMap<String, Bytes>()
     private val requiredBytesCommands = HashMap<String, JsonObject>()
     private val responseHandler: DevPluginResponseHandler by lazy {
-        val cache = File(GlobalAppContext.get().cacheDir, "remote_project")
+        val cache = File(GlobalAppContext.get()?.cacheDir , "remote_project")
         DevPluginResponseHandler(cache)
     }
 

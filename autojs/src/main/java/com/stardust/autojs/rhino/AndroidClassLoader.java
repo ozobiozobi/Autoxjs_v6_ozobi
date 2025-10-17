@@ -86,15 +86,14 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         return file;
     }
 
-    public void loadJar(File jar) throws IOException {
+    public DexClassLoader loadJar(File jar) throws IOException {
         Log.d(LOG_TAG, "loadJar: jar = " + jar);
         if (!jar.exists() || !jar.canRead()) {
             throw new FileNotFoundException("File does not exist or readable: " + jar.getPath());
         }
         File dexFile = new File(mCacheDir, generateDexFileName(jar));
         if (dexFile.exists()) {
-            loadDex(dexFile);
-            return;
+            return loadDex(dexFile);
         }
         try {
             final File classFile = generateTempFile(jar.getPath(), false);
@@ -109,8 +108,9 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
                     zipFile.addStream(jarFile.getInputStream(header), parameters);
                 }
             }
-            dexJar(classFile, dexFile);
+            DexClassLoader classLoader = dexJar(classFile, dexFile);
             classFile.delete();
+            return classLoader;
         } catch (ZipException e) {
             throw new IOException(e);
         }
@@ -126,6 +126,7 @@ public class AndroidClassLoader extends ClassLoader implements GeneratedClassLoa
         if (!file.exists()) {
             throw new FileNotFoundException(file.getPath());
         }
+        file.setWritable(false);
         DexClassLoader loader = new DexClassLoader(file.getPath(), mCacheDir.getPath(), null, parent);
         mDexClassLoaders.add(loader);
         return loader;

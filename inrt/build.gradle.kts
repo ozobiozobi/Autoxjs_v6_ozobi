@@ -15,13 +15,13 @@ if (propFile.exists()) {
 }
 
 android {
-    compileSdk = Dependencies.compile
+    compileSdk = Versions.compileSdk
     defaultConfig {
         applicationId = "org.autojs.autoxjs.inrt"
-        minSdk = Dependencies.mini
-        targetSdk = Dependencies.target
-        versionCode = Dependencies.appVersionCode
-        versionName = Dependencies.appVersionName
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
+        versionCode = Versions.appVersionCode
+        versionName = Versions.appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
 //        buildConfigField("boolean","isMarket","true") // 这是有注册码的版本

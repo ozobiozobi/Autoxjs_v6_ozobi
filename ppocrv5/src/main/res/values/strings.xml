@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">ppocrv5ncnn</string>
+    <string-array name="model_array">
+        <item>mobile</item>
+        <item>server</item>
+    </string-array>
+    <string-array name="size_array">
+        <item>320</item>
+        <item>400</item>
+        <item>480</item>
+        <item>560</item>
+        <item>640</item>
+    </string-array>
+    <string-array name="cpugpu_array">
+        <item>CPU</item>
+        <item>GPU</item>
+        <item>turnip</item>
+    </string-array>
+</resources>

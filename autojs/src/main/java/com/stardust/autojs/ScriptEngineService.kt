@@ -23,6 +23,7 @@ import com.stardust.lang.ThreadCompat
 import com.stardust.util.UiHandler
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
+import java.lang.ref.WeakReference
 
 /**
  * Created by Stardust on 2017/1/23.
@@ -69,6 +70,7 @@ class ScriptEngineService internal constructor(builder: ScriptEngineServiceBuild
     fun execute(task: ScriptExecutionTask): ScriptExecution {
         val execution = executeInternal(task)
         mScriptExecutions[execution.id] = execution
+
         return execution
     }
 
@@ -236,10 +238,11 @@ class ScriptEngineService internal constructor(builder: ScriptEngineServiceBuild
                     }
                 }
             }
-        private var sInstance: ScriptEngineService? = null
+        //        private var sInstance: ScriptEngineService? = null
+        private var sInstance: WeakReference<ScriptEngineService>? = null
 
         @JvmStatic
-        var instance: ScriptEngineService?
+        var instance: WeakReference<ScriptEngineService>?
             get() = sInstance
             set(service) {
                 check(sInstance == null)

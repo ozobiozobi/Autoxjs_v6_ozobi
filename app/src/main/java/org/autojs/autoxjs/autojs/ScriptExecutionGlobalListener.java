@@ -28,7 +28,7 @@ public class ScriptExecutionGlobalListener implements ScriptExecutionListener {
         if (millis == null)
             return;
         double seconds = (System.currentTimeMillis() - millis) / 1000.0;
-        AutoJs.getInstance().getScriptEngineService().getGlobalConsole()
+        AutoJs.getInstance().getScriptEngineService().get().getGlobalConsole()
                 .verbose(GlobalAppContext.getString(R.string.text_execution_finished), execution.getSource().toString(), seconds);
     }
 

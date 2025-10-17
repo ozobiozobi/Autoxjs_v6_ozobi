@@ -44,7 +44,7 @@ object Scripts {
         object : SimpleScriptExecutionListener() {
 
             override fun onSuccess(execution: ScriptExecution, result: Any?) {
-                GlobalAppContext.get().sendBroadcast(Intent(ACTION_ON_EXECUTION_FINISHED))
+                GlobalAppContext.get()?.sendBroadcast(Intent(ACTION_ON_EXECUTION_FINISHED))
             }
 
             override fun onException(execution: ScriptExecution, e: Throwable) {
@@ -56,13 +56,13 @@ object Scripts {
                     col = rhinoException.columnNumber()
                 }
                 if (ScriptInterruptedException.causedByInterrupted(e)) {
-                    GlobalAppContext.get().sendBroadcast(
+                    GlobalAppContext.get()?.sendBroadcast(
                         Intent(ACTION_ON_EXECUTION_FINISHED)
                             .putExtra(EXTRA_EXCEPTION_LINE_NUMBER, line)
                             .putExtra(EXTRA_EXCEPTION_COLUMN_NUMBER, col)
                     )
                 } else {
-                    GlobalAppContext.get().sendBroadcast(
+                    GlobalAppContext.get()?.sendBroadcast(
                         Intent(ACTION_ON_EXECUTION_FINISHED)
                             .putExtra(EXTRA_EXCEPTION_MESSAGE, e.message)
                             .putExtra(EXTRA_EXCEPTION_LINE_NUMBER, line)
@@ -73,21 +73,27 @@ object Scripts {
 
         }
 
-
     fun openByOtherApps(uri: Uri) {
-        IntentUtil.viewFile(GlobalAppContext.get(), uri, "text/plain", AppFileProvider.AUTHORITY)
+        openByOtherApps(uri,"text/plain")
     }
 
     fun openByOtherApps(file: File) {
         openByOtherApps(Uri.fromFile(file))
     }
 
+    fun openByOtherApps(uri: Uri, mime:String = "text/plain") {
+        IntentUtil.viewFile(GlobalAppContext.get(), uri, mime, AppFileProvider.AUTHORITY)
+    }
+
+    // 创建快捷方式
     fun createShortcut(scriptFile: ScriptFile) {
-        Shortcut(GlobalAppContext.get()).name(scriptFile.simplifiedName)
-            .targetClass(ShortcutActivity::class.java)
-            .iconRes(R.drawable.ic_node_js_black)
-            .extras(Intent().putExtra(ScriptIntents.EXTRA_KEY_PATH, scriptFile.path))
-            .send()
+        GlobalAppContext.get().let {
+            Shortcut(it).name(scriptFile.simplifiedName)
+                .targetClass(ShortcutActivity::class.java)
+                .iconRes(R.drawable.ic_node_js_black)
+                .extras(Intent().putExtra(ScriptIntents.EXTRA_KEY_PATH, scriptFile.path))
+                .send()
+        }
     }
 
 
@@ -95,7 +101,7 @@ object Scripts {
 //        if (Pref.getEditor() && Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
 //            EditActivity2.editFile(context, file)
 //        } else {
-            EditActivity1.editFile(context, file.simplifiedName, file.path, false)
+        EditActivity1.editFile(context, file.simplifiedName, file.path, false)
 //        }
     }
 
@@ -105,13 +111,15 @@ object Scripts {
 
     fun run(file: ScriptFile): ScriptExecution? {
         return try {
-            AutoJs.getInstance().scriptEngineService.execute(
+            AutoJs.getInstance().scriptEngineService.get()?.execute(
                 file.toSource(),
                 file.parent?.let { ExecutionConfig(workingDirectory = it) }
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(GlobalAppContext.get(), e.message, Toast.LENGTH_LONG).show()
+            GlobalAppContext.get().let {
+                Toast.makeText(it, e.message, Toast.LENGTH_LONG).show()
+            }
             null
         }
 
@@ -120,20 +128,22 @@ object Scripts {
 
     fun run(source: ScriptSource): ScriptExecution? {
         return try {
-            AutoJs.getInstance().scriptEngineService.execute(
+            AutoJs.getInstance().scriptEngineService.get()?.execute(
                 source,
                 ExecutionConfig(workingDirectory = Pref.getScriptDirPath())
             )
         } catch (e: Exception) {
             e.printStackTrace()
-            Toast.makeText(GlobalAppContext.get(), e.message, Toast.LENGTH_LONG).show()
+            GlobalAppContext.get().let {
+                Toast.makeText(it, e.message, Toast.LENGTH_LONG).show()
+            }
             null
         }
 
     }
 
-    fun runWithBroadcastSender(file: File): ScriptExecution {
-        return AutoJs.getInstance().scriptEngineService.execute(
+    fun runWithBroadcastSender(file: File): ScriptExecution? {
+        return AutoJs.getInstance().scriptEngineService.get()?.execute(
             ScriptFile(file).toSource(), BROADCAST_SENDER_SCRIPT_EXECUTION_LISTENER,
             file.parent?.let { ExecutionConfig(workingDirectory = it) }
         )
@@ -145,10 +155,10 @@ object Scripts {
         loopTimes: Int,
         delay: Long,
         interval: Long
-    ): ScriptExecution {
+    ): ScriptExecution? {
         val source = scriptFile.toSource()
         val directoryPath = scriptFile.parent
-        return AutoJs.getInstance().scriptEngineService.execute(
+        return AutoJs.getInstance().scriptEngineService.get()?.execute(
             source, directoryPath?.let {
                 ExecutionConfig(
                     workingDirectory = it,
@@ -172,7 +182,7 @@ object Scripts {
 
     fun send(file: ScriptFile) {
         val context = GlobalAppContext.get()
-        context.startActivity(
+        context?.startActivity(
             Intent.createChooser(
                 Intent(Intent.ACTION_SEND)
                     .setType("text/plain")

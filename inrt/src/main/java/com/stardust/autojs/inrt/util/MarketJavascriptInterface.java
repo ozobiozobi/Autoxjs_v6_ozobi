@@ -25,7 +25,7 @@ public class MarketJavascriptInterface {
         StringScriptSource scriptSource = new StringScriptSource(name,code);
         ExecutionConfig config = new ExecutionConfig();
         config.setWorkingDirectory(Pref.getScriptDirPath());
-        execution=   AutoJs.Companion.getInstance().getScriptEngineService().execute(scriptSource, new ExecutionConfig());
+        execution=   AutoJs.Companion.getInstance().getScriptEngineService().get().execute(scriptSource, new ExecutionConfig());
     }
 
 

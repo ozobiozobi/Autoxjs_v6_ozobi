@@ -81,8 +81,10 @@ class ExplorerProjectToolbar : CardView {
     @OnClick(R.id.run)
     fun run() {
         try {
-            ProjectLauncher(mDirectory!!.path)
-                .launch(AutoJs.getInstance().scriptEngineService)
+            AutoJs.getInstance().scriptEngineService.get()?.let {
+                ProjectLauncher(mDirectory!!.path)
+                    .launch(it)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(context, e.message, Toast.LENGTH_LONG).show()

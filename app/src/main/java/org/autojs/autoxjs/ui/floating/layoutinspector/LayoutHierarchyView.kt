@@ -14,8 +14,8 @@ import android.widget.AdapterView
 import android.widget.ImageView
 import android.widget.ListView
 import android.widget.TextView
-import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.curImgBitmap
-import com.stardust.autojs.core.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
+import com.ozobi.capture.ScreenCapture.Companion.curImgBitmap
+import com.ozobi.capture.ScreenCapture.Companion.isCurImgBitmapValid
 import com.stardust.util.Ozobi
 import com.stardust.util.ViewUtil
 import com.stardust.view.accessibility.NodeInfo

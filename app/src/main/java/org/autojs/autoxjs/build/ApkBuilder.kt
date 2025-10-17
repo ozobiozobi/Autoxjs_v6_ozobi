@@ -14,7 +14,6 @@ import com.stardust.pio.PFiles
 import com.stardust.util.AdvancedEncryptionStandard
 import com.stardust.util.MD5
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.withContext
@@ -68,7 +67,7 @@ class ApkBuilder(
     private var encryptInitVector: String? = null
     private var encryptKey: String? = null
 
-    private val nativePath = File(GlobalAppContext.get().cacheDir, "native-lib").path
+    private val nativePath = File(GlobalAppContext.get()?.cacheDir, "native-lib").path
 
     private var splashThemeId: Int = 0
     private var noDisplayThemeId: Int = 0
@@ -91,7 +90,7 @@ class ApkBuilder(
     private fun unzipLibs() {
         val context = GlobalAppContext.get()
         val myApkFile =
-            File(context.packageManager.getApplicationInfo(context.packageName, 0).sourceDir)
+            File(context?.packageManager?.getApplicationInfo(context.packageName, 0)?.sourceDir ?: "")
         unzip(myApkFile, File(nativePath), "lib/")
     }
 
@@ -145,7 +144,7 @@ class ApkBuilder(
     }
 
     private fun encrypt(file: File, newFile: File) {
-        if (!projectConfig!!.isEncrypt){
+        if (!projectConfig!!.isEncrypt) {
             newFile.delete()
             file.copyTo(newFile)
             return
@@ -212,7 +211,8 @@ class ApkBuilder(
 
             if (form.startsWith(Constant.Protocol.ASSETS)) {
                 val path = form.replace(Constant.Protocol.ASSETS + "/", "")
-                PFiles.copyAssetDir(GlobalAppContext.get().assets, path, to.path, null)
+                GlobalAppContext.get()
+                    ?.let { it1 -> PFiles.copyAssetDir(it1.assets, path, to.path, null) }
                 return@forEach
             }
 
@@ -279,7 +279,6 @@ class ApkBuilder(
         encryptInitVector =
             MD5.ozobiMD5(config.buildInfo.buildId + config.name)
                 .substring(0, 16)
-        // <
     }
 
     suspend fun build(): ApkBuilder {
@@ -302,7 +301,7 @@ class ApkBuilder(
                             dir,
                             iconPath
                         ).toUri()
-                    uri.copyTo(GlobalAppContext.get(), File(workspacePath, path))
+                    GlobalAppContext.get()?.let { uri.copyTo(it, File(workspacePath, path)) }
                 }
             },
         )
@@ -312,19 +311,17 @@ class ApkBuilder(
     suspend fun sign(keyStorePath: String?, keyPassword: String?): ApkBuilder {
         _progressState.emit(BuildState.SIGN)
         val waitSignApk = File(waitSignApk1)
-        delay(500L)
         withContext(Dispatchers.IO) {
             ZipOutputStream(FileOutputStream(waitSignApk)).use { inZip(File(workspacePath), it) }
         }
-        delay(500L)
         val signer = Signer(waitSignApk.path, outApkFile.path, keyStorePath, keyPassword)
-        if(keyStorePath.isNullOrEmpty() || keyPassword.isNullOrEmpty()){
+        if (keyStorePath.isNullOrEmpty() || keyPassword.isNullOrEmpty()) {
             signer.signDebug()
-        }else{
+        } else {
             signer.signApkWithJks()
         }
-        val idsig = File(outApkFile.path+".idsig")
-        if(idsig.exists()){
+        val idsig = File(outApkFile.path + ".idsig")
+        if (idsig.exists()) {
             delete(idsig)
         }
         return this
@@ -415,9 +412,9 @@ class ApkBuilder(
             } else if (!projectConfig!!.launchConfig.displaySplash && splashThemeId != 0 && attr.value == splashThemeId) {
                 attr.value = noDisplayThemeId
             } else if ("authorities" == attr.name.data && attr.value is StringItem) {
-                if(attr.value.toString().contains("shizuku")){
+                if (attr.value.toString().contains("shizuku")) {
                     (attr.value as StringItem).data = projectConfig!!.packageName + ".shizuku"
-                }else{
+                } else {
                     (attr.value as StringItem).data = projectConfig!!.packageName + ".fileprovider"
                 }
             } else {
@@ -425,11 +422,11 @@ class ApkBuilder(
             }
         }
     }
+
     companion object {
         private const val NO_SIGN_APK_SUFFIX = "_no-sign.apk"
         private val stripPattern = Pattern.compile("^META-INF/(.*)[.](SF|RSA|DSA|MF)$")
         private const val TAG: String = "ApkBuilder"
-
 
         private fun doDir(
             prefix: String,
@@ -442,9 +439,6 @@ class ApkBuilder(
             val files = dir.listFiles() ?: return
             for (f in files) {
                 if (f.isFile) {
-                    if(f.name.contains(".arsc")){
-                        doFile(prefix + f.name, f, zos, dos)
-                    }
                     doFile(prefix + f.name, f, zos, dos)
                 } else {
                     doDir(prefix + f.name + "/", f, zos, dos)
@@ -459,7 +453,6 @@ class ApkBuilder(
 
             // 如果是 resources.arsc 文件，设置压缩方法为 STORED
             if (name.endsWith(".arsc")) {
-                Log.d("ozobiLog","arsc 文件")
                 entry.method = ZipEntry.STORED
                 entry.size = f.length()
                 entry.crc = calculateCrc(f)

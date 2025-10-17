@@ -72,6 +72,9 @@ module.exports = function (runtime, global) {
             return com.stardust.util.ViewUtils.spToPx(context, sp);
         }
     };
+
+    global.ppocrv5 = runtime.ppocrv5;
+
     // <
     // Added by ozobi - 2025/02/14 > 将 adbConnect、termux、adbIMEShellCommand、sendTermuxIntent 添加到全局
     global.adbConnect = runtime.adbConnect;

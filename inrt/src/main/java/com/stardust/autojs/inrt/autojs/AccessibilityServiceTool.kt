@@ -47,7 +47,7 @@ object AccessibilityServiceTool {
     }
 
     fun goToAccessibilitySetting() {
-        GlobalAppContext.get().startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
+        GlobalAppContext.get()?.startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK))
     }
 
     fun isAccessibilityServiceEnabled(context: Context): Boolean {

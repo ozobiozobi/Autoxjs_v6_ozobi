@@ -143,7 +143,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void runScript() {
-        GlobalProjectLauncher.INSTANCE.launch(LoginActivity.this);
+        GlobalProjectLauncher.getInstance().launch(LoginActivity.this);
     }
 
     private void setTvInfo() {

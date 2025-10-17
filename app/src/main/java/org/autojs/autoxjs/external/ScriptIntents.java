@@ -60,7 +60,7 @@ public class ScriptIntents {
         if (source == null) {
             return false;
         }
-        AutoJs.getInstance().getScriptEngineService().execute(source, config);
+        AutoJs.getInstance().getScriptEngineService().get().execute(source, config);
         return true;
     }
 

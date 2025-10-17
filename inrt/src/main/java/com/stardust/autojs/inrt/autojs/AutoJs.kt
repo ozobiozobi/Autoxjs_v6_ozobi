@@ -17,6 +17,7 @@ import com.stardust.autojs.script.JavaScriptSource
 import com.stardust.view.accessibility.AccessibilityService
 import com.stardust.view.accessibility.AccessibilityServiceUtils
 import org.autojs.autoxjs.inrt.R
+import java.lang.ref.WeakReference
 
 
 /**
@@ -26,7 +27,7 @@ import org.autojs.autoxjs.inrt.R
 class AutoJs private constructor(application: Application) : com.stardust.autojs.AutoJs(application) {
 
     init {
-        scriptEngineService.registerGlobalScriptExecutionListener(ScriptExecutionGlobalListener())
+        scriptEngineService.get()?.registerGlobalScriptExecutionListener(ScriptExecutionGlobalListener())
     }
 
     override fun createAppUtils(context: Context): AppUtils {
@@ -107,13 +108,15 @@ class AutoJs private constructor(application: Application) : com.stardust.autojs
     }
 
     companion object {
+        private var instanceRef: WeakReference<AutoJs>? = null
 
-        @SuppressLint("StaticFieldLeak")
-        lateinit var instance: AutoJs
-            private set
+        val instance: AutoJs?
+            get() = instanceRef?.get()
 
         fun initInstance(application: Application) {
-            instance = AutoJs(application)
+            if (instanceRef == null || instanceRef?.get() == null) {
+                instanceRef = WeakReference(AutoJs(application))
+            }
         }
     }
 }

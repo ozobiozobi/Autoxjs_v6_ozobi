@@ -1,11 +1,11 @@
 package org.autojs.autoxjs.ui.main
 
 import android.content.Context
+import android.content.Intent
 import android.os.Vibrator
 import android.widget.Toast
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.gestures.scrollBy
 import androidx.compose.foundation.horizontalScroll
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -62,7 +61,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import androidx.core.content.ContextCompat.getSystemService
-import com.flurry.sdk.it
 import com.ozobi.files.copyDir
 import com.ozobi.files.copyFile
 import com.ozobi.files.renameFolder
@@ -97,7 +95,9 @@ import org.autojs.autoxjs.ui.main.MainActivity.Companion.lastOperationFilePath
 import org.autojs.autoxjs.ui.main.MainActivity.Companion.multiSelect
 import org.autojs.autoxjs.ui.main.fileitem.FileItem
 import org.autojs.autoxjs.ui.main.fileitem.getFileItems
+import org.autojs.autoxjs.ui.main.fileitem.getMainScriptFile
 import org.autojs.autoxjs.ui.main.fileitem.sortFileItemList
+import org.autojs.autoxjs.ui.shortcut.ShortcutCreateActivity
 import org.autojs.autoxjs.ui.timing.TimedTaskSettingActivity_
 import java.io.File
 import java.util.Locale
@@ -147,6 +147,14 @@ fun FileManageList(
     )
     val curSortByText = remember { mutableStateOf(sortHintMap[curSortBy]) }
     val showSortConfigDialog = remember { mutableStateOf(false) }
+    val isCurPathProject = remember(curDisplayPath) {
+        mutableStateOf(
+            isFolderContainFileName(
+                File(curDisplayPath),
+                "project.json"
+            )
+        )
+    }
     var folderList =
         remember(curDisplayPath, isSearching.value, curFilterFolderList.size) {
             if (isSearching.value) {
@@ -167,32 +175,40 @@ fun FileManageList(
             }
         }
     fileList = sortFileItemList(fileList, curSortBy, isDes)
+
+    val togetherList = remember(
+        curDisplayPath, curSortBy,
+        isDes
+    ) { mutableListOf<FileItem>() }
+
+    togetherList.clear()
+    togetherList.addAll(folderList)
+    if (folderList.size != 0 && fileList.size != 0) {
+        togetherList.add(FileItem())
+    }
+    togetherList.addAll(fileList)
+
     if (curSelectedFileMap.isEmpty() && curSelectedFolderMap.isEmpty()) {
         multiSelect = false
     }
     val folderPathScrollState = rememberScrollState()
     val scope = rememberCoroutineScope()
-    var folderListWeight by remember { mutableStateOf(1f) }
-    var fileListWeight by remember { mutableStateOf(1f) }
-    if (isSearching.value) {
-        folderListWeight = 1f
-        fileListWeight = 3f
-    }
+
     val showJumpAlert = remember { mutableStateOf(false) }
-    val curFolderListScrollState = remember(curDisplayPath) {
+    val curListScrollState = remember(curDisplayPath) {
         if (curPathScrollStateMap[curDisplayPath] != null) {
-            curPathScrollStateMap[curDisplayPath]?.get(0) ?: LazyListState()
+            curPathScrollStateMap[curDisplayPath] ?: LazyListState()
         } else {
             LazyListState()
         }
     }
-    val curFileListScrollState = remember(curDisplayPath) {
-        if (curPathScrollStateMap[curDisplayPath] != null) {
-            curPathScrollStateMap[curDisplayPath]?.get(1) ?: LazyListState()
-        } else {
-            LazyListState()
-        }
-    }
+//    val curFileListScrollState = remember(curDisplayPath) {
+//        if (curPathScrollStateMap[curDisplayPath] != null) {
+//            curPathScrollStateMap[curDisplayPath]?.get(1) ?: LazyListState()
+//        } else {
+//            LazyListState()
+//        }
+//    }
     LaunchedEffect(curDisplayPath) {
         delay(100)
         if (curDisplayPath == "") {
@@ -203,7 +219,7 @@ fun FileManageList(
         modifier = modifier.padding(2.dp, 0.dp)
     ) {
         if (showJumpAlert.value) {
-            JumpAlert {
+            ChangePathDialog {
                 showJumpAlert.value = false
             }
         }
@@ -222,29 +238,76 @@ fun FileManageList(
         }
         Card(
             modifier = Modifier
-                .height(30.dp)
                 .fillMaxWidth(),
             backgroundColor = MaterialTheme.colors.primary
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxWidth()
                     .padding(start = 6.dp),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                if (curSelectedFolderMap.isNotEmpty()) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_unselected),
-                        contentDescription = stringResource(R.string.text_unselected),
-                        modifier = Modifier.size(28.dp)
-                    )
+                Column(horizontalAlignment = Alignment.End) {
+                    Row {
+                        Text(stringResource(R.string.text_folder))
+                        if (curSelectedFolderMap.isNotEmpty()) {
+                            Text("(${curSelectedFolderMap.size}/${folderList.size})")
+                        } else {
+                            Text("(${folderList.size})")
+                        }
+                    }
+                    Row {
+                        Text(stringResource(R.string.text_file))
+                        if (curSelectedFileMap.isNotEmpty()) {
+                            Text("(${curSelectedFileMap.size}/${fileList.size})")
+                        } else {
+                            Text("(${fileList.size})")
+                        }
+                    }
                 }
-                Text(stringResource(R.string.text_folder))
-                Text("(${curSelectedFolderMap.size}/${folderList.size})")
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Row(Modifier.clickable {
+                if (isCurPathProject.value) {
+                    Row(Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+                        Icon(
+                            painter = painterResource(R.drawable.ic_android_black_48dp),
+                            contentDescription = stringResource(R.string.text_descent),
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clickable {
+                                    BuildActivity.start(context, curDisplayPath)
+                                }
+                        )
+                        Icon(
+                            painter = painterResource(R.drawable.ic_run_gray),
+                            contentDescription = stringResource(R.string.text_descent),
+                            modifier = Modifier
+                                .size(28.dp)
+                                .clickable {
+                                    try {
+                                        val mainScriptFile = getMainScriptFile(curDisplayPath)
+                                        if (mainScriptFile.exists() && mainScriptFile.isFile) {
+                                            runScript(mainScriptFile)
+                                        } else {
+                                            throw Exception("file not exit")
+                                        }
+                                    } catch (e: Exception) {
+                                        Toast
+                                            .makeText(
+                                                context,
+                                                "请确保project.json文件里至少有{}\n同时确保主脚本文件名称为main.js\n或者指定主脚本文件名\n例如{\"main\":\"myMain.js\"}",
+                                                Toast.LENGTH_LONG
+                                            )
+                                            .show()
+                                    }
+                                }
+                        )
+                    }
+                } else {
+                    Spacer(Modifier.weight(1f))
+                }
+                Row(Modifier.weight(1f), horizontalArrangement = Arrangement.SpaceEvenly, verticalAlignment = Alignment.CenterVertically) {
+                    Column(Modifier.clickable {
                         showSortConfigDialog.value = true
-                    }) {
+                    }, horizontalAlignment = Alignment.CenterHorizontally) {
                         curSortByText.value?.let {
                             Text(it)
                         }
@@ -280,102 +343,16 @@ fun FileManageList(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(folderListWeight),
-            state = curFolderListScrollState,
+                .weight(1f),
+            state = curListScrollState,
             contentPadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp),
             verticalArrangement = Arrangement.spacedBy(2.dp)
         ) {
-            items(folderList.size) { item ->
+            items(togetherList.size) { item ->
                 ListItemCard(
                     curDisplayPath,
-                    folderList[item],
-                    curFolderListScrollState,
-                    curFileListScrollState,
-                    onDisPlayPathChange = onDisPlayPathChange,
-                    onBeforeRefreshPathChange = onBeforeRefreshPathChange
-                )
-            }
-        }
-
-        Card(
-            modifier = Modifier
-                .height(30.dp)
-                .fillMaxWidth(),
-            backgroundColor = MaterialTheme.colors.secondary
-        ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(start = 6.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (curSelectedFileMap.isNotEmpty()) {
-                    Icon(
-                        painter = painterResource(R.drawable.ic_unselected),
-                        contentDescription = stringResource(R.string.text_unselected),
-                        modifier = Modifier.size(28.dp)
-                    )
-                }
-                Text(stringResource(R.string.text_file))
-                Text("(${curSelectedFileMap.size}/${fileList.size})")
-                Icon(
-                    painter = painterResource(R.drawable.ic_arrow_up_down),
-                    contentDescription = stringResource(R.string.text_adjust_arrow),
-                    modifier = Modifier
-                        .size(24.dp)
-                        .weight(1f)
-                        .pointerInput(Unit) {
-                            var isDragging = false
-                            detectDragGestures(
-                                onDragStart = {
-                                    isDragging = true
-                                },
-                                onDrag = { _, dragAmount ->
-                                    if (isDragging) {
-                                        if (dragAmount.y < 0) {
-                                            if (folderListWeight >= fileListWeight) {
-                                                folderListWeight = 1f
-                                                fileListWeight = 3f
-                                                isDragging = false
-                                            }
-                                        } else {
-                                            if (folderListWeight <= fileListWeight) {
-                                                folderListWeight = 3f
-                                                fileListWeight = 1f
-                                                isDragging = false
-                                            }
-                                        }
-                                    }
-                                },
-                                onDragEnd = {
-                                    isDragging = false
-                                },
-                                onDragCancel = {
-                                    isDragging = false
-                                }
-                            )
-                        }
-                        .clickable {
-                            folderListWeight = 1f
-                            fileListWeight = 1f
-                        }
-                )
-            }
-        }
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(fileListWeight),
-            state = curFileListScrollState,
-            contentPadding = PaddingValues(horizontal = 2.dp, vertical = 2.dp),
-            verticalArrangement = Arrangement.spacedBy(2.dp)
-        ) {
-            items(fileList.size) { item ->
-                ListItemCard(
-                    curDisplayPath,
-                    fileList[item],
-                    curFolderListScrollState,
-                    curFileListScrollState,
+                    togetherList[item],
+                    curListScrollState,
                     onDisPlayPathChange = onDisPlayPathChange,
                     onBeforeRefreshPathChange = onBeforeRefreshPathChange
                 )
@@ -383,11 +360,17 @@ fun FileManageList(
         }
     }
     if (showSortConfigDialog.value) {
-        SortConfigDialog(viewModel, onDismiss = { showSortConfigDialog.value = false }) {
+        SortConfigDialog(viewModel, onDismiss = {
+            showSortConfigDialog.value = false
+        }) {
             viewModel.updateCurSortBy(it[0])
             viewModel.updateIsDesSort(it[1] != 0)
             showSortConfigDialog.value = false
             curSortByText.value = sortHintMap[it[0]]
+            refreshExplorerList(
+                curDisplayPath,
+                onDisPlayPathChange = onDisPlayPathChange,
+                onBeforeRefreshPathChange = onBeforeRefreshPathChange)
         }
     }
 }
@@ -460,7 +443,7 @@ fun vibrate(context: Context, time: Long) {
 }
 
 @Composable
-fun JumpAlert(onDismiss: () -> Unit) {
+fun ChangePathDialog(onDismiss: () -> Unit) {
     val context = LocalContext.current
     val wantToJumpPath = remember(curDisplayPath) { mutableStateOf(TextFieldValue(curDisplayPath)) }
     val canJump = remember { mutableStateOf(false) }
@@ -560,8 +543,7 @@ fun jumpToPath(path: String): Boolean {
 fun ListItemCard(
     curDisplayPath: String,
     fileItem: FileItem,
-    folderListScrollState: LazyListState,
-    fileListScrollState: LazyListState,
+    curListScrollState: LazyListState,
     onDisPlayPathChange: (String) -> Unit,
     onBeforeRefreshPathChange: (String) -> Unit
 ) {
@@ -573,6 +555,7 @@ fun ListItemCard(
     var curCardTextColor by remember { mutableStateOf(normalCardTextColor) }
     val isLastOperationCard =
         remember(
+            curDisplayPath,
             multiSelect,
             lastOperationFilePath.value
         ) { mutableStateOf(!multiSelect && fileItem.path == lastOperationFilePath.value) }
@@ -649,7 +632,7 @@ fun ListItemCard(
                             Icon(
                                 painter = painterResource(R.drawable.ic_selected),
                                 contentDescription = stringResource(R.string.text_selected),
-                                tint = MaterialTheme.colors.primary,
+                                tint = MaterialTheme.colors.onBackground,
                                 modifier = Modifier.size(28.dp)
                             )
                         }
@@ -695,14 +678,16 @@ fun ListItemCard(
                 }
 
                 else -> {
-                    FileTypeIcon(fileItem.extension, modifier = Modifier.clickable {
-                        if (isCardSelected(fileItem)) {
-                            unselectCard(fileItem)
-                        } else {
-                            multiSelect = true
-                            selectCard(fileItem)
-                        }
-                    })
+                    if (fileItem.path.isNotEmpty()) {
+                        FileTypeIcon(fileItem.extension, modifier = Modifier.clickable {
+                            if (isCardSelected(fileItem)) {
+                                unselectCard(fileItem)
+                            } else {
+                                multiSelect = true
+                                selectCard(fileItem)
+                            }
+                        })
+                    }
                 }
             }
             Spacer(modifier = Modifier.size(4.dp))
@@ -718,8 +703,7 @@ fun ListItemCard(
                             detectTapGestures(
                                 onTap = {
                                     lastOperationFilePath.value = fileItem.path
-                                    curPathScrollStateMap[curDisplayPath] =
-                                        arrayOf(folderListScrollState, fileListScrollState)
+                                    curPathScrollStateMap[curDisplayPath] = curListScrollState
                                     if (!multiSelect) {
                                         if (fileItem.type == "dir" || fileItem.type == "project") {
                                             if (isSearching.value) {
@@ -756,8 +740,7 @@ fun ListItemCard(
                                 },
                                 onLongPress = {
                                     lastOperationFilePath.value = fileItem.path
-                                    curPathScrollStateMap[curDisplayPath] =
-                                        arrayOf(folderListScrollState, fileListScrollState)
+                                    curPathScrollStateMap[curDisplayPath] = curListScrollState
                                     val file = File(fileItem.path)
                                     if (file.exists()) {
                                         if (multiSelect) {
@@ -1163,14 +1146,8 @@ fun SingleSelectionOperationDialog(
     onDismiss: () -> Unit
 ) {
     val context = LocalContext.current
-    var show by remember { mutableStateOf(true) }
     val isJsFile = isJsFile(fileItem.extension)
-    val isFile = fileItem.type == "file"
 //    val isCompressedFile = isCompressedFile(fileItem.fileNameSuffix)
-    var isRename by remember { mutableStateOf(false) }
-    var newPureName by remember { mutableStateOf(fileItem.nameWithoutExtension) }
-    var newSuffix by remember { mutableStateOf(if (isFile && fileItem.extension.isNotEmpty()) "." + fileItem.extension else "") }
-    var confirmButtonEnabled by remember { mutableStateOf(false) }
     var showDeleteConfirmAlert by remember { mutableStateOf(false) }
     val confirmDelete = remember { mutableStateOf(false) }
     val showMultiChoiceAlert = remember { mutableStateOf(false) }
@@ -1182,89 +1159,30 @@ fun SingleSelectionOperationDialog(
     val importButtonEnabled =
         remember { mutableStateOf(fileItem.path != curScriptFilePath.value) }
     val showMore = remember { mutableStateOf(false) }
-    AlertDialog(
-        onDismissRequest = {
-            show = false
-        },
-        confirmButton = {},
-        text = {
-            Column {
-                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(fileItem.name)
-                }
-                Spacer(Modifier.size(4.dp))
-
-                if (isRename) {
-                    Column(Modifier.fillMaxWidth()) {
-                        TextField(value = newPureName, onValueChange = {
-                            newPureName = it
-                            confirmButtonEnabled = it != fileItem.nameWithoutExtension
-                        })
-                        if (isFile) {
-                            Spacer(Modifier.size(4.dp))
-                            TextField(value = newSuffix, onValueChange = {
-                                newSuffix = it
-                                confirmButtonEnabled = it != fileItem.extension
-                            })
-                        }
+    val showRenameDialog = remember { mutableStateOf(false) }
+    if (showRenameDialog.value) {
+        RenameDialog(fileItem, onConfirm = {
+            refreshExplorerList(
+                curDisplayPath,
+                onDisPlayPathChange = onDisPlayPathChange,
+                onBeforeRefreshPathChange = onBeforeRefreshPathChange
+            )
+            clearSelectedMap()
+            onDismiss()
+        }) {
+            onDismiss()
+        }
+    } else {
+        AlertDialog(
+            onDismissRequest = onDismiss,
+            modifier = Modifier.wrapContentHeight(),
+            confirmButton = {},
+            text = {
+                Column {
+                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                        Text(fileItem.name)
                     }
-                    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                        Button(onClick = {
-                            isRename = false
-                        }) { Text(stringResource(R.string.text_cancel)) }
-                        Button(onClick = {
-                            newPureName = fileItem.nameWithoutExtension
-                            if (isFile) {
-                                newSuffix = "." + fileItem.extension
-                            }
-                        }) { Text(stringResource(R.string.text_restore)) }
-                        Button(enabled = confirmButtonEnabled, onClick = {
-                            if (isFolderContainFileName(
-                                    File(curDisplayPath),
-                                    newPureName + newSuffix
-                                )
-                            ) {
-                                confirmButtonEnabled = false
-                                Toast.makeText(
-                                    context,
-                                    context.getString(R.string.text_name_existed),
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                isRename = false
-                                show = false
-                                val targetFile = File(fileItem.path)
-                                newFilePath.value = targetFile.absolutePath.replace(
-                                    fileItem.name,
-                                    newPureName + newSuffix
-                                )
-                                if (targetFile.isFile) {
-                                    val newFile = File(newFilePath.value)
-                                    lastOperationFilePath.value = newFile.absolutePath
-                                    targetFile.copyTo(newFile, false)
-                                    if (newFile.exists()) {
-                                        targetFile.delete()
-                                    } else {
-                                        renameFolderResult.value = false
-                                    }
-                                } else if (targetFile.isDirectory) {
-                                    renameFolderResult.value =
-                                        renameFolder(targetFile, File(newFilePath.value))
-                                    if (renameFolderResult.value) {
-                                        lastOperationFilePath.value = newFilePath.value
-                                    }
-                                }
-                                refreshExplorerList(
-                                    curDisplayPath,
-                                    onDisPlayPathChange = onDisPlayPathChange,
-                                    onBeforeRefreshPathChange = onBeforeRefreshPathChange
-                                )
-                                clearSelectedMap()
-                            }
-                        }) { Text(stringResource(R.string.text_confirm)) }
-                    }
-                }
-                if (!isRename) {
+                    Spacer(Modifier.size(4.dp))
                     LazyVerticalGrid(
                         columns = GridCells.Fixed(2),
                         modifier = Modifier.fillMaxWidth(),
@@ -1274,7 +1192,7 @@ fun SingleSelectionOperationDialog(
 //                        if (isCompressedFile) {
 //                            item {
 //                                Button(onClick = {
-//                                    show = false
+//                                    onDismiss()
 //                                    /*TODO 解压*/
 //                                    Toast.makeText(context, "解压", Toast.LENGTH_SHORT).show()
 //                                }) {
@@ -1286,7 +1204,7 @@ fun SingleSelectionOperationDialog(
                             if (fileItem.type == "file") {
                                 item {
                                     Button(onClick = {
-                                        show = false
+                                        onDismiss()
                                         send(ScriptFile(fileItem.path))
                                     }, colors = secondaryButtonColors()) {
                                         Text(stringResource(R.string.text_share))
@@ -1296,7 +1214,7 @@ fun SingleSelectionOperationDialog(
                             if (fileItem.type == "file") {
                                 item {
                                     Button(onClick = {
-                                        show = false
+                                        onDismiss()
                                         openByOtherApps(File(fileItem.path))
                                     }, colors = secondaryButtonColors()) {
                                         Text(stringResource(R.string.text_open_by))
@@ -1306,7 +1224,7 @@ fun SingleSelectionOperationDialog(
                             item {
                                 Button(onClick = {
                                     multiSelect = true
-                                    show = false
+                                    onDismiss()
                                     selectCard(fileItem)
                                 }, colors = secondaryButtonColors()) {
                                     Text(stringResource(R.string.text_multi_select))
@@ -1324,7 +1242,7 @@ fun SingleSelectionOperationDialog(
                             if (isJsFile || fileItem.type == "project") {
                                 item {
                                     Button(onClick = {
-                                        show = false
+                                        onDismiss()
                                         BuildActivity.start(context, fileItem.path)
                                     }) {
                                         Text(stringResource(R.string.text_build_apk))
@@ -1341,7 +1259,7 @@ fun SingleSelectionOperationDialog(
                                 }
                                 item {
                                     Button(onClick = {
-                                        show = false
+                                        onDismiss()
                                         TimedTaskSettingActivity_.intent(context)
                                             .extra(ScriptIntents.EXTRA_KEY_PATH, fileItem.path)
                                             .start()
@@ -1349,10 +1267,18 @@ fun SingleSelectionOperationDialog(
                                         Text(stringResource(R.string.text_trigger_task))
                                     }
                                 }
+                                item {
+                                    Button(onClick = {
+                                        onDismiss()
+                                        context.startActivity(Intent(context, ShortcutCreateActivity::class.java).putExtra(ShortcutCreateActivity.EXTRA_FILE, ScriptFile(fileItem.path)))
+                                    }) {
+                                        Text(stringResource(R.string.text_send_shortcut))
+                                    }
+                                }
                             }
                             item {
                                 Button(onClick = {
-                                    isRename = true
+                                    showRenameDialog.value = true
                                 }) {
                                     Text(stringResource(R.string.text_rename))
                                 }
@@ -1384,11 +1310,12 @@ fun SingleSelectionOperationDialog(
                     }
                 }
             }
-        }
-    )
+        )
+    }
+
     if (showImportDialog.value) {
         ImportDialog(fileItem) {
-            show = false
+            onDismiss()
         }
     }
     if (showLoopRunDialog.value) {
@@ -1397,7 +1324,7 @@ fun SingleSelectionOperationDialog(
         }, onConfirm = { config ->
             startScriptRunningLoop(ScriptFile(fileItem.path), config)
             showLoopRunDialog.value = false
-            show = false
+            onDismiss()
         })
     }
     if (showSelectInverseAlert.value) {
@@ -1408,7 +1335,7 @@ fun SingleSelectionOperationDialog(
         MultiChoiceOptionsAlert(onConfirm = {
             dealSelectInverseDialogResult(context, it)
             showMultiChoiceAlert.value = false
-            show = false
+            onDismiss()
         }, onDismiss = { showMultiChoiceAlert.value = false }, preSelected = preSelected)
     }
     if (!renameFolderResult.value) {
@@ -1426,7 +1353,7 @@ fun SingleSelectionOperationDialog(
         MultiChoiceOptionsAlert(onConfirm = {
             dealMultiChoiceDialogResult(context, it)
             showMultiChoiceAlert.value = false
-            show = false
+            onDismiss()
         }, onDismiss = { showMultiChoiceAlert.value = false }, preSelected = preSelected)
     }
     if (showDeleteConfirmAlert) {
@@ -1463,18 +1390,105 @@ fun SingleSelectionOperationDialog(
                     onDisPlayPathChange = onDisPlayPathChange,
                     onBeforeRefreshPathChange = onBeforeRefreshPathChange
                 ) {
-                    show = false
+                    onDismiss()
                 }
             },
             onHideClick = {
                 confirmDelete.value = false
-                show = false
+                onDismiss()
             }
         )
     }
-    if (!show) {
-        onDismiss()
-    }
+}
+
+@Composable
+fun RenameDialog(fileItem: FileItem, onConfirm: () -> Unit, onDismiss: () -> Unit) {
+    val context = LocalContext.current
+    val isFile = fileItem.type == "file"
+    var newPureName by remember { mutableStateOf(fileItem.nameWithoutExtension) }
+    var newSuffix by remember { mutableStateOf(if (isFile && fileItem.extension.isNotEmpty()) "." + fileItem.extension else "") }
+    var confirmButtonEnabled by remember { mutableStateOf(false) }
+    val renameFolderResult = remember { mutableStateOf(true) }
+    val newFilePath = remember { mutableStateOf("") }
+
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        modifier = Modifier.wrapContentHeight(),
+        confirmButton = {},
+        text = {
+            Column {
+                Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Text(fileItem.name)
+                }
+                Spacer(Modifier.size(4.dp))
+                TextField(value = newPureName, onValueChange = {
+                    newPureName = it
+                    confirmButtonEnabled = it != fileItem.nameWithoutExtension
+                })
+                if (isFile) {
+                    Spacer(Modifier.size(4.dp))
+                    TextField(value = newSuffix, onValueChange = {
+                        newSuffix = it
+                        confirmButtonEnabled = it != fileItem.extension
+                    })
+                }
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Button(onClick = {
+                        onDismiss()
+                    }) { Text(stringResource(R.string.text_cancel)) }
+                    Button(onClick = {
+                        newPureName = fileItem.nameWithoutExtension
+                        if (isFile) {
+                            newSuffix = "." + fileItem.extension
+                        }
+                        confirmButtonEnabled = false
+                    }) { Text(stringResource(R.string.text_restore)) }
+                    Button(enabled = confirmButtonEnabled, onClick = {
+                        if (isFolderContainFileName(
+                                File(curDisplayPath),
+                                newPureName + newSuffix
+                            )
+                        ) {
+                            confirmButtonEnabled = false
+                            Toast.makeText(
+                                context,
+                                context.getString(R.string.text_name_existed),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            val targetFile = File(fileItem.path)
+                            newFilePath.value = targetFile.absolutePath.replace(
+                                fileItem.name,
+                                newPureName + newSuffix
+                            )
+                            if (targetFile.isFile) {
+                                val newFile = File(newFilePath.value)
+                                lastOperationFilePath.value = newFile.absolutePath
+                                targetFile.copyTo(newFile, false)
+                                if (newFile.exists()) {
+                                    targetFile.delete()
+                                } else {
+                                    renameFolderResult.value = false
+                                }
+                            } else if (targetFile.isDirectory) {
+                                renameFolderResult.value =
+                                    renameFolder(targetFile, File(newFilePath.value))
+                                if (renameFolderResult.value) {
+                                    lastOperationFilePath.value = newFilePath.value
+                                }
+                            }
+                            onConfirm()
+                        }
+                    }) { Text(stringResource(R.string.text_confirm)) }
+                }
+            }
+        }
+    )
 }
 
 @Composable

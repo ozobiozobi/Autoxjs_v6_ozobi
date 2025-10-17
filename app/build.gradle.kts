@@ -14,7 +14,7 @@ plugins {
 
 //val SupportLibVersion = "28.0.0"
 
-val propFile: File = File("E:/资料/jks/autojs-app/sign.properties");
+val propFile: File = File("F:/ozobiozobi/sign/sign.properties")
 val properties = Properties()
 if (propFile.exists()) {
     propFile.inputStream().reader().use {
@@ -29,13 +29,13 @@ if (propFile.exists()) {
 //    }
 //}
 android {
-    compileSdk = Dependencies.compile
+    compileSdk = Versions.compileSdk
     defaultConfig {
         applicationId = "org.autojs.autoxjs"
-        minSdk = Dependencies.mini
-        targetSdk = Dependencies.target
-        versionCode = Dependencies.appVersionCode
-        versionName = Dependencies.appVersionName
+        minSdk = Versions.minSdk
+        targetSdk = Versions.targetSdk
+        versionCode = Versions.appVersionCode
+        versionName = Versions.appVersionName
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 //        multiDexEnabled = true
         buildConfigField("boolean", "isMarket", "false")
@@ -64,15 +64,18 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = Dependencies.compose_version
+        kotlinCompilerExtensionVersion = Versions.compose_version
     }
     signingConfigs {
         if (propFile.exists()) {
-            getByName("release") {
+            create("release") {
                 storeFile = file(properties.getProperty("storeFile"))
                 storePassword = properties.getProperty("storePassword")
                 keyAlias = properties.getProperty("keyAlias")
                 keyPassword = properties.getProperty("keyPassword")
+                enableV1Signing = true
+                enableV2Signing = true
+                enableV3Signing = true
             }
         }
     }
@@ -97,6 +100,7 @@ android {
             isUniversalApk = true
         }
     }
+
     buildTypes {
         named("debug") {
             isShrinkResources = false
@@ -129,16 +133,16 @@ android {
     flavorDimensions.add("channel")
     productFlavors {
         create("common") {
-            versionCode = Dependencies.appVersionCode
-            versionName = Dependencies.appVersionName
+            versionCode = Versions.appVersionCode
+            versionName = Versions.appVersionName
             buildConfigField("String", "CHANNEL", "\"common\"")
 //            buildConfigField("String", "APPID", "\"?id=21\"")
             manifestPlaceholders.putAll(mapOf("appName" to "@string/app_name"))
         }
         create("v6") {
             applicationIdSuffix = ".v6"
-            versionCode = Dependencies.devVersionCode
-            versionName = Dependencies.devVersionName
+            versionCode = Versions.devVersionCode
+            versionName = Versions.devVersionName
             buildConfigField("String", "CHANNEL", "\"v6\"")
 //            buildConfigField("String", "APPID", "\"?id=23\"")
             manifestPlaceholders.putAll(mapOf("appName" to "Autox.js v6_ozobi"))
@@ -413,4 +417,5 @@ tasks.register("installationDocumentation") {
 }
 tasks.named("clean").configure {
     doFirst { delete(docsDir) }
+    doFirst { delete(File(projectDir, "template")) }
 }

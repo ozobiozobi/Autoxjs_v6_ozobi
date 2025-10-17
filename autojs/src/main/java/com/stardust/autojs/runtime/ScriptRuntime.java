@@ -10,6 +10,7 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
+import com.ozobi.ppocrv5.PPOCRV5;
 import com.stardust.app.GlobalAppContext;
 import com.stardust.autojs.R;
 import com.stardust.autojs.ScriptEngineService;
@@ -21,8 +22,8 @@ import com.stardust.autojs.core.activity.ActivityInfoProvider;
 import com.stardust.autojs.core.image.Colors;
 import com.stardust.autojs.core.image.capture.ScreenCaptureRequester;
 import com.stardust.autojs.core.looper.Loopers;
-import com.stardust.autojs.core.ozobi.adbkeyboard.AdbIME;
-import com.stardust.autojs.core.ozobi.remoteadb.AdbShell;
+import com.ozobi.adbkeyboard.AdbIME;
+import com.ozobi.remoteadb.AdbShell;
 import com.stardust.autojs.core.permission.Permissions;
 import com.stardust.autojs.core.util.ProcessShell;
 import com.stardust.autojs.rhino.AndroidClassLoader;
@@ -75,6 +76,8 @@ import java.lang.ref.WeakReference;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import dalvik.system.DexClassLoader;
+
 /**
  * Created by Stardust on 2017/1/27.
  */
@@ -126,8 +129,8 @@ public class ScriptRuntime {
             return this;
         }
 
-        public Builder setEngineService(ScriptEngineService service) {
-            mEngineService = service;
+        public Builder setEngineService(WeakReference<ScriptEngineService> service) {
+            mEngineService = service.get();
             return this;
         }
 
@@ -221,6 +224,8 @@ public class ScriptRuntime {
 //    @ScriptVariable
 //    public final Paddle paddle;
 
+    public final PPOCRV5 ppocrv5;
+
     private Images images;
 
     private static WeakReference<Context> applicationContext;
@@ -258,6 +263,7 @@ public class ScriptRuntime {
         plugins = new Plugins(context, this);
         zips = new SevenZip();
         gmlkit = new GoogleMLKit();
+        ppocrv5 = new PPOCRV5(getApplicationContext());
 //        paddle = new Paddle();
     }
 
@@ -423,19 +429,19 @@ public class ScriptRuntime {
         Permissions.requestPermissions(context, permissions);
     }
 
-    public void loadJar(String path) {
+    public DexClassLoader loadJar(String path) {
         path = files.path(path);
         try {
-            ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadJar(new File(path));
+            return ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadJar(new File(path));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }
     }
 
-    public void loadDex(String path) {
+    public DexClassLoader loadDex(String path) {
         path = files.path(path);
         try {
-            ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadDex(new File(path));
+            return ((AndroidClassLoader) ContextFactory.getGlobal().getApplicationClassLoader()).loadDex(new File(path));
         } catch (IOException e) {
             throw new UncheckedIOException(e);
         }

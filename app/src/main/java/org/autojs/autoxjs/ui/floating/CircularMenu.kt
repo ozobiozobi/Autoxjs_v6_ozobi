@@ -36,7 +36,7 @@ import com.afollestad.materialdialogs.MaterialDialog
 import com.makeramen.roundedimageview.RoundedImageView
 import com.stardust.app.DialogUtils
 import com.stardust.app.GlobalAppContext
-import com.stardust.autojs.core.ozobi.capture.ScreenCapture
+import com.ozobi.capture.ScreenCapture
 import com.stardust.autojs.core.record.Recorder
 import com.stardust.autojs.runtime.api.Images
 import com.stardust.enhancedfloaty.FloatyService
@@ -768,7 +768,7 @@ class CircularMenu(context: Context?) : Recorder.OnStateChangedListener, Capture
     @OnClick(R.id.stop_all_scripts)
     fun stopAllScripts() {
         mWindow?.collapse()
-        AutoJs.getInstance().scriptEngineService.stopAllAndToast()
+        AutoJs.getInstance().scriptEngineService.get()?.stopAllAndToast()
     }
 
     override fun onCaptureAvailable(capture: NodeInfo?) {

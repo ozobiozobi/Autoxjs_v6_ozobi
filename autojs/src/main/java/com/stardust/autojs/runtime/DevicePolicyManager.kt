@@ -6,7 +6,7 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat.getSystemService
-import com.stardust.autojs.core.ozobi.deviceadmin.OzobiDeviceAdminReceiver
+import com.ozobi.deviceadmin.OzobiDeviceAdminReceiver
 import com.stardust.autojs.runtime.ScriptRuntime.getApplicationContext
 
 

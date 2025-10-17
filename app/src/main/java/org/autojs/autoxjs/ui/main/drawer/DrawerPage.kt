@@ -93,8 +93,8 @@ import com.stardust.app.isOpPermissionGranted
 import com.stardust.app.permission.DrawOverlaysPermission
 import com.stardust.app.permission.DrawOverlaysPermission.launchCanDrawOverlaysSettings
 import com.stardust.app.permission.PermissionsSettingsUtil
-import com.stardust.autojs.core.ozobi.shizuku.OzobiShizuku
-import com.stardust.autojs.core.ozobi.voiceassistant.OzobiAssistInteractionService
+import com.ozobi.shizuku.OzobiShizuku
+import com.ozobi.voiceassistant.OzobiAssistInteractionService
 import com.stardust.autojs.runtime.DeviceAdminReceiverMsg
 import com.stardust.enhancedfloaty.FloatyService
 import com.stardust.notification.NotificationListenerService
@@ -607,7 +607,7 @@ fun exitCompletely(context: Context) {
     FloatyWindowManger.hideCircularMenu()
     ForegroundService.stop(context)
     context.stopService(Intent(context, FloatyService::class.java))
-    AutoJs.getInstance().scriptEngineService.stopAll()
+    AutoJs.getInstance().scriptEngineService.get()?.stopAll()
 }
 
 @Composable
@@ -1878,6 +1878,39 @@ fun detailsDialog(context: Context) {
             R.id.qq_communication_group,
             R.drawable.ic_group_black_48dp,
             "QQ交流群2: " + context.resources.getString(R.string.qq_communication_group_2)
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65822 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复: 脚本运行结束后资源没有回收导致的内存泄露\n\n"+
+            "添加: 脚本文件卡片创建快捷方式选项(有些手机可能不起作用, 快捷方式也可以通过安卓小部件创建)\n\n"+
+            "修改: 通过 runtime.loadDex 或 runtime.loadJar 加载dex或包时返回 DexClassLoader\n" +
+                    "~ let dexClassLoader = runtime.loadDex(\"./test.dex\")\n\n" +
+            "修复: ppocrv5 内存泄露\n\n"+
+            "修复: 模拟器编辑代码 ctrl + s 会使 app 崩溃"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_edit_black_48dp,
+            "<=== 65821 ===>"
+        )
+        .item(
+            R.id.modification_detail,
+            R.drawable.ic_ali_log,
+            "修复: 排序改变之后无法操作正确的卡片\n\n"+
+            "添加: 创建项目选项, 项目文件夹打包和运行按钮\n\n"+
+            "修改: 主页不再将文件和文件夹分成两个列表\n\n"+
+            "添加: ppocrv5(只有 autox app 可用, 通用的还没弄好), 具体使用看示例脚本\n\n"+
+            "修复: 某些情况主页搜索会使app崩溃\n\n"+
+            "添加: 任务卡片长按操作\n\n"+
+            "修复: 运行中的脚本路径太长导致关闭按钮被挤出屏幕\n\n"+
+            "修复: 非脚本文件重命名按钮显示不完整\n\n"+
+            "添加: Storage 实例方法: getAll、getAllKeys、getPref"
         )
         .item(
             R.id.modification_detail,

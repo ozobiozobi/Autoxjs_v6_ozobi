@@ -315,14 +315,14 @@ class SplashActivity : ComponentActivity() {
     private fun runScript() {
         Thread {
             try {
-                GlobalProjectLauncher.launch(this)
+                GlobalProjectLauncher.getInstance().launch(this)
                 this.finish()
             } catch (e: Exception) {
                 e.printStackTrace()
                 runOnUiThread {
                     Toast.makeText(this@SplashActivity, e.message, Toast.LENGTH_LONG).show()
                     startActivity(Intent(this@SplashActivity, LogActivity::class.java))
-                    AutoJs.instance.globalConsole.printAllStackTrace(e)
+                    AutoJs.instance?.globalConsole?.printAllStackTrace(e)
                 }
             }
         }.start()

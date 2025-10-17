@@ -39,6 +39,8 @@ fun NewFileDialog(
                     Text(stringResource(R.string.text_file))
                 } else if (type == "dir") {
                     Text(stringResource(R.string.text_folder))
+                } else if (type == "project") {
+                    Text(stringResource(R.string.text_project))
                 }
             }
         },
@@ -68,7 +70,7 @@ fun NewFileDialog(
                 Spacer(Modifier.size(6.dp))
                 Button(onClick = {
                     val newFile = File(targetPath, newFileName.value)
-                    if (newFile.exists() && ((type == "file" && newFile.isFile) || (type == "dir" && newFile.isDirectory))) {
+                    if (newFile.exists() && ((type == "file" && newFile.isFile) || ((type == "dir" || type == "project") && newFile.isDirectory))) {
                         confirmButtonEnabled.value = false
                     } else {
                         onConfirm(File(targetPath, newFileName.value).absolutePath)

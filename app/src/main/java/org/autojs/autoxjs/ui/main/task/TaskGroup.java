@@ -117,7 +117,7 @@ public abstract class TaskGroup implements Parent<Task> {
 
         @Override
         public void refresh() {
-            Collection<ScriptExecution> executions = AutoJs.getInstance().getScriptEngineService().getScriptExecutions();
+            Collection<ScriptExecution> executions = AutoJs.getInstance().getScriptEngineService().get().getScriptExecutions();
             mTasks.clear();
             for (ScriptExecution execution : executions) {
                 mTasks.add(new Task.RunningTask(execution));

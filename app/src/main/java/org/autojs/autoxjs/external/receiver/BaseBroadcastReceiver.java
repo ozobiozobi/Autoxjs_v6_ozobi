@@ -42,7 +42,7 @@ public class BaseBroadcastReceiver extends BroadcastReceiver {
         config.setArgument("intent", intent.clone());
         config.setWorkingDirectory(file.getParent());
         try {
-            AutoJs.getInstance().getScriptEngineService().execute(file.toSource(), config);
+            AutoJs.getInstance().getScriptEngineService().get().execute(file.toSource(), config);
         } catch (Exception e) {
             e.printStackTrace();
             Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();

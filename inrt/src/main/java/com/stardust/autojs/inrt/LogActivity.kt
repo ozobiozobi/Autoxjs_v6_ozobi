@@ -20,12 +20,13 @@ import org.autojs.autoxjs.inrt.R
 class LogActivity : AppCompatActivity() {
 
     lateinit var consoleImpl: ConsoleImpl
+    private val globalProjectLauncher = GlobalProjectLauncher.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setupView()
         if (intent.getBooleanExtra(EXTRA_LAUNCH_SCRIPT, false)) {
-            GlobalProjectLauncher.launch(this)
+            globalProjectLauncher.launch(this)
         }
     }
 
@@ -34,8 +35,11 @@ class LogActivity : AppCompatActivity() {
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
         val consoleView = findViewById<ConsoleView>(R.id.console)
-        consoleImpl = AutoJs.instance.globalConsole
-        consoleView.setConsole(consoleImpl)
+        val globalConsole = AutoJs.instance?.globalConsole
+        if(globalConsole != null){
+            consoleImpl = globalConsole
+            consoleView.setConsole(consoleImpl)
+        }
         consoleView.findViewById<View>(R.id.input_container).visibility = View.GONE
     }
 
@@ -43,11 +47,11 @@ class LogActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.settings -> startActivity(Intent(this, SettingsActivity::class.java))
             R.id.rerun -> {
-                GlobalProjectLauncher.stop()
-                GlobalProjectLauncher.launch(this)
+                globalProjectLauncher.stop()
+                globalProjectLauncher.launch(this)
             }
             R.id.clear -> consoleImpl.clear()
-            R.id.stop -> GlobalProjectLauncher.stop()
+            R.id.stop -> globalProjectLauncher.stop()
         }
         return true
     }

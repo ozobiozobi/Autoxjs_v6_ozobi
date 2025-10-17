@@ -22,8 +22,8 @@ class ScriptExecutionGlobalListener : ScriptExecutionListener {
     private fun onFinish(execution: ScriptExecution) {
         val millis = execution.engine.getTag(ENGINE_TAG_START_TIME) as Long? ?: return
         val seconds = (System.currentTimeMillis() - millis) / 1000.0
-        AutoJs.instance.scriptEngineService.globalConsole
-                .verbose(GlobalAppContext.getString(R.string.text_execution_finished), execution.source.toString(), seconds)
+        AutoJs.instance?.scriptEngineService?.get()?.globalConsole
+            ?.verbose(GlobalAppContext.getString(R.string.text_execution_finished), execution.source.toString(), seconds)
     }
 
     override fun onException(execution: ScriptExecution, e: Throwable) {

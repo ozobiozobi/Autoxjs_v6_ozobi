@@ -36,13 +36,8 @@ public class ScriptEngineManager {
     private EngineLifecycleCallback mEngineLifecycleCallback;
     private Map<String, Supplier<ScriptEngine>> mEngineSuppliers = new HashMap<>();
     private Map<String, Object> mGlobalVariableMap = new HashMap<>();
-    private android.content.Context mAndroidContext;
-    private ScriptEngine.OnDestroyListener mOnEngineDestroyListener = new ScriptEngine.OnDestroyListener() {
-        @Override
-        public void onDestroy(ScriptEngine engine) {
-            removeEngine(engine);
-        }
-    };
+    private Context mAndroidContext;
+    private ScriptEngine.OnDestroyListener mOnEngineDestroyListener = this::removeEngine;
 
     public ScriptEngineManager(Context androidContext) {
         mAndroidContext = androidContext;
@@ -66,7 +61,7 @@ public class ScriptEngineManager {
         return mEngines;
     }
 
-    public android.content.Context getAndroidContext() {
+    public Context getAndroidContext() {
         return mAndroidContext;
     }
 

@@ -472,7 +472,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
     }
 
     private void doWithCurrentEngine(Callback<ScriptEngine> callback) {
-        ScriptExecution execution = AutoJs.getInstance().getScriptEngineService().getScriptExecution(mScriptExecutionId);
+        ScriptExecution execution = AutoJs.getInstance().getScriptEngineService().get().getScriptExecution(mScriptExecutionId);
         if (execution != null) {
             ScriptEngine engine = execution.getEngine();
             if (engine != null) {
@@ -723,7 +723,7 @@ public class EditorView extends FrameLayout implements CodeCompletionBar.OnHintC
 
     @Nullable
     public ScriptExecution getScriptExecution() {
-        return AutoJs.getInstance().getScriptEngineService().getScriptExecution(mScriptExecutionId);
+        return AutoJs.getInstance().getScriptEngineService().get().getScriptExecution(mScriptExecutionId);
     }
 
     @Nullable

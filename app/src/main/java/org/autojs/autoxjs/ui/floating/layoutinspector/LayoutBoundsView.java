@@ -15,7 +15,7 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.stardust.autojs.core.ozobi.capture.ScreenCapture;
+import com.ozobi.capture.ScreenCapture;
 import com.stardust.util.Ozobi;
 import com.stardust.util.ViewUtil;
 import com.stardust.view.accessibility.NodeInfo;

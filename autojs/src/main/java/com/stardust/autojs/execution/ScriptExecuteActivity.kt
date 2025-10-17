@@ -11,9 +11,11 @@ import android.view.MenuItem
 import android.view.MotionEvent
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.WindowCompat
 import com.stardust.autojs.ScriptEngineService
 import com.stardust.autojs.core.eventloop.EventEmitter
 import com.stardust.autojs.core.eventloop.SimpleEvent
+import com.stardust.autojs.core.ui.isNightMode
 import com.stardust.autojs.engine.JavaScriptEngine
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine
 import com.stardust.autojs.engine.LoopBasedJavaScriptEngine.ExecuteCallback
@@ -28,34 +30,41 @@ import org.mozilla.javascript.ContinuationPending
 /**
  * Created by Stardust on 2017/2/5.
  */
+
 class ScriptExecuteActivity : AppCompatActivity() {
     private var mResult: Any? = null
     private lateinit var mScriptEngine: ScriptEngine<*>
     private var mExecutionListener: ScriptExecutionListener? = null
     private var mScriptSource: ScriptSource? = null
-    private lateinit var mScriptExecution: ActivityScriptExecution
+    private var mScriptExecution: ActivityScriptExecution? = null
     private lateinit var mRuntime: ScriptRuntime
     lateinit var eventEmitter: EventEmitter
         private set
 
-    // FIXME: 2018/3/16 如果Activity被回收则得不到改进
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        val window = window
+        val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        insetsController.isAppearanceLightStatusBars = isNightMode(this.applicationContext)
         val executionId = intent.getIntExtra(EXTRA_EXECUTION_ID, ScriptExecution.NO_ID)
         if (executionId == ScriptExecution.NO_ID) {
             super.finish()
             return
         }
-        val execution = ScriptEngineService.instance?.getScriptExecution(executionId)
+        val execution = ScriptEngineService.instance?.get()?.getScriptExecution(executionId)
         if (execution == null || execution !is ActivityScriptExecution) {
             Toast.makeText(this, "脚本环境异常", Toast.LENGTH_SHORT).show()
             super.finish()
             return
         }
         mScriptExecution = execution
-        mScriptSource = mScriptExecution.source
-        mScriptEngine = mScriptExecution.createEngine(this)
-        mExecutionListener = mScriptExecution.listener
+        mScriptExecution.let {
+            if (it != null) {
+                mScriptSource = it.source
+                mScriptEngine = it.createEngine()
+                mExecutionListener = it.listener
+            }
+        }
         mRuntime = (mScriptEngine as JavaScriptEngine).runtime
         eventEmitter = EventEmitter(mRuntime.bridges)
         runScript()
@@ -74,13 +83,13 @@ class ScriptExecuteActivity : AppCompatActivity() {
     }
 
     private fun onException(e: Throwable) {
-        mExecutionListener!!.onException(mScriptExecution, e)
+        mExecutionListener?.onException(mScriptExecution, e)
         super.finish()
     }
 
     private fun doExecution() {
         mScriptEngine.setTag(ScriptEngine.TAG_SOURCE, mScriptSource)
-        mExecutionListener!!.onStart(mScriptExecution)
+        mExecutionListener?.onStart(mScriptExecution)
         (mScriptEngine as LoopBasedJavaScriptEngine?)!!.execute(
             mScriptSource,
             object : ExecuteCallback {
@@ -97,12 +106,13 @@ class ScriptExecuteActivity : AppCompatActivity() {
     private fun prepare() {
         mScriptEngine.put("activity", this)
         mScriptEngine.setTag("activity", this)
-        mScriptEngine.setTag(ScriptEngine.TAG_ENV_PATH, mScriptExecution!!.config.path)
-        mScriptEngine.setTag(
-            ScriptEngine.TAG_WORKING_DIRECTORY,
-            mScriptExecution.config.workingDirectory
-        )
-        mScriptEngine.init()
+        mScriptExecution.let {
+            if(it != null){
+                mScriptEngine.setTag(ScriptEngine.TAG_ENV_PATH, it.config.path)
+                mScriptEngine.setTag(ScriptEngine.TAG_WORKING_DIRECTORY, it.config.workingDirectory)
+                mScriptEngine.init()
+            }
+        }
     }
 
     override fun finish() {
@@ -114,7 +124,7 @@ class ScriptExecuteActivity : AppCompatActivity() {
         if (exception != null) {
             onException(exception)
         } else {
-            mExecutionListener!!.onSuccess(mScriptExecution, mResult)
+            mExecutionListener?.onSuccess(mScriptExecution, mResult)
         }
         super.finish()
     }
@@ -122,16 +132,24 @@ class ScriptExecuteActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         Log.d(LOG_TAG, "onDestroy")
-        if (::mScriptEngine.isInitialized) {
-            mScriptEngine.put("activity", null)
-            mScriptEngine.setTag("activity", null)
-            mScriptEngine.destroy()
+        mScriptSource = null
+        try {
+            if (::mScriptEngine.isInitialized) {
+                mScriptEngine.put("activity", null)
+                mScriptEngine.setTag("activity", null)
+                mScriptEngine.destroy()
+            }
+        } catch (e: Exception) {
+            Log.d(LOG_TAG, "onDestroy Exception: $e")
         }
+        eventEmitter.removeAllListeners()
+        mExecutionListener = null
+        mScriptExecution = null
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
         super.onSaveInstanceState(outState)
-        outState.putInt(EXTRA_EXECUTION_ID, mScriptExecution.id)
+        mScriptExecution?.let { outState.putInt(EXTRA_EXECUTION_ID, it.id) }
         emit("save_instance_state", outState)
     }
 
@@ -204,7 +222,7 @@ class ScriptExecuteActivity : AppCompatActivity() {
         task: ScriptExecutionTask?
     ) : AbstractScriptExecution(task) {
         private var mScriptEngine: ScriptEngine<*>? = null
-        fun createEngine(activity: Activity?): ScriptEngine<*> {
+        fun createEngine(): ScriptEngine<*> {
             if (mScriptEngine != null) {
                 mScriptEngine!!.forceStop()
             }
@@ -220,7 +238,7 @@ class ScriptExecuteActivity : AppCompatActivity() {
 
     companion object {
         private const val LOG_TAG = "ScriptExecuteActivity"
-        private val EXTRA_EXECUTION_ID = ScriptExecuteActivity::class.java.name + ".execution_id"
+        private const val EXTRA_EXECUTION_ID = "execution_id"
         @JvmStatic
         fun execute(
             context: Context,

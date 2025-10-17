@@ -55,8 +55,8 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
             return;
         }
         instance = new AutoJs(application);
-        
-        
+
+
         PreferenceManager.getDefaultSharedPreferences(application.getApplicationContext())
                 .edit()
                 .putBoolean(application.getApplicationContext().getString(R.string.key_cur_check_connection_status), false)
@@ -70,7 +70,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
 
     private AutoJs(final Application application) {
         super(application);
-        getScriptEngineService().registerGlobalScriptExecutionListener(new ScriptExecutionGlobalListener());
+        getScriptEngineService().get().registerGlobalScriptExecutionListener(new ScriptExecutionGlobalListener());
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction(LayoutBoundsFloatyWindow.class.getName());
         intentFilter.addAction(LayoutHierarchyFloatyWindow.class.getName());
@@ -182,7 +182,7 @@ public class AutoJs extends com.stardust.autojs.AutoJs {
     @Override
     protected AccessibilityConfig createAccessibilityConfig() {
         AccessibilityConfig config = super.createAccessibilityConfig();
-        
+
 //        if (BuildConfig.CHANNEL.equals("coolapk")) {
 //            assert config != null;
 //            config.addWhiteList("com.coolapk.market");

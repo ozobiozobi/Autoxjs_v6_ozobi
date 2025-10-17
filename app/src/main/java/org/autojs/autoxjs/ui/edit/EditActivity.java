@@ -14,6 +14,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ActionMode;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
@@ -108,6 +109,33 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
                 .getBoolean(this.getString(R.string.ozobi_key_show_edit_floaty), false);
     }
 
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event){
+        if(event.isCtrlPressed() && keyCode == KeyEvent.KEYCODE_S){
+            onCtrlSPressed();
+            return true;
+        }else if(event.isCtrlPressed() && keyCode == KeyEvent.KEYCODE_Y){
+            onCtrlYPressed();
+            return true;
+        }else if(event.isCtrlPressed() && keyCode == KeyEvent.KEYCODE_Z){
+            onCtrlZPressed();
+            return true;
+        }
+        return super.onKeyDown(keyCode,event);
+    }
+
+    private void onCtrlZPressed(){
+        mEditorView.undo();
+    }
+
+    private void onCtrlYPressed(){
+        mEditorView.redo();
+    }
+
+    private void onCtrlSPressed(){
+        mEditorView.saveFile();
+    }
+
     @SuppressLint("CheckResult")
     @AfterViews
     void setUpViews() {
@@ -177,8 +205,12 @@ public class EditActivity extends BaseActivity implements OnActivityResultDelega
     public boolean onPrepareOptionsMenu(Menu menu) {
         Log.d(LOG_TAG, "onPrepareOptionsMenu: " + menu);
         boolean isScriptRunning = mEditorView.getScriptExecutionId() != ScriptExecution.NO_ID;
-        MenuItem forceStopItem = menu.findItem(R.id.action_force_stop);
-        forceStopItem.setEnabled(isScriptRunning);
+        try{
+            MenuItem forceStopItem = menu.findItem(R.id.action_force_stop);
+            forceStopItem.setEnabled(isScriptRunning);
+        }catch (Exception e){
+            Log.d("ozobiLog",e.toString());
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 

@@ -81,7 +81,7 @@
             android:exported="false"
             android:foregroundServiceType="mediaProjection" />
 
-        <receiver android:name=".core.ozobi.deviceadmin.OzobiDeviceAdminReceiver"
+        <receiver android:name="com.ozobi.deviceadmin.OzobiDeviceAdminReceiver"
             android:exported="true"
             android:permission="android.permission.BIND_DEVICE_ADMIN">
             <meta-data android:name="android.app.device_admin"
@@ -102,7 +102,7 @@
             android:permission="android.permission.INTERACT_ACROSS_USERS_FULL"/>
         <!--        // < -->
         <service
-            android:name=".core.ozobi.voiceassistant.OzobiAssistInteractionService"
+            android:name="com.ozobi.voiceassistant.OzobiAssistInteractionService"
             android:exported="true"
             android:permission="android.permission.BIND_VOICE_INTERACTION">
             <intent-filter>
@@ -112,11 +112,11 @@
                 android:resource="@xml/voice_interaction_service"/>
         </service>
         <service
-            android:name=".core.ozobi.voiceassistant.OzobiAssistInteractionSessionService"
+            android:name="com.ozobi.voiceassistant.OzobiAssistInteractionSessionService"
             android:permission="android.permission.BIND_VOICE_INTERACTION"
             android:exported="true" />
 
-        <service android:name=".core.ozobi.adbkeyboard.AdbIME"
+        <service android:name="com.ozobi.adbkeyboard.AdbIME"
             android:exported="true"
             android:permission="android.permission.BIND_INPUT_METHOD">
             <intent-filter>
@@ -124,6 +124,6 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/methods"/>
         </service>
-        <service android:exported="false" android:name=".core.ozobi.remoteadb.service.ShellService" />
+        <service android:exported="false" android:name="com.ozobi.remoteadb.service.ShellService" />
     </application>
 </manifest>

@@ -29,17 +29,21 @@ import java.io.IOException
 
 open class AssetsProjectLauncher(
     private val assetsProjectDir: String,
-    private val context: Context
+    private val context: Context?
 ) {
-    private val mProjectDir: String = File(context.filesDir, "project/").path
+    private val mProjectDir: String = File(context?.filesDir, "project/").path
     private val mProjectConfig =
-        ProjectConfig.fromAssets(context, ProjectConfig.configFileOfDir(assetsProjectDir))!!
+        context?.let {
+            ProjectConfig.fromAssets(
+                it,
+                ProjectConfig.configFileOfDir(assetsProjectDir)
+            )
+        }!!
     private val mMainScriptFile: File = File(mProjectDir, mProjectConfig.mainScript!!)
     private val mHandler: Handler = Handler(Looper.getMainLooper())
     private var mScriptExecution: ScriptExecution? = null
 
     init {
-
         prepare()
     }
 
@@ -87,9 +91,9 @@ open class AssetsProjectLauncher(
             } else {
                 activity?.finish()
             }
-            mScriptExecution = AutoJs.instance.scriptEngineService.execute(source, config)
+            mScriptExecution = AutoJs.instance?.scriptEngineService?.get()?.execute(source, config)
         } catch (e: Exception) {
-            AutoJs.instance.globalConsole.error(e)
+            AutoJs.instance?.globalConsole?.error(e)
         }
 
     }
@@ -106,17 +110,18 @@ open class AssetsProjectLauncher(
         initKey(mProjectConfig)
         PFiles.deleteRecursively(File(mProjectDir))
         try {
-            PFiles.copyAssetDir(context.assets, assetsProjectDir, mProjectDir, null)
+            context?.let { PFiles.copyAssetDir(it.assets, assetsProjectDir, mProjectDir, null) }
         } catch (e: IOException) {
             throw UncheckedIOException(e)
         }
     }
 
     private fun initKey(projectConfig: ProjectConfig) {
-        
+
         val key =
             MD5.ozobiMD5(projectConfig.packageName + projectConfig.versionName + projectConfig.mainScript)
-        val vec = MD5.ozobiMD5(projectConfig.buildInfo.buildId + projectConfig.name).substring(0, 16)
+        val vec =
+            MD5.ozobiMD5(projectConfig.buildInfo.buildId + projectConfig.name).substring(0, 16)
         // <
         ScriptEncryption.mKey = key
         ScriptEncryption.mInitVector = vec

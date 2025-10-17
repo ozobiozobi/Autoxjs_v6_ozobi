@@ -2,6 +2,7 @@ package org.autojs.autoxjs.ui.main
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.AlertDialog
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -42,6 +45,7 @@ import org.autojs.autoxjs.ui.main.MainActivity.Companion.addCurRunningTask
 import org.autojs.autoxjs.ui.main.MainActivity.Companion.curPendingTaskList
 import org.autojs.autoxjs.ui.main.MainActivity.Companion.curRunningTaskList
 import org.autojs.autoxjs.ui.main.MainActivity.Companion.indexOfTask
+import org.autojs.autoxjs.ui.main.task.Task
 import org.autojs.autoxjs.ui.main.task.Task.PendingTask
 import org.autojs.autoxjs.ui.main.task.Task.RunningTask
 
@@ -152,7 +156,8 @@ fun TaskManageList() {
                         .clickable {
                             runningTaskListWeight = 1f
                             pendingTaskListWeight = 1f
-                        }, contentAlignment = Alignment.Center) {
+                        }, contentAlignment = Alignment.Center
+                ) {
                     Icon(
                         painter = painterResource(R.drawable.ic_arrow_up_down),
                         contentDescription = stringResource(R.string.text_adjust_arrow),
@@ -183,7 +188,7 @@ fun TaskManageList() {
             }
         }
     }
-    if(showStopAllRunningTaskAlert.value){
+    if (showStopAllRunningTaskAlert.value) {
         ConfirmAlert(
             title = { Text(stringResource(R.string.text_stop_all) + " ?") },
             text = {
@@ -224,11 +229,44 @@ fun TaskManageList() {
 }
 
 @Composable
+fun TaskDetailDialog(task: Task, onDismiss:()->Unit) {
+    AlertDialog(onDismissRequest = onDismiss, confirmButton = {
+        Button(onClick = {
+            task.cancel()
+            onDismiss()
+        }) {
+            if(task is PendingTask){
+                Text(stringResource(R.string.text_cancel))
+            }else{
+                Text(stringResource(R.string.text_stop))
+            }
+        }
+    }, text = {
+        Column {
+            if(task is PendingTask){
+                Text(stringResource(R.string.text_detail))
+            }else{
+                Text(stringResource(R.string.text_script_path))
+            }
+            Text(task.desc, color = Color.Gray, fontSize = 12.sp)
+        }
+    })
+}
+
+@Composable
 fun RunningTaskCard(task: RunningTask) {
+    val showDetailDialog = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .height(50.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .pointerInput(task){
+                detectTapGestures(
+                    onLongPress = {
+                        showDetailDialog.value = true
+                    }
+                )
+            },
         elevation = 2.dp
     ) {
         Row(
@@ -237,11 +275,10 @@ fun RunningTaskCard(task: RunningTask) {
                 .padding(6.dp, 2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(task.name)
-                Text(task.desc, color = Color.Gray, fontSize = 12.sp)
+                Text(task.desc, color = Color.Gray, fontSize = 12.sp, maxLines = 1)
             }
-            Spacer(Modifier.weight(1f))
             Box(
                 Modifier
                     .fillMaxHeight()
@@ -256,16 +293,29 @@ fun RunningTaskCard(task: RunningTask) {
                     modifier = Modifier.size(28.dp)
                 )
             }
+        }
+    }
+    if(showDetailDialog.value){
+        TaskDetailDialog(task){
+            showDetailDialog.value = false
         }
     }
 }
 
 @Composable
 fun PendingTaskCard(task: PendingTask) {
+    val showDetailDialog = remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .height(50.dp)
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .pointerInput(task){
+                detectTapGestures(
+                    onLongPress = {
+                        showDetailDialog.value = true
+                    }
+                )
+            },
         elevation = 2.dp
     ) {
         Row(
@@ -274,11 +324,10 @@ fun PendingTaskCard(task: PendingTask) {
                 .padding(6.dp, 2.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Column {
+            Column(Modifier.weight(1f)) {
                 Text(task.name)
-                Text(task.desc, color = Color.Gray, fontSize = 12.sp)
+                Text(task.desc, color = Color.Gray, fontSize = 12.sp, maxLines = 1)
             }
-            Spacer(Modifier.weight(1f))
             Box(
                 Modifier
                     .fillMaxHeight()
@@ -295,9 +344,14 @@ fun PendingTaskCard(task: PendingTask) {
             }
         }
     }
+    if(showDetailDialog.value){
+        TaskDetailDialog(task){
+            showDetailDialog.value = false
+        }
+    }
 }
 
-fun refreshCurPendingTaskList(){
+fun refreshCurPendingTaskList() {
     curPendingTaskList.clear()
     allTasksAsList.forEach { timedTask ->
         val index = indexOfTask(timedTask)
@@ -319,8 +373,8 @@ fun refreshCurPendingTaskList(){
 
 fun refreshCurRunningTaskList() {
     curRunningTaskList.clear()
-    val executions = AutoJs.getInstance().scriptEngineService.scriptExecutions
-    executions.forEach { item ->
+    val executions = AutoJs.getInstance().scriptEngineService.get()?.scriptExecutions
+    executions?.forEach { item ->
         if (!item.engine.isDestroyed) {
             addCurRunningTask(RunningTask(item))
         }

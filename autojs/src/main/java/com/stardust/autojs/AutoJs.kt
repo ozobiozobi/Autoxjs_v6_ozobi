@@ -34,6 +34,7 @@ import com.stardust.view.accessibility.LayoutInspector
 import org.mozilla.javascript.ContextFactory
 import org.mozilla.javascript.WrappedException
 import java.io.File
+import java.lang.ref.WeakReference
 
 /**
  * Created by Stardust on 2017/11/29.
@@ -50,7 +51,7 @@ abstract class AutoJs protected constructor(protected val application: Applicati
     val uiHandler: UiHandler = UiHandler(mContext)
     val appUtils: AppUtils by lazy { createAppUtils(mContext) }
     val infoProvider: ActivityInfoProvider = ActivityInfoProvider(mContext)
-    val scriptEngineService: ScriptEngineService
+    val scriptEngineService: WeakReference<ScriptEngineService>
     val globalConsole: GlobalConsole by lazy { createGlobalConsole() }
 
     init {
@@ -92,13 +93,14 @@ abstract class AutoJs protected constructor(protected val application: Applicati
     }
 
     abstract fun ensureAccessibilityServiceEnabled()
-    protected fun buildScriptEngineService(): ScriptEngineService {
+    protected fun buildScriptEngineService(): WeakReference<ScriptEngineService> {
         initScriptEngineManager()
-        return ScriptEngineServiceBuilder()
+        val scriptEngineService =   ScriptEngineServiceBuilder()
             .uiHandler(uiHandler)
             .globalConsole(globalConsole)
             .engineManger(scriptEngineManager)
             .build()
+        return WeakReference(scriptEngineService)
     }
 
     protected open fun initScriptEngineManager() {

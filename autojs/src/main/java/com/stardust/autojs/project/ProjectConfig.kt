@@ -163,7 +163,7 @@ data class LaunchConfig(
     var permissions: List<String> = emptyList(),
     @SerializedName("serviceDesc")
     var serviceDesc: String = GlobalAppContext.get()
-        .getString(R.string.text_accessibility_service_description),
+        ?.getString(R.string.text_accessibility_service_description).toString(),
     @SerializedName("splashIcon")
     var splashIcon: String? = null,
     @SerializedName("splashText")

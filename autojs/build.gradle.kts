@@ -4,10 +4,10 @@ plugins {
 }
 
 android {
-    compileSdk = Dependencies.compile
+    compileSdk = Versions.compileSdk
 
     defaultConfig {
-        minSdk = Dependencies.mini
+        minSdk = Versions.minSdk
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
@@ -37,6 +37,8 @@ android {
 }
 
 dependencies {
+    implementation(project(":ppocrv5"))
+
     implementation("com.madgag.spongycastle:core:1.58.0.0")
     implementation("com.madgag.spongycastle:prov:1.58.0.0")
 
@@ -69,6 +71,7 @@ dependencies {
     api("org.jdeferred:jdeferred-android-aar:1.2.6")
     // RootShell
     api("com.github.Stericson:RootShell:1.6")
+//    implementation("com.github.Stericson:RootShell:1.4")
     // Gson
     api(libs.google.gson)
     // log4j

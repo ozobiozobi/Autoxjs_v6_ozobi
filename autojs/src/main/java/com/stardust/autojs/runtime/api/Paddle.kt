@@ -30,7 +30,7 @@ class Paddle {
             return emptyList()
         }
         if (!predictor.isLoaded()) {
-            initOcr(get(), cpuThreadNum, useSlim)
+            get()?.let { initOcr(it, cpuThreadNum, useSlim) }
         }
         return predictor.runOcr(bitmap, cpuThreadNum)
     }
@@ -46,7 +46,7 @@ class Paddle {
             return emptyList()
         }
         if (!predictor.isLoaded()) {
-            initOcr(get(), myModelPath)
+            get()?.let { initOcr(it, myModelPath) }
         }
         return predictor.runOcr(bitmap, cpuThreadNum)
     }

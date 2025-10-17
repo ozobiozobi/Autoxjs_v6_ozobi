@@ -3,9 +3,11 @@ package org.autojs.autoxjs.ui.main.fileitem
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import com.ozobi.files.formatFileSize
 import com.ozobi.files.getFileSize
+import com.ozobi.files.readFileAsString
 import com.ozobi.formatTimestamp
 import org.autojs.autoxjs.ui.main.ExplorerViewModel
 import org.autojs.autoxjs.ui.main.isFolderContainFileName
+import org.json.JSONObject
 import java.io.File
 
 
@@ -84,4 +86,16 @@ fun getFileItems(
         }
     }
     return fileItemList
+}
+
+fun getMainScriptFile(parentDir: String): File {
+    val parentDirFile = File(parentDir)
+    val projectFile = File(parentDirFile.absoluteFile, "project.json")
+    val jsonString = readFileAsString(projectFile)
+    val jsonObject = JSONObject(jsonString)
+    return if(jsonObject.getString("main").isNotEmpty()){
+        File(parentDir, jsonObject.getString("main"))
+    }else{
+        File(parentDir, "main.js")
+    }
 }

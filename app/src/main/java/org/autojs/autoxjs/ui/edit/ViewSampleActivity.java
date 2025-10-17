@@ -152,7 +152,7 @@ public class ViewSampleActivity extends AppCompatActivity implements OnActivityR
 
 
     private void showLog() {
-        AutoJs.getInstance().getScriptEngineService().getGlobalConsole().show();
+        AutoJs.getInstance().getScriptEngineService().get().getGlobalConsole().show();
     }
 
     private void showConsole() {

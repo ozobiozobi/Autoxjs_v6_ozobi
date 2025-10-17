@@ -202,7 +202,7 @@ public class MyScriptListFragment extends ViewPagerFragment implements FloatingA
                 FloatyWindowManger.hideCircularMenu();
                 ForegroundService.stop(requireContext());
                 requireActivity().stopService(new Intent(getContext(), FloatyService.class));
-                AutoJs.getInstance().getScriptEngineService().stopAll();
+                AutoJs.getInstance().getScriptEngineService().get().stopAll();
                 break;
             default:
                 break;

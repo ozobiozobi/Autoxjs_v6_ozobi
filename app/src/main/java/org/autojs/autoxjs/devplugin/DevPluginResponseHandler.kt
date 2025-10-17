@@ -135,7 +135,7 @@ class DevPluginResponseHandler(private val cacheDir: File) : Handler {
                 true
             }
             .handler("stopAll") { data: JsonObject? ->
-                AutoJs.getInstance().scriptEngineService.stopAllAndToast()
+                AutoJs.getInstance().scriptEngineService.get()?.stopAllAndToast()
                 true
             })
         .handler("bytes_command", Router("command")
@@ -170,8 +170,10 @@ class DevPluginResponseHandler(private val cacheDir: File) : Handler {
 
     private fun launchProject(dir: String) {
         try {
-            ProjectLauncher(dir)
-                .launch(AutoJs.getInstance().scriptEngineService)
+            AutoJs.getInstance().scriptEngineService.get()?.let {
+                ProjectLauncher(dir)
+                    .launch(it)
+            }
         } catch (e: Exception) {
             e.printStackTrace()
             toast(R.string.text_invalid_project)

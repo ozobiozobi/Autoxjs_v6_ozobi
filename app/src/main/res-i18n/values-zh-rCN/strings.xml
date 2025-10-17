@@ -2,6 +2,13 @@
 
 <!--Automatically translated by Globalization Translator (https://github.com/wilinz/globalization-translator)-->
 <resources>
+  <string name="text_back_to_script_path">返回脚本目录</string>
+  <string name="text_script_path">脚本路径</string>
+  <string name="text_error_copy">复制信息</string>
+  <string name="text_error_restart">重启软件</string>
+  <string name="text_error_exit">退出软件</string>
+  <string name="text_error_save">已保存到路径:%1$s</string>
+
   <string name="text_hide">隐藏</string>
   <string name="text_deleting">正在删除</string>
   <string name="text_rename_failed">重命名失败</string>

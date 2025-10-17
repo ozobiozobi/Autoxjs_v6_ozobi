@@ -9,6 +9,7 @@ import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.os.Looper
+import android.util.Log
 import android.webkit.WebView
 import android.widget.Toast
 import androidx.activity.ComponentActivity
@@ -34,6 +35,7 @@ import androidx.compose.material.ContentAlpha
 import androidx.compose.material.DrawerState
 import androidx.compose.material.DropdownMenu
 import androidx.compose.material.DropdownMenuItem
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.LocalContentAlpha
@@ -81,6 +83,7 @@ import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import com.leinardi.android.speeddial.compose.FabWithLabel
 import com.stardust.app.GlobalAppContext.post
 import com.stardust.app.permission.DrawOverlaysPermission
 import com.stardust.autojs.core.permission.StoragePermissionUtils
@@ -109,6 +112,8 @@ import org.autojs.autoxjs.timing.TimedTask
 import org.autojs.autoxjs.timing.TimedTaskManager.intentTaskChanges
 import org.autojs.autoxjs.timing.TimedTaskManager.timeTaskChanges
 import org.autojs.autoxjs.timing.TimedTaskScheduler
+import org.autojs.autoxjs.ui.build.ProjectConfigActivity
+import org.autojs.autoxjs.ui.build.ProjectConfigActivity_
 import org.autojs.autoxjs.ui.compose.theme.AutoXJsTheme
 import org.autojs.autoxjs.ui.compose.widget.SearchBox2
 import org.autojs.autoxjs.ui.floating.FloatyWindowManger
@@ -147,7 +152,7 @@ class MainActivity : ComponentActivity() {
         val curRunningTaskList = mutableStateListOf<RunningTask>()
         val curPendingTaskList = mutableStateListOf<PendingTask>()
         val curPathScrollStateMap = mutableStateMapOf(
-            curDisplayPath to arrayOf(LazyListState(), LazyListState())
+            curDisplayPath to LazyListState()
         )
         val curFilterFolderList = mutableStateListOf<FileItem>()
         val curFilterFileList = mutableStateListOf<FileItem>()
@@ -215,7 +220,7 @@ class MainActivity : ComponentActivity() {
     private var mTimedTaskChangeDisposable: Disposable? = null
     private var mIntentTaskChangeDisposable: Disposable? = null
 
-    private val explorerViewModel : ExplorerViewModel by viewModels()
+    private val explorerViewModel: ExplorerViewModel by viewModels()
 
     private var docsWebView: WebView? = null
 
@@ -255,7 +260,7 @@ class MainActivity : ComponentActivity() {
             )
             .apply()
 
-        AutoJs.getInstance().scriptEngineService.registerGlobalScriptExecutionListener(
+        AutoJs.getInstance().scriptEngineService.get()?.registerGlobalScriptExecutionListener(
             mScriptExecutionListener
         )
         mTimedTaskChangeDisposable = timeTaskChanges
@@ -315,7 +320,8 @@ class MainActivity : ComponentActivity() {
             curDisplayPath = scriptFile.absolutePath
         }
     }
-    private fun copySampleScriptsToScriptPath(){
+
+    private fun copySampleScriptsToScriptPath() {
         copyFileFromAssets(
             this.assets,
             "sample",
@@ -323,7 +329,7 @@ class MainActivity : ComponentActivity() {
         )
     }
 
-    private fun initExplorerViewModel(viewModel: ExplorerViewModel){
+    private fun initExplorerViewModel(viewModel: ExplorerViewModel) {
         viewModel.updateCurDisplayPath(Pref.getScriptDirPath())
         viewModel.updateCurSortBy(Pref.getExplorerCurSortBy())
         viewModel.updateIsDesSort(Pref.getExplorerIsDesSort())
@@ -400,7 +406,7 @@ class MainActivity : ComponentActivity() {
     override fun onDestroy() {
         super.onDestroy()
         unbindService(serviceConnection)
-        AutoJs.getInstance().scriptEngineService.unregisterGlobalScriptExecutionListener(
+        AutoJs.getInstance().scriptEngineService.get()?.unregisterGlobalScriptExecutionListener(
             mScriptExecutionListener
         )
         mTimedTaskChangeDisposable!!.dispose()
@@ -657,7 +663,7 @@ fun BottomBar(
                         val scriptFile = File(Pref.getScriptDirPath())
                         if (curDisplayPath != scriptFile.absolutePath) {
                             curDisplayPath = scriptFile.absolutePath
-                            Toast.makeText(context, "返回脚本目录", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(context, context.getString(R.string.text_back_to_script_path), Toast.LENGTH_SHORT).show()
                         }
                     }
                 },
@@ -696,25 +702,29 @@ fun refreshCurFilterList() {
 }
 
 fun filterCurDisplayPathList(key: String) {
-    if (key.isEmpty()) {
-        beforeFilterFolderList.forEach {
-            curFilterFolderList.add(it)
-        }
-        beforeFilterFileList.forEach {
-            curFilterFileList.add(it)
-        }
-    } else {
-        val keyRegex = ".*$key.*".toRegex(RegexOption.IGNORE_CASE)
-        beforeFilterFolderList.forEach {
-            if (keyRegex.matches(it.name)) {
+    try {
+        if (key.isEmpty()) {
+            beforeFilterFolderList.forEach {
                 curFilterFolderList.add(it)
             }
-        }
-        beforeFilterFileList.forEach {
-            if (keyRegex.matches(it.name)) {
+            beforeFilterFileList.forEach {
                 curFilterFileList.add(it)
             }
+        } else {
+            val keyRegex = ".*$key.*".toRegex(RegexOption.IGNORE_CASE)
+            beforeFilterFolderList.forEach {
+                if (keyRegex.matches(it.name)) {
+                    curFilterFolderList.add(it)
+                }
+            }
+            beforeFilterFileList.forEach {
+                if (keyRegex.matches(it.name)) {
+                    curFilterFileList.add(it)
+                }
+            }
         }
+    } catch (e: Exception) {
+        Log.e("MainActivity", e.toString())
     }
 }
 
@@ -832,7 +842,11 @@ private fun TopBar(
                     IconButton(onClick = {
                         refreshCurRunningTaskList()
                         refreshCurPendingTaskList()
-                        Toast.makeText(context, context.getString(R.string.text_refresh),Toast.LENGTH_SHORT).show()
+                        Toast.makeText(
+                            context,
+                            context.getString(R.string.text_refresh),
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }) {
                         Icon(
                             imageVector = Icons.Default.Refresh,
@@ -858,13 +872,27 @@ fun TopAppBarMenu(
     viewModel: ExplorerViewModel,
     expanded: Boolean,
     onDismissRequest: () -> Unit,
-    offset: DpOffset = DpOffset.Zero,
-//    scriptListFragment: ScriptListFragment
+    offset: DpOffset = DpOffset.Zero
 ) {
+    val context = LocalContext.current
     val showNewFileDialog = remember { mutableStateOf(false) }
     val showNewFolderDialog = remember { mutableStateOf(false) }
+    val showNewProjectDialog = remember { mutableStateOf(false) }
     DropdownMenu(expanded = expanded, onDismissRequest = onDismissRequest, offset = offset) {
-        val context = LocalContext.current
+        DropdownMenuItem(onClick = {
+            showNewProjectDialog.value = true
+        }) {
+            Row {
+                Icon(
+                    painter = painterResource(R.drawable.ic_project2),
+                    contentDescription = stringResource(R.string.text_project),
+                    modifier = Modifier.size(24.dp),
+                    tint = MaterialTheme.colors.primary
+                )
+                Spacer(Modifier.size(6.dp))
+                Text(stringResource(R.string.text_project))
+            }
+        }
         DropdownMenuItem(onClick = {
             showNewFolderDialog.value = true
         }) {
@@ -893,18 +921,6 @@ fun TopAppBarMenu(
                 Text(stringResource(R.string.text_file))
             }
         }
-//        NewDirectory(context, scriptListFragment, onDismissRequest)
-//        NewFile(context, scriptListFragment, onDismissRequest)
-//        ImportFile(context, scriptListFragment, onDismissRequest)
-//        NewProject(context, scriptListFragment, onDismissRequest)
-//        DropdownMenuItem(onClick = { /*TODO*/ }) {
-//            MyIcon(
-//                painter = painterResource(id = R.drawable.ic_timed_task),
-//                contentDescription = stringResource(id = R.string.text_switch_timed_task_scheduler)
-//            )
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Text(text = stringResource(id = R.string.text_switch_timed_task_scheduler))
-//        }
     }
     if (showNewFileDialog.value) {
         NewFileDialog(curDisplayPath, "", "file", onDismiss = {
@@ -938,121 +954,16 @@ fun TopAppBarMenu(
                 onBeforeRefreshPathChange = { viewModel.updateCurDisplayPath(it) })
         }
     }
+    if (showNewProjectDialog.value) {
+        showNewProjectDialog.value = false
+        onDismissRequest()
+        ProjectConfigActivity_.intent(context)
+            .extra(
+                ProjectConfigActivity.EXTRA_PARENT_DIRECTORY,
+                curDisplayPath
+            )
+            .extra(ProjectConfigActivity.EXTRA_NEW_PROJECT, true)
+            .start()
+    }
 }
-//
-//@OptIn(ExperimentalPermissionsApi::class)
-//@Composable
-//private fun NewDirectory(
-//    context: Context,
-//    scriptListFragment: ScriptListFragment,
-//    onDismissRequest: () -> Unit
-//) {
-//    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
-//        if (it) getScriptOperations(
-//            context,
-//            scriptListFragment.explorerView
-//        ).newDirectory()
-//        else showExternalStoragePermissionToast(context)
-//    }
-//    DropdownMenuItem(onClick = {
-//        onDismissRequest()
-//        permission.launchMultiplePermissionRequest()
-//    }) {
-//        MyIcon(
-//            painter = painterResource(id = R.drawable.ic_floating_action_menu_dir),
-//            contentDescription = null, nightMode = isNightMode()
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(text = stringResource(id = R.string.text_directory))
-//    }
-//}
-//
-//@OptIn(ExperimentalPermissionsApi::class)
-//@Composable
-//private fun NewFile(
-//    context: Context,
-//    scriptListFragment: ScriptListFragment,
-//    onDismissRequest: () -> Unit
-//) {
-//    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
-//        if (it) getScriptOperations(
-//            context,
-//            scriptListFragment.explorerView
-//        ).newFile()
-//        else showExternalStoragePermissionToast(context)
-//    }
-//    DropdownMenuItem(onClick = {
-//        onDismissRequest()
-//        permission.launchMultiplePermissionRequest()
-//    }) {
-//        MyIcon(
-//            painter = painterResource(id = R.drawable.ic_floating_action_menu_file),
-//            contentDescription = null, nightMode = isNightMode()
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(text = stringResource(id = R.string.text_file))
-//    }
-//}
-//
-//@OptIn(ExperimentalPermissionsApi::class)
-//@Composable
-//private fun ImportFile(
-//    context: Context,
-//    scriptListFragment: ScriptListFragment,
-//    onDismissRequest: () -> Unit
-//) {
-//    val permission = rememberExternalStoragePermissionsState(LocalContext.current) {
-//        if (it) getScriptOperations(
-//            context,
-//            scriptListFragment.explorerView
-//        ).importFile()
-//        else showExternalStoragePermissionToast(context)
-//    }
-//    DropdownMenuItem(onClick = {
-//        onDismissRequest()
-//        permission.launchMultiplePermissionRequest()
-//    }) {
-//        MyIcon(
-//            painter = painterResource(id = R.drawable.ic_floating_action_menu_open),
-//            contentDescription = null, nightMode = isNightMode()
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(text = stringResource(id = R.string.text_import))
-//    }
-//}
-//
-//@Composable
-//private fun NewProject(
-//    context: Context,
-//    scriptListFragment: ScriptListFragment,
-//    onDismissRequest: () -> Unit
-//) {
-//    DropdownMenuItem(onClick = {
-//        onDismissRequest()
-//        ProjectConfigActivity_.intent(context)
-//            .extra(
-//                ProjectConfigActivity.EXTRA_PARENT_DIRECTORY,
-//                scriptListFragment.explorerView.currentPage?.path
-//            )
-//            .extra(ProjectConfigActivity.EXTRA_NEW_PROJECT, true)
-//            .start()
-//    }) {
-//        MyIcon(
-//            painter = painterResource(id = R.drawable.ic_project2),
-//            contentDescription = null, nightMode = isNightMode()
-//        )
-//        Spacer(modifier = Modifier.width(8.dp))
-//        Text(text = stringResource(id = R.string.text_project))
-//    }
-//}
-//
-//private fun getScriptOperations(
-//    context: Context,
-//    explorerView: ExplorerViewKt
-//): ScriptOperations {
-//    return ScriptOperations(
-//        context,
-//        explorerView,
-//        explorerView.currentPage
-//    )
-//}
+
